@@ -4,6 +4,7 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 
 import type { Page } from '../../../payload-types'
 import { buildFullPath, getRevalidationPaths, hasPathChanged } from '@/utilities/pageHelpers'
+import { debugInfo } from '@/utilities/debug'
 
 export const revalidatePage: CollectionAfterChangeHook<Page> = ({
   doc,
@@ -16,7 +17,7 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
       const pathsToRevalidate = getRevalidationPaths(doc, previousDoc)
 
       pathsToRevalidate.forEach(path => {
-        payload.logger.info(`Revalidating page at path: ${path}`)
+        debugInfo(payload, `Revalidating page at path: ${path}`)
         revalidatePath(path)
       })
 
@@ -27,7 +28,7 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
     if (previousDoc?._status === 'published' && doc._status !== 'published') {
       const oldPath = buildFullPath(previousDoc)
 
-      payload.logger.info(`Revalidating unpublished page at path: ${oldPath}`)
+      debugInfo(payload, `Revalidating unpublished page at path: ${oldPath}`)
 
       revalidatePath(oldPath)
       revalidateTag('pages-sitemap')
@@ -37,7 +38,7 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
     if (previousDoc && hasPathChanged(doc, previousDoc)) {
       // Note: In a production app, you might want to query and revalidate all descendant pages
       // For now, we rely on the nested-docs plugin to handle breadcrumb updates
-      payload.logger.info(`Page path changed, descendants will be updated by nested-docs plugin`)
+      debugInfo(payload, `Page path changed, descendants will be updated by nested-docs plugin`)
     }
   }
   return doc

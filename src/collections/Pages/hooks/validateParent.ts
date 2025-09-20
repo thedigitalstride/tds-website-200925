@@ -1,6 +1,7 @@
 import type { CollectionBeforeChangeHook } from 'payload'
 import type { Page } from '../../../payload-types'
 import { validateParentChildRelationship } from '@/utilities/pageHelpers'
+import { debugError } from '@/utilities/debug'
 
 export const validateParent: CollectionBeforeChangeHook<Page> = async ({
   data,
@@ -44,7 +45,7 @@ export const validateParent: CollectionBeforeChangeHook<Page> = async ({
     }
 
     // For other errors, log and allow the operation to continue
-    payload.logger.error({ err: error }, 'Error validating parent relationship')
+    debugError(payload, error, 'Error validating parent relationship')
     return data
   }
 }

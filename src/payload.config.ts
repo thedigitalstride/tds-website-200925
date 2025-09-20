@@ -21,6 +21,10 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  // Configure logger for production optimization
+  logger: process.env.NODE_ENV === 'production'
+    ? { options: { level: 'warn' } } // Only warnings and errors in production
+    : undefined, // Use default in development
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
