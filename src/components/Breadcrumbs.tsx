@@ -1,0 +1,61 @@
+import Link from 'next/link'
+import { ChevronRight } from 'lucide-react'
+
+interface BreadcrumbItem {
+  doc: string
+  url?: string
+  label: string
+}
+
+interface BreadcrumbsProps {
+  breadcrumbs?: BreadcrumbItem[]
+  className?: string
+}
+
+export function Breadcrumbs({ breadcrumbs, className = '' }: BreadcrumbsProps) {
+  // Don't show breadcrumbs if there aren't enough items or if it's just the current page
+  if (!breadcrumbs || breadcrumbs.length <= 1) {
+    return null
+  }
+
+  return (
+    <nav aria-label="Breadcrumb" className={`mb-6 ${className}`}>
+      <ol className="flex items-center space-x-2 text-sm text-gray-600">
+        {/* Home link */}
+        <li>
+          <Link
+            href="/"
+            className="hover:text-gray-900 transition-colors duration-200"
+          >
+            Home
+          </Link>
+        </li>
+
+        {/* Breadcrumb items (excluding the last one which is current page) */}
+        {breadcrumbs.slice(0, -1).map((crumb, index) => (
+          <li key={crumb.doc} className="flex items-center">
+            <ChevronRight className="w-4 h-4 mx-2 text-gray-400" />
+            {crumb.url ? (
+              <Link
+                href={crumb.url}
+                className="hover:text-gray-900 transition-colors duration-200"
+              >
+                {crumb.label}
+              </Link>
+            ) : (
+              <span>{crumb.label}</span>
+            )}
+          </li>
+        ))}
+
+        {/* Current page (last breadcrumb) */}
+        <li className="flex items-center">
+          <ChevronRight className="w-4 h-4 mx-2 text-gray-400" />
+          <span className="text-gray-900 font-medium">
+            {breadcrumbs[breadcrumbs.length - 1]?.label}
+          </span>
+        </li>
+      </ol>
+    </nav>
+  )
+}

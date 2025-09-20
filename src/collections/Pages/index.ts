@@ -40,8 +40,18 @@ export const Pages: CollectionConfig<'pages'> = {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) => {
+        // Construct full path from breadcrumbs if available
+        let slugPath = typeof data?.slug === 'string' ? data.slug : ''
+
+        if (data?.breadcrumbs && Array.isArray(data.breadcrumbs) && data.breadcrumbs.length > 0) {
+          const lastBreadcrumb = data.breadcrumbs[data.breadcrumbs.length - 1]
+          if (lastBreadcrumb?.url) {
+            slugPath = lastBreadcrumb.url.substring(1) // Remove leading /
+          }
+        }
+
         const path = generatePreviewPath({
-          slug: typeof data?.slug === 'string' ? data.slug : '',
+          slug: slugPath,
           collection: 'pages',
           req,
         })
@@ -49,12 +59,23 @@ export const Pages: CollectionConfig<'pages'> = {
         return path
       },
     },
-    preview: (data, { req }) =>
-      generatePreviewPath({
-        slug: typeof data?.slug === 'string' ? data.slug : '',
+    preview: (data, { req }) => {
+      // Construct full path from breadcrumbs if available
+      let slugPath = typeof data?.slug === 'string' ? data.slug : ''
+
+      if (data?.breadcrumbs && Array.isArray(data.breadcrumbs) && data.breadcrumbs.length > 0) {
+        const lastBreadcrumb = data.breadcrumbs[data.breadcrumbs.length - 1]
+        if (lastBreadcrumb?.url) {
+          slugPath = lastBreadcrumb.url.substring(1) // Remove leading /
+        }
+      }
+
+      return generatePreviewPath({
+        slug: slugPath,
         collection: 'pages',
         req,
-      }),
+      })
+    },
     useAsTitle: 'title',
   },
   fields: [

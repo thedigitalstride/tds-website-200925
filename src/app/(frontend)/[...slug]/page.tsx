@@ -12,6 +12,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -21,32 +22,40 @@ export async function generateStaticParams() {
     limit: 1000,
     overrideAccess: false,
     pagination: false,
+    depth: 2, // Include breadcrumbs
     select: {
       slug: true,
+      breadcrumbs: true,
     },
   })
 
-  const params = pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
-    })
-    .map(({ slug }) => {
-      return { slug }
-    })
+  return pages.docs
+    ?.filter((doc) => doc.slug !== 'home')
+    .map((doc) => {
+      // No breadcrumbs = top-level page
+      if (!doc.breadcrumbs || doc.breadcrumbs.length === 0) {
+        return { slug: [doc.slug] }
+      }
 
-  return params
+      // Extract path from last breadcrumb's URL
+      const lastBreadcrumb = doc.breadcrumbs[doc.breadcrumbs.length - 1]
+      const path = lastBreadcrumb.url?.substring(1).split('/') || [doc.slug]
+
+      return { slug: path }
+    }) || []
 }
 
 type Args = {
   params: Promise<{
-    slug?: string
+    slug?: string[]
   }>
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = 'home' } = await paramsPromise
-  const url = '/' + slug
+  const { slug = [] } = await paramsPromise
+  const isHome = slug.length === 0
+  const url = '/' + slug.join('/')
 
   let page: RequiredDataFromCollectionSlug<'pages'> | null
 
@@ -55,7 +64,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   })
 
   // Remove this code once your website is seeded
-  if (!page && slug === 'home') {
+  if (!page && isHome) {
     page = homeStatic
   }
 
@@ -63,7 +72,7 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout } = page
+  const { hero, layout, breadcrumbs } = page
 
   return (
     <article className="pt-16 pb-24">
@@ -73,6 +82,10 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
+      <div className="container mx-auto px-4">
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+      </div>
+
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
     </article>
@@ -80,7 +93,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = 'home' } = await paramsPromise
+  const { slug = [] } = await paramsPromise
   const page = await queryPageBySlug({
     slug,
   })
@@ -88,23 +101,44 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   return generateMeta({ doc: page })
 }
 
-const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryPageBySlug = cache(async ({ slug }: { slug: string[] }) => {
   const { isEnabled: draft } = await draftMode()
-
   const payload = await getPayload({ config: configPromise })
 
-  const result = await payload.find({
+  // Home page special case
+  if (slug.length === 0) {
+    const result = await payload.find({
+      collection: 'pages',
+      where: { slug: { equals: 'home' } },
+      draft,
+      limit: 1,
+      overrideAccess: draft,
+    })
+    return result.docs?.[0] || null
+  }
+
+  // For nested pages, query by last segment
+  const lastSegment = slug[slug.length - 1]
+
+  const candidates = await payload.find({
     collection: 'pages',
+    where: { slug: { equals: lastSegment } },
     draft,
-    limit: 1,
-    pagination: false,
+    depth: 2, // Include breadcrumbs
     overrideAccess: draft,
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
   })
 
-  return result.docs?.[0] || null
+  // Find the page with matching breadcrumb path
+  return candidates.docs.find(doc => {
+    // Top-level page (no breadcrumbs except self)
+    if (!doc.breadcrumbs || doc.breadcrumbs.length <= 1) {
+      return slug.length === 1
+    }
+
+    // Check breadcrumb URLs match our path
+    const lastBreadcrumb = doc.breadcrumbs[doc.breadcrumbs.length - 1]
+    const breadcrumbPath = lastBreadcrumb.url?.substring(1) // Remove leading /
+
+    return breadcrumbPath === slug.join('/')
+  }) || null
 })

@@ -7,15 +7,19 @@ const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
 
 type Props = {
   collection: keyof typeof collectionPrefixMap
-  slug: string
+  slug: string | string[]
   req: PayloadRequest
 }
 
 export const generatePreviewPath = ({ collection, slug }: Props) => {
+  // Handle array slugs for nested pages
+  const slugString = Array.isArray(slug) ? slug.join('/') : slug
+  const pathSlug = Array.isArray(slug) ? slug.join('/') : slug
+
   const encodedParams = new URLSearchParams({
-    slug,
+    slug: slugString,
     collection,
-    path: `${collectionPrefixMap[collection]}/${slug}`,
+    path: `${collectionPrefixMap[collection]}/${pathSlug}`,
     previewSecret: process.env.PREVIEW_SECRET || '',
   })
 

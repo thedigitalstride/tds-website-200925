@@ -1,5 +1,13 @@
-import PageTemplate, { generateMetadata } from './[slug]/page'
+import PageTemplate, { generateMetadata as baseGenerateMetadata } from './[...slug]/page'
 
-export default PageTemplate
+// Home page component that passes empty slug array
+export default function HomePage() {
+  return <PageTemplate params={Promise.resolve({ slug: [] })} />
+}
 
-export { generateMetadata }
+// Metadata generation for home page
+export async function generateMetadata() {
+  return await baseGenerateMetadata({
+    params: Promise.resolve({ slug: [] })
+  })
+}
