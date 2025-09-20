@@ -1,0 +1,227 @@
+/* UntitledUI Theme Configuration */
+/* Design tokens and CSS variables compatible with existing Tailwind v4 setup */
+
+@layer base {
+  :root {
+    /* UntitledUI Extended Color Palette */
+    --uui-primary-50: 240 249 255;
+    --uui-primary-100: 224 242 254;
+    --uui-primary-200: 186 230 253;
+    --uui-primary-300: 125 211 252;
+    --uui-primary-400: 56 189 248;
+    --uui-primary-500: 14 165 233;
+    --uui-primary-600: 2 132 199;
+    --uui-primary-700: 3 105 161;
+    --uui-primary-800: 7 89 133;
+    --uui-primary-900: 12 74 110;
+    --uui-primary-950: 8 47 73;
+
+    /* UntitledUI Gray Scale */
+    --uui-gray-25: 252 252 253;
+    --uui-gray-50: 249 250 251;
+    --uui-gray-100: 243 244 246;
+    --uui-gray-200: 229 231 235;
+    --uui-gray-300: 209 213 219;
+    --uui-gray-400: 156 163 175;
+    --uui-gray-500: 107 114 128;
+    --uui-gray-600: 75 85 99;
+    --uui-gray-700: 55 65 81;
+    --uui-gray-800: 31 41 55;
+    --uui-gray-900: 17 24 39;
+    --uui-gray-950: 3 7 18;
+
+    /* UntitledUI Success Colors */
+    --uui-success-50: 240 253 244;
+    --uui-success-100: 220 252 231;
+    --uui-success-200: 187 247 208;
+    --uui-success-300: 134 239 172;
+    --uui-success-400: 74 222 128;
+    --uui-success-500: 34 197 94;
+    --uui-success-600: 22 163 74;
+    --uui-success-700: 21 128 61;
+    --uui-success-800: 22 101 52;
+    --uui-success-900: 20 83 45;
+    --uui-success-950: 5 46 22;
+
+    /* UntitledUI Warning Colors */
+    --uui-warning-50: 255 251 235;
+    --uui-warning-100: 254 243 199;
+    --uui-warning-200: 253 230 138;
+    --uui-warning-300: 252 211 77;
+    --uui-warning-400: 251 191 36;
+    --uui-warning-500: 245 158 11;
+    --uui-warning-600: 217 119 6;
+    --uui-warning-700: 180 83 9;
+    --uui-warning-800: 146 64 14;
+    --uui-warning-900: 120 53 15;
+    --uui-warning-950: 69 26 3;
+
+    /* UntitledUI Error Colors */
+    --uui-error-50: 254 242 242;
+    --uui-error-100: 254 226 226;
+    --uui-error-200: 254 202 202;
+    --uui-error-300: 252 165 165;
+    --uui-error-400: 248 113 113;
+    --uui-error-500: 239 68 68;
+    --uui-error-600: 220 38 38;
+    --uui-error-700: 185 28 28;
+    --uui-error-800: 153 27 27;
+    --uui-error-900: 127 29 29;
+    --uui-error-950: 69 10 10;
+
+    /* UntitledUI Component Variables - mapped to existing system */
+    --uui-background: var(--background);
+    --uui-foreground: var(--foreground);
+    --uui-card: var(--card);
+    --uui-card-foreground: var(--card-foreground);
+    --uui-popover: var(--popover);
+    --uui-popover-foreground: var(--popover-foreground);
+    --uui-muted: var(--muted);
+    --uui-muted-foreground: var(--muted-foreground);
+    --uui-border: var(--border);
+    --uui-input: var(--input);
+    --uui-ring: var(--ring);
+
+    /* UntitledUI Specific Variables */
+    --uui-brand: hsl(var(--uui-primary-600));
+    --uui-brand-foreground: hsl(var(--uui-gray-25));
+    --uui-accent: hsl(var(--uui-gray-100));
+    --uui-accent-foreground: hsl(var(--uui-gray-900));
+
+    /* Typography Scale */
+    --uui-text-xs: 0.75rem;
+    --uui-text-sm: 0.875rem;
+    --uui-text-base: 1rem;
+    --uui-text-lg: 1.125rem;
+    --uui-text-xl: 1.25rem;
+    --uui-text-2xl: 1.5rem;
+    --uui-text-3xl: 1.875rem;
+    --uui-text-4xl: 2.25rem;
+    --uui-text-5xl: 3rem;
+
+    /* Spacing Scale */
+    --uui-space-1: 0.25rem;
+    --uui-space-2: 0.5rem;
+    --uui-space-3: 0.75rem;
+    --uui-space-4: 1rem;
+    --uui-space-5: 1.25rem;
+    --uui-space-6: 1.5rem;
+    --uui-space-8: 2rem;
+    --uui-space-10: 2.5rem;
+    --uui-space-12: 3rem;
+    --uui-space-16: 4rem;
+
+    /* Border Radius */
+    --uui-radius-none: 0;
+    --uui-radius-sm: 0.125rem;
+    --uui-radius-md: 0.375rem;
+    --uui-radius-lg: 0.5rem;
+    --uui-radius-xl: 0.75rem;
+    --uui-radius-2xl: 1rem;
+    --uui-radius-full: 9999px;
+
+    /* Shadows */
+    --uui-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --uui-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --uui-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --uui-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --uui-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --uui-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  }
+
+  [data-theme='dark'] {
+    /* Dark mode overrides for UntitledUI colors */
+    --uui-background: hsl(var(--uui-gray-950));
+    --uui-foreground: hsl(var(--uui-gray-50));
+    --uui-card: hsl(var(--uui-gray-900));
+    --uui-card-foreground: hsl(var(--uui-gray-50));
+    --uui-popover: hsl(var(--uui-gray-900));
+    --uui-popover-foreground: hsl(var(--uui-gray-50));
+    --uui-muted: hsl(var(--uui-gray-800));
+    --uui-muted-foreground: hsl(var(--uui-gray-400));
+    --uui-border: hsl(var(--uui-gray-800));
+    --uui-input: hsl(var(--uui-gray-800));
+    --uui-ring: hsl(var(--uui-primary-400));
+
+    --uui-brand: hsl(var(--uui-primary-500));
+    --uui-brand-foreground: hsl(var(--uui-gray-950));
+    --uui-accent: hsl(var(--uui-gray-800));
+    --uui-accent-foreground: hsl(var(--uui-gray-50));
+  }
+}
+
+/* UntitledUI Animation Classes */
+@keyframes uui-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes uui-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes uui-slide-in-from-top {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes uui-slide-in-from-bottom {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes uui-slide-in-from-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes uui-slide-in-from-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes uui-scale-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes uui-scale-out {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(0.95); opacity: 0; }
+}
+
+/* UntitledUI Utility Classes */
+@layer utilities {
+  .uui-animate-fade-in {
+    animation: uui-fade-in 0.15s ease-out;
+  }
+
+  .uui-animate-fade-out {
+    animation: uui-fade-out 0.15s ease-in;
+  }
+
+  .uui-animate-slide-in-from-top {
+    animation: uui-slide-in-from-top 0.2s ease-out;
+  }
+
+  .uui-animate-slide-in-from-bottom {
+    animation: uui-slide-in-from-bottom 0.2s ease-out;
+  }
+
+  .uui-animate-slide-in-from-left {
+    animation: uui-slide-in-from-left 0.2s ease-out;
+  }
+
+  .uui-animate-slide-in-from-right {
+    animation: uui-slide-in-from-right 0.2s ease-out;
+  }
+
+  .uui-animate-scale-in {
+    animation: uui-scale-in 0.2s ease-out;
+  }
+
+  .uui-animate-scale-out {
+    animation: uui-scale-out 0.15s ease-in;
+  }
+}
