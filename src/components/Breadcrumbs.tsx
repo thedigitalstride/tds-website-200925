@@ -17,7 +17,7 @@ export function Breadcrumbs({ breadcrumbs, className = '' }: BreadcrumbsProps) {
   }
 
   return (
-    <nav aria-label="Breadcrumb" className={`mb-6 ${className}`}>
+    <nav aria-label="Breadcrumb" className={`mb-6 ${className}`.trim()}>
       <ol className="flex items-center space-x-2 text-sm text-gray-600">
         {/* Home link */}
         <li>
