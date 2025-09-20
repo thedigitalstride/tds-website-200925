@@ -12,6 +12,7 @@ import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
+import { validateParent } from './hooks/validateParent'
 
 import {
   MetaDescriptionField,
@@ -35,6 +36,7 @@ export const Pages: CollectionConfig<'pages'> = {
   defaultPopulate: {
     title: true,
     slug: true,
+    breadcrumbs: true,
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
@@ -145,7 +147,7 @@ export const Pages: CollectionConfig<'pages'> = {
   ],
   hooks: {
     afterChange: [revalidatePage],
-    beforeChange: [populatePublishedAt],
+    beforeChange: [populatePublishedAt, validateParent],
     afterDelete: [revalidateDelete],
   },
   versions: {

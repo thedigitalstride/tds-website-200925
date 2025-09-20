@@ -1,14 +1,12 @@
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
+import type { Page } from '@/payload-types'
 
-interface BreadcrumbItem {
-  doc: string
-  url?: string
-  label: string
-}
+// Use the actual breadcrumb type from Payload
+type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]
 
 interface BreadcrumbsProps {
-  breadcrumbs?: BreadcrumbItem[]
+  breadcrumbs?: BreadcrumbItem[] | null
   className?: string
 }
 
@@ -32,8 +30,8 @@ export function Breadcrumbs({ breadcrumbs, className = '' }: BreadcrumbsProps) {
         </li>
 
         {/* Breadcrumb items (excluding the last one which is current page) */}
-        {breadcrumbs.slice(0, -1).map((crumb, index) => (
-          <li key={crumb.doc} className="flex items-center">
+        {breadcrumbs.slice(0, -1).map((crumb, _) => (
+          <li key={crumb.id || crumb.label} className="flex items-center">
             <ChevronRight className="w-4 h-4 mx-2 text-gray-400" />
             {crumb.url ? (
               <Link

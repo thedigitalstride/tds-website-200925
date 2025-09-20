@@ -17,10 +17,12 @@ import type {
   BannerBlock as BannerBlockProps,
   CallToActionBlock as CTABlockProps,
   MediaBlock as MediaBlockProps,
+  Page,
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { cn } from '@/utilities/ui'
+import { getPageUrl } from '@/utilities/pageHelpers'
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -31,8 +33,15 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   if (typeof value !== 'object') {
     throw new Error('Expected value to be an object')
   }
-  const slug = value.slug
-  return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
+
+  // For posts, use the existing logic
+  if (relationTo === 'posts') {
+    return `/posts/${value.slug}`
+  }
+
+  // For pages, use the getPageUrl helper to support nested URLs
+  // Cast to Partial<Page> since the link node might not have all page properties
+  return getPageUrl(value as Partial<Page>)
 }
 
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
