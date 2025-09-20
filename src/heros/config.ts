@@ -56,6 +56,9 @@ export const hero: Field = {
     linkGroup({
       overrides: {
         maxRows: 2,
+        admin: {
+          condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        },
       },
     }),
     {
