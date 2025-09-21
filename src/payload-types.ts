@@ -182,7 +182,7 @@ export interface Page {
             url?: string | null;
             label: string;
             /**
-             * Choose how the link should be rendered.
+             * Choose how the link should be rendered. (Legacy - consider using UUI button styling)
              */
             appearance?: ('default' | 'outline') | null;
           };
@@ -438,10 +438,6 @@ export interface CallToActionBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'outline') | null;
-          /**
            * Button color variant from UntitledUI design system
            */
           uuiColor?: ('primary' | 'secondary' | 'tertiary' | 'link-color') | null;
@@ -496,9 +492,13 @@ export interface ContentBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Button color variant from UntitledUI design system
            */
-          appearance?: ('default' | 'outline') | null;
+          uuiColor?: ('primary' | 'secondary' | 'tertiary' | 'link-color') | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('sm' | 'md' | 'lg') | null;
         };
         id?: string | null;
       }[]
@@ -1083,7 +1083,6 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
-              appearance?: T;
               uuiColor?: T;
               uuiSize?: T;
             };
@@ -1111,7 +1110,8 @@ export interface ContentBlockSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
-              appearance?: T;
+              uuiColor?: T;
+              uuiSize?: T;
             };
         id?: T;
       };
@@ -1702,31 +1702,6 @@ export interface TaskSchedulePublish {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlock".
- */
-export interface BannerBlock {
-  style: 'info' | 'warning' | 'error' | 'success';
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'banner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ButtonBlock".
  */
 export interface ButtonBlock {
@@ -1783,6 +1758,31 @@ export interface ButtonBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'buttonBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlock".
+ */
+export interface BannerBlock {
+  style: 'info' | 'warning' | 'error' | 'success';
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'banner';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

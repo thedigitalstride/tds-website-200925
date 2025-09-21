@@ -17,19 +17,9 @@ export type UUIButtonColors =
 // UntitledUI Button Size Variants
 export type UUIButtonSizes = 'sm' | 'md' | 'lg' | 'xl'
 
-// Legacy appearance types for backward compatibility
+// Legacy appearance types - DEPRECATED (use UUI colors instead)
+// Kept for backward compatibility but no longer rendered
 export type LinkAppearances = 'default' | 'outline'
-
-export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
-  default: {
-    label: 'Default',
-    value: 'default',
-  },
-  outline: {
-    label: 'Outline',
-    value: 'outline',
-  },
-}
 
 // UntitledUI Color Options
 export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: string; description?: string }> = {
@@ -101,7 +91,7 @@ export const uuiSizeOptions: Record<UUIButtonSizes, { label: string; value: stri
 }
 
 type LinkType = (options?: {
-  appearances?: LinkAppearances[] | false
+  appearances?: LinkAppearances[] | false // DEPRECATED: Use UUI colors instead
   disableLabel?: boolean
   overrides?: Partial<GroupField>
   // UUI Button styling options
@@ -113,7 +103,7 @@ type LinkType = (options?: {
 }) => Field
 
 export const link: LinkType = ({
-  appearances,
+  appearances, // DEPRECATED: Ignored when enableUUIButton is true
   disableLabel = false,
   overrides = {},
   enableUUIButton = false,
@@ -217,21 +207,22 @@ export const link: LinkType = ({
     linkResult.fields = [...linkResult.fields, ...linkTypes]
   }
 
-  if (appearances !== false) {
-    let appearanceOptionsToUse = [appearanceOptions.default, appearanceOptions.outline]
-
-    if (appearances) {
-      appearanceOptionsToUse = appearances.map((appearance) => appearanceOptions[appearance])
-    }
+  // DEPRECATED: Appearance field removed in favor of UUI button colors
+  // Only add appearance field for non-UUI buttons for backward compatibility
+  if (appearances !== false && !enableUUIButton) {
+    const legacyAppearanceOptions = [
+      { label: 'Default', value: 'default' },
+      { label: 'Outline', value: 'outline' }
+    ]
 
     linkResult.fields.push({
       name: 'appearance',
       type: 'select',
       admin: {
-        description: 'Choose how the link should be rendered.',
+        description: 'Choose how the link should be rendered. (Legacy - consider using UUI button styling)',
       },
       defaultValue: 'default',
-      options: appearanceOptionsToUse,
+      options: legacyAppearanceOptions,
     })
   }
 

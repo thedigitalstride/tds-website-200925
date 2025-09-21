@@ -25,8 +25,6 @@ export interface PayloadLinkObject {
   // UUI Button styling properties
   uuiColor?: 'primary' | 'secondary' | 'tertiary' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
   uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
-  // Legacy appearance for backward compatibility
-  appearance?: 'default' | 'outline' | null
 }
 
 export interface UUIButtonProps extends Omit<ButtonProps, 'children' | 'href'> {
