@@ -18,7 +18,7 @@ export const debugLog = {
    * Log debug information (only when PAYLOAD_DEBUG is true)
    * This will appear in Vercel's Function Logs when enabled
    */
-  info: (payload: Payload, message: string, ...args: any[]) => {
+  info: (payload: Payload, message: string, ...args: unknown[]) => {
     if (process.env.PAYLOAD_DEBUG === 'true') {
       payload.logger.info(message, ...args)
     }
@@ -27,7 +27,7 @@ export const debugLog = {
   /**
    * Log warnings when debug is enabled
    */
-  warn: (payload: Payload, message: string, ...args: any[]) => {
+  warn: (payload: Payload, message: string, ...args: unknown[]) => {
     if (process.env.PAYLOAD_DEBUG === 'true') {
       payload.logger.warn(message, ...args)
     }
@@ -37,7 +37,7 @@ export const debugLog = {
    * Always log errors regardless of debug setting
    * Errors should always be visible for troubleshooting
    */
-  error: (payload: Payload, error: any, message: string) => {
+  error: (payload: Payload, error: Error | unknown, message: string) => {
     payload.logger.error({ err: error }, message)
   },
 
@@ -59,15 +59,15 @@ export const debugLog = {
 /**
  * Alternative simplified functions for direct use
  */
-export const debugInfo = (payload: Payload, message: string, ...args: any[]) => {
+export const debugInfo = (payload: Payload, message: string, ...args: unknown[]) => {
   debugLog.info(payload, message, ...args)
 }
 
-export const debugWarn = (payload: Payload, message: string, ...args: any[]) => {
+export const debugWarn = (payload: Payload, message: string, ...args: unknown[]) => {
   debugLog.warn(payload, message, ...args)
 }
 
-export const debugError = (payload: Payload, error: any, message: string) => {
+export const debugError = (payload: Payload, error: Error | unknown, message: string) => {
   debugLog.error(payload, error, message)
 }
 

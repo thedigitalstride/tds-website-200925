@@ -74,7 +74,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
           type,
           url,
           newTab,
-          reference: reference as any, // Type assertion needed due to different reference type constraints
+          reference: reference as ({ relationTo: 'pages'; value: number | Page } | { relationTo: 'posts'; value: number | Post } | null), // Type assertion needed due to different reference type constraints
           uuiColor,
           uuiSize,
         }}

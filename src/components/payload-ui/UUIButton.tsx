@@ -12,7 +12,7 @@ import { getPageUrl } from '@/utilities/pageHelpers'
  */
 
 // Use the generated Payload link types directly
-import type { CallToActionBlock, Page, Post } from '@/payload-types'
+import type { Page, Post } from '@/payload-types'
 
 export interface PayloadLinkObject {
   type?: 'reference' | 'custom' | null

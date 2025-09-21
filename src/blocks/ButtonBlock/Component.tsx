@@ -31,7 +31,7 @@ export const ButtonBlockComponent: React.FC<ButtonBlockProps & { className?: str
       className={`flex ${layoutClasses[layout || 'horizontal']} ${alignmentClasses[alignment || 'left']} flex-wrap ${className || ''}`}
     >
       {buttons.map((button, index) => {
-        const { link, icon, iconPosition } = button
+        const { link, icon: _icon, iconPosition } = button
 
         // For now, we'll handle icons as a future enhancement
         // This would require dynamic imports of @untitledui/icons
