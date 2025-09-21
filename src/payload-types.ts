@@ -441,6 +441,14 @@ export interface CallToActionBlock {
            * Choose how the link should be rendered.
            */
           appearance?: ('default' | 'outline') | null;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?: ('primary' | 'secondary' | 'tertiary' | 'link-color') | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('md' | 'lg') | null;
         };
         id?: string | null;
       }[]
@@ -1076,6 +1084,8 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               url?: T;
               label?: T;
               appearance?: T;
+              uuiColor?: T;
+              uuiSize?: T;
             };
         id?: T;
       };
@@ -1714,6 +1724,65 @@ export interface BannerBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'banner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ButtonBlock".
+ */
+export interface ButtonBlock {
+  /**
+   * Add one or more buttons with different styles and links
+   */
+  buttons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?:
+            | (
+                | 'primary'
+                | 'secondary'
+                | 'tertiary'
+                | 'link-gray'
+                | 'link-color'
+                | 'primary-destructive'
+                | 'secondary-destructive'
+                | 'tertiary-destructive'
+                | 'link-destructive'
+              )
+            | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+        };
+        /**
+         * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download")
+         */
+        icon?: string | null;
+        iconPosition?: ('leading' | 'trailing') | null;
+        id?: string | null;
+      }[]
+    | null;
+  layout?: ('horizontal' | 'vertical') | null;
+  alignment?: ('left' | 'center' | 'right') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'buttonBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

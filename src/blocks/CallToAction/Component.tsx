@@ -3,7 +3,6 @@ import React from 'react'
 import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
 
 import RichText from '@/components/RichText'
-import { CMSLink } from '@/components/Link'
 import { UUICard, UUIButton } from '@/components/payload-ui'
 
 export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) => {
@@ -20,19 +19,16 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
         </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
           {(links || []).map(({ link }, i) => {
-            // Use UUIButton for primary action, fallback to CMSLink for others
-            if (i === 0) {
-              return (
-                <UUIButton
-                  key={i}
-                  label={link?.label || 'Learn More'}
-                  link={link?.url || ''}
-                  color="primary"
-                  size="lg"
-                />
-              )
-            }
-            return <CMSLink key={i} size="lg" {...link} />
+            // Use UUIButton for all links to take advantage of the UUI styling
+            return (
+              <UUIButton
+                key={i}
+                label={link?.label || 'Learn More'}
+                link={link}
+                // Default sizing if not specified in link object
+                size="lg"
+              />
+            )
           })}
         </div>
       </UUICard>

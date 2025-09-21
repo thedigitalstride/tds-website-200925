@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button } from '@/components/uui/button'
 import type { ButtonProps } from '@/components/uui/button'
+import { getPageUrl } from '@/utilities/pageHelpers'
 
 /**
  * Payload-adapted UntitledUI Button component
@@ -10,15 +11,22 @@ import type { ButtonProps } from '@/components/uui/button'
  * a simpler API for content editors.
  */
 
+// Use the generated Payload link types directly
+import type { CallToActionBlock, Page, Post } from '@/payload-types'
+
 export interface PayloadLinkObject {
   type?: 'reference' | 'custom' | null
   url?: string | null
   label?: string | null
   newTab?: boolean | null
-  reference?: {
-    value: string | { slug?: string }
-    relationTo: string
-  } | null
+  reference?:
+    | ({ relationTo: 'pages'; value: number | Page } | null)
+    | ({ relationTo: 'posts'; value: number | Post } | null)
+  // UUI Button styling properties
+  uuiColor?: 'primary' | 'secondary' | 'tertiary' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
+  uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
+  // Legacy appearance for backward compatibility
+  appearance?: 'default' | 'outline' | null
 }
 
 export interface UUIButtonProps extends Omit<ButtonProps, 'children' | 'href'> {
@@ -51,12 +59,19 @@ function getLinkHref(link?: PayloadLinkObject | string): string | undefined {
   if (link.type === 'reference' && link.reference) {
     const { value, relationTo } = link.reference
 
-    if (typeof value === 'string') {
+    // Handle number ID references
+    if (typeof value === 'number') {
       return `/${relationTo}/${value}`
     }
 
+    // Handle populated object references
     if (typeof value === 'object' && value?.slug) {
-      return relationTo === 'pages' ? `/${value.slug}` : `/${relationTo}/${value.slug}`
+      // For pages, use the getPageUrl helper to support nested URLs with breadcrumbs
+      if (relationTo === 'pages') {
+        return getPageUrl(value as Page)
+      }
+      // For posts, use the existing logic
+      return `/${relationTo}/${value.slug}`
     }
   }
 
@@ -87,6 +102,10 @@ export const UUIButton: React.FC<UUIButtonProps> = ({
   // Determine if this should be a link or button
   const isLink = !!href
 
+  // Extract UUI styling from link object
+  const uuiColor = typeof link === 'object' && link?.uuiColor ? link.uuiColor : buttonProps.color || 'primary'
+  const uuiSize = typeof link === 'object' && link?.uuiSize ? link.uuiSize : buttonProps.size || 'md'
+
   const iconProps = Icon ? {
     [iconPosition === 'leading' ? 'iconLeading' : 'iconTrailing']: Icon
   } : {}
@@ -96,6 +115,8 @@ export const UUIButton: React.FC<UUIButtonProps> = ({
       {...buttonProps}
       {...iconProps}
       {...(isLink ? { href, target } : {})}
+      color={uuiColor}
+      size={uuiSize}
       className={className}
     >
       {label}

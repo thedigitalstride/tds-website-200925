@@ -29,6 +29,13 @@ export const CallToAction: Block = {
       label: false,
     },
     linkGroup({
+      enableUUIButton: true,
+      // Enable most common button styles for CTAs
+      uuiColors: ['primary', 'secondary', 'tertiary', 'link-color'],
+      uuiSizes: ['md', 'lg'],
+      defaultUUIColor: 'primary',
+      defaultUUISize: 'lg',
+      // Keep legacy appearance options for backward compatibility
       appearances: ['default', 'outline'],
       overrides: {
         maxRows: 2,

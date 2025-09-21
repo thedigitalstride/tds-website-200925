@@ -4,9 +4,9 @@ import { type ComponentType, type HTMLAttributes, type ReactNode, type Ref, crea
 import { HelpCircle, InfoCircle } from "@untitledui/icons";
 import type { InputProps as AriaInputProps, TextFieldProps as AriaTextFieldProps } from "react-aria-components";
 import { Group as AriaGroup, Input as AriaInput, TextField as AriaTextField } from "react-aria-components";
-import { HintText } from "@/src/components/uui/base/input/hint-text";
-import { Label } from "@/src/components/uui/base/input/label";
-import { Tooltip, TooltipTrigger } from "@/src/components/uui/base/tooltip/tooltip";
+import { HintText } from "@/components/uui/hint-text";
+import { Label } from "@/components/uui/label";
+import { Tooltip, TooltipTrigger } from "@/components/uui/tooltip";
 import { cx, sortCx } from "@/utilities/cx";
 
 export interface InputBaseProps extends TextFieldProps {
