@@ -25,8 +25,6 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
                 key={i}
                 label={link?.label || 'Learn More'}
                 link={link}
-                // Default sizing if not specified in link object
-                size="lg"
               />
             )
           })}
