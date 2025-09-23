@@ -1,5 +1,3 @@
-import type { Metadata } from 'next'
-
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
@@ -12,22 +10,38 @@ import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import { RouteProvider } from "@/providers/route-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
+export const viewport: Viewport = {
+  colorScheme: "light",
+};
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
   return (
-    <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} scroll-smooth`} suppressHydrationWarning>
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body>
+      <body  className="bg-primary antialiased">
         <Providers>
+        <RouteProvider>
+        <ThemeProvider>
           <AdminBar
             adminBarProps={{
               preview: isEnabled,
@@ -37,6 +51,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Header />
           {children}
           <Footer />
+          </ThemeProvider>
+          </RouteProvider>
         </Providers>
       </body>
     </html>
