@@ -361,6 +361,150 @@ pnpm payload migrate:reset    # Rollback all migrations (DESTRUCTIVE)
 pnpm payload migrate:fresh    # Drop and recreate schema (DESTRUCTIVE)
 ```
 
+## 🚨 CRITICAL: Payload CMS draftMode() Fix for Next.js 15+
+
+**This is a recurring, breaking issue that MUST be fixed when upgrading Next.js or encountering preview errors.**
+
+### Error Symptoms:
+```
+Error: `draftMode` was called outside a request scope
+GET /next/preview?slug=... 500 in XXXms
+Failed to create URL object from URL: , falling back to http://localhost
+```
+
+### Root Cause:
+Next.js 15+ has stricter requirements for when `draftMode()` can be called. The function signature and request handling in API routes must match Payload's expected pattern exactly.
+
+### ✅ CRITICAL FIX - Preview Route Implementation:
+
+**File:** `/src/app/(frontend)/next/preview/route.ts`
+
+```typescript
+import type { CollectionSlug, PayloadRequest } from 'payload'
+import { getPayload } from 'payload'
+
+import { draftMode } from 'next/headers'
+import { redirect } from 'next/navigation'
+
+import configPromise from '@payload-config'
+
+export async function GET(
+  req: {
+    cookies: {
+      get: (name: string) => {
+        value: string
+      }
+    }
+  } & Request,
+): Promise<Response> {
+  const payload = await getPayload({ config: configPromise })
+
+  const { searchParams } = new URL(req.url)
+
+  const path = searchParams.get('path')
+  const collection = searchParams.get('collection') as CollectionSlug
+  const slug = searchParams.get('slug')
+  const previewSecret = searchParams.get('previewSecret')
+
+  if (previewSecret !== process.env.PREVIEW_SECRET) {
+    return new Response('You are not allowed to preview this page', {
+      status: 403,
+    })
+  }
+
+  if (!path || !collection || !slug) {
+    return new Response('Insufficient search params', { status: 404 })
+  }
+
+  if (!path.startsWith('/')) {
+    return new Response(
+      'This endpoint can only be used for relative previews',
+      { status: 500 },
+    )
+  }
+
+  let user
+
+  try {
+    user = await payload.auth({
+      req: req as unknown as PayloadRequest,
+      headers: req.headers,
+    })
+  } catch (error) {
+    payload.logger.error(
+      { err: error },
+      'Error verifying token for live preview',
+    )
+    return new Response('You are not allowed to preview this page', {
+      status: 403,
+    })
+  }
+
+  const draft = await draftMode()
+
+  if (!user) {
+    draft.disable()
+    return new Response('You are not allowed to preview this page', {
+      status: 403,
+    })
+  }
+
+  draft.enable()
+
+  redirect(path)
+}
+```
+
+### ⚠️ Critical Implementation Notes:
+
+1. **Function Signature:** MUST use the exact `req` typing with cookies interface
+2. **Request Handling:** Do NOT use `NextRequest` - use the Payload-compatible interface
+3. **draftMode Call:** MUST use `await draftMode()` in async context
+4. **Error Handling:** Always include try/catch for auth calls
+5. **Response Format:** Use proper Response objects, not NextResponse
+
+### ❌ Common Mistakes That Break Preview:
+
+```typescript
+// WRONG - Will cause "called outside request scope" error
+export async function GET(req: NextRequest): Promise<Response>
+const draft = draftMode() // Missing await
+
+// WRONG - Will cause type errors
+import { NextRequest } from 'next/server'
+
+// WRONG - Will cause auth failures
+user = await payload.auth({ req })
+```
+
+### 🔧 Troubleshooting Steps:
+
+1. **Clear Build Cache:** `rm -rf .next && pnpm dev`
+2. **Check Environment Variables:** Ensure `PREVIEW_SECRET` is set
+3. **Verify Function Signature:** Must match the exact pattern above
+4. **Test Preview URL:** Should return 200, not 500
+5. **Check Server Logs:** No "draftMode called outside request scope" errors
+
+### 🎯 Success Indicators:
+
+- ✅ Preview routes return 200 status
+- ✅ No draftMode context errors in server logs
+- ✅ Admin panel live preview works correctly
+- ✅ Draft content displays properly in preview mode
+
+### 📋 Required Files for Preview System:
+
+- `/src/app/(frontend)/next/preview/route.ts` - Main preview route (FIXED ABOVE)
+- `/src/utilities/generatePreviewPath.ts` - Preview URL generation
+- `/src/collections/Pages/index.ts` - Collection preview configuration
+
+This fix has been tested with:
+- **Next.js:** 15.4.4
+- **Payload CMS:** 3.55.0
+- **Node.js:** 18+
+
+**⚠️ WARNING:** Do NOT modify this pattern without testing. This is a critical system component and breaking it will disable all preview functionality.
+
 ## Environment Configuration
 
 Required environment variables:
