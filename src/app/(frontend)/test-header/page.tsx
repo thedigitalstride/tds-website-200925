@@ -1,17 +1,14 @@
 "use client";
 
-import { Fragment } from "react";
-import { ArrowRight, TrendingUp, Users, Search, Mail, Info, Briefcase, Newspaper } from "@untitledui/icons";
+import { ArrowRight, TrendUp01, Users01, SearchLg, Mail01, InfoCircle, Briefcase01, File01 } from "@untitledui/icons";
 import { Header } from '@/components/uui/marketing/header-navigation/header';
-import { DropdownMenuSimple } from '@/components/uui/marketing/header-navigation/dropdown-menu-simple';
-import { DropdownMenuSimpleWithFooter } from '@/components/uui/marketing/header-navigation/dropdown-menu-simple-with-footer';
 import { DropdownMenuFeatureCard } from '@/components/uui/marketing/header-navigation/dropdown-menu-feature-card';
 import { DropdownMenuWithTwoColsAndLinksAndFooter } from '@/components/uui/marketing/header-navigation/dropdown-menu-with-two-cols-and-links-and-footer';
 import { NavMenuItemLink } from '@/components/uui/marketing/header-navigation/base-components/nav-menu-item';
 import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
 import { Button } from "@/components/uui/base/buttons/button";
-import { Form } from "@/components/uui/base/form/form";
 import { Input } from "@/components/uui/base/input/input";
+import { PureTDSHeader } from '@/Header/PureTDSHeader';
 
 // Custom TDS dropdown components
 const TDSServicesDropdown = () => {
@@ -21,7 +18,7 @@ const TDSServicesDropdown = () => {
                 <ul className="flex flex-col gap-0.5">
                     <li>
                         <NavMenuItemLink
-                            icon={TrendingUp}
+                            icon={TrendUp01}
                             title="PPC Management"
                             subtitle="Drive immediate results with targeted paid advertising campaigns"
                             href="/services/ppc"
@@ -29,7 +26,7 @@ const TDSServicesDropdown = () => {
                     </li>
                     <li>
                         <NavMenuItemLink
-                            icon={Users}
+                            icon={Users01}
                             title="Social Media Marketing"
                             subtitle="Build your brand and engage with your audience across social platforms"
                             href="/services/social-media"
@@ -37,7 +34,7 @@ const TDSServicesDropdown = () => {
                     </li>
                     <li>
                         <NavMenuItemLink
-                            icon={Search}
+                            icon={SearchLg}
                             title="SEO Services"
                             subtitle="Improve your organic search rankings and visibility"
                             href="/services/seo"
@@ -45,7 +42,7 @@ const TDSServicesDropdown = () => {
                     </li>
                     <li>
                         <NavMenuItemLink
-                            icon={Mail}
+                            icon={Mail01}
                             title="Email Marketing"
                             subtitle="Connect with customers through targeted email campaigns"
                             href="/services/email"
@@ -64,7 +61,7 @@ const TDSAboutDropdown = () => {
                 <ul className="flex flex-col gap-0.5">
                     <li>
                         <NavMenuItemLink
-                            icon={Info}
+                            icon={InfoCircle}
                             title="About Us"
                             subtitle="Learn about our mission and the team behind The Digital Stride"
                             href="/about"
@@ -72,7 +69,7 @@ const TDSAboutDropdown = () => {
                     </li>
                     <li>
                         <NavMenuItemLink
-                            icon={Briefcase}
+                            icon={Briefcase01}
                             title="Careers"
                             subtitle="Join our growing team of digital marketing experts"
                             href="/careers"
@@ -80,7 +77,7 @@ const TDSAboutDropdown = () => {
                     </li>
                     <li>
                         <NavMenuItemLink
-                            icon={Newspaper}
+                            icon={File01}
                             title="News & Insights"
                             subtitle="Latest updates and thought leadership from our team"
                             href="/insights"
@@ -112,7 +109,7 @@ const HeroSectionOnly = () => {
                     </h1>
 
                     <p className="mt-6 text-xl text-tertiary">
-                        We're a group of passionate people working from around the world to build the future of testing.
+                        We&apos;re a group of passionate people working from around the world to build the future of testing.
                     </p>
 
                     <div className="mt-8 flex w-full max-w-sm flex-col gap-3 sm:flex-row">
@@ -146,14 +143,35 @@ const HeroSectionOnly = () => {
 export default function TestHeaderPage() {
     return (
         <div className="space-y-8">
+            <style jsx>{`
+                .test-section {
+                    margin-bottom: 3rem;
+                }
+                .test-title {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    margin-bottom: 0.5rem;
+                    color: #1f2937;
+                }
+                .test-description {
+                    color: #6b7280;
+                    margin-bottom: 1rem;
+                }
+            `}</style>
             {/* Page Header */}
             <div className="container mx-auto py-8">
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                    UntitledUI Header Component Testing
+                    Pure TDS Header - Fixed Navigation
                 </h1>
                 <p className="text-lg text-gray-600 mb-8">
-                    Testing various header configurations and dropdown menu types in a safe environment.
+                    The fixed Pure TDS header has been implemented as the main navigation. This page shows various UUI header components for reference.
                 </p>
+                <div className="bg-green-100 p-4 rounded-lg mb-6">
+                    <h2 className="font-semibold text-green-900 mb-2">✅ Implementation Complete</h2>
+                    <p className="text-green-800">
+                        The main site now uses the Pure TDS Header with fixed positioning, solid background, and traditional navigation styling.
+                    </p>
+                </div>
             </div>
 
             {/* Test Section 1: Default Header */}
@@ -283,6 +301,39 @@ export default function TestHeaderPage() {
                         <li><strong>About</strong> - About Us, Careers, News & Insights</li>
                         <li><strong>Contact</strong> - Get in touch with the team</li>
                     </ul>
+                </div>
+            </section>
+
+            {/* Test Section 7: Pure TDS Header (New Fixed Style) */}
+            <section className="test-section container mx-auto">
+                <h2 className="test-title">7. Pure TDS Header (New Fixed Style)</h2>
+                <p className="test-description">
+                    New traditional fixed header component that exactly replicates The Digital Stride website navigation without floating effects.
+                </p>
+                <div className="border rounded bg-white overflow-hidden">
+                    <PureTDSHeader />
+                    <div className="p-8 bg-gray-50">
+                        <h3 className="text-2xl font-semibold mb-4">Content below fixed header</h3>
+                        <p className="text-gray-600 mb-4">
+                            This is the new Pure TDS Header with traditional fixed styling. It features:
+                        </p>
+                        <ul className="list-disc list-inside text-gray-600 space-y-1 mb-6">
+                            <li>Fixed position at top of page</li>
+                            <li>Solid white background with subtle shadow</li>
+                            <li>TDS brand logo on the left</li>
+                            <li>Clean navigation items with hover effects</li>
+                            <li>Dropdown menus for Services and About</li>
+                            <li>Get Started CTA button</li>
+                            <li>Mobile-responsive hamburger menu</li>
+                        </ul>
+                        <div className="bg-blue-100 p-4 rounded-lg">
+                            <h4 className="font-medium text-blue-900 mb-2">How to use both headers:</h4>
+                            <div className="text-sm text-blue-800 space-y-1">
+                                <p><code>{'<Header headerType="floating" />'}</code> - UUI floating header (default)</p>
+                                <p><code>{'<Header headerType="fixed" />'}</code> - Pure TDS fixed header</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
