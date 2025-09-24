@@ -7,6 +7,7 @@ import { Button } from "@/components/uui/base/buttons/button";
 import { Form } from "@/components/uui/base/form/form";
 import { Input } from "@/components/uui/base/input/input";
 import { Header } from "@/components/uui/marketing/header-navigation/header";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 export const HeroSplitImage01 = () => {
     return (
@@ -67,7 +68,14 @@ export const HeroSplitImage01 = () => {
                     </div>
                 </div>
                 <div className="relative mt-16 h-60 w-full px-4 md:h-95 md:px-8 lg:absolute lg:inset-y-0 lg:right-0 lg:mt-0 lg:h-full lg:w-1/2 lg:px-0">
-                    <img className="inset-0 size-full object-cover lg:absolute" src="https://www.untitledui.com/marketing/spirals.webp" alt="Spirals" />
+                    <OptimizedImage
+                        src="https://www.untitledui.com/marketing/spirals.webp"
+                        alt="Spirals"
+                        className="inset-0 size-full object-cover lg:absolute"
+                        fill={true}
+                        priority={true}
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
                 </div>
             </section>
         </Fragment>

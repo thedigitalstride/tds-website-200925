@@ -122,6 +122,10 @@ src/
 └── payload.config.ts   # Main Payload configuration
 ```
 
+## 📄 Additional Documentation
+
+- **[Image Optimization Guide](/docs/IMAGES.md)** - Complete guide for handling images in this project, including the OptimizedImage component, Payload Media integration, and performance best practices.
+
 ## Collections
 
 ### Pages (`/admin/collections/pages`)
@@ -530,6 +534,7 @@ BLOB_READ_WRITE_TOKEN=    # Vercel Blob Storage token
 - **Responsive Design**: Mobile-first with breakpoint preview
 - **UntitledUI Integration**: Complete design system with brand color theming
 - **Tailwind v4**: Modern CSS-in-CSS approach with @theme configuration
+- **OptimizedImage Component**: Intelligent image optimization with automatic Payload Media integration and Next.js Image optimization for external assets
 
 ## Deployment
 
@@ -554,6 +559,7 @@ BLOB_READ_WRITE_TOKEN=    # Vercel Blob Storage token
 - **UntitledUI Components**: All UI components use react-aria-components for accessibility
 - **Theme System**: CSS variables defined in `@theme` block for consistent theming
 - **Brand Integration**: #1689FF blue color integrated throughout UUI component system
+- **🚨 CRITICAL - Image Handling**: Always use `OptimizedImage` component instead of `<img>` tags. See `/docs/IMAGES.md` for complete guidelines. External image domains must be added to `next.config.js`.
 
 ## Content Management
 

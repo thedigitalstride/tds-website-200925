@@ -25,6 +25,7 @@ Core features:
 - [Search](#search)
 - [Redirects](#redirects)
 - [Jobs and Scheduled Publishing](#jobs-and-scheduled-publish)
+- [Image Optimization](./IMAGES.md)
 - [Website](#website)
 
 ## Quick start

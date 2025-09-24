@@ -27,6 +27,15 @@ const nextConfig = {
           protocol: url.protocol.replace(':', ''),
         }
       }),
+      // External domains for UUI components and assets
+      {
+        hostname: 'www.untitledui.com',
+        protocol: 'https',
+      },
+      {
+        hostname: 'raw.githubusercontent.com',
+        protocol: 'https',
+      },
     ],
   },
   reactStrictMode: true,
