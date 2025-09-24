@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import Link from "next/link";
 import { RouteProvider } from "./providers/route-provider";
 import { ThemeProvider } from "./providers/theme-provider";
 import "./globals.css";
@@ -33,9 +34,9 @@ export default function TestHeaderLayout({
                         {/* Navigation back to main site */}
                         <nav className="bg-gray-100 border-b p-4">
                             <div className="container mx-auto">
-                                <a href="/" className="text-blue-600 hover:underline">
+                                <Link href="/" className="text-blue-600 hover:underline">
                                     ← Back to Main TDS Site
-                                </a>
+                                </Link>
                             </div>
                         </nav>
 

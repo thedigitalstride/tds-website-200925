@@ -8,7 +8,6 @@ import { NavMenuItemLink } from '@/components/uui/marketing/header-navigation/ba
 import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
 import { Button } from "@/components/uui/base/buttons/button";
 import { Input } from "@/components/uui/base/input/input";
-import { PureTDSHeader } from '@/Header/PureTDSHeader';
 
 // Custom TDS dropdown components
 const TDSServicesDropdown = () => {
@@ -304,38 +303,6 @@ export default function TestHeaderPage() {
                 </div>
             </section>
 
-            {/* Test Section 7: Pure TDS Header (New Fixed Style) */}
-            <section className="test-section container mx-auto">
-                <h2 className="test-title">7. Pure TDS Header (New Fixed Style)</h2>
-                <p className="test-description">
-                    New traditional fixed header component that exactly replicates The Digital Stride website navigation without floating effects.
-                </p>
-                <div className="border rounded bg-white overflow-hidden">
-                    <PureTDSHeader />
-                    <div className="p-8 bg-gray-50">
-                        <h3 className="text-2xl font-semibold mb-4">Content below fixed header</h3>
-                        <p className="text-gray-600 mb-4">
-                            This is the new Pure TDS Header with traditional fixed styling. It features:
-                        </p>
-                        <ul className="list-disc list-inside text-gray-600 space-y-1 mb-6">
-                            <li>Fixed position at top of page</li>
-                            <li>Solid white background with subtle shadow</li>
-                            <li>TDS brand logo on the left</li>
-                            <li>Clean navigation items with hover effects</li>
-                            <li>Dropdown menus for Services and About</li>
-                            <li>Get Started CTA button</li>
-                            <li>Mobile-responsive hamburger menu</li>
-                        </ul>
-                        <div className="bg-blue-100 p-4 rounded-lg">
-                            <h4 className="font-medium text-blue-900 mb-2">How to use both headers:</h4>
-                            <div className="text-sm text-blue-800 space-y-1">
-                                <p><code>{'<Header headerType="floating" />'}</code> - UUI floating header (default)</p>
-                                <p><code>{'<Header headerType="fixed" />'}</code> - Pure TDS fixed header</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* Responsive Testing Instructions */}
             <section className="test-section container mx-auto">

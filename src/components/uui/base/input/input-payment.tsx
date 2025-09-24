@@ -78,9 +78,7 @@ export const formatCardNumber = (number: string) => {
     return cleaned;
 };
 
-interface PaymentInputProps extends Omit<InputBaseProps, "icon"> {}
-
-export const PaymentInput = ({ onChange, value, defaultValue, className, maxLength = 19, label, hint, ...props }: PaymentInputProps) => {
+export const PaymentInput = ({ onChange, value, defaultValue, className, maxLength = 19, label, hint, ...props }: Omit<InputBaseProps, "icon">) => {
     const [cardNumber, setCardNumber] = useControlledState(value, defaultValue || "", (value) => {
         // Remove all non-numeric characters
         value = value.replace(/\D/g, "");

@@ -4,7 +4,6 @@ import RichText from '@/components/RichText'
 
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
-import { CMSLink } from '../../components/Link'
 import { UUIButton } from '@/components/payload-ui/UUIButton'
 
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
