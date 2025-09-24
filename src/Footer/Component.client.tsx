@@ -5,6 +5,7 @@ import type { Footer } from '@/payload-types'
 import { Badge } from '@/components/uui/base/badges/badges'
 import { UUIButton } from '@/components/payload-ui/UUIButton'
 import { TDSLogo } from '@/components/Logo/tds-logo'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import {
   X,
   LinkedIn,
@@ -105,31 +106,36 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
         <div className="mt-12 flex flex-col-reverse justify-between gap-6 border-t border-secondary pt-8 md:mt-16 md:flex-row">
           <p className="text-md text-quaternary">{copyrightText}</p>
 
-          {/* Social Links */}
-          {socialLinks && socialLinks.length > 0 && (
-            <ul className="flex gap-6">
-              {socialLinks.map((social, index) => {
-                const IconComponent = socialIconMap[social.platform as keyof typeof socialIconMap]
-                const label = socialLabelMap[social.platform as keyof typeof socialLabelMap] || social.platform
+          <div className="flex items-center gap-6">
+            {/* Social Links */}
+            {socialLinks && socialLinks.length > 0 && (
+              <ul className="flex gap-6">
+                {socialLinks.map((social, index) => {
+                  const IconComponent = socialIconMap[social.platform as keyof typeof socialIconMap]
+                  const label = socialLabelMap[social.platform as keyof typeof socialLabelMap] || social.platform
 
-                if (!IconComponent || !social.url || !social.platform) return null
+                  if (!IconComponent || !social.url || !social.platform) return null
 
-                return (
-                  <li key={index}>
-                    <a
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex rounded-xs text-fg-quaternary outline-focus-ring transition duration-100 ease-linear hover:text-fg-quaternary_hover focus-visible:outline-2 focus-visible:outline-offset-2"
-                      aria-label={label || social.platform}
-                    >
-                      <IconComponent size={24} />
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          )}
+                  return (
+                    <li key={index}>
+                      <a
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex rounded-xs text-fg-quaternary outline-focus-ring transition duration-100 ease-linear hover:text-fg-quaternary_hover focus-visible:outline-2 focus-visible:outline-offset-2"
+                        aria-label={label || social.platform}
+                      >
+                        <IconComponent size={24} />
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </footer>
