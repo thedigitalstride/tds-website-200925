@@ -10,19 +10,133 @@ export const Footer: GlobalConfig = {
   },
   fields: [
     {
-      name: 'navItems',
-      type: 'array',
+      name: 'companyInfo',
+      type: 'group',
+      label: 'Company Information',
       fields: [
-        link({
-          appearances: false,
-        }),
-      ],
-      maxRows: 6,
-      admin: {
-        initCollapsed: true,
-        components: {
-          RowLabel: '@/Footer/RowLabel#RowLabel',
+        {
+          name: 'description',
+          type: 'text',
+          required: false,
+          defaultValue: 'Happy Team, Happy Customers.',
+          admin: {
+            description: 'Brief company description that appears below the logo',
+          },
         },
+      ],
+    },
+    {
+      name: 'navColumns',
+      type: 'array',
+      label: 'Navigation Columns',
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          required: false,
+          admin: {
+            description: 'Column heading (e.g., "Product", "Company")',
+          },
+        },
+        {
+          name: 'items',
+          type: 'array',
+          fields: [
+            link({
+              enableUUIButton: true,
+              uuiColors: ['link-gray'],
+              uuiSizes: ['lg'],
+              defaultUUIColor: 'link-gray',
+              defaultUUISize: 'lg',
+              appearances: false,
+            }),
+            {
+              name: 'badge',
+              type: 'group',
+              label: 'Optional Badge',
+              fields: [
+                {
+                  name: 'text',
+                  type: 'text',
+                  admin: {
+                    description: 'Badge text (e.g., "New", "Beta")',
+                  },
+                },
+                {
+                  name: 'color',
+                  type: 'select',
+                  options: [
+                    { label: 'Gray', value: 'gray' },
+                  ],
+                  defaultValue: 'gray',
+                  admin: {
+                    description: 'Modern badges only support gray color',
+                  },
+                },
+              ],
+              admin: {
+                description: 'Optional badge to highlight new or featured items',
+              },
+            },
+          ],
+          maxRows: 8,
+          admin: {
+            description: 'Links for this navigation column',
+          },
+        },
+      ],
+      maxRows: 5,
+      admin: {
+        description: 'Navigation columns (maximum 5 columns)',
+        initCollapsed: true,
+      },
+    },
+    {
+      name: 'socialLinks',
+      type: 'array',
+      label: 'Social Media Links',
+      fields: [
+        {
+          name: 'platform',
+          type: 'select',
+          required: false,
+          defaultValue: 'x',
+          options: [
+            { label: 'X (Twitter)', value: 'x' },
+            { label: 'LinkedIn', value: 'linkedin' },
+            { label: 'Facebook', value: 'facebook' },
+            { label: 'GitHub', value: 'github' },
+            { label: 'AngelList', value: 'angellist' },
+            { label: 'Dribbble', value: 'dribbble' },
+            { label: 'Layers', value: 'layers' },
+          ],
+          admin: {
+            description: 'Select the social media platform',
+          },
+        },
+        {
+          name: 'url',
+          type: 'text',
+          required: false,
+          admin: {
+            description: 'Full URL to your social media profile',
+          },
+        },
+      ],
+      maxRows: 10,
+      admin: {
+        description: 'Social media links that appear at the bottom',
+        initCollapsed: true,
+      },
+    },
+    {
+      name: 'copyrightText',
+      type: 'text',
+      label: 'Copyright Text',
+      required: false,
+      defaultValue: '© 2025 The Digital Stride, a trading name of Miromedia Limited. All rights reserved.',
+      admin: {
+        description: 'Copyright notice that appears at the bottom',
       },
     },
   ],

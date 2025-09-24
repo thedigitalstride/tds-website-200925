@@ -5,7 +5,6 @@ import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import { homeStatic } from '@/endpoints/seed/home-static'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
@@ -54,19 +53,13 @@ type Args = {
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = [] } = await paramsPromise
-  const isHome = slug.length === 0
   const url = '/' + slug.join('/')
 
-  let page: RequiredDataFromCollectionSlug<'pages'> | null
-
-  page = await queryPageBySlug({
+  const page: RequiredDataFromCollectionSlug<'pages'> | null = await queryPageBySlug({
     slug,
   })
 
-  // Remove this code once your website is seeded
-  if (!page && isHome) {
-    page = homeStatic
-  }
+  // Fallback removed since seeding is not needed
 
   if (!page) {
     return <PayloadRedirects url={url} />

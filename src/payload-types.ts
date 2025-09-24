@@ -1609,26 +1609,88 @@ export interface Header {
  */
 export interface Footer {
   id: number;
-  navItems?:
+  companyInfo?: {
+    /**
+     * Brief company description that appears below the logo
+     */
+    description?: string | null;
+  };
+  /**
+   * Navigation columns (maximum 5 columns)
+   */
+  navColumns?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        /**
+         * Column heading (e.g., "Product", "Company")
+         */
+        label?: string | null;
+        /**
+         * Links for this navigation column
+         */
+        items?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+                /**
+                 * Button color variant from UntitledUI design system
+                 */
+                uuiColor?: 'link-gray' | null;
+                /**
+                 * Button size variant
+                 */
+                uuiSize?: 'lg' | null;
+              };
+              /**
+               * Optional badge to highlight new or featured items
+               */
+              badge?: {
+                /**
+                 * Badge text (e.g., "New", "Beta")
+                 */
+                text?: string | null;
+                /**
+                 * Modern badges only support gray color
+                 */
+                color?: 'gray' | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Social media links that appear at the bottom
+   */
+  socialLinks?:
+    | {
+        /**
+         * Select the social media platform
+         */
+        platform?: ('x' | 'linkedin' | 'facebook' | 'github' | 'angellist' | 'dribbble' | 'layers') | null;
+        /**
+         * Full URL to your social media profile
+         */
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Copyright notice that appears at the bottom
+   */
+  copyrightText?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1660,20 +1722,47 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  companyInfo?:
     | T
     | {
-        link?:
+        description?: T;
+      };
+  navColumns?:
+    | T
+    | {
+        label?: T;
+        items?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    uuiColor?: T;
+                    uuiSize?: T;
+                  };
+              badge?:
+                | T
+                | {
+                    text?: T;
+                    color?: T;
+                  };
+              id?: T;
             };
         id?: T;
       };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  copyrightText?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

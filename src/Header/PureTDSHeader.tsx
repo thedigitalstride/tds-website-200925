@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ChevronDown, Menu01, X } from "@untitledui/icons";
 import { Button } from "@/components/uui/button";
 import { TDSServicesDropdown, TDSAboutDropdown } from './TDSDropdowns';
+import { TDSLogo } from '@/components/Logo/tds-logo';
 
 interface PureTDSHeaderProps {
   className?: string;
@@ -60,9 +61,7 @@ export const PureTDSHeader: React.FC<PureTDSHeaderProps> = ({ className = '' }) 
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <div className="text-2xl font-bold text-brand-600">
-                TDS
-              </div>
+              <TDSLogo variant="auto" size="xl" />
             </Link>
           </div>
 
@@ -111,7 +110,7 @@ export const PureTDSHeader: React.FC<PureTDSHeaderProps> = ({ className = '' }) 
           {/* CTA Button */}
           <div className="hidden md:flex">
             <Button color="primary" size="sm">
-              Get Started
+              ENQUIRE
             </Button>
           </div>
 
@@ -172,7 +171,7 @@ export const PureTDSHeader: React.FC<PureTDSHeaderProps> = ({ className = '' }) 
               {/* Mobile CTA Button */}
               <div className="px-3 py-4">
                 <Button color="primary" size="md" className="w-full">
-                  Get Started
+                  ENQUIRE
                 </Button>
               </div>
             </div>

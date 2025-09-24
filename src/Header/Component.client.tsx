@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import type { Header } from '@/payload-types'
 
 // Import UUI Header and TDS dropdowns
-import { Header as UUIHeader } from '@/components/uui/marketing/header-navigation/header'
+import { Header as UUIHeader } from './uui-components/header'
 import { TDSServicesDropdown, TDSAboutDropdown } from './TDSDropdowns'
 
 interface HeaderClientProps {

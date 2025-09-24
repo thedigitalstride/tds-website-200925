@@ -5,8 +5,7 @@ import { useRef, useState } from "react";
 import { ChevronDown } from "@untitledui/icons";
 import { Button as AriaButton, Dialog as AriaDialog, DialogTrigger as AriaDialogTrigger, Popover as AriaPopover } from "react-aria-components";
 import { Button } from "@/components/uui/base/buttons/button";
-import { UntitledLogo } from "@/components/uui/foundations/logo/untitledui-logo";
-import { UntitledLogoMinimal } from "@/components/uui/foundations/logo/untitledui-logo-minimal";
+import { TDSLogo } from '@/components/Logo/tds-logo';
 import { cx } from "@/utils/cx";
 import { DropdownMenuFeatureCard } from "./dropdown-menu-feature-card";
 import { DropdownMenuSimpleWithFooter } from "./dropdown-menu-simple-with-footer";
@@ -82,9 +81,8 @@ const MobileFooter = () => {
                 </ul>
             </div>
             <div className="flex flex-col gap-3">
-                <Button size="lg">Sign up</Button>
                 <Button color="secondary" size="lg">
-                    Log in
+                    ENQUIRE
                 </Button>
             </div>
         </div>
@@ -118,13 +116,15 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
                         isFloating && "ring-secondary_alt md:rounded-2xl md:bg-primary md:py-3 md:pr-3 md:pl-4 md:shadow-xs md:ring-1",
                     )}
                 >
-                    <div className="flex flex-1 items-center gap-5">
-                        <UntitledLogo className="h-8 md:max-lg:hidden" />
-                        <UntitledLogoMinimal className="hidden h-8 md:inline-block lg:hidden" />
+                    {/* Logo Section */}
+                    <div className="flex items-center">
+                        <TDSLogo variant="auto" size="xl" className="h-12 md:max-lg:hidden" />
+                        <TDSLogo variant="minimal" size="lg" className="hidden h-8 md:inline-block lg:hidden" />
+                    </div>
 
-                        {/* Desktop navigation */}
-                        <nav className="max-md:hidden">
-                            <ul className="flex items-center gap-0.5">
+                    {/* Centered Navigation */}
+                    <nav className="max-md:hidden flex-1 flex justify-center">
+                        <ul className="flex items-center gap-0.5">
                                 {items.map((navItem) => (
                                     <li key={navItem.label}>
                                         {navItem.menu ? (
@@ -175,15 +175,11 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
                                     </li>
                                 ))}
                             </ul>
-                        </nav>
-                    </div>
+                    </nav>
 
                     <div className="hidden items-center gap-3 md:flex">
                         <Button color="secondary" size={isFloating ? "md" : "lg"}>
-                            Log in
-                        </Button>
-                        <Button color="primary" size={isFloating ? "md" : "lg"}>
-                            Sign up
+                            ENQUIRE
                         </Button>
                     </div>
 
