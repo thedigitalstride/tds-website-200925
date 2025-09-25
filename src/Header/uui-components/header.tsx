@@ -66,7 +66,50 @@ const MobileNavItem = (props: { className?: string; label: string; href?: string
     );
 };
 
-const MobileFooter = () => {
+const MobileFooter = ({ ctaButton }: { ctaButton?: HeaderProps['ctaButton'] }) => {
+    // Helper function to render CTA button - moved here to be in scope
+    const renderCtaButton = (sizeProp?: "sm" | "md" | "lg" | "xl") => {
+        const defaultSize = sizeProp || "lg";
+
+        if (!ctaButton?.enabled || !ctaButton.link) {
+            // Default fallback
+            return (
+                <Button color="secondary" size={defaultSize}>
+                    ENQUIRE
+                </Button>
+            );
+        }
+
+        const linkData = ctaButton.link;
+        let href = '#';
+
+        if (linkData.type === 'reference' && linkData.reference) {
+            if (typeof linkData.reference === 'object' && 'slug' in linkData.reference) {
+                href = `/${linkData.reference.slug}`;
+            }
+        } else if (linkData.type === 'custom' && linkData.url) {
+            href = linkData.url;
+        }
+
+        const size = (linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize))
+            ? linkData.uuiSize as "sm" | "md" | "lg" | "xl"
+            : defaultSize;
+        const color = (linkData.uuiColor && ['primary', 'secondary', 'tertiary', 'link-gray', 'link-color'].includes(linkData.uuiColor))
+            ? linkData.uuiColor as "primary" | "secondary" | "tertiary" | "link-gray" | "link-color"
+            : "secondary";
+
+        return (
+            <Button
+                color={color}
+                size={size}
+                href={href}
+                {...(linkData.newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            >
+                {linkData.label || 'ENQUIRE'}
+            </Button>
+        );
+    };
+
     return (
         <div className="flex flex-col gap-8 border-t border-secondary px-4 py-6">
             <div>
@@ -81,9 +124,7 @@ const MobileFooter = () => {
                 </ul>
             </div>
             <div className="flex flex-col gap-3">
-                <Button color="secondary" size="lg">
-                    ENQUIRE
-                </Button>
+                {renderCtaButton("lg")}
             </div>
         </div>
     );
@@ -94,10 +135,65 @@ interface HeaderProps {
     isFullWidth?: boolean;
     isFloating?: boolean;
     className?: string;
+    ctaButton?: {
+        enabled: boolean;
+        link: {
+            label?: string;
+            type: 'reference' | 'custom';
+            reference?: any;
+            url?: string;
+            newTab?: boolean;
+            uuiColor?: string;
+            uuiSize?: string;
+        };
+    };
 }
 
-export const Header = ({ items = headerNavItems, isFullWidth, isFloating, className }: HeaderProps) => {
+export const Header = ({ items = headerNavItems, isFullWidth, isFloating, className, ctaButton }: HeaderProps) => {
     const headerRef = useRef<HTMLElement>(null);
+
+    // Helper function to render CTA button
+    const renderCtaButton = (sizeProp?: "sm" | "md" | "lg" | "xl") => {
+        const defaultSize = sizeProp || (isFloating ? "md" : "lg");
+
+        if (!ctaButton?.enabled || !ctaButton.link) {
+            // Default fallback
+            return (
+                <Button color="secondary" size={defaultSize}>
+                    ENQUIRE
+                </Button>
+            );
+        }
+
+        const linkData = ctaButton.link;
+        let href = '#';
+
+        if (linkData.type === 'reference' && linkData.reference) {
+            if (typeof linkData.reference === 'object' && 'slug' in linkData.reference) {
+                href = `/${linkData.reference.slug}`;
+            }
+        } else if (linkData.type === 'custom' && linkData.url) {
+            href = linkData.url;
+        }
+
+        const size = (linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize))
+            ? linkData.uuiSize as "sm" | "md" | "lg" | "xl"
+            : defaultSize;
+        const color = (linkData.uuiColor && ['primary', 'secondary', 'tertiary', 'link-gray', 'link-color'].includes(linkData.uuiColor))
+            ? linkData.uuiColor as "primary" | "secondary" | "tertiary" | "link-gray" | "link-color"
+            : "secondary";
+
+        return (
+            <Button
+                color={color}
+                size={size}
+                href={href}
+                {...(linkData.newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            >
+                {linkData.label || 'ENQUIRE'}
+            </Button>
+        );
+    };
 
     return (
         <header
@@ -178,9 +274,7 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
                     </nav>
 
                     <div className="hidden items-center gap-3 md:flex">
-                        <Button color="secondary" size={isFloating ? "md" : "lg"}>
-                            ENQUIRE
-                        </Button>
+                        {renderCtaButton()}
                     </div>
 
                     {/* Mobile menu and menu trigger */}
@@ -236,7 +330,7 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
                                         )}
                                     </ul>
 
-                                    <MobileFooter />
+                                    <MobileFooter ctaButton={ctaButton} />
                                 </nav>
                             </AriaDialog>
                         </AriaPopover>

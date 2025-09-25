@@ -1597,9 +1597,93 @@ export interface Header {
           url?: string | null;
           label: string;
         };
+        /**
+         * Enable to show dropdown menu for this navigation item
+         */
+        hasDropdown?: boolean | null;
+        /**
+         * Links that appear in the dropdown menu
+         */
+        dropdownItems?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              /**
+               * Brief description that appears below the link text
+               */
+              description?: string | null;
+              /**
+               * Icon that appears next to the dropdown item
+               */
+              icon?:
+                | (
+                    | 'TrendUp01'
+                    | 'Users01'
+                    | 'SearchLg'
+                    | 'Mail01'
+                    | 'InfoCircle'
+                    | 'Briefcase01'
+                    | 'File01'
+                    | 'BarChart01'
+                    | 'Globe01'
+                    | 'Settings01'
+                    | 'Target01'
+                    | 'Star01'
+                    | 'Shield01'
+                    | 'Code01'
+                  )
+                | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Call-to-action button that appears on the right side of the header
+   */
+  ctaButton: {
+    /**
+     * Toggle to show/hide the call-to-action button
+     */
+    enabled?: boolean | null;
+    link: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+      /**
+       * Button color variant from UntitledUI design system
+       */
+      uuiColor?: ('primary' | 'secondary' | 'tertiary') | null;
+      /**
+       * Button size variant
+       */
+      uuiSize?: ('sm' | 'md' | 'lg') | null;
+    };
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1711,7 +1795,40 @@ export interface HeaderSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        hasDropdown?: T;
+        dropdownItems?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              description?: T;
+              icon?: T;
+              id?: T;
+            };
         id?: T;
+      };
+  ctaButton?:
+    | T
+    | {
+        enabled?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              uuiColor?: T;
+              uuiSize?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;
