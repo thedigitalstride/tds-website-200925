@@ -16,6 +16,7 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { resendAdapter } from '@payloadcms/email-resend'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -105,4 +106,9 @@ export default buildConfig({
     },
     tasks: [],
   },
+  email: resendAdapter({
+    defaultFromAddress: 'dev@payloadcms.com',
+    defaultFromName: 'Payload CMS',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
 })
