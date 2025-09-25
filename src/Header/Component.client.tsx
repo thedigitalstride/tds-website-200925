@@ -3,11 +3,12 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState, useMemo } from 'react'
 
-import type { Header } from '@/payload-types'
+import type { Header, Page } from '@/payload-types'
 
 // Import UUI Header and CMS dropdown component
 import { Header as UUIHeader } from './uui-components/header'
 import { CMSDropdown } from './components/CMSDropdown'
+import { getPageUrl } from '@/utilities/pageHelpers'
 
 interface HeaderClientProps {
   data: Header
@@ -45,8 +46,22 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
       if (linkData?.type === 'reference' && linkData.reference) {
         // Handle internal references
-        if (typeof linkData.reference === 'object' && 'slug' in linkData.reference) {
-          href = `/${linkData.reference.slug}`
+        const { value, relationTo } = linkData.reference
+
+        // Handle number ID references (not populated)
+        if (typeof value === 'number') {
+          href = `/${relationTo}/${value}`
+        }
+        // Handle populated object references
+        else if (typeof value === 'object' && value?.slug) {
+          // For pages, use the getPageUrl helper to support nested URLs with breadcrumbs
+          if (relationTo === 'pages') {
+            href = getPageUrl(value as Page)
+          }
+          // For posts, use the existing logic
+          else {
+            href = `/${relationTo}/${value.slug}`
+          }
         }
       } else if (linkData?.type === 'custom' && linkData.url) {
         // Handle external URLs

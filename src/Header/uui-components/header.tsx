@@ -7,6 +7,7 @@ import { Button as AriaButton, Dialog as AriaDialog, DialogTrigger as AriaDialog
 import { Button } from "@/components/uui/base/buttons/button";
 import { TDSLogo } from '@/components/Logo/tds-logo';
 import { cx } from "@/utils/cx";
+import Link from "next/link";
 import { DropdownMenuFeatureCard } from "./dropdown-menu-feature-card";
 import { DropdownMenuSimpleWithFooter } from "./dropdown-menu-simple-with-footer";
 import { DropdownMenuWithTwoColsAndLinksAndFooter } from "./dropdown-menu-with-two-cols-and-links-and-footer";
@@ -213,10 +214,10 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
                     )}
                 >
                     {/* Logo Section */}
-                    <div className="flex items-center">
+                    <Link href="/" className="flex items-center">
                         <TDSLogo variant="auto" size="xl" className="h-12 md:max-lg:hidden" />
                         <TDSLogo variant="minimal" size="lg" className="hidden h-8 md:inline-block lg:hidden" />
-                    </div>
+                    </Link>
 
                     {/* Centered Navigation */}
                     <nav className="max-md:hidden flex-1 flex justify-center">

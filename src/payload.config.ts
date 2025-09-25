@@ -107,8 +107,8 @@ export default buildConfig({
     tasks: [],
   },
   email: resendAdapter({
-    defaultFromAddress: 'dev@payloadcms.com',
-    defaultFromName: 'Payload CMS',
+    defaultFromAddress: 'info@thedigitalstride.co.uk',
+    defaultFromName: 'The Digital Stride',
     apiKey: process.env.RESEND_API_KEY || '',
   }),
 })
