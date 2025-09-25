@@ -21,6 +21,9 @@ import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloa
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { DropdownRowLabel as DropdownRowLabel_7a1d7ad653c2360c32bb0f1ceb65cdd8 } from '@/Header/DropdownRowLabel'
 import { RowLabel as RowLabel_ec255a65fa6fa8d1faeb09cf35284224 } from '@/Header/RowLabel'
+import { NavItemRowLabel as NavItemRowLabel_005e2e2fceca6eee1443b898e8750032 } from '@/Footer/NavItemRowLabel'
+import { NavColumnRowLabel as NavColumnRowLabel_a0920fb3a8542da5ee95d2c2f2747f96 } from '@/Footer/NavColumnRowLabel'
+import { SocialLinkRowLabel as SocialLinkRowLabel_9697010365a26e30d4bc253bddcd7804 } from '@/Footer/SocialLinkRowLabel'
 import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
 import { default as default_8a7ab0eb7ab5c511aba12e68480bfe5e } from '@/components/BeforeLogin'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
@@ -49,6 +52,9 @@ export const importMap = {
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/Header/DropdownRowLabel#DropdownRowLabel": DropdownRowLabel_7a1d7ad653c2360c32bb0f1ceb65cdd8,
   "@/Header/RowLabel#RowLabel": RowLabel_ec255a65fa6fa8d1faeb09cf35284224,
+  "@/Footer/NavItemRowLabel#NavItemRowLabel": NavItemRowLabel_005e2e2fceca6eee1443b898e8750032,
+  "@/Footer/NavColumnRowLabel#NavColumnRowLabel": NavColumnRowLabel_a0920fb3a8542da5ee95d2c2f2747f96,
+  "@/Footer/SocialLinkRowLabel#SocialLinkRowLabel": SocialLinkRowLabel_9697010365a26e30d4bc253bddcd7804,
   "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,
   "@/components/BeforeLogin#default": default_8a7ab0eb7ab5c511aba12e68480bfe5e,
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e

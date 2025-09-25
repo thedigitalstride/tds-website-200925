@@ -121,11 +121,13 @@ See the [Globals](https://payloadcms.com/docs/configuration/globals) docs for de
 
 - `Header`
 
-  The data required by the header on your front-end like nav links.
+  The data required by the header on your front-end like nav links. Features row labels for navigation items and dropdown menus.
 
 - `Footer`
 
-  Same as above but for the footer of your site.
+  Same as above but for the footer of your site. Features row labels for navigation columns, navigation items, and social media links.
+
+> **💡 Admin UX Tip**: All array fields in this template use [Row Labels](./ROW_LABELS.md) to display meaningful titles when collapsed, making content management easier. When creating new array fields, follow the [Row Labels Guide](./ROW_LABELS.md) to maintain consistency.
 
 ## Access control
 

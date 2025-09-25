@@ -82,6 +82,10 @@ export const Footer: GlobalConfig = {
           maxRows: 8,
           admin: {
             description: 'Links for this navigation column',
+            initCollapsed: true,
+            components: {
+              RowLabel: '@/Footer/NavItemRowLabel#NavItemRowLabel',
+            },
           },
         },
       ],
@@ -89,6 +93,9 @@ export const Footer: GlobalConfig = {
       admin: {
         description: 'Navigation columns (maximum 5 columns)',
         initCollapsed: true,
+        components: {
+          RowLabel: '@/Footer/NavColumnRowLabel#NavColumnRowLabel',
+        },
       },
     },
     {
@@ -127,6 +134,9 @@ export const Footer: GlobalConfig = {
       admin: {
         description: 'Social media links that appear at the bottom',
         initCollapsed: true,
+        components: {
+          RowLabel: '@/Footer/SocialLinkRowLabel#SocialLinkRowLabel',
+        },
       },
     },
     {
