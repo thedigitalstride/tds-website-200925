@@ -18,10 +18,18 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
 
       pathsToRevalidate.forEach(path => {
         debugInfo(payload, `Revalidating page at path: ${path}`)
-        revalidatePath(path)
+        try {
+          revalidatePath(path)
+        } catch (error) {
+          payload.logger.error(`Failed to revalidate page ${path}: ${error instanceof Error ? error.message : 'Unknown error'}`)
+        }
       })
 
-      revalidateTag('pages-sitemap')
+      try {
+        revalidateTag('pages-sitemap')
+      } catch (error) {
+        payload.logger.error(`Failed to revalidate pages sitemap: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      }
     }
 
     // If the page was previously published but is now unpublished
@@ -30,8 +38,12 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
 
       debugInfo(payload, `Revalidating unpublished page at path: ${oldPath}`)
 
-      revalidatePath(oldPath)
-      revalidateTag('pages-sitemap')
+      try {
+        revalidatePath(oldPath)
+        revalidateTag('pages-sitemap')
+      } catch (error) {
+        payload.logger.error(`Failed to revalidate unpublished page ${oldPath}: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      }
     }
 
     // If this is a parent page and its path changed, we need to revalidate all descendants
@@ -44,11 +56,18 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
   return doc
 }
 
-export const revalidateDelete: CollectionAfterDeleteHook<Page> = ({ doc, req: { context } }) => {
+export const revalidateDelete: CollectionAfterDeleteHook<Page> = ({ doc, req: { payload, context } }) => {
   if (!context.disableRevalidate) {
     const path = buildFullPath(doc)
-    revalidatePath(path)
-    revalidateTag('pages-sitemap')
+
+    debugInfo(payload, `Revalidating deleted page at path: ${path}`)
+
+    try {
+      revalidatePath(path)
+      revalidateTag('pages-sitemap')
+    } catch (error) {
+      payload.logger.error(`Failed to revalidate deleted page ${path}: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    }
   }
 
   return doc

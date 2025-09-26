@@ -12,12 +12,16 @@ import {
 } from '@payloadcms/richtext-lexical/react'
 
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
+import { QuoteBlock } from '@/blocks/Quote/Component'
+import { ConclusionBlock } from '@/blocks/Conclusion/Component'
 
 import type {
   BannerBlock as BannerBlockProps,
   ButtonBlock as ButtonBlockProps,
   CallToActionBlock as CTABlockProps,
   MediaBlock as MediaBlockProps,
+  QuoteBlock as QuoteBlockProps,
+  ConclusionBlock as ConclusionBlockProps,
   Page,
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
@@ -28,7 +32,7 @@ import { getPageUrl } from '@/utilities/pageHelpers'
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | ButtonBlockProps | CodeBlockProps>
+  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | ButtonBlockProps | CodeBlockProps | QuoteBlockProps | ConclusionBlockProps>
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
@@ -46,26 +50,30 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return getPageUrl(value as Partial<Page>)
 }
 
-const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
-  ...defaultConverters,
-  ...LinkJSXConverter({ internalDocToHref }),
-  blocks: {
-    banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
-    buttonBlock: ({ node }) => <ButtonBlockComponent className="col-start-2 mb-4" {...node.fields} />,
-    mediaBlock: ({ node }) => (
-      <MediaBlock
-        className="col-start-1 col-span-3"
-        imgClassName="m-0"
-        {...node.fields}
-        captionClassName="mx-auto max-w-[48rem]"
-        enableGutter={false}
-        disableInnerContainer={true}
-      />
-    ),
-    code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
-    cta: ({ node }) => <CallToActionBlock {...node.fields} />,
-  },
-})
+const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => {
+  return {
+    ...defaultConverters,
+    ...LinkJSXConverter({ internalDocToHref }),
+    blocks: {
+      banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
+      buttonBlock: ({ node }) => <ButtonBlockComponent className="col-start-2 mb-4" {...node.fields} />,
+      mediaBlock: ({ node }) => (
+        <MediaBlock
+          className="col-start-1 col-span-3"
+          imgClassName="m-0"
+          {...node.fields}
+          captionClassName="mx-auto max-w-[48rem]"
+          enableGutter={false}
+          disableInnerContainer={true}
+        />
+      ),
+      code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
+      cta: ({ node }) => <CallToActionBlock {...node.fields} />,
+      quote: ({ node }) => <QuoteBlock className="col-start-2 mb-8" {...node.fields} />,
+      conclusion: ({ node }) => <ConclusionBlock className="col-start-2" {...node.fields} />,
+    },
+  }
+}
 
 type Props = {
   data: DefaultTypedEditorState

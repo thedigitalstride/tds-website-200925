@@ -3,6 +3,7 @@
 
 @plugin "tailwindcss-animate";
 @plugin "tailwindcss-react-aria-components";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark-mode, .dark-mode *));
 @custom-variant label (& [data-label]);
@@ -57,4 +58,9 @@ input[type="number"] {
 /* Hide the default clear button (X) from search inputs. */
 input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: none;
+}
+
+/* UUI Post Layout Prose Styles */
+.prose-centered-quote blockquote {
+    text-align: center;
 }

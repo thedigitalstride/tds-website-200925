@@ -1335,3 +1335,22 @@
         --outline-color-error_subtle: var(--color-border-error_subtle);
     }
 }
+
+/* General rich text - remove top margin from first element */
+.prose > *:first-child,
+.payload-richtext > *:first-child {
+    margin-top: 0;
+}
+
+/* Post-specific styling - lead paragraph for blog posts only */
+.prose-centered-quote p:first-of-type {
+    font-size: var(--text-xl);
+    line-height: var(--text-xl--line-height);
+    color: var(--color-text-secondary);
+}
+
+/* Ensure conclusion blocks don't get lead styling */
+.not-prose .payload-richtext p:first-of-type {
+    font-size: inherit;
+    line-height: inherit;
+}

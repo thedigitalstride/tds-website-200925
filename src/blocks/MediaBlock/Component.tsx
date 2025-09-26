@@ -3,6 +3,7 @@ import type { StaticImageData } from 'next/image'
 import { cn } from '@/utilities/ui'
 import React from 'react'
 import RichText from '@/components/RichText'
+import { Link01 } from "@untitledui/icons"
 
 import type { MediaBlock as MediaBlockProps } from '@/payload-types'
 
@@ -27,13 +28,14 @@ export const MediaBlock: React.FC<Props> = (props) => {
     media,
     staticImage,
     disableInnerContainer,
+    caption,
   } = props
 
-  let caption
-  if (media && typeof media === 'object') caption = media.caption
+  // Use the new caption structure or fallback to media caption
+  const blockCaption = caption || (media && typeof media === 'object' ? media.caption : null)
 
   return (
-    <div
+    <figure
       className={cn(
         '',
         {
@@ -44,13 +46,13 @@ export const MediaBlock: React.FC<Props> = (props) => {
     >
       {(media || staticImage) && (
         <Media
-          imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
+          imgClassName={cn('h-60 md:h-120', 'border border-border rounded-[0.8rem]', imgClassName)}
           resource={media}
           src={staticImage}
         />
       )}
-      {caption && (
-        <div
+      {blockCaption && (
+        <figcaption
           className={cn(
             'mt-6',
             {
@@ -59,9 +61,43 @@ export const MediaBlock: React.FC<Props> = (props) => {
             captionClassName,
           )}
         >
-          <RichText data={caption} enableGutter={false} />
-        </div>
+          {typeof blockCaption === 'object' && 'text' in blockCaption ? (
+            // New caption structure with optional link
+            <div className="flex items-start gap-2">
+              <Link01 className="size-4 text-utility-gray-400 mt-0.5" />
+              <span>
+                {String(blockCaption.text || '')}
+                {(() => {
+                  if (blockCaption.link &&
+                      typeof blockCaption.link === 'object' &&
+                      'url' in blockCaption.link &&
+                      'text' in blockCaption.link &&
+                      blockCaption.link.url &&
+                      blockCaption.link.text) {
+                    return (
+                      <>
+                        {' '}
+                        <a
+                          href={String(blockCaption.link.url)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-xs outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
+                        >
+                          {String(blockCaption.link.text)}
+                        </a>
+                      </>
+                    );
+                  }
+                  return null;
+                })()}
+              </span>
+            </div>
+          ) : (
+            // Fallback to rich text caption
+            <RichText data={blockCaption as any} enableGutter={false} />
+          )}
+        </figcaption>
       )}
-    </div>
+    </figure>
   )
 }

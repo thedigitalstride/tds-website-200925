@@ -223,6 +223,23 @@ export interface Page {
 export interface Post {
   id: number;
   title: string;
+  /**
+   * Lead paragraph that appears under the title
+   */
+  subtitle?: string | null;
+  /**
+   * Optional table of contents for the sidebar
+   */
+  tableOfContents?:
+    | {
+        title: string;
+        /**
+         * Link to section (e.g., #introduction)
+         */
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
   heroImage?: (number | null) | Media;
   content: {
     root: {
@@ -241,6 +258,10 @@ export interface Post {
   };
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
+  /**
+   * People who contributed to this post (separate from authors)
+   */
+  contributors?: (number | User)[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -255,6 +276,16 @@ export interface Post {
     | {
         id?: string | null;
         name?: string | null;
+        nickname?: string | null;
+        avatar?: (number | null) | Media;
+      }[]
+    | null;
+  populatedContributors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+        nickname?: string | null;
+        avatar?: (number | null) | Media;
       }[]
     | null;
   slug?: string | null;
@@ -383,6 +414,18 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
+  /**
+   * Display name for public content (e.g., blog posts)
+   */
+  nickname?: string | null;
+  /**
+   * Job title or role (e.g., "Product Manager", "Frontend Engineer")
+   */
+  role?: string | null;
+  /**
+   * Profile picture for contributor listings
+   */
+  avatar?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -513,6 +556,22 @@ export interface ContentBlock {
  */
 export interface MediaBlock {
   media: number | Media;
+  caption?: {
+    /**
+     * Caption text
+     */
+    text?: string | null;
+    link?: {
+      /**
+       * Link URL (e.g., https://example.com)
+       */
+      url?: string | null;
+      /**
+       * Link text
+       */
+      text?: string | null;
+    };
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
@@ -1124,6 +1183,17 @@ export interface ContentBlockSelect<T extends boolean = true> {
  */
 export interface MediaBlockSelect<T extends boolean = true> {
   media?: T;
+  caption?:
+    | T
+    | {
+        text?: T;
+        link?:
+          | T
+          | {
+              url?: T;
+              text?: T;
+            };
+      };
   id?: T;
   blockName?: T;
 }
@@ -1158,10 +1228,19 @@ export interface FormBlockSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
+  subtitle?: T;
+  tableOfContents?:
+    | T
+    | {
+        title?: T;
+        href?: T;
+        id?: T;
+      };
   heroImage?: T;
   content?: T;
   relatedPosts?: T;
   categories?: T;
+  contributors?: T;
   meta?:
     | T
     | {
@@ -1176,6 +1255,16 @@ export interface PostsSelect<T extends boolean = true> {
     | {
         id?: T;
         name?: T;
+        nickname?: T;
+        avatar?: T;
+      };
+  populatedContributors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+        nickname?: T;
+        avatar?: T;
       };
   slug?: T;
   slugLock?: T;
@@ -1302,6 +1391,9 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  nickname?: T;
+  role?: T;
+  avatar?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -2000,6 +2092,57 @@ export interface CodeBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'code';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuoteBlock".
+ */
+export interface QuoteBlock {
+  /**
+   * The quote text
+   */
+  quote: string;
+  author: {
+    name: string;
+    /**
+     * Author title or role
+     */
+    role?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'quote';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ConclusionBlock".
+ */
+export interface ConclusionBlock {
+  /**
+   * Heading for the conclusion section
+   */
+  title: string;
+  /**
+   * Conclusion content (supports multiple paragraphs)
+   */
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'conclusion';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

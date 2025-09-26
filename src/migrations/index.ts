@@ -3,6 +3,10 @@ import * as migration_20250920_135157_add_nested_docs_to_pages from './20250920_
 import * as migration_20250921_104510 from './20250921_104510';
 import * as migration_20250924_202354 from './20250924_202354';
 import * as migration_20250924_204556_header_navigation_cms from './20250924_204556_header_navigation_cms';
+import * as migration_20250925_195747 from './20250925_195747';
+import * as migration_20250925_204703 from './20250925_204703';
+import * as migration_20250925_205027 from './20250925_205027';
+import * as migration_20250926_194105 from './20250926_194105';
 
 export const migrations = [
   {
@@ -28,6 +32,26 @@ export const migrations = [
   {
     up: migration_20250924_204556_header_navigation_cms.up,
     down: migration_20250924_204556_header_navigation_cms.down,
-    name: '20250924_204556_header_navigation_cms'
+    name: '20250924_204556_header_navigation_cms',
+  },
+  {
+    up: migration_20250925_195747.up,
+    down: migration_20250925_195747.down,
+    name: '20250925_195747',
+  },
+  {
+    up: migration_20250925_204703.up,
+    down: migration_20250925_204703.down,
+    name: '20250925_204703',
+  },
+  {
+    up: migration_20250925_205027.up,
+    down: migration_20250925_205027.down,
+    name: '20250925_205027',
+  },
+  {
+    up: migration_20250926_194105.up,
+    down: migration_20250926_194105.down,
+    name: '20250926_194105'
   },
 ];
