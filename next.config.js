@@ -36,6 +36,11 @@ const nextConfig = {
         hostname: 'raw.githubusercontent.com',
         protocol: 'https',
       },
+      // Vercel preview deployments and blob storage
+      {
+        hostname: '*.vercel.app',
+        protocol: 'https',
+      },
     ],
   },
   reactStrictMode: true,
