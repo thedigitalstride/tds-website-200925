@@ -44,7 +44,12 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
     const cacheTag = resource.updatedAt
 
-    src = getMediaUrl(url, cacheTag)
+    // For Vercel Blob Storage URLs, use them directly to avoid authentication issues
+    if (url && url.includes('.blob.vercel-storage.com')) {
+      src = url
+    } else {
+      src = getMediaUrl(url, cacheTag)
+    }
   }
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
