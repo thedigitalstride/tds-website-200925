@@ -1,20 +1,27 @@
+/**
+ * Format date to UK format: "20 Jan 2025"
+ * Uses GMT timezone for consistency
+ */
 export const formatDateTime = (timestamp: string): string => {
-  const now = new Date()
-  let date = now
-  if (timestamp) date = new Date(timestamp)
-  const months = date.getMonth()
-  const days = date.getDate()
-  // const hours = date.getHours();
-  // const minutes = date.getMinutes();
-  // const seconds = date.getSeconds();
+  if (!timestamp) return ''
 
-  const MM = months + 1 < 10 ? `0${months + 1}` : months + 1
-  const DD = days < 10 ? `0${days}` : days
-  const YYYY = date.getFullYear()
-  // const AMPM = hours < 12 ? 'AM' : 'PM';
-  // const HH = hours > 12 ? hours - 12 : hours;
-  // const MinMin = (minutes < 10) ? `0${minutes}` : minutes;
-  // const SS = (seconds < 10) ? `0${seconds}` : seconds;
+  try {
+    const date = new Date(timestamp)
 
-  return `${MM}/${DD}/${YYYY}`
+    // Check if date is valid
+    if (isNaN(date.getTime())) {
+      return ''
+    }
+
+    // Format as "20 Jan 2025" using en-GB locale with GMT timezone
+    return date.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'GMT'
+    })
+  } catch (error) {
+    console.warn('Error formatting date:', error)
+    return ''
+  }
 }
