@@ -22,7 +22,8 @@
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --no-experimental-strip-types\" pnpm exec playwright test --config=playwright.config.ts",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
     "fix:uui": "node ./scripts/fix-uui-structure.js",
-    "uui:add": "npx untitledui@latest add $1 --path src/components/uui && pnpm fix:uui"
+    "uui:add": "npx untitledui@latest add $1 --path src/components/uui && pnpm fix:uui",
+    "seed:posts": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/seed-posts.ts"
   },
   "dependencies": {
     "@payloadcms/admin-bar": "3.57.0",

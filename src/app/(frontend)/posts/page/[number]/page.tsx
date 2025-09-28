@@ -10,24 +10,26 @@ export const revalidate = 600
 
 type Args = {
   params: Promise<{
-    pageNumber: string
+    number: string
   }>
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
-  const { pageNumber } = await paramsPromise
+  const { number } = await paramsPromise
   const payload = await getPayload({ config: configPromise })
 
-  const sanitizedPageNumber = Number(pageNumber)
+  const currentPage = Number(number)
 
-  if (!Number.isInteger(sanitizedPageNumber)) notFound()
+  if (!Number.isInteger(currentPage) || currentPage < 2) {
+    notFound()
+  }
 
   // Fetch posts with all required fields for BlogListing
   const posts = await payload.find({
     collection: 'posts',
-    depth: 2, // Increased depth to populate relationships
+    depth: 2,
     limit: 12,
-    page: sanitizedPageNumber,
+    page: currentPage,
     overrideAccess: false,
     where: {
       _status: { equals: 'published' }
@@ -35,7 +37,9 @@ export default async function Page({ params: paramsPromise }: Args) {
     sort: '-publishedAt'
   })
 
-  if (sanitizedPageNumber > posts.totalPages) notFound()
+  if (currentPage > posts.totalPages) {
+    notFound()
+  }
 
   // Fetch all categories for filtering
   const categories = await payload.find({
@@ -54,9 +58,9 @@ export default async function Page({ params: paramsPromise }: Args) {
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { pageNumber } = await paramsPromise
+  const { number } = await paramsPromise
   return {
-    title: `Payload Website Template Posts Page ${pageNumber || ''}`,
+    title: `Payload Website Template Posts - Page ${number}`,
   }
 }
 
@@ -65,14 +69,18 @@ export async function generateStaticParams() {
   const { totalDocs } = await payload.count({
     collection: 'posts',
     overrideAccess: false,
+    where: {
+      _status: { equals: 'published' }
+    }
   })
 
-  const totalPages = Math.ceil(totalDocs / 10)
+  const totalPages = Math.ceil(totalDocs / 12) // 12 posts per page
 
-  const pages: { pageNumber: string }[] = []
+  const pages: { number: string }[] = []
 
-  for (let i = 1; i <= totalPages; i++) {
-    pages.push({ pageNumber: String(i) })
+  // Generate pages starting from 2 (page 1 is handled by /posts/page.tsx)
+  for (let i = 2; i <= totalPages; i++) {
+    pages.push({ number: String(i) })
   }
 
   return pages

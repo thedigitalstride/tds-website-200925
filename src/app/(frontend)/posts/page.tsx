@@ -11,11 +11,12 @@ export const revalidate = 600
 export default async function Page() {
   const payload = await getPayload({ config: configPromise })
 
-  // Fetch posts with all required fields for BlogListing
+  // Fetch posts for page 1 with all required fields for BlogListing
   const posts = await payload.find({
     collection: 'posts',
-    depth: 2, // Increased depth to populate relationships
+    depth: 2,
     limit: 12,
+    page: 1, // Explicitly set to page 1
     overrideAccess: false,
     where: {
       _status: { equals: 'published' }
@@ -33,7 +34,7 @@ export default async function Page() {
     <BlogListing
       posts={posts.docs}
       categories={categories.docs}
-      currentPage={posts.page}
+      currentPage={1} // Page 1
       totalPages={posts.totalPages}
     />
   )

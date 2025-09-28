@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { PaginationPageDefault } from "@/components/uui/application/pagination/pagination";
 import { TabList, Tabs } from "@/components/uui/application/tabs/tabs";
 import { Select } from "@/components/uui/base/select/select";
@@ -68,11 +69,22 @@ const transformPost = (post: Post, index: number): Article => {
 export const BlogListing: React.FC<BlogListingProps> = ({
   posts,
   categories,
+  currentPage = 1,
   totalPages = 1
 }) => {
+  const router = useRouter();
   const isDesktop = useBreakpoint("lg");
   const [sortBy, setSortBy] = useState(sortByOptions[0].id);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  // Handle page navigation
+  const handlePageChange = (page: number) => {
+    if (page === 1) {
+      router.push('/posts');
+    } else {
+      router.push(`/posts/page/${page}`);
+    }
+  };
 
   // Create tabs from categories
   const tabs = [
@@ -182,7 +194,12 @@ export const BlogListing: React.FC<BlogListingProps> = ({
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <PaginationPageDefault rounded />
+          <PaginationPageDefault
+            page={currentPage}
+            total={totalPages}
+            onPageChange={handlePageChange}
+            rounded
+          />
         )}
       </main>
     </div>
