@@ -8,6 +8,7 @@ import { Facebook, LinkedIn, X } from "@/components/uui/foundations/social-icons
 import { useClipboard } from "@/hooks/use-clipboard";
 import { Media } from '@/components/Media';
 import RichText from '@/components/RichText';
+import { formatDateTime } from '@/utilities/formatDateTime';
 
 import type { Post } from '@/payload-types';
 
@@ -34,15 +35,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
   // Get the current page URL for sharing
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
 
-  // Format the published date
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
+  // Use centralized date formatting utility
 
   return (
     <div className="bg-primary">
@@ -110,7 +103,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                   {publishedAt && (
                     <div className="flex flex-col gap-2">
                       <p className="text-md font-semibold text-brand-secondary">Published</p>
-                      <p className="text-md text-tertiary">{formatDate(publishedAt)}</p>
+                      <p className="text-md text-tertiary">{formatDateTime(publishedAt)}</p>
                     </div>
                   )}
                   {populatedAuthors && populatedAuthors.length > 0 && (
@@ -170,8 +163,8 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                               {contributor.avatar && typeof contributor.avatar !== 'string' ? (
                                 <Media
                                   resource={contributor.avatar}
-                                  className="size-12 rounded-md object-cover"
-                                  imgClassName="size-12 rounded-md object-cover"
+                                  className="size-12 rounded-full object-cover"
+                                  imgClassName="size-12 rounded-full object-cover"
                                 />
                               ) : (
                                 <div className="size-12 rounded-md bg-gray-200 flex items-center justify-center">
@@ -242,7 +235,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                     {publishedAt && (
                       <div className="flex flex-col gap-2">
                         <p className="text-md font-semibold text-brand-secondary">Published</p>
-                        <p className="text-md text-tertiary">{formatDate(publishedAt)}</p>
+                        <p className="text-md text-tertiary">{formatDateTime(publishedAt)}</p>
                       </div>
                     )}
                     {populatedAuthors && populatedAuthors.length > 0 && (
