@@ -131,6 +131,9 @@ importers:
       react-hook-form:
         specifier: 7.45.4
         version: 7.45.4(react@19.1.0)
+      react-stately:
+        specifier: ^3.41.0
+        version: 3.41.0(react@19.1.0)
       sharp:
         specifier: 0.34.2
         version: 0.34.2
