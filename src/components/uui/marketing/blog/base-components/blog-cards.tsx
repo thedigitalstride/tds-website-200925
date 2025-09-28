@@ -14,10 +14,10 @@ export type Article = {
     thumbnailUrl: string;
     title: string;
     summary: string;
-    category: {
+    categories: Array<{
         href: string;
         name: string;
-    };
+    }>;
     author: {
         href: string;
         name: string;
@@ -41,7 +41,19 @@ export const Simple01Vertical = ({ article, imageClassName }: { article: Article
 
         <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
-                <span className="text-sm font-semibold text-brand-secondary">{article.category.name}</span>
+                <div className="flex gap-2 flex-wrap">
+                    {article.categories.map((category, index) => (
+                        <a
+                            key={index}
+                            href={category.href}
+                            className="text-sm font-semibold text-brand-secondary hover:text-brand-secondary_hover transition-colors"
+                        >
+                            <Badge size="sm" color="brand" type="pill-color">
+                                {category.name}
+                            </Badge>
+                        </a>
+                    ))}
+                </div>
                 <div className="flex flex-col gap-1">
                     <a
                         href={article.href}
@@ -93,12 +105,12 @@ export const Simple02Vertical = ({
 
         <div className="flex flex-col gap-5">
             <div className="flex flex-col items-start gap-3">
-                <BadgeGroup addonText={article.category.name} size="md" theme={badgeTheme} color="brand" className="pr-3" iconTrailing={null}>
+                <BadgeGroup addonText={article.categories[0]?.name || 'Uncategorized'} size="md" theme={badgeTheme} color="brand" className="pr-3" iconTrailing={null}>
                     {article.readingTime}
                 </BadgeGroup>
                 <div className="flex flex-col gap-1">
                     <a
-                        href={article.category.href}
+                        href={article.href}
                         className="flex justify-between gap-x-4 rounded-md text-lg font-semibold text-primary outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                         {article.title}
@@ -150,7 +162,7 @@ export const Simple03Vertical = ({
                 </p>
                 <div className="flex w-full flex-col gap-1">
                     <a
-                        href={article.category.href}
+                        href={article.href}
                         className={cx(
                             "flex justify-between gap-x-4 rounded-md text-lg font-semibold text-primary outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2",
                             titleClassName,
@@ -194,10 +206,10 @@ export const Simple04Vertical = ({ article, imageClassName, className }: { artic
                         <time className="block text-sm text-white">{article.publishedAt}</time>
                     </div>
                     <a
-                        href={article.category.href}
+                        href={article.href}
                         className="rounded-xs text-sm font-semibold text-white outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
-                        {article.category.name}
+                        {article.categories[0]?.name || 'Uncategorized'}
                     </a>
                 </div>
             </div>
@@ -206,7 +218,7 @@ export const Simple04Vertical = ({ article, imageClassName, className }: { artic
         <div className="flex flex-col items-start gap-5">
             <div className="flex flex-col gap-1">
                 <a
-                    href={article.category.href}
+                    href={article.href}
                     className="flex justify-between gap-x-4 rounded-md text-lg font-semibold text-primary outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                     {article.title}
@@ -229,11 +241,11 @@ export const Simple01Horizontal = ({ article, imageClassName }: { article: Artic
 
         <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
-                <span className="text-sm font-semibold text-brand-secondary">{article.category.name}</span>
+                <span className="text-sm font-semibold text-brand-secondary">{article.categories[0]?.name || 'Uncategorized'}</span>
 
                 <div className="flex flex-col gap-1">
                     <a
-                        href={article.category.href}
+                        href={article.href}
                         className="flex justify-between gap-x-4 rounded-md text-lg font-semibold text-primary outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                         {article.title}
@@ -270,7 +282,7 @@ export const Simple02Horizontal = ({ article }: { article: Article }) => (
 
         <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
-                <BadgeGroup addonText={article.category.name} size="md" theme="light" color="brand" className="pr-3" iconTrailing={null}>
+                <BadgeGroup addonText={article.categories[0]?.name || 'Uncategorized'} size="md" theme="light" color="brand" className="pr-3" iconTrailing={null}>
                     {article.readingTime}
                 </BadgeGroup>
                 <div className="flex flex-col gap-2">
@@ -361,10 +373,10 @@ export const Simple04Horizontal = ({ article }: { article: Article }) => (
                         <time className="block text-sm text-white">{article.publishedAt}</time>
                     </div>
                     <a
-                        href={article.category.href}
+                        href={article.href}
                         className="rounded-xs text-sm font-semibold text-white outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
-                        {article.category.name}
+                        {article.categories[0]?.name || 'Uncategorized'}
                     </a>
                 </div>
             </div>
@@ -373,7 +385,7 @@ export const Simple04Horizontal = ({ article }: { article: Article }) => (
         <div className="flex flex-col items-start gap-6">
             <div className="flex flex-col gap-2">
                 <a
-                    href={article.category.href}
+                    href={article.href}
                     className="block rounded-xs text-xl font-semibold text-primary outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2 md:text-lg"
                 >
                     {article.title}
@@ -396,13 +408,13 @@ export const CardFullWidthImage01Vertical = ({ article }: { article: Article }) 
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
             <div className="flex flex-col gap-2">
-                <Button color="link-color" href={article.category.href}>
-                    {article.category.name}
+                <Button color="link-color" href={article.href}>
+                    {article.categories[0]?.name || 'Uncategorized'}
                 </Button>
                 <div className="flex flex-col gap-2">
                     <Button
                         color="link-gray"
-                        href={article.category.href}
+                        href={article.href}
                         className="flex justify-between gap-4 text-xl font-semibold text-primary hover:text-brand-secondary md:text-display-xs"
                         iconTrailing={<ArrowUpRight className="size-6 shrink-0" aria-hidden="true" />}
                     >
@@ -419,7 +431,7 @@ export const CardFullWidthImage01Vertical = ({ article }: { article: Article }) 
 
                 <div>
                     <p className="text-sm font-semibold">
-                        <Button color="link-color" href={article.category.href} className="text-primary">
+                        <Button color="link-color" href={article.href} className="text-primary">
                             {article.author.name}
                         </Button>
                     </p>
@@ -438,13 +450,13 @@ export const CardFullWidthImage02Vertical = ({ article }: { article: Article }) 
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
             <div className="flex flex-col gap-4">
-                <BadgeGroup addonText={article.category.name} size="md" theme="light" color="brand" className="pr-3" iconTrailing={null}>
+                <BadgeGroup addonText={article.categories[0]?.name || 'Uncategorized'} size="md" theme="light" color="brand" className="pr-3" iconTrailing={null}>
                     {article.readingTime}
                 </BadgeGroup>
                 <div className="flex flex-col gap-2">
                     <Button
                         color="link-gray"
-                        href={article.category.href}
+                        href={article.href}
                         className="flex justify-between gap-4 text-xl font-semibold text-primary hover:text-brand-secondary md:text-display-xs"
                         iconTrailing={<ArrowUpRight className="size-6 shrink-0" aria-hidden="true" />}
                     >
@@ -461,7 +473,7 @@ export const CardFullWidthImage02Vertical = ({ article }: { article: Article }) 
 
                 <div>
                     <p className="text-sm font-semibold">
-                        <Button color="link-color" href={article.category.href} className="text-primary">
+                        <Button color="link-color" href={article.href} className="text-primary">
                             {article.author.name}
                         </Button>
                     </p>
@@ -489,7 +501,7 @@ export const CardFullWidthImage03Vertical = ({ article }: { article: Article }) 
                 <div className="flex flex-col gap-2">
                     <Button
                         color="link-gray"
-                        href={article.category.href}
+                        href={article.href}
                         className="flex justify-between gap-4 text-xl font-semibold text-primary hover:text-brand-secondary md:text-display-xs"
                         iconTrailing={<ArrowUpRight className="size-6 shrink-0" aria-hidden="true" />}
                     >
@@ -529,8 +541,8 @@ export const CardFullWidthImage04Vertical = ({ article }: { article: Article }) 
                         <time className="block text-sm text-white">{article.publishedAt}</time>
                     </div>
                     <p className="text-sm font-semibold">
-                        <Button href={article.category.href} color="link-gray" className="text-white">
-                            {article.category.name}
+                        <Button href={article.href} color="link-gray" className="text-white">
+                            {article.categories[0]?.name || 'Uncategorized'}
                         </Button>
                     </p>
                 </div>
@@ -542,7 +554,7 @@ export const CardFullWidthImage04Vertical = ({ article }: { article: Article }) 
                 <div className="flex flex-col gap-2">
                     <Button
                         color="link-gray"
-                        href={article.category.href}
+                        href={article.href}
                         className="flex justify-between gap-4 text-xl font-semibold text-primary hover:text-brand-secondary md:text-display-xs"
                         iconTrailing={<ArrowUpRight className="size-6 shrink-0" aria-hidden="true" />}
                     >
@@ -567,8 +579,8 @@ export const CardFullWidthImage01Horizontal = ({ article }: { article: Article }
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
             <div className="flex flex-col gap-2">
-                <Button href={article.category.href} color="link-color">
-                    {article.category.name}
+                <Button href={article.href} color="link-color">
+                    {article.categories[0]?.name || 'Uncategorized'}
                 </Button>
                 <div className="flex flex-col gap-2">
                     <Button href={article.href} color="link-gray" size="xl" className="text-xl font-semibold text-primary md:text-lg">
@@ -605,7 +617,7 @@ export const CardFullWidthImage02Horizontal = ({ article }: { article: Article }
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
             <div className="flex flex-col gap-4">
-                <BadgeGroup addonText={article.category.name} size="md" theme="light" color="brand" className="pr-3" iconTrailing={null}>
+                <BadgeGroup addonText={article.categories[0]?.name || 'Uncategorized'} size="md" theme="light" color="brand" className="pr-3" iconTrailing={null}>
                     {article.readingTime}
                 </BadgeGroup>
                 <div className="flex flex-col gap-2">
@@ -688,8 +700,8 @@ export const CardFullWidthImage04Horizontal = ({ article }: { article: Article }
                         <time className="block text-sm text-white">{article.publishedAt}</time>
                     </div>
                     <p className="text-sm font-semibold">
-                        <Button href={article.category.href} color="link-gray" className="text-white">
-                            {article.category.name}
+                        <Button href={article.href} color="link-gray" className="text-white">
+                            {article.categories[0]?.name || 'Uncategorized'}
                         </Button>
                     </p>
                 </div>

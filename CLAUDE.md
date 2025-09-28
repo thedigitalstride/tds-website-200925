@@ -126,6 +126,7 @@ src/
 
 - **[Image Optimization Guide](/docs/IMAGES.md)** - Complete guide for handling images in this project, including the OptimizedImage component, Payload Media integration, and performance best practices.
 - **[Row Labels Guide](/docs/ROW_LABELS.md)** - Complete guide for implementing row labels in array fields to improve admin UX. Includes when to use row labels, implementation patterns, and code examples.
+- **[Next.js 15 Filtering Fix](/docs/NEXT_JS_15_FILTERING_FIX.md)** - Critical fix for server-side URL parameter extraction in Next.js 15. Resolves issues with category filtering, searchParams extraction, and force-static compatibility.
 
 ## Collections
 

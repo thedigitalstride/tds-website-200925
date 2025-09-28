@@ -44,24 +44,35 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
 
         {/* Left Content */}
         <div className="flex max-w-180 flex-col items-start">
-          {/* Categories Badge */}
+          {/* Categories Badges - Clickable */}
           {categories && categories.length > 0 && (
-            <BadgeGroup size="md" addonText="Blog" color="brand" theme="light" className="pr-3" iconTrailing={null}>
-              {categories
-                .map(category => {
-                  // Handle populated category objects (when depth > 0)
-                  if (typeof category === 'object' && category !== null && 'title' in category) {
-                    return category.title;
-                  }
-                  // Handle non-populated categories (just IDs) - fallback
-                  if (typeof category === 'string' || typeof category === 'number') {
-                    return `Category ${category}`;
-                  }
-                  return null;
-                })
-                .filter(Boolean)
-                .join(', ')}
-            </BadgeGroup>
+            <div className="flex gap-2 flex-wrap">
+              {categories.map((category, index) => {
+                // Handle populated category objects (when depth > 0)
+                if (typeof category === 'object' && category !== null && 'title' in category && 'slug' in category) {
+                  return (
+                    <a
+                      key={category.id || index}
+                      href={`/posts?category=${category.slug}`}
+                      className="inline-block"
+                    >
+                      <BadgeGroup size="md" addonText="Blog" color="brand" theme="light" className="pr-3 hover:bg-brand-50 transition-colors" iconTrailing={null}>
+                        {category.title}
+                      </BadgeGroup>
+                    </a>
+                  );
+                }
+                // Handle non-populated categories (just IDs) - fallback
+                if (typeof category === 'string' || typeof category === 'number') {
+                  return (
+                    <BadgeGroup key={index} size="md" addonText="Blog" color="brand" theme="light" className="pr-3" iconTrailing={null}>
+                      Category {category}
+                    </BadgeGroup>
+                  );
+                }
+                return null;
+              }).filter(Boolean)}
+            </div>
           )}
 
           {/* Title - Exact UUI text sizes */}

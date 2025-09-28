@@ -18,6 +18,7 @@ interface BlogListingProps {
   categories: Category[];
   currentPage?: number;
   totalPages?: number;
+  selectedCategory?: string;
 }
 
 const sortByOptions = [
@@ -40,19 +41,25 @@ const transformPost = (post: Post, index: number): Article => {
   // Safely extract data from Post type
   const heroImage = typeof post.heroImage === 'object' ? post.heroImage as Media : undefined;
   const firstAuthor = post.populatedAuthors?.[0];
-  const firstCategory = Array.isArray(post.categories) && post.categories.length > 0
-    ? (typeof post.categories[0] === 'object' ? post.categories[0] as Category : undefined)
-    : undefined;
+  // Extract ALL categories, not just the first one
+  const allCategories = Array.isArray(post.categories) && post.categories.length > 0
+    ? post.categories
+        .filter(cat => typeof cat === 'object')
+        .map(cat => {
+          const category = cat as Category;
+          return {
+            name: category.title || 'Uncategorized',
+            href: category.slug ? `/posts?category=${category.slug}` : '#'
+          };
+        })
+    : [{ name: 'Uncategorized', href: '#' }];
 
   return {
     id: post.id.toString(),
     title: post.title,
     summary: post.subtitle || '',
     href: `/posts/${post.slug || 'undefined'}`,
-    category: {
-      name: firstCategory?.title || 'Uncategorized',
-      href: firstCategory?.slug ? `/posts?category=${firstCategory.slug}` : '#'
-    },
+    categories: allCategories,
     thumbnailUrl: heroImage?.url || '/placeholder.jpg',
     publishedAt: formatDateTime(post.publishedAt || ''),
     readingTime: calculateReadingTime(post.content),
@@ -70,19 +77,30 @@ export const BlogListing: React.FC<BlogListingProps> = ({
   posts,
   categories,
   currentPage = 1,
-  totalPages = 1
+  totalPages = 1,
+  selectedCategory: selectedCategoryProp
 }) => {
   const router = useRouter();
   const isDesktop = useBreakpoint("lg");
   const [sortBy, setSortBy] = useState(sortByOptions[0].id);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const selectedCategory = selectedCategoryProp || "all";
 
   // Handle page navigation
   const handlePageChange = (page: number) => {
+    const categoryParam = selectedCategory !== "all" ? `?category=${selectedCategory}` : '';
     if (page === 1) {
+      router.push(`/posts${categoryParam}`);
+    } else {
+      router.push(`/posts/page/${page}${categoryParam}`);
+    }
+  };
+
+  // Handle category change
+  const handleCategoryChange = (key: string) => {
+    if (key === "all") {
       router.push('/posts');
     } else {
-      router.push(`/posts/page/${page}`);
+      router.push(`/posts?category=${key}`);
     }
   };
 
@@ -98,28 +116,20 @@ export const BlogListing: React.FC<BlogListingProps> = ({
     }))
   ];
 
-  // Transform posts to articles
+  // Transform posts to articles and implement client-side filtering
   const articles = posts.map((post, index) => transformPost(post, index));
 
-  // Filter articles by category
+  // Filter articles by selected category (client-side filtering)
   const filteredArticles = selectedCategory === "all"
     ? articles
     : articles.filter(article => {
-        const post = posts.find(p => p.id.toString() === article.id);
-        if (!post?.categories || !Array.isArray(post.categories)) return false;
-
-        const postCategory = post.categories.find(cat => {
-          if (typeof cat === 'object' && cat !== null) {
-            const category = cat as Category;
-            return category.slug === selectedCategory || category.id.toString() === selectedCategory;
-          }
-          return false;
-        });
-
-        return !!postCategory;
+        // Check if any of the article's categories match the selected category slug
+        return article.categories.some(cat =>
+          cat.href.includes(`category=${selectedCategory}`)
+        );
       });
 
-  // Sort articles
+  // Sort the filtered articles
   const sortedArticles = [...filteredArticles].sort((a, b) => {
     switch (sortBy) {
       case "recent":
@@ -161,7 +171,7 @@ export const BlogListing: React.FC<BlogListingProps> = ({
 
         {/* Filters */}
         <div className="flex flex-col items-end gap-8 md:flex-row">
-          <Tabs className="w-full" selectedKey={selectedCategory} onSelectionChange={(key) => setSelectedCategory(key as string)}>
+          <Tabs className="w-full" selectedKey={selectedCategory} onSelectionChange={(key) => handleCategoryChange(key as string)}>
             <TabList
               type="underline"
               size="md"

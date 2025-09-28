@@ -5,6 +5,8 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import { notFound } from 'next/navigation'
+import type { Category } from '@/payload-types'
+import type { Where } from 'payload'
 
 export const revalidate = 600
 
@@ -12,16 +14,47 @@ type Args = {
   params: Promise<{
     number: string
   }>
+  searchParams: Promise<{
+    category?: string
+  }>
 }
 
-export default async function Page({ params: paramsPromise }: Args) {
-  const { number } = await paramsPromise
+export default async function Page(props: Args) {
+  const { number } = await props.params
+  const searchParams = await props.searchParams
+  const categorySlug = searchParams.category
   const payload = await getPayload({ config: configPromise })
 
   const currentPage = Number(number)
 
   if (!Number.isInteger(currentPage) || currentPage < 2) {
     notFound()
+  }
+
+  // Allow category filtering on any page number - no redirect needed
+
+  // Fetch all categories first to resolve category slug to ID if needed
+  const categories = await payload.find({
+    collection: 'categories',
+    limit: 100
+  })
+
+  // Find the category by slug if one is specified
+  let selectedCategory: Category | undefined
+  if (categorySlug) {
+    selectedCategory = categories.docs.find(cat => cat.slug === categorySlug)
+  }
+
+  // Build where clause with optional category filter
+  const whereClause: Where = {
+    _status: { equals: 'published' }
+  }
+
+  // Enable server-side filtering
+  if (selectedCategory) {
+    whereClause.categories = {
+      in: [selectedCategory.id]
+    }
   }
 
   // Fetch posts with all required fields for BlogListing
@@ -31,9 +64,7 @@ export default async function Page({ params: paramsPromise }: Args) {
     limit: 12,
     page: currentPage,
     overrideAccess: false,
-    where: {
-      _status: { equals: 'published' }
-    },
+    where: whereClause,
     sort: '-publishedAt'
   })
 
@@ -41,24 +72,19 @@ export default async function Page({ params: paramsPromise }: Args) {
     notFound()
   }
 
-  // Fetch all categories for filtering
-  const categories = await payload.find({
-    collection: 'categories',
-    limit: 100
-  })
-
   return (
     <BlogListing
       posts={posts.docs}
       categories={categories.docs}
       currentPage={posts.page}
       totalPages={posts.totalPages}
+      selectedCategory={categorySlug || undefined}
     />
   )
 }
 
-export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { number } = await paramsPromise
+export async function generateMetadata(props: Args): Promise<Metadata> {
+  const { number } = await props.params
   return {
     title: `Payload Website Template Posts - Page ${number}`,
   }

@@ -16,10 +16,10 @@ const articles: Article[] = [
         title: "UX review presentations",
         summary: "How do you create compelling presentations that wow your colleagues and impress your managers?",
         href: "#",
-        category: {
+        categories: [{
             name: "Design",
             href: "#",
-        },
+        }],
         thumbnailUrl: "https://www.untitledui.com/marketing/spirals.webp",
         publishedAt: "20 Jan 2025",
         readingTime: "8 min read",
@@ -52,10 +52,10 @@ const articles: Article[] = [
         title: "Migrating to Linear 101",
         summary: "Linear helps streamline software projects, sprints, tasks, and bug tracking. Here's how to get started.",
         href: "#",
-        category: {
+        categories: [{
             name: "Product",
             href: "#",
-        },
+        }],
         thumbnailUrl: "https://www.untitledui.com/marketing/conversation.webp",
         publishedAt: "19 Jan 2025",
         readingTime: "8 min read",
@@ -87,10 +87,10 @@ const articles: Article[] = [
         title: "Building your API stack",
         summary: "The rise of RESTful APIs has been met by a rise in tools for creating, testing, and managing them.",
         href: "#",
-        category: {
+        categories: [{
             name: "Software Engineering",
             href: "#",
-        },
+        }],
         thumbnailUrl: "https://www.untitledui.com/blog/two-mobile-shapes-pattern.webp",
         publishedAt: "18 Jan 2025",
         readingTime: "8 min read",
@@ -117,10 +117,10 @@ const articles: Article[] = [
         title: "Bill Walsh leadership lessons",
         summary: "Like to know the secrets of transforming a 2-14 team into a 3x Super Bowl winning Dynasty?",
         href: "#",
-        category: {
+        categories: [{
             name: "Product",
             href: "#",
-        },
+        }],
         thumbnailUrl: "https://www.untitledui.com/blog/two-people.webp",
         publishedAt: "17 Jan 2025",
         readingTime: "8 min read",
@@ -147,10 +147,10 @@ const articles: Article[] = [
         title: "PM mental models",
         summary: "Mental models are simple expressions of complex processes or relationships.",
         href: "#",
-        category: {
+        categories: [{
             name: "Product",
             href: "#",
-        },
+        }],
         thumbnailUrl: "https://www.untitledui.com/marketing/smiling-girl-6.webp",
         publishedAt: "16 Jan 2025",
         readingTime: "8 min read",
@@ -182,10 +182,10 @@ const articles: Article[] = [
         title: "What is wireframing?",
         summary: "Introduction to Wireframing and its Principles. Learn from the best in the industry.",
         href: "#",
-        category: {
+        categories: [{
             name: "Design",
             href: "#",
-        },
+        }],
         thumbnailUrl: "https://www.untitledui.com/marketing/wireframing-layout.webp",
         publishedAt: "15 Jan 2025",
         readingTime: "8 min read",
@@ -212,10 +212,10 @@ const articles: Article[] = [
         title: "How collaboration makes us better designers",
         summary: "Collaboration can make our teams stronger, and our individual designs better.",
         href: "#",
-        category: {
+        categories: [{
             name: "Design",
             href: "#",
-        },
+        }],
         thumbnailUrl: "https://www.untitledui.com/marketing/two-people.webp",
         publishedAt: "14 Jan 2025",
         readingTime: "8 min read",
@@ -242,10 +242,10 @@ const articles: Article[] = [
         title: "Our top 10 Javascript frameworks to use",
         summary: "JavaScript frameworks make development easy with extensive features and functionalities.",
         href: "#",
-        category: {
+        categories: [{
             name: "Product",
             href: "#",
-        },
+        }],
         thumbnailUrl: "https://www.untitledui.com/marketing/workspace-5.webp",
         publishedAt: "13 Jan 2025",
         readingTime: "8 min read",
@@ -277,10 +277,10 @@ const articles: Article[] = [
         title: "Podcast: Creating a better CX Community",
         summary: "Starting a community doesn't need to be complicated, but how do you get started?",
         href: "#",
-        category: {
+        categories: [{
             name: "Customer Success",
             href: "#",
-        },
+        }],
         thumbnailUrl: "https://www.untitledui.com/marketing/sythesize.webp",
         publishedAt: "12 Jan 2025",
         readingTime: "8 min read",
@@ -342,10 +342,10 @@ const sortByOptions = [
 
 const featuredArticle: Article = {
     id: "article-001",
-    category: {
+    categories: [{
         name: "Design",
         href: "#",
-    },
+    }],
     thumbnailUrl: "https://www.untitledui.com/marketing/blog-featured-post-01.webp",
     title: 'Improve your design skills: Develop an "eye" for design',
     summary: 'Tools and trends change, but good design is timeless. Learn how to quickly develop an "eye" for design.',
