@@ -33,7 +33,7 @@ export interface UUIButtonProps extends Omit<ButtonProps, 'children' | 'href'> {
   /** Payload link object or simple URL string */
   link?: PayloadLinkObject | string
   /** Icon from @untitledui/icons */
-  icon?: React.ComponentType<{ className?: string }>
+  icon?: React.FC<{ className?: string }>
   /** Icon position */
   iconPosition?: 'leading' | 'trailing'
   /** Custom class names */

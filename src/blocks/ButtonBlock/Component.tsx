@@ -6,7 +6,7 @@ import { UUIButton } from '@/components/payload-ui/UUIButton'
 import * as UUIIcons from '@untitledui/icons'
 
 // Type for dynamic icon imports
-type IconComponent = React.ComponentType<{ className?: string }>
+type IconComponent = React.FC<{ className?: string }>
 
 export const ButtonBlockComponent: React.FC<ButtonBlockProps & { className?: string }> = ({
   buttons,
