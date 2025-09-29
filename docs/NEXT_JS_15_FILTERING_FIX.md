@@ -165,6 +165,123 @@ Category filtering: {
 - **Category resolution**: Always resolve slugs to IDs before querying
 - **Error handling**: Invalid category slugs gracefully fall back to unfiltered results
 
+## TypeScript Requirements
+
+This fix also requires proper TypeScript patterns for build success:
+
+### 1. Where Clause Typing
+
+```typescript
+import type { Where } from 'payload'  // CRITICAL: Import Where type
+
+// ✅ CORRECT - Proper typing
+const whereClause: Where = {
+  _status: { equals: 'published' }
+}
+
+// ❌ WRONG - Generic typing loses type safety
+const whereClause: Record<string, unknown> = {
+  _status: { equals: 'published' }
+}
+```
+
+### 2. Article Interface Compliance
+
+All blog components must use the correct Article interface:
+
+```typescript
+// ✅ CORRECT - Article with categories array
+const article: Article = {
+  id: '1',
+  title: 'Example',
+  categories: [{    // Always use 'categories' (plural)
+    name: 'Team',
+    href: '/posts?category=team'
+  }],
+  // ... other fields
+}
+
+// ❌ WRONG - Mock data with category object
+const article = {
+  category: {     // This will cause TypeScript errors
+    name: 'Team'
+  }
+}
+```
+
+### 3. Badge Component Types
+
+UUI Badge components require valid type values:
+
+```typescript
+// ✅ CORRECT - Valid badge types
+<Badge size="sm" color="brand" type="pill-color">
+  {category.name}
+</Badge>
+
+// ❌ WRONG - Invalid type value
+<Badge size="sm" color="brand" type="pill-outline">  // Doesn't exist
+  {category.name}
+</Badge>
+```
+
+### 4. Category Access Patterns
+
+```typescript
+// ✅ CORRECT - Safe array access
+const firstCategory = article.categories[0]?.name || 'Uncategorized'
+
+// ✅ CORRECT - Map all categories
+article.categories.map(cat => cat.name).join(', ')
+
+// ❌ WRONG - Will cause TypeScript errors
+article.category.name  // 'category' property doesn't exist
+```
+
+## Build Verification
+
+After implementing the fix, verify TypeScript compliance:
+
+```bash
+# 1. Generate latest types
+pnpm generate:types
+
+# 2. Run full build to catch type errors
+pnpm build
+
+# 3. Check for common errors:
+# - Badge component type errors
+# - Article interface violations
+# - Where clause typing issues
+# - Missing type imports
+```
+
+## Common TypeScript Errors After Fix
+
+### Error 1: Badge Type Issue
+```
+Type '"pill-outline"' is not assignable to type 'BadgeTypes'
+```
+**Solution:** Change to valid badge type: `type="pill-color"`
+
+### Error 2: Article Category Access
+```
+Property 'category' does not exist on type 'Article'
+```
+**Solution:** Use `article.categories[0]?.name` instead
+
+### Error 3: Where Clause Typing
+```
+Type 'Record<string, any>' not assignable to 'Where'
+```
+**Solution:** Import `Where` type from Payload and use proper typing
+
+### Error 4: Mock Data Structure
+```
+Object literal may only specify known properties, and 'category' does not exist in type 'Article'
+```
+**Solution:** Update mock data to use `categories` array
+
 ## Related Issues
 
 This fix resolves several related problems:
@@ -174,6 +291,8 @@ This fix resolves several related problems:
 3. **Multiple categories**: Posts with multiple categories display correctly
 4. **Pagination**: Filtered pagination URLs work correctly
 5. **ISR compatibility**: Filtering works with Incremental Static Regeneration
+6. **TypeScript compliance**: All components use proper types and interfaces
+7. **Build success**: No TypeScript errors in production builds
 
 ## Future Considerations
 

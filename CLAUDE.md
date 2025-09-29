@@ -126,7 +126,10 @@ src/
 
 - **[Image Optimization Guide](/docs/IMAGES.md)** - Complete guide for handling images in this project, including the OptimizedImage component, Payload Media integration, and performance best practices.
 - **[Row Labels Guide](/docs/ROW_LABELS.md)** - Complete guide for implementing row labels in array fields to improve admin UX. Includes when to use row labels, implementation patterns, and code examples.
+- **[Blog Implementation Guide](/docs/BLOG_IMPLEMENTATION.md)** - Comprehensive guide for implementing and maintaining the blog/posts system with UUI components, category filtering, and Next.js 15 patterns.
+- **[TypeScript Patterns](/docs/TYPESCRIPT_PATTERNS.md)** - TypeScript best practices, common patterns, and solutions for Payload CMS, Next.js 15, and UUI components.
 - **[Next.js 15 Filtering Fix](/docs/NEXT_JS_15_FILTERING_FIX.md)** - Critical fix for server-side URL parameter extraction in Next.js 15. Resolves issues with category filtering, searchParams extraction, and force-static compatibility.
+- **[UUI Components Reference](/docs/UUI_COMPONENTS_REFERENCE.md)** - Reference guide for UntitledUI component usage, types, and integration patterns.
 
 ## Collections
 
@@ -563,6 +566,8 @@ BLOB_READ_WRITE_TOKEN=    # Vercel Blob Storage token
 - **Brand Integration**: #1689FF blue color integrated throughout UUI component system
 - **🚨 CRITICAL - Image Handling**: Always use `OptimizedImage` component instead of `<img>` tags. See `/docs/IMAGES.md` for complete guidelines. External image domains must be added to `next.config.js`.
 - **🚨 CRITICAL - Row Labels**: ALWAYS implement row labels for array fields with identifiable content (navigation items, social links, etc.). See `/docs/ROW_LABELS.md` for complete guidelines. This improves admin UX by showing meaningful labels when arrays are collapsed.
+- **🚨 CRITICAL - Blog/Posts System**: Use proper TypeScript patterns for blog implementation. Always use `categories` array (not `category` object), import `Where` type from Payload, and follow Next.js 15 searchParams patterns. See `/docs/BLOG_IMPLEMENTATION.md` and `/docs/TYPESCRIPT_PATTERNS.md`.
+- **🚨 CRITICAL - Next.js 15 Compatibility**: Never use `export const dynamic = 'force-static'` with URL parameters. Always use `props.searchParams` pattern instead of destructuring. See `/docs/NEXT_JS_15_FILTERING_FIX.md` for complete fix.
 
 ## Content Management
 
