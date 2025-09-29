@@ -104,15 +104,12 @@ export const UUIButton: React.FC<UUIButtonProps> = ({
   const uuiColor = typeof link === 'object' && link?.uuiColor ? link.uuiColor : buttonProps.color || 'primary'
   const uuiSize = typeof link === 'object' && link?.uuiSize ? link.uuiSize : buttonProps.size || 'md'
 
-  const iconProps = Icon ? {
-    [iconPosition === 'leading' ? 'iconLeading' : 'iconTrailing']: Icon
-  } : {}
-
   return (
     <Button
       {...buttonProps}
-      {...iconProps}
       {...(isLink ? { href, target } : {})}
+      iconLeading={iconPosition === 'leading' ? Icon : undefined}
+      iconTrailing={iconPosition === 'trailing' ? Icon : undefined}
       color={uuiColor}
       size={uuiSize}
       className={className}

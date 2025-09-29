@@ -21,7 +21,7 @@ export const ButtonBlock: Block = {
           name: 'icon',
           type: 'text',
           admin: {
-            description: 'Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download")',
+            description: 'Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01")',
           },
           label: 'Icon Name',
         },

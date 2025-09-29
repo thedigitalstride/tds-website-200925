@@ -16,6 +16,83 @@ export const Header: GlobalConfig = {
       fields: [
         link({
           appearances: false,
+          overrides: {
+            admin: {
+              description: 'Main navigation item. URL is optional when dropdown menu is enabled (label still required for dropdown trigger text).',
+            },
+            fields: [
+              {
+                type: 'row',
+                fields: [
+                  {
+                    name: 'type',
+                    type: 'radio',
+                    admin: {
+                      layout: 'horizontal',
+                      width: '50%',
+                    },
+                    defaultValue: 'reference',
+                    options: [
+                      {
+                        label: 'Internal link',
+                        value: 'reference',
+                      },
+                      {
+                        label: 'Custom URL',
+                        value: 'custom',
+                      },
+                    ],
+                  },
+                  {
+                    name: 'newTab',
+                    type: 'checkbox',
+                    admin: {
+                      style: {
+                        alignSelf: 'flex-end',
+                      },
+                      width: '50%',
+                    },
+                    label: 'Open in new tab',
+                  },
+                ],
+              },
+              {
+                type: 'row',
+                fields: [
+                  {
+                    name: 'reference',
+                    type: 'relationship',
+                    admin: {
+                      condition: (_, siblingData) => siblingData?.type === 'reference',
+                      width: '50%',
+                    },
+                    label: 'Document to link to',
+                    relationTo: ['pages', 'posts'],
+                    required: false, // Optional when dropdown exists
+                  },
+                  {
+                    name: 'url',
+                    type: 'text',
+                    admin: {
+                      condition: (_, siblingData) => siblingData?.type === 'custom',
+                      width: '50%',
+                    },
+                    label: 'Custom URL',
+                    required: false, // Optional when dropdown exists
+                  },
+                  {
+                    name: 'label',
+                    type: 'text',
+                    admin: {
+                      width: '50%',
+                    },
+                    label: 'Label',
+                    required: true, // Always required for dropdown trigger text
+                  },
+                ],
+              },
+            ],
+          },
         }),
         {
           name: 'hasDropdown',
@@ -43,26 +120,11 @@ export const Header: GlobalConfig = {
             },
             {
               name: 'icon',
-              type: 'select',
+              type: 'text',
               label: 'Icon',
-              options: [
-                { label: 'Trend Up', value: 'TrendUp01' },
-                { label: 'Users', value: 'Users01' },
-                { label: 'Search', value: 'SearchLg' },
-                { label: 'Mail', value: 'Mail01' },
-                { label: 'Info Circle', value: 'InfoCircle' },
-                { label: 'Briefcase', value: 'Briefcase01' },
-                { label: 'File', value: 'File01' },
-                { label: 'Chart', value: 'BarChart01' },
-                { label: 'Globe', value: 'Globe01' },
-                { label: 'Settings', value: 'Settings01' },
-                { label: 'Target', value: 'Target01' },
-                { label: 'Star', value: 'Star01' },
-                { label: 'Shield', value: 'Shield01' },
-                { label: 'Code', value: 'Code01' },
-              ],
               admin: {
-                description: 'Icon that appears next to the dropdown item',
+                description: 'Optional icon name from @untitledui/icons (e.g., "TrendUp01", "Users01", "ArrowRight", "Download01")',
+                placeholder: 'TrendUp01',
               },
             },
           ],

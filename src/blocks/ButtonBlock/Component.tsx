@@ -1,6 +1,9 @@
+'use client'
+
 import React from 'react'
 import type { ButtonBlock as ButtonBlockProps } from '@/payload-types'
 import { UUIButton } from '@/components/payload-ui/UUIButton'
+import * as UUIIcons from '@untitledui/icons'
 
 // Type for dynamic icon imports
 type IconComponent = React.ComponentType<{ className?: string }>
@@ -31,20 +34,19 @@ export const ButtonBlockComponent: React.FC<ButtonBlockProps & { className?: str
       className={`flex ${layoutClasses[layout || 'horizontal']} ${alignmentClasses[alignment || 'left']} flex-wrap ${className || ''}`}
     >
       {buttons.map((button, index) => {
-        const { link, icon: _icon, iconPosition } = button
+        const { link, icon, iconPosition } = button
 
-        // For now, we'll handle icons as a future enhancement
-        // This would require dynamic imports of @untitledui/icons
+        // Dynamic icon loading from @untitledui/icons
         let IconComponent: IconComponent | undefined
 
-        // TODO: Implement dynamic icon loading
-        // if (icon) {
-        //   try {
-        //     IconComponent = require(`@untitledui/icons/${icon}`).default
-        //   } catch (error) {
-        //     console.warn(`Icon ${icon} not found`)
-        //   }
-        // }
+        if (icon && typeof icon === 'string') {
+          // Get the icon component from the UUIIcons namespace
+          IconComponent = (UUIIcons as Record<string, IconComponent>)[icon]
+
+          if (!IconComponent) {
+            console.warn(`Icon "${icon}" not found in @untitledui/icons. Available icons must match exact export names (e.g., "ArrowRight", "Download01").`)
+          }
+        }
 
         return (
           <UUIButton

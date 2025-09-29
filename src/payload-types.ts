@@ -191,7 +191,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | ButtonBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -812,6 +812,65 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ButtonBlock".
+ */
+export interface ButtonBlock {
+  /**
+   * Add one or more buttons with different styles and links
+   */
+  buttons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?:
+            | (
+                | 'primary'
+                | 'secondary'
+                | 'tertiary'
+                | 'link-gray'
+                | 'link-color'
+                | 'primary-destructive'
+                | 'secondary-destructive'
+                | 'tertiary-destructive'
+                | 'link-destructive'
+              )
+            | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+        };
+        /**
+         * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01")
+         */
+        icon?: string | null;
+        iconPosition?: ('leading' | 'trailing') | null;
+        id?: string | null;
+      }[]
+    | null;
+  layout?: ('horizontal' | 'vertical') | null;
+  alignment?: ('left' | 'center' | 'right') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'buttonBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1101,6 +1160,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        buttonBlock?: T | ButtonBlockSelect<T>;
       };
   meta?:
     | T
@@ -1219,6 +1279,34 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ButtonBlock_select".
+ */
+export interface ButtonBlockSelect<T extends boolean = true> {
+  buttons?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              uuiColor?: T;
+              uuiSize?: T;
+            };
+        icon?: T;
+        iconPosition?: T;
+        id?: T;
+      };
+  layout?: T;
+  alignment?: T;
   id?: T;
   blockName?: T;
 }
@@ -1674,6 +1762,9 @@ export interface Header {
   id: number;
   navItems?:
     | {
+        /**
+         * Main navigation item. URL is optional when dropdown menu is enabled (label still required for dropdown trigger text).
+         */
         link: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
@@ -1718,26 +1809,9 @@ export interface Header {
                */
               description?: string | null;
               /**
-               * Icon that appears next to the dropdown item
+               * Optional icon name from @untitledui/icons (e.g., "TrendUp01", "Users01", "ArrowRight", "Download01")
                */
-              icon?:
-                | (
-                    | 'TrendUp01'
-                    | 'Users01'
-                    | 'SearchLg'
-                    | 'Mail01'
-                    | 'InfoCircle'
-                    | 'Briefcase01'
-                    | 'File01'
-                    | 'BarChart01'
-                    | 'Globe01'
-                    | 'Settings01'
-                    | 'Target01'
-                    | 'Star01'
-                    | 'Shield01'
-                    | 'Code01'
-                  )
-                | null;
+              icon?: string | null;
               id?: string | null;
             }[]
           | null;
@@ -1997,65 +2071,6 @@ export interface TaskSchedulePublish {
     user?: (number | null) | User;
   };
   output?: unknown;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ButtonBlock".
- */
-export interface ButtonBlock {
-  /**
-   * Add one or more buttons with different styles and links
-   */
-  buttons?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Button color variant from UntitledUI design system
-           */
-          uuiColor?:
-            | (
-                | 'primary'
-                | 'secondary'
-                | 'tertiary'
-                | 'link-gray'
-                | 'link-color'
-                | 'primary-destructive'
-                | 'secondary-destructive'
-                | 'tertiary-destructive'
-                | 'link-destructive'
-              )
-            | null;
-          /**
-           * Button size variant
-           */
-          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-        };
-        /**
-         * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download")
-         */
-        icon?: string | null;
-        iconPosition?: ('leading' | 'trailing') | null;
-        id?: string | null;
-      }[]
-    | null;
-  layout?: ('horizontal' | 'vertical') | null;
-  alignment?: ('left' | 'center' | 'right') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'buttonBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

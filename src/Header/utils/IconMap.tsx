@@ -1,42 +1,36 @@
-import {
-  TrendUp01,
-  Users01,
-  SearchLg,
-  Mail01,
-  InfoCircle,
-  Briefcase01,
-  File01,
-  BarChart01,
-  Globe01,
-  Settings01,
-  Target01,
-  Star01,
-  Shield01,
-  Code01
-} from "@untitledui/icons"
+import * as UUIIcons from '@untitledui/icons'
+import type { FC } from 'react'
 
-export const IconMap = {
-  TrendUp01,
-  Users01,
-  SearchLg,
-  Mail01,
-  InfoCircle,
-  Briefcase01,
-  File01,
-  BarChart01,
-  Globe01,
-  Settings01,
-  Target01,
-  Star01,
-  Shield01,
-  Code01,
-}
+/**
+ * Type-safe icon name - automatically includes all icons from @untitledui/icons
+ * Provides full TypeScript IntelliSense and compile-time validation
+ */
+export type UUIIconName = keyof typeof UUIIcons
 
-export type IconName = keyof typeof IconMap
+/**
+ * Type for icon components
+ */
+type IconComponent = FC<{ className?: string }>
 
-export const getIcon = (iconName?: string) => {
-  if (!iconName || !(iconName in IconMap)) {
+/**
+ * Get an icon component by name from @untitledui/icons
+ *
+ * @param iconName - The exact name of the icon (e.g., "ArrowRight", "Download01")
+ * @returns The icon component or null if not found
+ *
+ * @example
+ * const Icon = getIcon('ArrowRight')
+ * if (Icon) return <Icon className="size-4" />
+ */
+export const getIcon = (iconName?: string): IconComponent | null => {
+  if (!iconName || !(iconName in UUIIcons)) {
+    if (iconName) {
+      console.warn(
+        `Icon "${iconName}" not found in @untitledui/icons. ` +
+        `Available icons must match exact export names (e.g., "ArrowRight", "Download01", "TrendUp01").`
+      )
+    }
     return null
   }
-  return IconMap[iconName as IconName]
+  return (UUIIcons as Record<string, IconComponent>)[iconName]
 }
