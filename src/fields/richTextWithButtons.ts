@@ -12,6 +12,9 @@ import {
   InlineToolbarFeature,
   HeadingFeature,
   HorizontalRuleFeature,
+  UnorderedListFeature,
+  OrderedListFeature,
+  ChecklistFeature,
   type LinkFields,
 } from '@payloadcms/richtext-lexical'
 
@@ -32,17 +35,22 @@ export const richTextEditor = (options?: {
       HeadingFeature({
         enabledHeadingSizes: options?.enabledHeadingSizes || ['h2', 'h3', 'h4']
       }),
+      UnorderedListFeature(),
+      OrderedListFeature(),
+      ChecklistFeature(),
       BlocksFeature({
         blocks: [ButtonBlock, ...(options?.additionalBlocks || [])]
       }),
-      FixedToolbarFeature(),
-      InlineToolbarFeature(),
     ]
 
     // Add horizontal rule if enabled
     if (options?.enableHorizontalRule) {
       features.push(HorizontalRuleFeature())
     }
+
+    // Add toolbar features last so they can detect all content features
+    features.push(FixedToolbarFeature())
+    features.push(InlineToolbarFeature())
 
     return features
   },
@@ -57,12 +65,16 @@ export const richTextEditorFull = (additionalBlocks: Block[] = []) => lexicalEdi
     return [
       ...rootFeatures,
       HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+      UnorderedListFeature(),
+      OrderedListFeature(),
+      ChecklistFeature(),
       BlocksFeature({
         blocks: [ButtonBlock, ...additionalBlocks]
       }),
+      HorizontalRuleFeature(),
+      // Add toolbar features last so they can detect all content features
       FixedToolbarFeature(),
       InlineToolbarFeature(),
-      HorizontalRuleFeature(),
     ]
   },
 })
@@ -75,7 +87,11 @@ export const richTextEditorSimple = () => lexicalEditor({
   features: ({ rootFeatures }) => {
     return [
       ...rootFeatures,
+      UnorderedListFeature(),
+      OrderedListFeature(),
+      ChecklistFeature(),
       BlocksFeature({ blocks: [ButtonBlock] }),
+      // Add toolbar features last so they can detect all content features
       FixedToolbarFeature(),
       InlineToolbarFeature(),
     ]
@@ -90,6 +106,10 @@ export const richTextEditorMinimal = () => lexicalEditor({
   features: ({ rootFeatures }) => {
     return [
       ...rootFeatures,
+      UnorderedListFeature(),
+      OrderedListFeature(),
+      ChecklistFeature(),
+      // Add toolbar features last so they can detect all content features
       FixedToolbarFeature(),
       InlineToolbarFeature(),
     ]
@@ -106,6 +126,9 @@ export const defaultLexicalWithButtons = lexicalEditor({
     UnderlineFeature(),
     BoldFeature(),
     ItalicFeature(),
+    UnorderedListFeature(),
+    OrderedListFeature(),
+    ChecklistFeature(),
     BlocksFeature({ blocks: [ButtonBlock] }),
     LinkFeature({
       enabledCollections: ['pages', 'posts'],
