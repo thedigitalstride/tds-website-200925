@@ -5,7 +5,7 @@ import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
-import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
+import { GenerateTitle, GenerateURL, GenerateDescription, GenerateImage } from '@payloadcms/plugin-seo/types'
 import { richTextEditor } from '@/fields/richTextWithButtons'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
@@ -13,12 +13,48 @@ import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | The Digital Stride` : 'The Digital Stride'
 }
 
-const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
+const generateDescription: GenerateDescription<Post | Page> = ({ doc }) => {
+  // For Posts, use subtitle if available, otherwise fallback to a default
+  if ('subtitle' in doc && doc.subtitle) {
+    return doc.subtitle
+  }
+
+  // For Pages with hero content, extract description from hero
+  if ('hero' in doc && doc.hero && typeof doc.hero === 'object' && 'description' in doc.hero && typeof doc.hero.description === 'string') {
+    return doc.hero.description
+  }
+
+  // Default fallback
+  return `View ${doc?.title || 'this page'} on The Digital Stride`
+}
+
+const generateImage: GenerateImage<Post | Page> = ({ doc }) => {
+  // For Posts, use heroImage if available
+  if ('heroImage' in doc && doc.heroImage && typeof doc.heroImage === 'object' && 'id' in doc.heroImage) {
+    return doc.heroImage.id
+  }
+
+  // For Pages, use hero media if available
+  if ('hero' in doc && doc.hero && typeof doc.hero === 'object' && 'media' in doc.hero && doc.hero.media && typeof doc.hero.media === 'object' && 'id' in doc.hero.media) {
+    return doc.hero.media.id
+  }
+
+  // Return empty string if no image is available - plugin will handle fallback
+  return ''
+}
+
+const generateURL: GenerateURL<Post | Page> = ({ doc, collectionSlug }) => {
   const url = getServerSideURL()
 
+  // For posts, prefix with /posts
+  if (collectionSlug === 'posts') {
+    return doc?.slug ? `${url}/posts/${doc.slug}` : url
+  }
+
+  // For pages, use the slug directly
   return doc?.slug ? `${url}/${doc.slug}` : url
 }
 
@@ -55,7 +91,11 @@ export const plugins: Plugin[] = [
     generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
   }),
   seoPlugin({
+    collections: ['pages', 'posts'],
+    uploadsCollection: 'media',
     generateTitle,
+    generateDescription,
+    generateImage,
     generateURL,
   }),
   formBuilderPlugin({
