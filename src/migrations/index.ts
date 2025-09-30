@@ -9,6 +9,7 @@ import * as migration_20250925_205027 from './20250925_205027';
 import * as migration_20250926_194105 from './20250926_194105';
 import * as migration_20250929_213200_add_button_block from './20250929_213200_add_button_block';
 import * as migration_20250929_215500_header_dropdown_icon_to_varchar from './20250929_215500_header_dropdown_icon_to_varchar';
+import * as migration_20250930_120307 from './20250930_120307';
 
 export const migrations = [
   {
@@ -54,7 +55,7 @@ export const migrations = [
   {
     up: migration_20250926_194105.up,
     down: migration_20250926_194105.down,
-    name: '20250926_194105'
+    name: '20250926_194105',
   },
   {
     up: migration_20250929_213200_add_button_block.up,
@@ -65,5 +66,10 @@ export const migrations = [
     up: migration_20250929_215500_header_dropdown_icon_to_varchar.up,
     down: migration_20250929_215500_header_dropdown_icon_to_varchar.down,
     name: '20250929_215500_header_dropdown_icon_to_varchar',
+  },
+  {
+    up: migration_20250930_120307.up,
+    down: migration_20250930_120307.down,
+    name: '20250930_120307'
   },
 ];

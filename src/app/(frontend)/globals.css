@@ -64,3 +64,15 @@ input[type="search"]::-webkit-search-cancel-button {
 .prose-centered-quote blockquote {
     text-align: center;
 }
+
+/* Inline image styling within rich text content */
+/* Applied via CSS container for flexibility */
+.payload-richtext figure.richtext-inline-image img,
+.prose figure.richtext-inline-image img {
+    border-radius: 0.5rem; /* rounded-lg equivalent */
+}
+
+/* Optional: Remove rounded corners in specific contexts */
+.prose-no-rounded figure.richtext-inline-image img {
+    border-radius: 0;
+}

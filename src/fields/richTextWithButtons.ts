@@ -15,6 +15,7 @@ import {
   UnorderedListFeature,
   OrderedListFeature,
   ChecklistFeature,
+  UploadFeature,
   type LinkFields,
 } from '@payloadcms/richtext-lexical'
 
@@ -64,6 +65,30 @@ export const richTextEditorFull = (additionalBlocks: Block[] = []) => lexicalEdi
   features: ({ rootFeatures }) => {
     return [
       ...rootFeatures,
+      // Add UploadFeature for inline image uploads - Payload best practice
+      UploadFeature({
+        collections: {
+          media: {
+            fields: [
+              {
+                name: 'caption',
+                type: 'richText',
+                editor: lexicalEditor({
+                  features: ({ rootFeatures }) => [...rootFeatures],
+                }),
+                label: 'Caption',
+              },
+              {
+                name: 'alt',
+                type: 'text',
+                label: 'Alt Text',
+                required: false,
+              },
+            ],
+          },
+        },
+        maxDepth: 1, // Don't deeply populate upload relationships
+      }),
       HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
       UnorderedListFeature(),
       OrderedListFeature(),

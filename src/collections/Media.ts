@@ -1,14 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
 import { richTextEditorMinimal } from '@/fields/richTextWithButtons'
-import path from 'path'
-import { fileURLToPath } from 'url'
-
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
-
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -66,5 +60,12 @@ export const Media: CollectionConfig = {
         crop: 'center',
       },
     ],
+    // WebP format optimization for better performance
+    formatOptions: {
+      format: 'webp',
+      options: {
+        quality: 85,
+      },
+    },
   },
 }

@@ -3,6 +3,7 @@ import {
   DefaultNodeTypes,
   SerializedBlockNode,
   SerializedLinkNode,
+  SerializedUploadNode,
   type DefaultTypedEditorState,
 } from '@payloadcms/richtext-lexical'
 import {
@@ -10,6 +11,7 @@ import {
   LinkJSXConverter,
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
+import Image from 'next/image'
 
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 import { QuoteBlock } from '@/blocks/Quote/Component'
@@ -29,10 +31,12 @@ import { ButtonBlockComponent } from '@/blocks/ButtonBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { cn } from '@/utilities/ui'
 import { getPageUrl } from '@/utilities/pageHelpers'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 type NodeTypes =
   | DefaultNodeTypes
   | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | ButtonBlockProps | CodeBlockProps | QuoteBlockProps | ConclusionBlockProps>
+  | SerializedUploadNode
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
@@ -54,6 +58,40 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
   return {
     ...defaultConverters,
     ...LinkJSXConverter({ internalDocToHref }),
+    // Add custom upload converter for inline images - Payload best practice
+    upload: ({ node }: { node: SerializedUploadNode }) => {
+      if (node.relationTo === 'media') {
+        const uploadDoc = node.value
+        if (typeof uploadDoc !== 'object') {
+          return null
+        }
+
+        const { alt, height, url, width, updatedAt } = uploadDoc
+
+        // Use getMediaUrl to add cache tag for Vercel Blob Storage
+        const src = getMediaUrl(url, updatedAt)
+
+        return (
+          <figure className="richtext-inline-image col-start-2 my-8">
+            <Image
+              alt={alt || ''}
+              height={height || 800}
+              src={src}
+              width={width || 1200}
+              className="w-full h-auto"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+            />
+            {uploadDoc.caption && typeof uploadDoc.caption === 'object' && 'root' in uploadDoc.caption && (
+              <figcaption className="mt-4 text-sm text-tertiary">
+                {/* Render rich text caption */}
+                <ConvertRichText data={uploadDoc.caption} />
+              </figcaption>
+            )}
+          </figure>
+        )
+      }
+      return null
+    },
     blocks: {
       banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
       buttonBlock: ({ node }) => <ButtonBlockComponent className="col-start-2 mb-4" {...node.fields} />,
