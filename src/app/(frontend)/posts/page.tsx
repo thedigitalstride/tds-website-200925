@@ -70,6 +70,6 @@ export default async function Page(props: Args) {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Posts`,
+    title: `The Digital Stride Posts`,
   }
 }
