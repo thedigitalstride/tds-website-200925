@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body  className="bg-primary antialiased">
+      <body  className="bg-primary antialiased flex flex-col min-h-screen">
         <Providers>
         <RouteProvider>
         <ThemeProvider>
@@ -44,7 +44,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           />
 
           <Header />
-          {children}
+          <main className="flex-1">
+            {children}
+          </main>
           <Footer />
           </ThemeProvider>
           </RouteProvider>

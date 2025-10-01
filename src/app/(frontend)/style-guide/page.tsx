@@ -1,13 +1,49 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/uui/base/buttons/button";
 import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
 import { Badge } from "@/components/uui/base/badges/badges";
 
 export default function StyleGuidePage() {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    // Check initial theme
+    setIsDark(document.documentElement.classList.contains('dark-mode'));
+  }, []);
+
+  const toggleTheme = () => {
+    const html = document.documentElement;
+    if (html.classList.contains('dark-mode')) {
+      html.classList.remove('dark-mode');
+      setIsDark(false);
+    } else {
+      html.classList.add('dark-mode');
+      setIsDark(true);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-primary">
+      {/* Sticky Theme Toggle Button */}
+      <button
+        onClick={toggleTheme}
+        className="fixed bottom-8 right-8 z-50 bg-brand-solid hover:bg-brand-solid_hover text-primary-inverted p-4 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
+        aria-label="Toggle dark mode"
+      >
+        {isDark ? (
+          // Sun icon
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        ) : (
+          // Moon icon
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        )}
+      </button>
       {/* Header */}
       <div className="border-b border-secondary bg-primary">
         <div className="container max-w-[1280px] mx-auto px-8 py-12">
@@ -97,35 +133,144 @@ export default function StyleGuidePage() {
 
         {/* Color System */}
         <section>
-          <h2 className="text-display-md font-semibold text-primary mb-8">Text Colors</h2>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-              <div>
-                <p className="text-primary font-medium">Primary Text</p>
-                <code className="text-xs text-tertiary">text-primary - Main content</code>
+          <h2 className="text-display-md font-semibold text-primary mb-8">Color System</h2>
+
+          {/* Text Colors */}
+          <div className="mb-12">
+            <h3 className="text-xl font-semibold text-primary mb-6">Text Colors</h3>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                <div>
+                  <p className="text-primary font-medium">Primary Text</p>
+                  <code className="text-xs text-tertiary">text-primary - Main content</code>
+                </div>
+                <span className="text-primary text-2xl">Aa</span>
               </div>
-              <span className="text-primary text-2xl">Aa</span>
+              <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                <div>
+                  <p className="text-secondary font-medium">Secondary Text</p>
+                  <code className="text-xs text-tertiary">text-secondary - Body text</code>
+                </div>
+                <span className="text-secondary text-2xl">Aa</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                <div>
+                  <p className="text-tertiary font-medium">Tertiary Text</p>
+                  <code className="text-xs text-tertiary">text-tertiary - Captions</code>
+                </div>
+                <span className="text-tertiary text-2xl">Aa</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                <div>
+                  <p className="text-brand-secondary font-medium">Brand Text</p>
+                  <code className="text-xs text-tertiary">text-brand-secondary - Links</code>
+                </div>
+                <span className="text-brand-secondary text-2xl">Aa</span>
+              </div>
             </div>
-            <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-              <div>
-                <p className="text-secondary font-medium">Secondary Text</p>
-                <code className="text-xs text-tertiary">text-secondary - Body text</code>
+          </div>
+
+          {/* Background Colors */}
+          <div className="mb-12">
+            <h3 className="text-xl font-semibold text-primary mb-6">Background Colors</h3>
+            <div className="space-y-4">
+              <div className="p-6 bg-primary border-2 border-secondary rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Primary Background</p>
+                    <code className="text-xs text-tertiary">bg-primary - Main page background</code>
+                  </div>
+                  <div className="w-12 h-12 bg-primary border-2 border-primary rounded-md"></div>
+                </div>
               </div>
-              <span className="text-secondary text-2xl">Aa</span>
+              <div className="p-6 bg-secondary border-2 border-secondary rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Secondary Background</p>
+                    <code className="text-xs text-tertiary">bg-secondary - Card backgrounds</code>
+                  </div>
+                  <div className="w-12 h-12 bg-secondary border-2 border-primary rounded-md"></div>
+                </div>
+              </div>
+              <div className="p-6 bg-tertiary border-2 border-secondary rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Tertiary Background</p>
+                    <code className="text-xs text-tertiary">bg-tertiary - Subtle backgrounds</code>
+                  </div>
+                  <div className="w-12 h-12 bg-tertiary border-2 border-primary rounded-md"></div>
+                </div>
+              </div>
+              <div className="p-6 bg-quaternary border-2 border-secondary rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Quaternary Background</p>
+                    <code className="text-xs text-tertiary">bg-quaternary - Extra subtle backgrounds</code>
+                  </div>
+                  <div className="w-12 h-12 bg-quaternary border-2 border-primary rounded-md"></div>
+                </div>
+              </div>
+              <div className="p-6 bg-brand-primary border-2 border-brand rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Brand Primary Background</p>
+                    <code className="text-xs text-tertiary">bg-brand-primary - Brand highlights</code>
+                  </div>
+                  <div className="w-12 h-12 bg-brand-primary border-2 border-brand rounded-md"></div>
+                </div>
+              </div>
+              <div className="p-6 bg-brand-secondary border-2 border-brand rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Brand Secondary Background</p>
+                    <code className="text-xs text-tertiary">bg-brand-secondary - Subtle brand tints</code>
+                  </div>
+                  <div className="w-12 h-12 bg-brand-secondary border-2 border-brand rounded-md"></div>
+                </div>
+              </div>
+              <div className="p-6 bg-brand-solid border-2 border-brand rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary-inverted mb-1">Brand Solid Background</p>
+                    <code className="text-xs text-primary-inverted">bg-brand-solid - Solid brand color (buttons)</code>
+                  </div>
+                  <div className="w-12 h-12 bg-brand-solid border-2 border-brand rounded-md"></div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-              <div>
-                <p className="text-tertiary font-medium">Tertiary Text</p>
-                <code className="text-xs text-tertiary">text-tertiary - Captions</code>
+          </div>
+
+          {/* Border Colors */}
+          <div>
+            <h3 className="text-xl font-semibold text-primary mb-6">Border Colors</h3>
+            <div className="space-y-4">
+              <div className="p-6 bg-secondary border-2 border-primary rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Primary Border</p>
+                    <code className="text-xs text-tertiary">border-primary - Default borders</code>
+                  </div>
+                  <div className="w-12 h-12 bg-primary border-4 border-primary rounded-md"></div>
+                </div>
               </div>
-              <span className="text-tertiary text-2xl">Aa</span>
-            </div>
-            <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-              <div>
-                <p className="text-brand-secondary font-medium">Brand Text</p>
-                <code className="text-xs text-tertiary">text-brand-secondary - Links</code>
+              <div className="p-6 bg-secondary border-2 border-secondary rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Secondary Border</p>
+                    <code className="text-xs text-tertiary">border-secondary - Subtle borders</code>
+                  </div>
+                  <div className="w-12 h-12 bg-primary border-4 border-secondary rounded-md"></div>
+                </div>
               </div>
-              <span className="text-brand-secondary text-2xl">Aa</span>
+              <div className="p-6 bg-secondary border-2 border-brand rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Brand Border</p>
+                    <code className="text-xs text-tertiary">border-brand - Brand accent borders</code>
+                  </div>
+                  <div className="w-12 h-12 bg-primary border-4 border-brand rounded-md"></div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

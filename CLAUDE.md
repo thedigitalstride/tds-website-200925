@@ -124,8 +124,13 @@ src/
 
 ## 📄 Additional Documentation
 
+### Styling System (Read These First)
 - **[Style Guide Reference](/docs/STYLE_GUIDE.md)** - **⭐ START HERE** - Visual reference for typography, colors, spacing, and components. Complete guide to the Tailwind v4 + UUI design system architecture.
+- **[Styling Best Practices](/docs/STYLING_BEST_PRACTICES.md)** - **🎯 ESSENTIAL** - How to maintain site-wide styling consistency. Explains the centralized system, semantic tokens, and patterns for components.
 - **[Styles System Guide](/src/styles/README.md)** - Technical documentation for the styling system. Covers file structure, theme management, and customization workflows.
+- **[Live Style Guide](/style-guide)** - Interactive page showing all typography, colors, buttons, and badges in action.
+
+### Other Guides
 - **[Image Optimization Guide](/docs/IMAGES.md)** - Complete guide for handling images in this project, including the OptimizedImage component, Payload Media integration, and performance best practices.
 - **[Row Labels Guide](/docs/ROW_LABELS.md)** - Complete guide for implementing row labels in array fields to improve admin UX. Includes when to use row labels, implementation patterns, and code examples.
 - **[Blog Implementation Guide](/docs/BLOG_IMPLEMENTATION.md)** - Comprehensive guide for implementing and maintaining the blog/posts system with UUI components, category filtering, and Next.js 15 patterns.
