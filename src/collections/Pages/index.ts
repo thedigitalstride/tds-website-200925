@@ -9,6 +9,7 @@ import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { ButtonBlock } from '../../blocks/ButtonBlock/config'
 import { HeroHeadingBlock } from '../../blocks/HeroHeadingBlock/config'
+import { BreadcrumbBlock } from '../../blocks/BreadcrumbBlock/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -82,7 +83,7 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [HeroHeadingBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock],
+      blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock],
       required: true,
       admin: {
         initCollapsed: true,

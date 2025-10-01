@@ -65,5 +65,18 @@ export const Content: Block = {
       },
       fields: columnFields,
     },
+    {
+      name: 'spacing',
+      type: 'select',
+      defaultValue: 'normal',
+      options: [
+        { label: 'Compact', value: 'compact' },
+        { label: 'Normal', value: 'normal' },
+        { label: 'Spacious', value: 'spacious' },
+      ],
+      admin: {
+        description: 'Vertical spacing around this section',
+      },
+    },
   ],
 }

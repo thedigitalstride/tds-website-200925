@@ -72,6 +72,19 @@ export const Archive: Block = {
       label: 'Selection',
       relationTo: ['posts'],
     },
+    {
+      name: 'spacing',
+      type: 'select',
+      defaultValue: 'normal',
+      options: [
+        { label: 'Compact', value: 'compact' },
+        { label: 'Normal', value: 'normal' },
+        { label: 'Spacious', value: 'spacious' },
+      ],
+      admin: {
+        description: 'Vertical spacing around this section',
+      },
+    },
   ],
   labels: {
     plural: 'Archives',

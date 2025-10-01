@@ -24,6 +24,19 @@ export const CallToAction: Block = {
         maxRows: 2,
       },
     }),
+    {
+      name: 'spacing',
+      type: 'select',
+      defaultValue: 'normal',
+      options: [
+        { label: 'Compact', value: 'compact' },
+        { label: 'Normal', value: 'normal' },
+        { label: 'Spacious', value: 'spacious' },
+      ],
+      admin: {
+        description: 'Vertical spacing around this section',
+      },
+    },
   ],
   labels: {
     plural: 'Calls to Action',

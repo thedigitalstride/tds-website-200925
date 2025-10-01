@@ -10,7 +10,6 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -67,18 +66,14 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { layout, breadcrumbs } = page
 
   return (
-    <article className="pt-16 pb-24">
+    <article>
       <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
       {draft && <LivePreviewListener />}
 
-      <div className="container mx-auto px-4">
-        <Breadcrumbs breadcrumbs={breadcrumbs} />
-      </div>
-
-      <RenderBlocks blocks={layout} />
+      <RenderBlocks blocks={layout} breadcrumbs={breadcrumbs} />
     </article>
   )
 }

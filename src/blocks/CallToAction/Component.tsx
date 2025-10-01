@@ -4,11 +4,19 @@ import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
 
 import RichText from '@/components/RichText'
 import { UUICard, UUIButton } from '@/components/payload-ui'
+import { cn } from '@/utilities/ui'
 
-export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) => {
+export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText, spacing }) => {
+  const spacingClasses: Record<string, string> = {
+    compact: 'py-12 lg:py-16',
+    normal: 'py-16 lg:py-24',
+    spacious: 'py-24 lg:py-32',
+  }
+
   return (
-    <div className="container">
-      <UUICard
+    <section className={cn(spacingClasses[spacing || 'normal'])}>
+      <div className="mx-auto max-w-container px-4 md:px-8">
+        <UUICard
         className="flex flex-col gap-8 md:flex-row md:justify-between md:items-center"
         padding="lg"
         shadow={true}
@@ -30,6 +38,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
           })}
         </div>
       </UUICard>
-    </div>
+      </div>
+    </section>
   )
 }

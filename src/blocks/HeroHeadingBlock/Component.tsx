@@ -37,15 +37,15 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   return (
     <section
       className={cn(
-        'relative lg:flex lg:min-h-[720px] lg:items-center',
+        'relative lg:flex lg:items-center',
         spacingClasses[spacing],
       )}
     >
-      <div className="container mx-auto flex w-full items-center">
+      <div className="mx-auto max-w-container px-4 md:px-8 flex w-full items-center">
         <div className={cn('flex flex-col w-full', alignmentClasses[textAlignment])}>
           <h1
             className={cn(
-              'mt-4 text-display-lg md:text-display-xl lg:text-display-2xl font-semibold',
+              'mt-4 text-display-md md:text-display-lg lg:text-display-xl font-semibold',
               headlineColorClasses[headlineColor],
             )}
             style={{ whiteSpace: 'pre-line' }}
