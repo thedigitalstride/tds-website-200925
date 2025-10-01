@@ -1,0 +1,371 @@
+/**
+ * Rich Text Styling - Light & Dark Mode Support
+ *
+ * This file contains all typography overrides for Payload CMS rich text content.
+ * It extends the Tailwind Typography plugin (@tailwindcss/typography) with UUI theme colors.
+ *
+ * Usage:
+ * - Applied to all RichText components via the .prose class
+ * - Automatically adapts to light/dark mode via .dark-mode class
+ * - Maintains consistency with UUI design system
+ */
+
+/* ============================================================================
+   BASE PROSE STYLES - LIGHT MODE
+   ========================================================================= */
+
+.prose {
+  /* Headings */
+  --tw-prose-headings: var(--color-text-primary);
+
+  /* Body text */
+  --tw-prose-body: var(--color-text-secondary);
+  --tw-prose-lead: var(--color-text-secondary);
+
+  /* Links */
+  --tw-prose-links: var(--color-text-brand-secondary);
+
+  /* Bold text */
+  --tw-prose-bold: var(--color-text-primary);
+
+  /* Quotes */
+  --tw-prose-quotes: var(--color-text-primary);
+  --tw-prose-quote-borders: var(--color-border-brand);
+
+  /* Code */
+  --tw-prose-code: var(--color-text-brand-tertiary);
+  --tw-prose-pre-code: var(--color-gray-50);
+  --tw-prose-pre-bg: var(--color-gray-900);
+
+  /* Lists */
+  --tw-prose-bullets: var(--color-text-tertiary);
+  --tw-prose-counters: var(--color-text-tertiary);
+
+  /* Horizontal rules */
+  --tw-prose-hr: var(--color-border-secondary);
+
+  /* Tables */
+  --tw-prose-th-borders: var(--color-border-primary);
+  --tw-prose-td-borders: var(--color-border-secondary);
+
+  /* Captions */
+  --tw-prose-captions: var(--color-text-tertiary);
+
+  /* Inline code */
+  --tw-prose-invert-code: var(--color-brand-300);
+}
+
+/* ============================================================================
+   DARK MODE OVERRIDES
+   ========================================================================= */
+
+.dark-mode .prose {
+  /* Headings - lighter in dark mode */
+  --tw-prose-headings: var(--color-text-primary);
+
+  /* Body text - lighter gray */
+  --tw-prose-body: var(--color-text-secondary);
+  --tw-prose-lead: var(--color-text-secondary);
+
+  /* Links - maintain brand color */
+  --tw-prose-links: var(--color-brand-400);
+
+  /* Bold text */
+  --tw-prose-bold: var(--color-text-primary);
+
+  /* Quotes */
+  --tw-prose-quotes: var(--color-text-primary);
+  --tw-prose-quote-borders: var(--color-border-brand);
+
+  /* Code - adjust for dark backgrounds */
+  --tw-prose-code: var(--color-brand-400);
+  --tw-prose-pre-code: var(--color-gray-100);
+  --tw-prose-pre-bg: var(--color-gray-800);
+
+  /* Lists */
+  --tw-prose-bullets: var(--color-text-tertiary);
+  --tw-prose-counters: var(--color-text-tertiary);
+
+  /* Horizontal rules */
+  --tw-prose-hr: var(--color-border-primary);
+
+  /* Tables */
+  --tw-prose-th-borders: var(--color-border-primary);
+  --tw-prose-td-borders: var(--color-border-secondary);
+
+  /* Captions */
+  --tw-prose-captions: var(--color-text-tertiary);
+}
+
+/* ============================================================================
+   CUSTOM ELEMENT STYLES
+   ========================================================================= */
+
+/* Paragraph spacing */
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+/* First paragraph - remove top margin */
+.prose > p:first-child {
+  margin-top: 0;
+}
+
+/* Headings - ensure proper spacing */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-weight: 600;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  line-height: 1.25;
+}
+
+/* First heading - reduce top margin */
+.prose > h1:first-child,
+.prose > h2:first-child,
+.prose > h3:first-child {
+  margin-top: 0;
+}
+
+/* Links - add hover state */
+.prose a {
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.prose a:hover {
+  color: var(--color-text-brand-secondary-hover);
+}
+
+.dark-mode .prose a:hover {
+  color: var(--color-brand-300);
+}
+
+/* Blockquotes - centered variant for posts */
+.prose blockquote {
+  font-weight: 400;
+  font-style: normal;
+  border-left-width: 4px;
+  padding-left: 1.5em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+/* Code blocks - improve readability */
+.prose pre {
+  border-radius: 0.5rem;
+  padding: 1.5em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  overflow-x: auto;
+}
+
+/* Inline code */
+.prose code {
+  font-weight: 500;
+  font-size: 0.875em;
+  padding: 0.125em 0.375em;
+  border-radius: 0.25rem;
+  background-color: var(--color-bg-secondary);
+}
+
+.dark-mode .prose code {
+  background-color: var(--color-bg-tertiary);
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.875em;
+}
+
+/* Lists - improve spacing */
+.prose ul,
+.prose ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.75em;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/* Nested lists */
+.prose ul ul,
+.prose ul ol,
+.prose ol ul,
+.prose ol ol {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+
+/* Tables - full styling */
+.prose table {
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  border-collapse: collapse;
+}
+
+.prose thead {
+  border-bottom-width: 2px;
+}
+
+.prose th {
+  padding: 0.75em;
+  text-align: left;
+  font-weight: 600;
+}
+
+.prose td {
+  padding: 0.75em;
+  border-top-width: 1px;
+}
+
+/* Images - ensure proper spacing and sizing */
+.prose img {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  border-radius: 0.5rem;
+}
+
+.prose figure {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.prose figcaption {
+  margin-top: 1em;
+  font-size: 0.875em;
+  text-align: center;
+}
+
+/* Horizontal rules */
+.prose hr {
+  margin-top: 3em;
+  margin-bottom: 3em;
+  border-top-width: 1px;
+}
+
+/* Strong/bold text */
+.prose strong {
+  font-weight: 600;
+}
+
+/* Emphasis/italic text */
+.prose em {
+  font-style: italic;
+}
+
+/* ============================================================================
+   POST-SPECIFIC OVERRIDES
+   ========================================================================= */
+
+/* Lead paragraph styling - only for posts with .prose-centered-quote */
+.prose-centered-quote p:first-of-type {
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+  color: var(--color-text-secondary);
+  margin-bottom: 2em;
+}
+
+/* Centered blockquotes for posts */
+.prose-centered-quote blockquote {
+  text-align: center;
+  border-left: none;
+  padding-left: 0;
+  font-size: 1.25em;
+  font-weight: 500;
+}
+
+/* ============================================================================
+   PAYLOAD BLOCK INTEGRATION
+   ========================================================================= */
+
+/* Remove margins from first/last block elements */
+.payload-richtext > *:first-child {
+  margin-top: 0;
+}
+
+.payload-richtext > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Inline images from rich text editor */
+.richtext-inline-image {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.richtext-inline-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.richtext-inline-image figcaption {
+  margin-top: 1em;
+  font-size: 0.875em;
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+/* Ensure blocks within .not-prose don't inherit lead styling */
+.not-prose .payload-richtext p:first-of-type {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* ============================================================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================================================= */
+
+/* Larger prose on desktop */
+@media (min-width: 768px) {
+  .prose {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  .prose p {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+  }
+
+  .prose h1 {
+    font-size: 2.25em;
+  }
+
+  .prose h2 {
+    font-size: 1.875em;
+  }
+
+  .prose h3 {
+    font-size: 1.5em;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ========================================================================= */
+
+/* Focus states for links */
+.prose a:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: 0.125rem;
+}
+
+/* Ensure sufficient contrast in dark mode */
+.dark-mode .prose {
+  /* Override any low-contrast colors */
+}
