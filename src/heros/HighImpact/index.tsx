@@ -8,7 +8,9 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 
-export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
+// Hero field removed, this component is deprecated
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const HighImpactHero: React.FC<any> = ({ links, media, richText }) => {
   const { setHeaderTheme } = useHeaderTheme()
 
   useEffect(() => {

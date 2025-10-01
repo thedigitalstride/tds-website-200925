@@ -6,7 +6,8 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 
-export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
+// Hero field removed, this component is deprecated
+export const MediumImpactHero: React.FC<any> = ({ links, media, richText }) => {
   return (
     <div className="">
       <div className="container mb-8">

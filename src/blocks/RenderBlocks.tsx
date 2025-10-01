@@ -8,8 +8,10 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { ButtonBlockComponent } from '@/blocks/ButtonBlock/Component'
+import { HeroHeadingBlock } from '@/blocks/HeroHeadingBlock/Component'
 
 const blockComponents = {
+  heroHeading: HeroHeadingBlock,
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,

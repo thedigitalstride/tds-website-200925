@@ -22,12 +22,7 @@ const generateDescription: GenerateDescription<Post | Page> = ({ doc }) => {
     return doc.subtitle
   }
 
-  // For Pages with hero content, extract description from hero
-  if ('hero' in doc && doc.hero && typeof doc.hero === 'object' && 'description' in doc.hero && typeof doc.hero.description === 'string') {
-    return doc.hero.description
-  }
-
-  // Default fallback
+  // Default fallback for Pages
   return `View ${doc?.title || 'this page'} on The Digital Stride`
 }
 
@@ -35,11 +30,6 @@ const generateImage: GenerateImage<Post | Page> = ({ doc }) => {
   // For Posts, use heroImage if available
   if ('heroImage' in doc && doc.heroImage && typeof doc.heroImage === 'object' && 'id' in doc.heroImage) {
     return doc.heroImage.id
-  }
-
-  // For Pages, use hero media if available
-  if ('hero' in doc && doc.hero && typeof doc.hero === 'object' && 'media' in doc.hero && doc.hero.media && typeof doc.hero.media === 'object' && 'id' in doc.hero.media) {
-    return doc.hero.media.id
   }
 
   // Return empty string if no image is available - plugin will handle fallback
@@ -97,6 +87,7 @@ export const plugins: Plugin[] = [
     generateDescription,
     generateImage,
     generateURL,
+    tabbedUI: true,
   }),
   formBuilderPlugin({
     fields: {

@@ -12,7 +12,9 @@ const heroes = {
   mediumImpact: MediumImpactHero,
 }
 
-export const RenderHero: React.FC<Page['hero']> = (props) => {
+// Hero field removed, this component is deprecated
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const RenderHero: React.FC<any> = (props) => {
   const { type } = props || {}
 
   if (!type || type === 'none') return null

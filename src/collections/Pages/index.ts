@@ -8,7 +8,7 @@ import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { ButtonBlock } from '../../blocks/ButtonBlock/config'
-import { hero } from '@/heros/config'
+import { HeroHeadingBlock } from '../../blocks/HeroHeadingBlock/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -80,27 +80,13 @@ export const Pages: CollectionConfig<'pages'> = {
       required: true,
     },
     {
-      type: 'tabs',
-      tabs: [
-        {
-          fields: [hero],
-          label: 'Hero',
-        },
-        {
-          fields: [
-            {
-              name: 'layout',
-              type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock],
-              required: true,
-              admin: {
-                initCollapsed: true,
-              },
-            },
-          ],
-          label: 'Content',
-        },
-      ],
+      name: 'layout',
+      type: 'blocks',
+      blocks: [HeroHeadingBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock],
+      required: true,
+      admin: {
+        initCollapsed: true,
+      },
     },
     {
       name: 'publishedAt',
