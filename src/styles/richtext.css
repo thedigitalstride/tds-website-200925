@@ -119,6 +119,7 @@
 .prose h4,
 .prose h5,
 .prose h6 {
+  font-family: var(--font-display);
   font-weight: 600;
   margin-top: 2em;
   margin-bottom: 0.75em;

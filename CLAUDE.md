@@ -130,6 +130,9 @@ src/
 - **[Styles System Guide](/src/styles/README.md)** - Technical documentation for the styling system. Covers file structure, theme management, and customization workflows.
 - **[Live Style Guide](/style-guide)** - Interactive page showing all typography, colors, buttons, and badges in action.
 
+### Database & Deployment
+- **[Database Preview Strategy](/docs/DATABASE_PREVIEW_STRATEGY.md)** - **⭐ CRITICAL** - Three-tier database setup with Neon branching for safe migration testing. Explains preview database workflow, migration best practices, and production protection.
+
 ### Other Guides
 - **[Image Optimization Guide](/docs/IMAGES.md)** - Complete guide for handling images in this project, including the OptimizedImage component, Payload Media integration, and performance best practices.
 - **[Row Labels Guide](/docs/ROW_LABELS.md)** - Complete guide for implementing row labels in array fields to improve admin UX. Includes when to use row labels, implementation patterns, and code examples.

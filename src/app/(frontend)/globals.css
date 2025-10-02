@@ -39,6 +39,17 @@ body {
     font-kerning: normal;
 }
 
+/* Apply Poppins font to all heading elements and display text utilities */
+h1, h2, h3, h4, h5, h6,
+.text-display-xs,
+.text-display-sm,
+.text-display-md,
+.text-display-lg,
+.text-display-xl,
+.text-display-2xl {
+    font-family: var(--font-display);
+}
+
 /* Hide the default expand arrow on Safari.  */
 details summary::-webkit-details-marker {
     display: none;
