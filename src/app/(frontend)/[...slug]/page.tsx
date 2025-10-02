@@ -73,7 +73,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <RenderBlocks blocks={layout} breadcrumbs={breadcrumbs} />
+      <RenderBlocks blocks={layout || []} breadcrumbs={breadcrumbs} />
     </article>
   )
 }
