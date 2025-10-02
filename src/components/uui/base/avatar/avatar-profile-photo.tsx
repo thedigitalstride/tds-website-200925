@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { User01 } from "@untitledui/icons";
 import { cx } from "@/utils/cx";
 import { type AvatarProps } from "./avatar";
 import { AvatarOnlineIndicator, VerifiedTick } from "./base-components";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 const styles = {
     sm: {
@@ -14,6 +14,7 @@ const styles = {
         icon: "size-9",
         initials: "text-display-sm font-semibold",
         badge: "bottom-0.5 right-0.5",
+        pixels: 72,
     },
     md: {
         root: "size-24 p-1",
@@ -22,6 +23,7 @@ const styles = {
         icon: "size-12",
         initials: "text-display-md font-semibold",
         badge: "bottom-1 right-1",
+        pixels: 96,
     },
     lg: {
         root: "size-40 p-1.5",
@@ -30,6 +32,7 @@ const styles = {
         icon: "size-20",
         initials: "text-display-xl font-semibold",
         badge: "bottom-2 right-2",
+        pixels: 160,
     },
 };
 
@@ -56,15 +59,15 @@ export const AvatarProfilePhoto = ({
     status,
     className,
 }: AvatarProfilePhotoProps) => {
-    const [isFailed, setIsFailed] = useState(false);
-
     const renderMainContent = () => {
-        if (src && !isFailed) {
+        if (src) {
+            const imageSize = styles[size].pixels;
             return (
-                <img
+                <OptimizedImage
                     src={src}
-                    alt={alt}
-                    onError={() => setIsFailed(true)}
+                    alt={alt || "Profile photo"}
+                    width={imageSize}
+                    height={imageSize}
                     className={cx(
                         "size-full rounded-full object-cover",
                         contrastBorder && "outline-1 -outline-offset-1 outline-avatar-contrast-border",
@@ -114,7 +117,7 @@ export const AvatarProfilePhoto = ({
             className={cx(
                 "relative flex shrink-0 items-center justify-center rounded-full bg-primary ring-1 ring-secondary_alt",
                 styles[size].root,
-                (!src || isFailed) && styles[size].rootWithPlaceholder,
+                !src && styles[size].rootWithPlaceholder,
                 className,
             )}
         >

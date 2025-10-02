@@ -94,6 +94,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
             </div>
           ) : (
             // Fallback to rich text caption
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             <RichText data={blockCaption as any} enableGutter={false} />
           )}
         </figcaption>

@@ -14,7 +14,7 @@ interface CMSDropdownProps {
  * Convert dropdown item link to proper href string
  * Uses the same logic as CMSLink and UUIButton components
  */
-function getDropdownLinkHref(linkData: any): string {
+function getDropdownLinkHref(linkData: { type?: 'reference' | 'custom' | null; url?: string | null; reference?: { value: number | Page; relationTo: string } | null }): string {
   if (!linkData) return '#'
 
   // Handle custom URLs
@@ -38,7 +38,7 @@ function getDropdownLinkHref(linkData: any): string {
         return getPageUrl(value as Page)
       }
       // For posts, use the existing logic
-      return `/${relationTo}/${(value as any).slug}`
+      return `/${relationTo}/${(value as { slug?: string }).slug}`
     }
   }
 

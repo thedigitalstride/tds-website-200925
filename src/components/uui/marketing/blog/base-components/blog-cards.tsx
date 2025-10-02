@@ -7,6 +7,7 @@ import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
 import { Badge, type BadgeColor } from "@/components/uui/base/badges/badges";
 import { Button } from "@/components/uui/base/buttons/button";
 import { cx } from "@/utils/cx";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 export type Article = {
     id: string;
@@ -32,9 +33,11 @@ export type Article = {
 export const Simple01Vertical = ({ article, imageClassName }: { article: Article; imageClassName?: string }) => (
     <article className="flex flex-col gap-4">
         <a href={article.href} className="overflow-hidden rounded-2xl" tabIndex={-1}>
-            <img
+            <OptimizedImage
                 src={article.thumbnailUrl}
                 alt={article.title}
+                width={600}
+                height={400}
                 className={cx("aspect-[1.5] w-full object-cover transition duration-100 ease-linear hover:scale-105", imageClassName)}
             />
         </a>
@@ -100,7 +103,7 @@ export const Simple02Vertical = ({
 }) => (
     <article className="flex flex-col gap-4">
         <a href={article.href} className="overflow-hidden" tabIndex={-1}>
-            <img src={article.thumbnailUrl} alt={article.title} className={cx("aspect-[1.5] w-full object-cover", imageClassName)} />
+            <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={600} height={400} className={cx("aspect-[1.5] w-full object-cover", imageClassName)} />
         </a>
 
         <div className="flex flex-col gap-5">
@@ -152,7 +155,7 @@ export const Simple03Vertical = ({
 }) => (
     <article className={cx("flex flex-col gap-4", className)}>
         <a href={article.href} className="overflow-hidden rounded-2xl" tabIndex={-1}>
-            <img src={article.thumbnailUrl} alt={article.title} className={cx("aspect-[1.5] w-full object-cover", imageClassName)} />
+            <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={600} height={400} className={cx("aspect-[1.5] w-full object-cover", imageClassName)} />
         </a>
 
         <div className="flex flex-col gap-6">
@@ -192,7 +195,7 @@ export const Simple04Vertical = ({ article, imageClassName, className }: { artic
     <article className={cx("flex flex-col gap-4", className)}>
         <div className="relative">
             <a href={article.href} className="w-full" tabIndex={-1}>
-                <img src={article.thumbnailUrl} alt={article.title} className={cx("aspect-[1.5] w-full object-cover", imageClassName)} />
+                <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={600} height={400} className={cx("aspect-[1.5] w-full object-cover", imageClassName)} />
             </a>
             <div className="absolute inset-x-0 bottom-0 overflow-hidden bg-linear-to-b from-transparent to-black/40">
                 <div className="relative flex items-start justify-between bg-alpha-white/30 p-4 backdrop-blur-md before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-alpha-white/30 md:p-5">
@@ -236,7 +239,7 @@ export const Simple04Vertical = ({ article, imageClassName, className }: { artic
 export const Simple01Horizontal = ({ article, imageClassName }: { article: Article; imageClassName?: string }) => (
     <article className="flex flex-col gap-4 xl:flex-row xl:items-start">
         <a href={article.href} className="shrink-0 overflow-hidden rounded-2xl" tabIndex={-1}>
-            <img src={article.thumbnailUrl} alt={article.title} className={cx("aspect-[1.5] w-full object-cover xl:w-80", imageClassName)} />
+            <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={600} height={400} className={cx("aspect-[1.5] w-full object-cover xl:w-80", imageClassName)} />
         </a>
 
         <div className="flex flex-col gap-5">
@@ -277,7 +280,7 @@ export const Simple01Horizontal = ({ article, imageClassName }: { article: Artic
 export const Simple02Horizontal = ({ article }: { article: Article }) => (
     <article className="flex flex-col gap-5 lg:flex-row lg:items-start">
         <a href={article.href} className="shrink-0 overflow-hidden" tabIndex={-1}>
-            <img src={article.thumbnailUrl} alt={article.title} className="h-60 w-full object-cover lg:h-50 lg:w-91.5" />
+            <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={366} height={240} className="h-60 w-full object-cover lg:h-50 lg:w-91.5" />
         </a>
 
         <div className="flex flex-col gap-6">
@@ -319,7 +322,7 @@ export const Simple02Horizontal = ({ article }: { article: Article }) => (
 export const Simple03Horizontal = ({ article, imageClassName }: { article: Article; imageClassName?: string }) => (
     <article className="flex flex-col gap-4 xl:flex-row xl:items-start">
         <a href={article.href} className="shrink-0 overflow-hidden rounded-2xl" tabIndex={-1}>
-            <img src={article.thumbnailUrl} alt={article.title} className={cx("aspect-[1.5] w-full object-cover xl:w-91.5", imageClassName)} />
+            <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={732} height={488} className={cx("aspect-[1.5] w-full object-cover xl:w-91.5", imageClassName)} />
         </a>
 
         <div className="flex flex-col gap-6">
@@ -359,7 +362,7 @@ export const Simple04Horizontal = ({ article }: { article: Article }) => (
     <article className="flex flex-col gap-5 lg:flex-row lg:items-start">
         <div className="relative shrink-0">
             <a href={article.href} className="w-full" tabIndex={-1}>
-                <img src={article.thumbnailUrl} alt={article.title} className="h-60 w-full object-cover lg:h-50 lg:w-80" />
+                <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={320} height={240} className="h-60 w-full object-cover lg:h-50 lg:w-80" />
             </a>
             <div className="absolute inset-x-0 bottom-0 overflow-hidden bg-linear-to-b from-transparent to-black/40">
                 <div className="relative flex items-start justify-between bg-alpha-white/30 p-4 backdrop-blur-md before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-alpha-white/30">
@@ -403,7 +406,7 @@ export const Simple04Horizontal = ({ article }: { article: Article }) => (
 export const CardFullWidthImage01Vertical = ({ article }: { article: Article }) => (
     <article className="flex flex-col overflow-hidden rounded-2xl ring-1 ring-secondary ring-inset">
         <a href={article.href} tabIndex={-1}>
-            <img src={article.thumbnailUrl} alt={article.title} className="h-50 w-full object-cover md:h-60" />
+            <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={800} height={240} className="h-50 w-full object-cover md:h-60" />
         </a>
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
@@ -445,7 +448,7 @@ export const CardFullWidthImage01Vertical = ({ article }: { article: Article }) 
 export const CardFullWidthImage02Vertical = ({ article }: { article: Article }) => (
     <article className="flex flex-col overflow-hidden rounded-2xl ring-1 ring-secondary ring-inset">
         <a href={article.href} tabIndex={-1}>
-            <img src={article.thumbnailUrl} alt={article.title} className="h-60 w-full object-cover" />
+            <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={800} height={240} className="h-60 w-full object-cover" />
         </a>
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
@@ -487,7 +490,7 @@ export const CardFullWidthImage02Vertical = ({ article }: { article: Article }) 
 export const CardFullWidthImage03Vertical = ({ article }: { article: Article }) => (
     <article className="flex flex-col overflow-hidden rounded-2xl ring-1 ring-secondary ring-inset">
         <a href={article.href} tabIndex={-1}>
-            <img src={article.thumbnailUrl} alt={article.title} className="h-60 w-full object-cover" />
+            <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={800} height={240} className="h-60 w-full object-cover" />
         </a>
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
@@ -528,7 +531,7 @@ export const CardFullWidthImage04Vertical = ({ article }: { article: Article }) 
     <article className="flex flex-col overflow-hidden rounded-2xl ring-1 ring-secondary ring-inset">
         <div className="relative shrink-0">
             <a href={article.href} className="w-full" tabIndex={-1}>
-                <img src={article.thumbnailUrl} alt={article.title} className="h-60 w-full object-cover md:h-70" />
+                <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={800} height={280} className="h-60 w-full object-cover md:h-70" />
             </a>
             <div className="absolute inset-x-0 bottom-0 overflow-hidden bg-linear-to-b from-transparent to-black/40">
                 <div className="relative flex items-start justify-between bg-alpha-white/30 p-4 backdrop-blur-md before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-alpha-white/30 md:p-6">
@@ -574,7 +577,7 @@ export const CardFullWidthImage04Vertical = ({ article }: { article: Article }) 
 export const CardFullWidthImage01Horizontal = ({ article }: { article: Article }) => (
     <article className="flex flex-col overflow-hidden rounded-2xl ring-1 ring-secondary ring-inset md:flex-row md:items-start">
         <a href={article.href} className="shrink-0" tabIndex={-1}>
-            <img src={article.thumbnailUrl} alt={article.title} className="h-60 w-full object-cover md:h-60 md:w-80" />
+            <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={320} height={240} className="h-60 w-full object-cover md:h-60 md:w-80" />
         </a>
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
@@ -612,7 +615,7 @@ export const CardFullWidthImage01Horizontal = ({ article }: { article: Article }
 export const CardFullWidthImage02Horizontal = ({ article }: { article: Article }) => (
     <article className="flex flex-col overflow-hidden rounded-2xl ring-1 ring-secondary ring-inset md:flex-row md:items-start">
         <a href={article.href} className="shrink-0" tabIndex={-1}>
-            <img src={article.thumbnailUrl} alt={article.title} className="h-60 w-full object-cover md:h-60.5 md:w-80" />
+            <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={320} height={242} className="h-60 w-full object-cover md:h-60.5 md:w-80" />
         </a>
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
@@ -650,7 +653,7 @@ export const CardFullWidthImage02Horizontal = ({ article }: { article: Article }
 export const CardFullWidthImage03Horizontal = ({ article }: { article: Article }) => (
     <article className="flex flex-col overflow-hidden rounded-2xl ring-1 ring-secondary ring-inset md:flex-row md:items-start">
         <a href={article.href} className="shrink-0" tabIndex={-1}>
-            <img src={article.thumbnailUrl} alt={article.title} className="h-60 w-full object-cover md:h-60 md:w-80" />
+            <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={320} height={240} className="h-60 w-full object-cover md:h-60 md:w-80" />
         </a>
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
@@ -687,7 +690,7 @@ export const CardFullWidthImage04Horizontal = ({ article }: { article: Article }
     <article className="flex flex-col overflow-hidden rounded-2xl ring-1 ring-secondary ring-inset md:flex-row md:items-start">
         <div className="relative shrink-0">
             <a href={article.href} className="w-full" tabIndex={-1}>
-                <img src={article.thumbnailUrl} alt={article.title} className="h-60 w-full object-cover md:h-60 md:w-80" />
+                <OptimizedImage src={article.thumbnailUrl} alt={article.title} width={320} height={240} className="h-60 w-full object-cover md:h-60 md:w-80" />
             </a>
             <div className="absolute inset-x-0 bottom-0 overflow-hidden bg-linear-to-b from-transparent to-black/40">
                 <div className="relative flex items-start justify-between bg-alpha-white/30 p-4 backdrop-blur-md before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-alpha-white/30 md:p-6">

@@ -7,6 +7,7 @@ import { Form } from "@/components/uui/base/form/form";
 import { Input } from "@/components/uui/base/input/input";
 import { Facebook, LinkedIn, X } from "@/components/uui/foundations/social-icons";
 import { useClipboard } from "@/hooks/use-clipboard";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 export const ContentSplitImage03 = () => {
     const { copied, copy } = useClipboard();
@@ -24,10 +25,12 @@ export const ContentSplitImage03 = () => {
                     </p>
                 </div>
 
-                <img
+                <OptimizedImage
                     className="order-first -ml-4 h-60 w-screen max-w-none object-cover md:order-1 md:ml-0 md:h-160 md:w-full md:max-w-full"
                     src="https://www.untitledui.com/marketing/girl.webp"
                     alt="Girl working on a laptop"
+                    width={1200}
+                    height={640}
                 />
             </div>
 
@@ -87,7 +90,7 @@ export const ContentSplitImage03 = () => {
                                 ].map((item) => (
                                     <li key={item.name}>
                                         <div className="flex items-center gap-3">
-                                            <img src={item.avatarUrl} className="size-12 rounded-full object-cover" alt={item.name} />
+                                            <OptimizedImage src={item.avatarUrl} width={48} height={48} className="size-12 rounded-full object-cover" alt={item.name} />
                                             <div>
                                                 <p className="text-md font-semibold text-primary">{item.name}</p>
                                                 <p className="text-md text-tertiary">{item.role}</p>
@@ -143,7 +146,7 @@ export const ContentSplitImage03 = () => {
                                 molestie aliquet sodales id est ac volutpat.
                             </p>
                             <figure>
-                                <img alt="Man and laptop" className="h-60 md:h-120" src="https://www.untitledui.com/marketing/man-and-laptop-3.webp" />
+                                <OptimizedImage alt="Man and laptop" className="h-60 md:h-120" src="https://www.untitledui.com/marketing/man-and-laptop-3.webp" width={800} height={480} />
                                 <figcaption>
                                     <Link01 className="size-4 text-utility-gray-400" />
                                     <span>
@@ -170,9 +173,11 @@ export const ContentSplitImage03 = () => {
                                     </p>
                                 </blockquote>
                                 <figcaption className="not-prose mt-6 inline-flex flex-col items-center md:mt-8">
-                                    <img
+                                    <OptimizedImage
                                         alt="Olivia Rhye"
                                         src="https://www.untitledui.com/images/avatars/olivia-rhye?fm=webp&q=80"
+                                        width={40}
+                                        height={40}
                                         className="size-10 rounded-full object-cover"
                                     />
                                     <p className="mt-3 text-md font-semibold text-primary">Olivia Rhye</p>
@@ -217,7 +222,7 @@ export const ContentSplitImage03 = () => {
                                 <li>Suspendisse maecenas ac donec scelerisque diam sed est duis purus.</li>
                             </ol>
                             <figure>
-                                <img alt="Photographer girl" className="h-110 md:h-240" src="https://www.untitledui.com/marketing/photographer-girl-2.webp" />
+                                <OptimizedImage alt="Photographer girl" className="h-110 md:h-240" src="https://www.untitledui.com/marketing/photographer-girl-2.webp" width={800} height={960} />
                                 <figcaption>
                                     <Link01 className="size-4 text-utility-gray-400" />
                                     <span>
@@ -282,7 +287,7 @@ export const ContentSplitImage03 = () => {
                                     ].map((item) => (
                                         <li key={item.name}>
                                             <div className="flex items-center gap-3">
-                                                <img src={item.avatarUrl} className="size-12 rounded-full object-cover" alt={item.name} />
+                                                <OptimizedImage src={item.avatarUrl} width={48} height={48} className="size-12 rounded-full object-cover" alt={item.name} />
                                                 <div>
                                                     <p className="text-md font-semibold text-primary">{item.name}</p>
                                                     <p className="text-md text-tertiary">{item.role}</p>

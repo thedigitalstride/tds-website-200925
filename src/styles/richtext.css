@@ -126,6 +126,31 @@
   line-height: 1.25;
 }
 
+/* Base heading font sizes - mobile first */
+.prose h1 {
+  font-size: 2em;        /* 32px equivalent at 16px base */
+}
+
+.prose h2 {
+  font-size: 1.5em;      /* 24px equivalent at 16px base */
+}
+
+.prose h3 {
+  font-size: 1.25em;     /* 20px equivalent at 16px base */
+}
+
+.prose h4 {
+  font-size: 1.125em;    /* 18px equivalent at 16px base */
+}
+
+.prose h5 {
+  font-size: 1em;        /* 16px equivalent at 16px base */
+}
+
+.prose h6 {
+  font-size: 1em;        /* 16px equivalent at 16px base */
+}
+
 /* First heading - reduce top margin */
 .prose > h1:first-child,
 .prose > h2:first-child,

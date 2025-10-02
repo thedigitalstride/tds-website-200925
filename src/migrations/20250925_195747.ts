@@ -1,6 +1,6 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TABLE "posts_table_of_contents" (
   	"_order" integer NOT NULL,
@@ -43,7 +43,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "users_avatar_idx" ON "users" USING btree ("avatar_id");`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    ALTER TYPE "public"."enum_header_nav_items_dropdown_items_icon" ADD VALUE 'Heart01' BEFORE 'Star01';
   ALTER TABLE "posts_table_of_contents" DISABLE ROW LEVEL SECURITY;

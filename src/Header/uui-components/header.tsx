@@ -141,7 +141,7 @@ interface HeaderProps {
         link: {
             label?: string;
             type: 'reference' | 'custom';
-            reference?: any;
+            reference?: { value: number | { slug?: string | null }; relationTo: string };
             url?: string;
             newTab?: boolean;
             uuiColor?: string;

@@ -55,6 +55,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const page: RequiredDataFromCollectionSlug<'pages'> | null = await queryPageBySlug({
     slug,
+    draft,
   })
 
   // Fallback removed since seeding is not needed
@@ -80,15 +81,16 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = [] } = await paramsPromise
+  const { isEnabled: draft } = await draftMode()
   const page = await queryPageBySlug({
     slug,
+    draft,
   })
 
   return generateMeta({ doc: page })
 }
 
-const queryPageBySlug = cache(async ({ slug }: { slug: string[] }) => {
-  const { isEnabled: draft } = await draftMode()
+const queryPageBySlug = cache(async ({ slug, draft }: { slug: string[]; draft: boolean }) => {
   const payload = await getPayload({ config: configPromise })
 
   // Home page special case

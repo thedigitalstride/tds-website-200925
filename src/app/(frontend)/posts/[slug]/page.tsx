@@ -44,7 +44,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = '' } = await paramsPromise
   const url = '/posts/' + slug
-  const post = await queryPostBySlug({ slug })
+  const post = await queryPostBySlug({ slug, draft })
 
   if (!post) return <PayloadRedirects url={url} />
 
@@ -77,14 +77,13 @@ export default async function Post({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
-  const post = await queryPostBySlug({ slug })
+  const { isEnabled: draft } = await draftMode()
+  const post = await queryPostBySlug({ slug, draft })
 
   return generateMeta({ doc: post })
 }
 
-const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
-
+const queryPostBySlug = cache(async ({ slug, draft }: { slug: string; draft: boolean }) => {
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
@@ -98,6 +97,7 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
         equals: slug,
       },
     },
+    // Type assertion needed due to Payload's populate type limitations
     populate: {
       // authors: not needed due to access control - use populatedAuthors instead
       // populatedAuthors: automatically populated by populateAuthors hook
@@ -116,6 +116,7 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
           description: true,
         },
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,
   })
 

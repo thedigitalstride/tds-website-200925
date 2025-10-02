@@ -1,11 +1,13 @@
 import React from 'react'
 
-import type { Page } from '@/payload-types'
-
 import RichText from '@/components/RichText'
 
 // Hero field removed, this component is deprecated
-type LowImpactHeroType = any
+type LowImpactHeroType = {
+  children?: React.ReactNode
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  richText?: any
+}
 
 export const LowImpactHero: React.FC<LowImpactHeroType> = ({ children, richText }) => {
   return (
