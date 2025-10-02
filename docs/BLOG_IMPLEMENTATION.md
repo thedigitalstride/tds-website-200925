@@ -1,4 +1,4 @@
-# Blog Implementation Guide
+# Blog Implementation Guide.
 
 This document provides comprehensive guidance for implementing and maintaining the blog/posts system in this Payload CMS project with UntitledUI components and Next.js 15.
 
