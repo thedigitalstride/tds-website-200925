@@ -53,10 +53,12 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
   return (
     <footer className="bg-primary py-12 md:pt-16">
       <div className="mx-auto max-w-container px-4 md:px-8">
+        {/* Top Border */}
+        <div className="mb-12 border-t border-secondary md:mb-16" />
         {/* Main Content */}
-        <div className="flex flex-col gap-12 md:gap-16 xl:flex-row">
+        <div className="flex flex-col gap-12 md:gap-16 lg:flex-row lg:justify-between">
           {/* Company Info */}
-          <div className="flex flex-col gap-6 md:w-80 md:gap-8">
+          <div className="flex flex-col gap-4 lg:max-w-xs">
             <TDSLogo variant="auto" size="xl" className="h-12 w-min shrink-0" />
             {companyInfo?.description && (
               <p className="text-md text-tertiary">{companyInfo.description}</p>
@@ -65,10 +67,10 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
 
           {/* Navigation Columns */}
           {navColumns && navColumns.length > 0 && (
-            <nav className="flex-1">
-              <ul className="grid flex-1 grid-cols-2 gap-8 md:grid-cols-5">
+            <nav className="lg:ml-auto">
+              <ul className="flex flex-wrap gap-x-8 gap-y-12 lg:gap-x-16">
                 {navColumns.slice(0, 5).map((column, columnIndex) => (
-                  <li key={columnIndex}>
+                  <li key={columnIndex} className="min-w-[140px]">
                     <h4 className="text-sm font-semibold text-quaternary">
                       {column.label}
                     </h4>

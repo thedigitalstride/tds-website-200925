@@ -282,7 +282,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
 
               // Select appropriate component based on whether icon exists
               const CardComponent = hasIcon
-                ? cardComponentsWithIcon[cardStyle] || FeatureTextFeaturedIconCard
+                ? cardComponentsWithIcon[cardStyle] || FeatureTextIconCard
                 : cardComponentsWithoutIcon[cardStyle] || FeatureTextLeft
 
               // Render footer button if link is enabled
