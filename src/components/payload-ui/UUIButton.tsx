@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from '@/components/uui/button'
 import type { ButtonProps } from '@/components/uui/button'
 import { getPageUrl } from '@/utilities/pageHelpers'
+import { getIcon } from '@/Header/utils/IconMap'
 
 /**
  * Payload-adapted UntitledUI Button component
@@ -25,6 +26,9 @@ export interface PayloadLinkObject {
   // UUI Button styling properties
   uuiColor?: 'primary' | 'secondary' | 'tertiary' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
   uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
+  // UUI Button icon properties
+  buttonIcon?: string | null
+  iconPos?: 'leading' | 'trailing' | null
 }
 
 export interface UUIButtonProps extends Omit<ButtonProps, 'children' | 'href'> {
@@ -89,7 +93,7 @@ function getLinkTarget(link?: PayloadLinkObject | string): string | undefined {
 export const UUIButton: React.FC<UUIButtonProps> = ({
   label,
   link,
-  icon: Icon,
+  icon: IconProp,
   iconPosition = 'leading',
   className,
   ...buttonProps
@@ -104,12 +108,24 @@ export const UUIButton: React.FC<UUIButtonProps> = ({
   const uuiColor = typeof link === 'object' && link?.uuiColor ? link.uuiColor : buttonProps.color || 'primary'
   const uuiSize = typeof link === 'object' && link?.uuiSize ? link.uuiSize : buttonProps.size || 'md'
 
+  // Dynamic icon loading from link object (takes precedence over icon prop)
+  let IconComponent: React.FC<{ className?: string }> | undefined = IconProp
+  let effectiveIconPosition = iconPosition
+
+  if (typeof link === 'object' && link?.buttonIcon) {
+    const DynamicIcon = getIcon(link.buttonIcon)
+    if (DynamicIcon) {
+      IconComponent = DynamicIcon
+      effectiveIconPosition = link.iconPos || 'trailing'
+    }
+  }
+
   return (
     <Button
       {...buttonProps}
       {...(isLink ? { href, target } : {})}
-      iconLeading={iconPosition === 'leading' ? Icon : undefined}
-      iconTrailing={iconPosition === 'trailing' ? Icon : undefined}
+      iconLeading={effectiveIconPosition === 'leading' ? IconComponent : undefined}
+      iconTrailing={effectiveIconPosition === 'trailing' ? IconComponent : undefined}
       color={uuiColor}
       size={uuiSize}
       className={className}

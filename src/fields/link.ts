@@ -266,6 +266,38 @@ export const link: LinkType = ({
         },
       ],
     })
+
+    // Add icon configuration for buttons
+    linkResult.fields.push({
+      type: 'row',
+      fields: [
+        {
+          name: 'buttonIcon',
+          type: 'text',
+          label: 'Button Icon',
+          admin: {
+            description: 'Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com',
+            placeholder: 'ArrowRight',
+            width: '50%',
+          },
+        },
+        {
+          name: 'iconPos',
+          type: 'select',
+          label: 'Icon Position',
+          defaultValue: 'trailing',
+          options: [
+            { label: 'Before Text (Leading)', value: 'leading' },
+            { label: 'After Text (Trailing)', value: 'trailing' },
+          ],
+          admin: {
+            description: 'Position of the icon relative to the button text',
+            width: '50%',
+            condition: (_, siblingData) => !!siblingData?.buttonIcon,
+          },
+        },
+      ],
+    })
   }
 
   return deepMerge(linkResult, overrides)
