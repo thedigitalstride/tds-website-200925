@@ -148,7 +148,18 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  layout?: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | ButtonBlock)[] | null;
+  layout?:
+    | (
+        | HeroHeadingBlock
+        | BreadcrumbBlock
+        | CallToActionBlock
+        | ContentBlock
+        | MediaBlock
+        | ArchiveBlock
+        | FormBlock
+        | ButtonBlock
+      )[]
+    | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -172,6 +183,53 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroHeadingBlock".
+ */
+export interface HeroHeadingBlock {
+  /**
+   * Main headline text. Use line breaks to create multiple lines that will scale responsively.
+   */
+  headline: string;
+  /**
+   * Subtitle text displayed below the headline
+   */
+  subtitle?: string | null;
+  /**
+   * Configure how the hero section is displayed
+   */
+  layoutOptions?: {
+    /**
+     * Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.
+     */
+    headlineColor?: ('primary' | 'brand') | null;
+    /**
+     * Text alignment for headline and subtitle
+     */
+    textAlignment?: ('left' | 'center') | null;
+    /**
+     * Vertical spacing around the hero section
+     */
+    spacing?: ('compact' | 'normal' | 'spacious') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroHeading';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BreadcrumbBlock".
+ */
+export interface BreadcrumbBlock {
+  /**
+   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'breadcrumb';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1102,6 +1160,8 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        heroHeading?: T | HeroHeadingBlockSelect<T>;
+        breadcrumb?: T | BreadcrumbBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1131,6 +1191,32 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroHeadingBlock_select".
+ */
+export interface HeroHeadingBlockSelect<T extends boolean = true> {
+  headline?: T;
+  subtitle?: T;
+  layoutOptions?:
+    | T
+    | {
+        headlineColor?: T;
+        textAlignment?: T;
+        spacing?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BreadcrumbBlock_select".
+ */
+export interface BreadcrumbBlockSelect<T extends boolean = true> {
+  spacing?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
