@@ -1,63 +1,75 @@
 import type { Metadata } from 'next/types'
 
-import { CollectionArchive } from '@/components/CollectionArchive'
-import { PageRange } from '@/components/PageRange'
-import { Pagination } from '@/components/Pagination'
+import { BlogListing } from '@/components/payload-ui/BlogListing'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
-import PageClient from './page.client'
+import type { Category } from '@/payload-types'
+import type { Where } from 'payload'
 
-export const dynamic = 'force-static'
 export const revalidate = 600
 
-export default async function Page() {
+type Args = {
+  searchParams: Promise<{
+    category?: string
+  }>
+}
+
+export default async function Page(props: Args) {
+  const searchParams = await props.searchParams
+  const categorySlug = searchParams.category || undefined
+
   const payload = await getPayload({ config: configPromise })
 
-  const posts = await payload.find({
-    collection: 'posts',
-    depth: 1,
-    limit: 12,
-    overrideAccess: false,
-    select: {
-      title: true,
-      slug: true,
-      categories: true,
-      meta: true,
-    },
+  // Fetch all categories first to resolve category slug to ID if needed
+  const categories = await payload.find({
+    collection: 'categories',
+    limit: 100
   })
 
+  // Find the category by slug if one is specified
+  let selectedCategory: Category | undefined
+  if (categorySlug) {
+    selectedCategory = categories.docs.find(cat => cat.slug === categorySlug)
+  }
+
+  // Build where clause with optional category filter
+  const whereClause: Where = {
+    _status: { equals: 'published' }
+  }
+
+  // Enable server-side filtering
+  if (selectedCategory) {
+    whereClause.categories = {
+      in: [selectedCategory.id]
+    }
+  }
+
+  // Fetch posts for page 1 with all required fields for BlogListing
+  const posts = await payload.find({
+    collection: 'posts',
+    depth: 2,
+    limit: 12,
+    page: 1, // Explicitly set to page 1
+    overrideAccess: false,
+    where: whereClause,
+    sort: '-publishedAt'
+  })
+
+
   return (
-    <div className="pt-24 pb-24">
-      <PageClient />
-      <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Posts</h1>
-        </div>
-      </div>
-
-      <div className="container mb-8">
-        <PageRange
-          collection="posts"
-          currentPage={posts.page}
-          limit={12}
-          totalDocs={posts.totalDocs}
-        />
-      </div>
-
-      <CollectionArchive posts={posts.docs} />
-
-      <div className="container">
-        {posts.totalPages > 1 && posts.page && (
-          <Pagination page={posts.page} totalPages={posts.totalPages} />
-        )}
-      </div>
-    </div>
+    <BlogListing
+      posts={posts.docs}
+      categories={categories.docs}
+      currentPage={1} // Page 1
+      totalPages={posts.totalPages}
+      selectedCategory={categorySlug || undefined}
+    />
   )
 }
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Posts`,
+    title: `The Digital Stride Posts`,
   }
 }

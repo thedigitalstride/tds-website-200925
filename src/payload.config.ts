@@ -16,11 +16,16 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { resendAdapter } from '@payloadcms/email-resend'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  // Configure logger for production optimization
+  logger: process.env.NODE_ENV === 'production'
+    ? { options: { level: 'warn' } } // Only warnings and errors in production
+    : undefined, // Use default in development
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -29,6 +34,11 @@ export default buildConfig({
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
       beforeDashboard: ['@/components/BeforeDashboard'],
+      // Custom TDS branding for admin panel
+      graphics: {
+        Logo: '@/components/payload-ui/Logo',
+        Icon: '@/components/payload-ui/Icon',
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -74,6 +84,7 @@ export default buildConfig({
         media: true,
       },
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
+      clientUploads: true,
     }),
   ],
   secret: process.env.PAYLOAD_SECRET,
@@ -96,4 +107,9 @@ export default buildConfig({
     },
     tasks: [],
   },
+  email: resendAdapter({
+    defaultFromAddress: 'info@thedigitalstride.co.uk',
+    defaultFromName: 'The Digital Stride',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
 })

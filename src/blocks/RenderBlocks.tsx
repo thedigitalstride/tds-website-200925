@@ -7,19 +7,29 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { ButtonBlockComponent } from '@/blocks/ButtonBlock/Component'
+import { HeroHeadingBlock } from '@/blocks/HeroHeadingBlock/Component'
+import { BreadcrumbBlock } from '@/blocks/BreadcrumbBlock/Component'
 
 const blockComponents = {
+  heroHeading: HeroHeadingBlock,
+  breadcrumb: BreadcrumbBlock,
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  buttonBlock: ButtonBlockComponent,
 }
 
+type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]
+type LayoutBlock = NonNullable<Page['layout']>[number]
+
 export const RenderBlocks: React.FC<{
-  blocks: Page['layout'][0][]
+  blocks: LayoutBlock[]
+  breadcrumbs?: BreadcrumbItem[] | null
 }> = (props) => {
-  const { blocks } = props
+  const { blocks, breadcrumbs } = props
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
@@ -34,10 +44,8 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
-                  {/* @ts-expect-error there may be some mismatch between the expected types here */}
-                  <Block {...block} disableInnerContainer />
-                </div>
+                // @ts-expect-error there may be some mismatch between the expected types here
+                <Block key={index} {...block} breadcrumbs={breadcrumbs} disableInnerContainer />
               )
             }
           }

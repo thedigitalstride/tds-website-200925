@@ -9,7 +9,7 @@ This is a Payload CMS website template built with Next.js App Router, designed f
 **CMS**: Payload CMS 3.55.0  
 **Database**: Vercel Postgres (production) / Local Postgres (development)  
 **Storage**: Vercel Blob Storage  
-**Styling**: TailwindCSS with shadcn/ui components  
+**Styling**: TailwindCSS v4 with UntitledUI components
 **Package Manager**: pnpm  
 
 # Payload Monorepo Agent Instructions
@@ -115,8 +115,28 @@ src/
 ├── Header/             # Header global configuration
 ├── Footer/             # Footer global configuration
 ├── access/             # Access control definitions
+├── styles/             # Styling system
+│   ├── theme.css       # UntitledUI theme with Tailwind v4 @theme block
+│   ├── frontend.css    # Basic Tailwind v4 configuration
+│   └── payloadStyles.css # Payload CMS admin styles
 └── payload.config.ts   # Main Payload configuration
 ```
+
+## 📄 Additional Documentation
+
+### Styling System (Read These First)
+- **[Style Guide Reference](/docs/STYLE_GUIDE.md)** - **⭐ START HERE** - Visual reference for typography, colors, spacing, and components. Complete guide to the Tailwind v4 + UUI design system architecture.
+- **[Styling Best Practices](/docs/STYLING_BEST_PRACTICES.md)** - **🎯 ESSENTIAL** - How to maintain site-wide styling consistency. Explains the centralized system, semantic tokens, and patterns for components.
+- **[Styles System Guide](/src/styles/README.md)** - Technical documentation for the styling system. Covers file structure, theme management, and customization workflows.
+- **[Live Style Guide](/style-guide)** - Interactive page showing all typography, colors, buttons, and badges in action.
+
+### Other Guides
+- **[Image Optimization Guide](/docs/IMAGES.md)** - Complete guide for handling images in this project, including the OptimizedImage component, Payload Media integration, and performance best practices.
+- **[Row Labels Guide](/docs/ROW_LABELS.md)** - Complete guide for implementing row labels in array fields to improve admin UX. Includes when to use row labels, implementation patterns, and code examples.
+- **[Blog Implementation Guide](/docs/BLOG_IMPLEMENTATION.md)** - Comprehensive guide for implementing and maintaining the blog/posts system with UUI components, category filtering, and Next.js 15 patterns.
+- **[TypeScript Patterns](/docs/TYPESCRIPT_PATTERNS.md)** - TypeScript best practices, common patterns, and solutions for Payload CMS, Next.js 15, and UUI components.
+- **[Next.js 15 Filtering Fix](/docs/NEXT_JS_15_FILTERING_FIX.md)** - Critical fix for server-side URL parameter extraction in Next.js 15. Resolves issues with category filtering, searchParams extraction, and force-static compatibility.
+- **[UUI Components Reference](/docs/UUI_COMPONENTS_REFERENCE.md)** - Reference guide for UntitledUI component usage, types, and integration patterns.
 
 ## Collections
 
@@ -146,6 +166,160 @@ src/
 ### Users (`/admin/collections/users`)
 - Authentication and admin access
 - Author profiles for blog posts
+
+## 🚨 CRITICAL: UntitledUI Integration & Theme System
+
+**This project uses UntitledUI components with a custom theme system. DO NOT modify this setup without understanding the dependencies.**
+
+### Theme Architecture
+
+The styling system is built on **Tailwind CSS v4** with a complete UntitledUI theme integration:
+
+```
+src/app/(frontend)/
+└── globals.css           # Main CSS entry point with plugins
+
+src/styles/
+├── theme.css            # 🚨 CRITICAL: Complete UUI theme with @theme block
+├── frontend.css         # Basic Tailwind v4 variables (DO NOT MODIFY)
+└── payloadStyles.css    # Payload admin styles
+```
+
+### 🚨 CRITICAL Rules for Theme Management
+
+#### ❌ NEVER:
+- Modify `frontend.css` - it contains essential Tailwind v4 base configuration
+- Create custom CSS files in `/src/styles/` - use the existing theme system
+- Override UUI component styles directly - work through CSS variables
+- Remove or modify imports in `globals.css`
+- Change the `@theme` block structure in `theme.css`
+
+#### ✅ ALWAYS:
+- Modify brand colors in `theme.css` in the designated brand color section
+- Add new CSS variables to the `@theme` block in `theme.css`
+- Import UUI components from `/src/components/uui/`
+- Use UUI's component structure without modification
+- Test changes with `rm -rf .next && pnpm dev` after theme modifications
+
+### Brand Color Integration
+
+**Current Brand Color**: #1689FF (Blue)
+
+Brand colors are defined in `src/styles/theme.css` lines 124-139:
+
+```css
+@theme {
+  /* Brand colors - using #1689FF */
+  --color-brand-25: rgb(247 251 255);    /* Lightest */
+  --color-brand-50: rgb(239 246 255);
+  /* ... color scale ... */
+  --color-brand-500: rgb(22 137 255);    /* Main brand color #1689FF */
+  --color-brand-600: rgb(20 123 230);    /* Hover state */
+  /* ... darker shades ... */
+  --color-brand-950: rgb(11 66 122);     /* Darkest */
+
+  /* UUI Button Integration */
+  --color-brand-solid: var(--color-brand-500);
+  --color-brand-solid_hover: var(--color-brand-600);
+}
+```
+
+**To Change Brand Color:**
+1. Update the RGB values in the brand color scale
+2. Ensure `--color-brand-solid` points to the correct main color
+3. Test all UUI components after changes
+
+### UntitledUI Component Usage
+
+**Components Location**: `/src/components/uui/`
+
+**Available Components**:
+- `Button` - Primary component with brand color integration
+- Additional UUI components as needed
+
+**Usage Example**:
+```tsx
+import { Button } from '@/components/uui/button'
+
+// Primary button (uses brand blue background, white text)
+<Button color="primary">Click me</Button>
+
+// Secondary button (uses system colors)
+<Button color="secondary">Secondary</Button>
+```
+
+### Required Dependencies
+
+**DO NOT REMOVE these packages**:
+```json
+{
+  "@untitledui/icons": "latest",
+  "next-themes": "latest",
+  "react-aria-components": "^1.12.2",
+  "tailwind-merge": "^2.3.0",
+  "tailwindcss-animate": "^1.0.7",
+  "tailwindcss-react-aria-components": "^2.0.1"
+}
+```
+
+### CSS Import Structure
+
+**Critical Import Order** in `globals.css`:
+```css
+@import "tailwindcss";
+@import "../../styles/theme.css";        /* UUI theme with @theme block */
+
+@plugin "tailwindcss-animate";
+@plugin "tailwindcss-react-aria-components";
+
+@custom-variant dark (&:where(.dark-mode, .dark-mode *));
+/* ... additional UUI utilities ... */
+```
+
+### Troubleshooting
+
+**If buttons/components don't show brand colors:**
+1. Check `--color-brand-solid` is defined in `theme.css`
+2. Verify `globals.css` imports `../../styles/theme.css` correctly
+3. Clear Next.js cache: `rm -rf .next && pnpm dev`
+4. Check browser developer tools for missing CSS variables
+
+**If site fails to load:**
+1. Check for duplicate metadata exports in `layout.tsx`
+2. Verify all imports in `globals.css` point to correct paths
+3. Ensure no CSS syntax errors in `theme.css`
+
+### Block Development with UUI
+
+When creating new blocks that use UUI components:
+
+1. **Import from UUI components**:
+   ```tsx
+   import { Button } from '@/components/uui/button'
+   ```
+
+2. **Use standard UUI props** - don't override styling:
+   ```tsx
+   <Button color="primary" size="lg">
+     {buttonText}
+   </Button>
+   ```
+
+3. **Test with both light and dark themes** if theme switching is implemented
+
+### Development Workflow
+
+**When adding new UUI components:**
+1. Copy component from UntitledUI docs
+2. Place in `/src/components/uui/`
+3. Verify it uses existing CSS variables from `theme.css`
+4. Test brand color integration works automatically
+
+**When modifying colors:**
+1. Only edit the brand color section in `theme.css`
+2. Maintain the RGB format: `rgb(22 137 255)`
+3. Test all components after changes
+4. Clear cache if changes don't appear
 
 ## 🚨 CRITICAL: Database Migration Process
 
@@ -203,6 +377,150 @@ pnpm payload migrate:reset    # Rollback all migrations (DESTRUCTIVE)
 pnpm payload migrate:fresh    # Drop and recreate schema (DESTRUCTIVE)
 ```
 
+## 🚨 CRITICAL: Payload CMS draftMode() Fix for Next.js 15+
+
+**This is a recurring, breaking issue that MUST be fixed when upgrading Next.js or encountering preview errors.**
+
+### Error Symptoms:
+```
+Error: `draftMode` was called outside a request scope
+GET /next/preview?slug=... 500 in XXXms
+Failed to create URL object from URL: , falling back to http://localhost
+```
+
+### Root Cause:
+Next.js 15+ has stricter requirements for when `draftMode()` can be called. The function signature and request handling in API routes must match Payload's expected pattern exactly.
+
+### ✅ CRITICAL FIX - Preview Route Implementation:
+
+**File:** `/src/app/(frontend)/next/preview/route.ts`
+
+```typescript
+import type { CollectionSlug, PayloadRequest } from 'payload'
+import { getPayload } from 'payload'
+
+import { draftMode } from 'next/headers'
+import { redirect } from 'next/navigation'
+
+import configPromise from '@payload-config'
+
+export async function GET(
+  req: {
+    cookies: {
+      get: (name: string) => {
+        value: string
+      }
+    }
+  } & Request,
+): Promise<Response> {
+  const payload = await getPayload({ config: configPromise })
+
+  const { searchParams } = new URL(req.url)
+
+  const path = searchParams.get('path')
+  const collection = searchParams.get('collection') as CollectionSlug
+  const slug = searchParams.get('slug')
+  const previewSecret = searchParams.get('previewSecret')
+
+  if (previewSecret !== process.env.PREVIEW_SECRET) {
+    return new Response('You are not allowed to preview this page', {
+      status: 403,
+    })
+  }
+
+  if (!path || !collection || !slug) {
+    return new Response('Insufficient search params', { status: 404 })
+  }
+
+  if (!path.startsWith('/')) {
+    return new Response(
+      'This endpoint can only be used for relative previews',
+      { status: 500 },
+    )
+  }
+
+  let user
+
+  try {
+    user = await payload.auth({
+      req: req as unknown as PayloadRequest,
+      headers: req.headers,
+    })
+  } catch (error) {
+    payload.logger.error(
+      { err: error },
+      'Error verifying token for live preview',
+    )
+    return new Response('You are not allowed to preview this page', {
+      status: 403,
+    })
+  }
+
+  const draft = await draftMode()
+
+  if (!user) {
+    draft.disable()
+    return new Response('You are not allowed to preview this page', {
+      status: 403,
+    })
+  }
+
+  draft.enable()
+
+  redirect(path)
+}
+```
+
+### ⚠️ Critical Implementation Notes:
+
+1. **Function Signature:** MUST use the exact `req` typing with cookies interface
+2. **Request Handling:** Do NOT use `NextRequest` - use the Payload-compatible interface
+3. **draftMode Call:** MUST use `await draftMode()` in async context
+4. **Error Handling:** Always include try/catch for auth calls
+5. **Response Format:** Use proper Response objects, not NextResponse
+
+### ❌ Common Mistakes That Break Preview:
+
+```typescript
+// WRONG - Will cause "called outside request scope" error
+export async function GET(req: NextRequest): Promise<Response>
+const draft = draftMode() // Missing await
+
+// WRONG - Will cause type errors
+import { NextRequest } from 'next/server'
+
+// WRONG - Will cause auth failures
+user = await payload.auth({ req })
+```
+
+### 🔧 Troubleshooting Steps:
+
+1. **Clear Build Cache:** `rm -rf .next && pnpm dev`
+2. **Check Environment Variables:** Ensure `PREVIEW_SECRET` is set
+3. **Verify Function Signature:** Must match the exact pattern above
+4. **Test Preview URL:** Should return 200, not 500
+5. **Check Server Logs:** No "draftMode called outside request scope" errors
+
+### 🎯 Success Indicators:
+
+- ✅ Preview routes return 200 status
+- ✅ No draftMode context errors in server logs
+- ✅ Admin panel live preview works correctly
+- ✅ Draft content displays properly in preview mode
+
+### 📋 Required Files for Preview System:
+
+- `/src/app/(frontend)/next/preview/route.ts` - Main preview route (FIXED ABOVE)
+- `/src/utilities/generatePreviewPath.ts` - Preview URL generation
+- `/src/collections/Pages/index.ts` - Collection preview configuration
+
+This fix has been tested with:
+- **Next.js:** 15.4.4
+- **Payload CMS:** 3.55.0
+- **Node.js:** 18+
+
+**⚠️ WARNING:** Do NOT modify this pattern without testing. This is a critical system component and breaking it will disable all preview functionality.
+
 ## Environment Configuration
 
 Required environment variables:
@@ -226,6 +544,9 @@ BLOB_READ_WRITE_TOKEN=    # Vercel Blob Storage token
 - **Form Builder**: Dynamic form creation
 - **Admin Bar**: Frontend editing toolbar
 - **Responsive Design**: Mobile-first with breakpoint preview
+- **UntitledUI Integration**: Complete design system with brand color theming
+- **Tailwind v4**: Modern CSS-in-CSS approach with @theme configuration
+- **OptimizedImage Component**: Intelligent image optimization with automatic Payload Media integration and Next.js Image optimization for external assets
 
 ## Deployment
 
@@ -247,6 +568,13 @@ BLOB_READ_WRITE_TOKEN=    # Vercel Blob Storage token
 - Prettier for code formatting
 - Sharp for image processing
 - Cross-platform compatibility with cross-env
+- **UntitledUI Components**: All UI components use react-aria-components for accessibility
+- **Theme System**: CSS variables defined in `@theme` block for consistent theming
+- **Brand Integration**: #1689FF blue color integrated throughout UUI component system
+- **🚨 CRITICAL - Image Handling**: Always use `OptimizedImage` component instead of `<img>` tags. See `/docs/IMAGES.md` for complete guidelines. External image domains must be added to `next.config.js`.
+- **🚨 CRITICAL - Row Labels**: ALWAYS implement row labels for array fields with identifiable content (navigation items, social links, etc.). See `/docs/ROW_LABELS.md` for complete guidelines. This improves admin UX by showing meaningful labels when arrays are collapsed.
+- **🚨 CRITICAL - Blog/Posts System**: Use proper TypeScript patterns for blog implementation. Always use `categories` array (not `category` object), import `Where` type from Payload, and follow Next.js 15 searchParams patterns. See `/docs/BLOG_IMPLEMENTATION.md` and `/docs/TYPESCRIPT_PATTERNS.md`.
+- **🚨 CRITICAL - Next.js 15 Compatibility**: Never use `export const dynamic = 'force-static'` with URL parameters. Always use `props.searchParams` pattern instead of destructuring. See `/docs/NEXT_JS_15_FILTERING_FIX.md` for complete fix.
 
 ## Content Management
 

@@ -6,11 +6,10 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import RichText from '@/components/RichText'
 
 import type { Post } from '@/payload-types'
 
-import { PostHero } from '@/heros/PostHero'
+import { PostLayout } from '@/components/PostLayout'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -50,7 +49,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects url={url} />
 
   return (
-    <article className="pt-16 pb-16">
+    <>
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
@@ -58,20 +57,21 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <PostHero post={post} />
+      {/* New PostLayout with UUI styling */}
+      <PostLayout post={post} />
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
+      {/* Related Posts Section */}
+      {post.relatedPosts && post.relatedPosts.length > 0 && (
+        <div className="bg-primary py-16">
+          <div className="container">
             <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
+              className="max-w-[52rem] mx-auto lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
               docs={post.relatedPosts.filter((post) => typeof post === 'object')}
             />
-          )}
+          </div>
         </div>
-      </div>
-    </article>
+      )}
+    </>
   )
 }
 
@@ -98,6 +98,25 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
         equals: slug,
       },
     },
+    populate: {
+      // authors: not needed due to access control - use populatedAuthors instead
+      // populatedAuthors: automatically populated by populateAuthors hook
+      // contributors: not needed due to access control - use populatedContributors instead
+      // populatedContributors: automatically populated by populateAuthors hook
+      categories: {
+        title: true,
+        slug: true,
+      },
+      heroImage: true,
+      relatedPosts: {
+        title: true,
+        slug: true,
+        meta: {
+          image: true,
+          description: true,
+        },
+      },
+    } as any,
   })
 
   return result.docs?.[0] || null

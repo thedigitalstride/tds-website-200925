@@ -148,58 +148,18 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-    richText?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null)
-              | ({
-                  relationTo: 'posts';
-                  value: number | Post;
-                } | null);
-            url?: string | null;
-            label: string;
-            /**
-             * Choose how the link should be rendered.
-             */
-            appearance?: ('default' | 'outline') | null;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    media?: (number | null) | Media;
-  };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
+  layout?:
+    | (
+        | HeroHeadingBlock
+        | BreadcrumbBlock
+        | CallToActionBlock
+        | ContentBlock
+        | MediaBlock
+        | ArchiveBlock
+        | FormBlock
+        | ButtonBlock
+      )[]
+    | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -212,9 +172,120 @@ export interface Page {
         id?: string | null;
       }[]
     | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroHeadingBlock".
+ */
+export interface HeroHeadingBlock {
+  /**
+   * Main headline text. Use line breaks to create multiple lines that will scale responsively.
+   */
+  headline: string;
+  /**
+   * Subtitle text displayed below the headline
+   */
+  subtitle?: string | null;
+  /**
+   * Configure how the hero section is displayed
+   */
+  layoutOptions?: {
+    /**
+     * Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.
+     */
+    headlineColor?: ('primary' | 'brand') | null;
+    /**
+     * Text alignment for headline and subtitle
+     */
+    textAlignment?: ('left' | 'center') | null;
+    /**
+     * Vertical spacing around the hero section
+     */
+    spacing?: ('compact' | 'normal' | 'spacious') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroHeading';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BreadcrumbBlock".
+ */
+export interface BreadcrumbBlock {
+  /**
+   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'breadcrumb';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock".
+ */
+export interface CallToActionBlock {
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?: ('primary' | 'secondary' | 'tertiary' | 'link-color') | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('md' | 'lg') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Vertical spacing around this section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -223,12 +294,29 @@ export interface Page {
 export interface Post {
   id: number;
   title: string;
+  /**
+   * Lead paragraph that appears under the title
+   */
+  subtitle?: string | null;
+  /**
+   * Optional table of contents for the sidebar
+   */
+  tableOfContents?:
+    | {
+        title: string;
+        /**
+         * Link to section (e.g., #introduction)
+         */
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
   heroImage?: (number | null) | Media;
   content: {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -241,24 +329,38 @@ export interface Post {
   };
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
+  /**
+   * People who contributed to this post (separate from authors)
+   */
+  contributors?: (number | User)[] | null;
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
   populatedAuthors?:
     | {
         id?: string | null;
         name?: string | null;
+        nickname?: string | null;
+        avatar?: (number | null) | Media;
+      }[]
+    | null;
+  populatedContributors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+        nickname?: string | null;
+        avatar?: (number | null) | Media;
       }[]
     | null;
   slug?: string | null;
   slugLock?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -274,7 +376,7 @@ export interface Media {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -383,6 +485,18 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
+  /**
+   * Display name for public content (e.g., blog posts)
+   */
+  nickname?: string | null;
+  /**
+   * Job title or role (e.g., "Product Manager", "Frontend Engineer")
+   */
+  role?: string | null;
+  /**
+   * Profile picture for contributor listings
+   */
+  avatar?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -403,54 +517,6 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock".
- */
-export interface CallToActionBlock {
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  links?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'outline') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'cta';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
@@ -461,7 +527,7 @@ export interface ContentBlock {
           root: {
             type: string;
             children: {
-              type: string;
+              type: any;
               version: number;
               [k: string]: unknown;
             }[];
@@ -488,13 +554,21 @@ export interface ContentBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Button color variant from UntitledUI design system
            */
-          appearance?: ('default' | 'outline') | null;
+          uuiColor?: ('primary' | 'secondary' | 'tertiary' | 'link-color') | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('sm' | 'md' | 'lg') | null;
         };
         id?: string | null;
       }[]
     | null;
+  /**
+   * Vertical spacing around this section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
@@ -505,6 +579,22 @@ export interface ContentBlock {
  */
 export interface MediaBlock {
   media: number | Media;
+  caption?: {
+    /**
+     * Caption text
+     */
+    text?: string | null;
+    link?: {
+      /**
+       * Link URL (e.g., https://example.com)
+       */
+      url?: string | null;
+      /**
+       * Link text
+       */
+      text?: string | null;
+    };
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
@@ -518,7 +608,7 @@ export interface ArchiveBlock {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -539,6 +629,10 @@ export interface ArchiveBlock {
         value: number | Post;
       }[]
     | null;
+  /**
+   * Vertical spacing around this section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'archive';
@@ -554,7 +648,7 @@ export interface FormBlock {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -611,7 +705,7 @@ export interface Form {
               root: {
                 type: string;
                 children: {
-                  type: string;
+                  type: any;
                   version: number;
                   [k: string]: unknown;
                 }[];
@@ -694,7 +788,7 @@ export interface Form {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -726,7 +820,7 @@ export interface Form {
           root: {
             type: string;
             children: {
-              type: string;
+              type: any;
               version: number;
               [k: string]: unknown;
             }[];
@@ -742,6 +836,65 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ButtonBlock".
+ */
+export interface ButtonBlock {
+  /**
+   * Add one or more buttons with different styles and links
+   */
+  buttons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?:
+            | (
+                | 'primary'
+                | 'secondary'
+                | 'tertiary'
+                | 'link-gray'
+                | 'link-color'
+                | 'primary-destructive'
+                | 'secondary-destructive'
+                | 'tertiary-destructive'
+                | 'link-destructive'
+              )
+            | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+        };
+        /**
+         * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01")
+         */
+        icon?: string | null;
+        iconPosition?: ('leading' | 'trailing') | null;
+        id?: string | null;
+      }[]
+    | null;
+  layout?: ('horizontal' | 'vertical') | null;
+  alignment?: ('left' | 'center' | 'right') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'buttonBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1004,43 +1157,17 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
-  hero?:
-    | T
-    | {
-        type?: T;
-        richText?: T;
-        links?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                    appearance?: T;
-                  };
-              id?: T;
-            };
-        media?: T;
-      };
   layout?:
     | T
     | {
+        heroHeading?: T | HeroHeadingBlockSelect<T>;
+        breadcrumb?: T | BreadcrumbBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        image?: T;
-        description?: T;
+        buttonBlock?: T | ButtonBlockSelect<T>;
       };
   publishedAt?: T;
   slug?: T;
@@ -1054,9 +1181,42 @@ export interface PagesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroHeadingBlock_select".
+ */
+export interface HeroHeadingBlockSelect<T extends boolean = true> {
+  headline?: T;
+  subtitle?: T;
+  layoutOptions?:
+    | T
+    | {
+        headlineColor?: T;
+        textAlignment?: T;
+        spacing?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BreadcrumbBlock_select".
+ */
+export interface BreadcrumbBlockSelect<T extends boolean = true> {
+  spacing?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1075,10 +1235,12 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
-              appearance?: T;
+              uuiColor?: T;
+              uuiSize?: T;
             };
         id?: T;
       };
+  spacing?: T;
   id?: T;
   blockName?: T;
 }
@@ -1101,10 +1263,12 @@ export interface ContentBlockSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
-              appearance?: T;
+              uuiColor?: T;
+              uuiSize?: T;
             };
         id?: T;
       };
+  spacing?: T;
   id?: T;
   blockName?: T;
 }
@@ -1114,6 +1278,17 @@ export interface ContentBlockSelect<T extends boolean = true> {
  */
 export interface MediaBlockSelect<T extends boolean = true> {
   media?: T;
+  caption?:
+    | T
+    | {
+        text?: T;
+        link?:
+          | T
+          | {
+              url?: T;
+              text?: T;
+            };
+      };
   id?: T;
   blockName?: T;
 }
@@ -1128,6 +1303,7 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   categories?: T;
   limit?: T;
   selectedDocs?: T;
+  spacing?: T;
   id?: T;
   blockName?: T;
 }
@@ -1144,21 +1320,51 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ButtonBlock_select".
+ */
+export interface ButtonBlockSelect<T extends boolean = true> {
+  buttons?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              uuiColor?: T;
+              uuiSize?: T;
+            };
+        icon?: T;
+        iconPosition?: T;
+        id?: T;
+      };
+  layout?: T;
+  alignment?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
+  subtitle?: T;
+  tableOfContents?:
+    | T
+    | {
+        title?: T;
+        href?: T;
+        id?: T;
+      };
   heroImage?: T;
   content?: T;
   relatedPosts?: T;
   categories?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        image?: T;
-        description?: T;
-      };
+  contributors?: T;
   publishedAt?: T;
   authors?: T;
   populatedAuthors?:
@@ -1166,9 +1372,26 @@ export interface PostsSelect<T extends boolean = true> {
     | {
         id?: T;
         name?: T;
+        nickname?: T;
+        avatar?: T;
+      };
+  populatedContributors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+        nickname?: T;
+        avatar?: T;
       };
   slug?: T;
   slugLock?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1292,6 +1515,9 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  nickname?: T;
+  role?: T;
+  avatar?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1572,6 +1798,9 @@ export interface Header {
   id: number;
   navItems?:
     | {
+        /**
+         * Main navigation item. URL is optional when dropdown menu is enabled (label still required for dropdown trigger text).
+         */
         link: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
@@ -1587,9 +1816,76 @@ export interface Header {
           url?: string | null;
           label: string;
         };
+        /**
+         * Enable to show dropdown menu for this navigation item
+         */
+        hasDropdown?: boolean | null;
+        /**
+         * Links that appear in the dropdown menu
+         */
+        dropdownItems?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              /**
+               * Brief description that appears below the link text
+               */
+              description?: string | null;
+              /**
+               * Optional icon name from @untitledui/icons (e.g., "TrendUp01", "Users01", "ArrowRight", "Download01")
+               */
+              icon?: string | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Call-to-action button that appears on the right side of the header
+   */
+  ctaButton: {
+    /**
+     * Toggle to show/hide the call-to-action button
+     */
+    enabled?: boolean | null;
+    link: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+      /**
+       * Button color variant from UntitledUI design system
+       */
+      uuiColor?: ('primary' | 'secondary' | 'tertiary') | null;
+      /**
+       * Button size variant
+       */
+      uuiSize?: ('sm' | 'md' | 'lg') | null;
+    };
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1599,26 +1895,88 @@ export interface Header {
  */
 export interface Footer {
   id: number;
-  navItems?:
+  companyInfo?: {
+    /**
+     * Brief company description that appears below the logo
+     */
+    description?: string | null;
+  };
+  /**
+   * Navigation columns (maximum 5 columns)
+   */
+  navColumns?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        /**
+         * Column heading (e.g., "Product", "Company")
+         */
+        label?: string | null;
+        /**
+         * Links for this navigation column
+         */
+        items?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+                /**
+                 * Button color variant from UntitledUI design system
+                 */
+                uuiColor?: 'link-gray' | null;
+                /**
+                 * Button size variant
+                 */
+                uuiSize?: 'lg' | null;
+              };
+              /**
+               * Optional badge to highlight new or featured items
+               */
+              badge?: {
+                /**
+                 * Badge text (e.g., "New", "Beta")
+                 */
+                text?: string | null;
+                /**
+                 * Modern badges only support gray color
+                 */
+                color?: 'gray' | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Social media links that appear at the bottom
+   */
+  socialLinks?:
+    | {
+        /**
+         * Select the social media platform
+         */
+        platform?: ('x' | 'linkedin' | 'facebook' | 'github' | 'angellist' | 'dribbble' | 'layers') | null;
+        /**
+         * Full URL to your social media profile
+         */
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Copyright notice that appears at the bottom
+   */
+  copyrightText?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1639,7 +1997,40 @@ export interface HeaderSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        hasDropdown?: T;
+        dropdownItems?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              description?: T;
+              icon?: T;
+              id?: T;
+            };
         id?: T;
+      };
+  ctaButton?:
+    | T
+    | {
+        enabled?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              uuiColor?: T;
+              uuiSize?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1650,20 +2041,47 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  companyInfo?:
     | T
     | {
-        link?:
+        description?: T;
+      };
+  navColumns?:
+    | T
+    | {
+        label?: T;
+        items?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    uuiColor?: T;
+                    uuiSize?: T;
+                  };
+              badge?:
+                | T
+                | {
+                    text?: T;
+                    color?: T;
+                  };
+              id?: T;
             };
         id?: T;
       };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  copyrightText?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1700,7 +2118,7 @@ export interface BannerBlock {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -1725,6 +2143,57 @@ export interface CodeBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'code';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuoteBlock".
+ */
+export interface QuoteBlock {
+  /**
+   * The quote text
+   */
+  quote: string;
+  author: {
+    name: string;
+    /**
+     * Author title or role
+     */
+    role?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'quote';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ConclusionBlock".
+ */
+export interface ConclusionBlock {
+  /**
+   * Heading for the conclusion section
+   */
+  title: string;
+  /**
+   * Conclusion content (supports multiple paragraphs)
+   */
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'conclusion';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

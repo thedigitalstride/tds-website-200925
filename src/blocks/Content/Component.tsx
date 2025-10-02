@@ -4,21 +4,28 @@ import RichText from '@/components/RichText'
 
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
-import { CMSLink } from '../../components/Link'
+import { UUIButton } from '@/components/payload-ui/UUIButton'
 
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
-  const { columns } = props
+  const { columns, spacing } = props
 
   const colsSpanClasses = {
-    full: '12',
-    half: '6',
-    oneThird: '4',
-    twoThirds: '8',
+    full: 'lg:col-span-12',
+    half: 'lg:col-span-6',
+    oneThird: 'lg:col-span-4',
+    twoThirds: 'lg:col-span-8',
+  }
+
+  const spacingClasses: Record<string, string> = {
+    compact: 'py-12 lg:py-16',
+    normal: 'py-16 lg:py-24',
+    spacious: 'py-24 lg:py-32',
   }
 
   return (
-    <div className="container my-16">
-      <div className="grid grid-cols-4 lg:grid-cols-12 gap-y-8 gap-x-16">
+    <section className={cn(spacingClasses[spacing || 'normal'])}>
+      <div className="mx-auto max-w-container px-4 md:px-8">
+        <div className="grid grid-cols-4 lg:grid-cols-12 gap-y-8 gap-x-16">
         {columns &&
           columns.length > 0 &&
           columns.map((col, index) => {
@@ -26,18 +33,24 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
 
             return (
               <div
-                className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size!]}`, {
+                className={cn(`col-span-4 ${colsSpanClasses[size!]}`, {
                   'md:col-span-2': size !== 'full',
                 })}
                 key={index}
               >
                 {richText && <RichText data={richText} enableGutter={false} />}
 
-                {enableLink && <CMSLink {...link} />}
+                {enableLink && link && (
+                  <UUIButton
+                    label={link.label || undefined}
+                    link={link}
+                  />
+                )}
               </div>
             )
           })}
+        </div>
       </div>
-    </div>
+    </section>
   )
 }

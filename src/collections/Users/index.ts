@@ -21,6 +21,28 @@ export const Users: CollectionConfig = {
       name: 'name',
       type: 'text',
     },
+    {
+      name: 'nickname',
+      type: 'text',
+      admin: {
+        description: 'Display name for public content (e.g., blog posts)',
+      },
+    },
+    {
+      name: 'role',
+      type: 'text',
+      admin: {
+        description: 'Job title or role (e.g., "Product Manager", "Frontend Engineer")',
+      },
+    },
+    {
+      name: 'avatar',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Profile picture for contributor listings',
+      },
+    },
   ],
   timestamps: true,
 }

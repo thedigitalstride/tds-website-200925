@@ -2,26 +2,116 @@ import type { Field, GroupField } from 'payload'
 
 import deepMerge from '@/utilities/deepMerge'
 
+// UntitledUI Button Color Variants
+export type UUIButtonColors =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'link-gray'
+  | 'link-color'
+  | 'primary-destructive'
+  | 'secondary-destructive'
+  | 'tertiary-destructive'
+  | 'link-destructive'
+
+// UntitledUI Button Size Variants
+export type UUIButtonSizes = 'sm' | 'md' | 'lg' | 'xl'
+
+// Legacy appearance types - DEPRECATED (use UUI colors instead)
+// Kept for backward compatibility but no longer rendered
 export type LinkAppearances = 'default' | 'outline'
 
-export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
-  default: {
-    label: 'Default',
-    value: 'default',
+// UntitledUI Color Options
+export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: string; description?: string }> = {
+  primary: {
+    label: 'Primary',
+    value: 'primary',
+    description: 'Brand colored button with strong emphasis'
   },
-  outline: {
-    label: 'Outline',
-    value: 'outline',
+  secondary: {
+    label: 'Secondary',
+    value: 'secondary',
+    description: 'Subtle button with border and light background'
+  },
+  tertiary: {
+    label: 'Tertiary',
+    value: 'tertiary',
+    description: 'Minimal button with no background'
+  },
+  'link-gray': {
+    label: 'Text Link (Gray)',
+    value: 'link-gray',
+    description: 'Simple text link with gray color'
+  },
+  'link-color': {
+    label: 'Text Link (Brand)',
+    value: 'link-color',
+    description: 'Simple text link with brand color'
+  },
+  'primary-destructive': {
+    label: 'Primary Destructive',
+    value: 'primary-destructive',
+    description: 'Red button for destructive actions'
+  },
+  'secondary-destructive': {
+    label: 'Secondary Destructive',
+    value: 'secondary-destructive',
+    description: 'Outlined red button for destructive actions'
+  },
+  'tertiary-destructive': {
+    label: 'Tertiary Destructive',
+    value: 'tertiary-destructive',
+    description: 'Minimal red button for destructive actions'
+  },
+  'link-destructive': {
+    label: 'Destructive Link',
+    value: 'link-destructive',
+    description: 'Red text link for destructive actions'
+  },
+}
+
+// UntitledUI Size Options
+export const uuiSizeOptions: Record<UUIButtonSizes, { label: string; value: string }> = {
+  sm: {
+    label: 'Small',
+    value: 'sm',
+  },
+  md: {
+    label: 'Medium',
+    value: 'md',
+  },
+  lg: {
+    label: 'Large',
+    value: 'lg',
+  },
+  xl: {
+    label: 'Extra Large',
+    value: 'xl',
   },
 }
 
 type LinkType = (options?: {
-  appearances?: LinkAppearances[] | false
+  appearances?: LinkAppearances[] | false // DEPRECATED: Use UUI colors instead
   disableLabel?: boolean
   overrides?: Partial<GroupField>
+  // UUI Button styling options
+  enableUUIButton?: boolean
+  uuiColors?: UUIButtonColors[]
+  uuiSizes?: UUIButtonSizes[]
+  defaultUUIColor?: UUIButtonColors
+  defaultUUISize?: UUIButtonSizes
 }) => Field
 
-export const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
+export const link: LinkType = ({
+  appearances, // DEPRECATED: Ignored when enableUUIButton is true
+  disableLabel = false,
+  overrides = {},
+  enableUUIButton = false,
+  uuiColors,
+  uuiSizes,
+  defaultUUIColor = 'primary',
+  defaultUUISize = 'md'
+} = {}) => {
   const linkResult: GroupField = {
     name: 'link',
     type: 'group',
@@ -117,21 +207,64 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
     linkResult.fields = [...linkResult.fields, ...linkTypes]
   }
 
-  if (appearances !== false) {
-    let appearanceOptionsToUse = [appearanceOptions.default, appearanceOptions.outline]
-
-    if (appearances) {
-      appearanceOptionsToUse = appearances.map((appearance) => appearanceOptions[appearance])
-    }
+  // DEPRECATED: Appearance field removed in favor of UUI button colors
+  // Only add appearance field for non-UUI buttons for backward compatibility
+  if (appearances !== false && !enableUUIButton) {
+    const legacyAppearanceOptions = [
+      { label: 'Default', value: 'default' },
+      { label: 'Outline', value: 'outline' }
+    ]
 
     linkResult.fields.push({
       name: 'appearance',
       type: 'select',
       admin: {
-        description: 'Choose how the link should be rendered.',
+        description: 'Choose how the link should be rendered. (Legacy - consider using UUI button styling)',
       },
       defaultValue: 'default',
-      options: appearanceOptionsToUse,
+      options: legacyAppearanceOptions,
+    })
+  }
+
+  // Add UUI Button styling options if enabled
+  if (enableUUIButton) {
+    let colorOptionsToUse = Object.values(uuiColorOptions)
+    let sizeOptionsToUse = Object.values(uuiSizeOptions)
+
+    if (uuiColors) {
+      colorOptionsToUse = uuiColors.map((color) => uuiColorOptions[color])
+    }
+
+    if (uuiSizes) {
+      sizeOptionsToUse = uuiSizes.map((size) => uuiSizeOptions[size])
+    }
+
+    linkResult.fields.push({
+      type: 'row',
+      fields: [
+        {
+          name: 'uuiColor',
+          type: 'select',
+          admin: {
+            description: 'Button color variant from UntitledUI design system',
+            width: '50%',
+          },
+          defaultValue: defaultUUIColor,
+          label: 'Button Style',
+          options: colorOptionsToUse,
+        },
+        {
+          name: 'uuiSize',
+          type: 'select',
+          admin: {
+            description: 'Button size variant',
+            width: '50%',
+          },
+          defaultValue: defaultUUISize,
+          label: 'Button Size',
+          options: sizeOptionsToUse,
+        },
+      ],
     })
   }
 

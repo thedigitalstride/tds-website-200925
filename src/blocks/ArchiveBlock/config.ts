@@ -1,11 +1,6 @@
 import type { Block } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
+import { richTextEditor } from '@/fields/richTextWithButtons'
 
 export const Archive: Block = {
   slug: 'archive',
@@ -14,16 +9,7 @@ export const Archive: Block = {
     {
       name: 'introContent',
       type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
-      }),
+      editor: richTextEditor({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
       label: 'Intro Content',
     },
     {
@@ -85,6 +71,19 @@ export const Archive: Block = {
       hasMany: true,
       label: 'Selection',
       relationTo: ['posts'],
+    },
+    {
+      name: 'spacing',
+      type: 'select',
+      defaultValue: 'normal',
+      options: [
+        { label: 'Compact', value: 'compact' },
+        { label: 'Normal', value: 'normal' },
+        { label: 'Spacious', value: 'spacious' },
+      ],
+      admin: {
+        description: 'Vertical spacing around this section',
+      },
     },
   ],
   labels: {

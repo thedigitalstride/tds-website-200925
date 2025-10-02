@@ -49,6 +49,12 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
+  // Check if this is a blob storage URL or proxy route to avoid Next.js optimization
+  const isBlobStorage = typeof src === 'string' && (
+    src.includes('.blob.vercel-storage.com') ||
+    src.includes('/api/media/file/')
+  )
+
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
   const sizes = sizeFromProps
     ? sizeFromProps
@@ -71,6 +77,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         sizes={sizes}
         src={src}
         width={!fill ? width : undefined}
+        unoptimized={isBlobStorage}
       />
     </picture>
   )

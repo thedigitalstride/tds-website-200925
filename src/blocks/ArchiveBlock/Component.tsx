@@ -4,6 +4,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import RichText from '@/components/RichText'
+import { cn } from '@/utilities/ui'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 
@@ -12,7 +13,7 @@ export const ArchiveBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
+  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs, spacing } = props
 
   const limit = limitFromProps || 3
 
@@ -52,14 +53,22 @@ export const ArchiveBlock: React.FC<
     }
   }
 
+  const spacingClasses: Record<string, string> = {
+    compact: 'py-12 lg:py-16',
+    normal: 'py-16 lg:py-24',
+    spacious: 'py-24 lg:py-32',
+  }
+
   return (
-    <div className="my-16" id={`block-${id}`}>
-      {introContent && (
-        <div className="container mb-16">
-          <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
-        </div>
-      )}
-      <CollectionArchive posts={posts} />
-    </div>
+    <section className={cn(spacingClasses[spacing || 'normal'])} id={`block-${id}`}>
+      <div className="mx-auto max-w-container px-4 md:px-8">
+        {introContent && (
+          <div className="mb-16">
+            <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
+          </div>
+        )}
+        <CollectionArchive posts={posts} />
+      </div>
+    </section>
   )
 }

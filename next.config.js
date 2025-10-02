@@ -8,6 +8,15 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  webpack: (webpackConfig) => {
+    webpackConfig.resolve.extensionAlias = {
+      '.cjs': ['.cts', '.cjs'],
+      '.js': ['.ts', '.tsx', '.js', '.jsx'],
+      '.mjs': ['.mts', '.mjs'],
+    }
+
+    return webpackConfig
+  },
   images: {
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
@@ -18,16 +27,26 @@ const nextConfig = {
           protocol: url.protocol.replace(':', ''),
         }
       }),
+      // External domains for UUI components and assets
+      {
+        hostname: 'www.untitledui.com',
+        protocol: 'https',
+      },
+      {
+        hostname: 'raw.githubusercontent.com',
+        protocol: 'https',
+      },
+      // Vercel preview deployments and blob storage
+      {
+        hostname: '*.vercel.app',
+        protocol: 'https',
+      },
+      // Vercel Blob Storage
+      {
+        hostname: '*.public.blob.vercel-storage.com',
+        protocol: 'https',
+      },
     ],
-  },
-  webpack: (webpackConfig) => {
-    webpackConfig.resolve.extensionAlias = {
-      '.cjs': ['.cts', '.cjs'],
-      '.js': ['.ts', '.tsx', '.js', '.jsx'],
-      '.mjs': ['.mts', '.mjs'],
-    }
-
-    return webpackConfig
   },
   reactStrictMode: true,
   redirects,

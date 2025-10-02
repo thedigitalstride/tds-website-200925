@@ -1,14 +1,12 @@
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
+import type { Page } from '@/payload-types'
 
-interface BreadcrumbItem {
-  doc: string
-  url?: string
-  label: string
-}
+// Use the actual breadcrumb type from Payload
+type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]
 
 interface BreadcrumbsProps {
-  breadcrumbs?: BreadcrumbItem[]
+  breadcrumbs?: BreadcrumbItem[] | null
   className?: string
 }
 
@@ -19,26 +17,26 @@ export function Breadcrumbs({ breadcrumbs, className = '' }: BreadcrumbsProps) {
   }
 
   return (
-    <nav aria-label="Breadcrumb" className={`mb-6 ${className}`}>
-      <ol className="flex items-center space-x-2 text-sm text-gray-600">
+    <nav aria-label="Breadcrumb" className={className}>
+      <ol className="flex items-center space-x-2 text-sm text-secondary">
         {/* Home link */}
         <li>
           <Link
             href="/"
-            className="hover:text-gray-900 transition-colors duration-200"
+            className="hover:text-secondary_hover transition-colors duration-200"
           >
             Home
           </Link>
         </li>
 
         {/* Breadcrumb items (excluding the last one which is current page) */}
-        {breadcrumbs.slice(0, -1).map((crumb, index) => (
-          <li key={crumb.doc} className="flex items-center">
-            <ChevronRight className="w-4 h-4 mx-2 text-gray-400" />
+        {breadcrumbs.slice(0, -1).map((crumb, _) => (
+          <li key={crumb.id || crumb.label} className="flex items-center">
+            <ChevronRight className="w-4 h-4 mx-2 text-tertiary" />
             {crumb.url ? (
               <Link
                 href={crumb.url}
-                className="hover:text-gray-900 transition-colors duration-200"
+                className="hover:text-secondary_hover transition-colors duration-200"
               >
                 {crumb.label}
               </Link>
@@ -50,8 +48,8 @@ export function Breadcrumbs({ breadcrumbs, className = '' }: BreadcrumbsProps) {
 
         {/* Current page (last breadcrumb) */}
         <li className="flex items-center">
-          <ChevronRight className="w-4 h-4 mx-2 text-gray-400" />
-          <span className="text-gray-900 font-medium">
+          <ChevronRight className="w-4 h-4 mx-2 text-tertiary" />
+          <span className="text-primary font-medium">
             {breadcrumbs[breadcrumbs.length - 1]?.label}
           </span>
         </li>

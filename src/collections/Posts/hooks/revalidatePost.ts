@@ -15,8 +15,12 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
 
       payload.logger.info(`Revalidating post at path: ${path}`)
 
-      revalidatePath(path)
-      revalidateTag('posts-sitemap')
+      try {
+        revalidatePath(path)
+        revalidateTag('posts-sitemap')
+      } catch (error) {
+        payload.logger.error(`Failed to revalidate ${path}: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      }
     }
 
     // If the post was previously published, we need to revalidate the old path
@@ -25,19 +29,29 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
 
       payload.logger.info(`Revalidating old post at path: ${oldPath}`)
 
-      revalidatePath(oldPath)
-      revalidateTag('posts-sitemap')
+      try {
+        revalidatePath(oldPath)
+        revalidateTag('posts-sitemap')
+      } catch (error) {
+        payload.logger.error(`Failed to revalidate ${oldPath}: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      }
     }
   }
   return doc
 }
 
-export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { context } }) => {
+export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { payload, context } }) => {
   if (!context.disableRevalidate) {
     const path = `/posts/${doc?.slug}`
 
-    revalidatePath(path)
-    revalidateTag('posts-sitemap')
+    payload.logger.info(`Revalidating deleted post at path: ${path}`)
+
+    try {
+      revalidatePath(path)
+      revalidateTag('posts-sitemap')
+    } catch (error) {
+      payload.logger.error(`Failed to revalidate deleted post ${path}: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    }
   }
 
   return doc
