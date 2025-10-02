@@ -23,9 +23,10 @@ const blockComponents = {
 }
 
 type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]
+type LayoutBlock = NonNullable<Page['layout']>[number]
 
 export const RenderBlocks: React.FC<{
-  blocks: Page['layout'][0][]
+  blocks: LayoutBlock[]
   breadcrumbs?: BreadcrumbItem[] | null
 }> = (props) => {
   const { blocks, breadcrumbs } = props
