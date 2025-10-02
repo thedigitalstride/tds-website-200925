@@ -45,15 +45,27 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
         <div className={cn('flex flex-col w-full', alignmentClasses[textAlignment])}>
           <h1
             className={cn(
-              'mt-4 text-display-md md:text-display-lg lg:text-display-xl font-semibold',
+              'mt-4 font-semibold',
               headlineColorClasses[headlineColor],
             )}
-            style={{ whiteSpace: 'pre-line' }}
+            style={{
+              whiteSpace: 'pre-line',
+              fontFamily: 'var(--font-poppins, Poppins)',
+              fontSize: 'clamp(2.1rem, 5vw + 1rem, 6.5rem)',
+              lineHeight: '1.2',
+              fontWeight: '700',
+            }}
           >
             {headline}
           </h1>
           {subtitle && (
-            <h2 className="text-secondary mt-10 text-xl md:text-display-xs font-normal">
+            <h2
+              className="text-secondary mt-10 font-normal"
+              style={{
+                fontSize: 'clamp(1.26rem, 3vw + 0.6rem, 3.9rem)',
+                lineHeight: '1.3',
+              }}
+            >
               {subtitle}
             </h2>
           )}

@@ -50,6 +50,14 @@ h1, h2, h3, h4, h5, h6,
     font-family: var(--font-display);
 }
 
+/* Fluid hero heading utility - scales smoothly from 33.6px to 104px */
+@utility text-hero-fluid {
+    font-family: var(--font-display);
+    font-size: var(--text-hero-fluid);
+    line-height: var(--text-hero-fluid--line-height);
+    font-weight: 700;
+}
+
 /* Hide the default expand arrow on Safari.  */
 details summary::-webkit-details-marker {
     display: none;
