@@ -451,8 +451,60 @@ pnpm payload migrate:fresh    # Drop and recreate schema (DESTRUCTIVE)
 1. ❌ To run migrations
 2. ❌ To "fix" the database
 3. ❌ To check migration status
-4. ❌ To create migrations
+4. ❌ To create migrations (unless preparing for production deployment)
 5. ❌ To assume migrations are needed
+
+### 🔥 CRITICAL LESSON LEARNED: Environment File Management
+
+**Problem:** Local `pnpm build` was using `.env.production` instead of `.env`, causing builds to connect to remote database instead of local Docker database.
+
+**Key Insights:**
+1. **Next.js automatically loads `.env.production` during `next build`** - This is default Next.js behavior
+2. **`.env.production` should NOT be committed to the repository** - It contains production database credentials
+3. **Local builds should use local database** - Development and builds should use the same database (local Docker)
+4. **Production env vars belong on Vercel** - Set them in Vercel dashboard, not in committed files
+
+**Solution:**
+- ✅ Remove `.env.production` from the repository
+- ✅ Add `.env.production` to `.gitignore`
+- ✅ Set production environment variables in Vercel dashboard
+- ✅ Local development and builds use `.env` with local Docker database
+
+**Environment Variable Priority (Next.js):**
+1. `.env.production.local` (highest priority for production builds, gitignored)
+2. `.env.production` (should NOT be committed)
+3. `.env.local` (gitignored)
+4. `.env` (can be committed for local development defaults)
+
+### 🎯 CRITICAL LESSON: Schema Changes Require Migrations for Production
+
+**Problem:** After adding new fields (`buttonIcon`, `iconPos`) to the `link` field configuration, local database was auto-synced but production/preview deployments failed.
+
+**Key Insights:**
+1. **Dev mode auto-syncs schema silently** - No prompts shown locally, columns added automatically
+2. **Production uses migrations** - Preview/production deployments run `payload migrate`, not auto-sync
+3. **Schema changes after last migration are invisible to production** - If you add fields without creating a migration, production won't have them
+
+**Required Workflow for Schema Changes:**
+1. Make schema changes in code (add fields, change types, etc.)
+2. Dev server auto-syncs to local database automatically
+3. **BEFORE deploying to preview/production:**
+   ```bash
+   pnpm payload migrate:create
+   ```
+4. Review the generated migration file
+5. Commit and push the migration
+6. Vercel will run the migration during deployment
+
+**Warning Signs You Forgot to Create a Migration:**
+- ✅ Local build works fine
+- ❌ Preview/production deployment fails with "column does not exist"
+- ❌ Error mentions columns that you recently added to your code
+
+**Solution:**
+- Always run `pnpm payload migrate:create` before deploying schema changes to preview/production
+- The migration captures all schema differences between code and last migration
+- Commit the migration files (both `.ts` and `.json`) to git
 
 ## 🚨 CRITICAL: Payload CMS draftMode() Fix for Next.js 15+
 
