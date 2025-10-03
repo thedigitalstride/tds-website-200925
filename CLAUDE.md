@@ -392,11 +392,13 @@ Failed to create URL object from URL: , falling back to http://localhost
 ```
 
 ### Root Cause:
-Next.js 15+ has stricter requirements for when `draftMode()` can be called. The function signature and request handling in API routes must match Payload's expected pattern exactly.
+Next.js 15.4+ requires `NextRequest` type for proper request context tracking with `draftMode()`. Using custom request types breaks the context.
 
 ### ✅ CRITICAL FIX - Preview Route Implementation:
 
 **File:** `/src/app/(frontend)/next/preview/route.ts`
+
+**⚠️ This implementation is copied directly from the official Payload CMS website template.**
 
 ```typescript
 import type { CollectionSlug, PayloadRequest } from 'payload'
@@ -404,18 +406,11 @@ import { getPayload } from 'payload'
 
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { NextRequest } from 'next/server'
 
 import configPromise from '@payload-config'
 
-export async function GET(
-  req: {
-    cookies: {
-      get: (name: string) => {
-        value: string
-      }
-    }
-  } & Request,
-): Promise<Response> {
+export async function GET(req: NextRequest): Promise<Response> {
   const payload = await getPayload({ config: configPromise })
 
   const { searchParams } = new URL(req.url)
@@ -426,9 +421,7 @@ export async function GET(
   const previewSecret = searchParams.get('previewSecret')
 
   if (previewSecret !== process.env.PREVIEW_SECRET) {
-    return new Response('You are not allowed to preview this page', {
-      status: 403,
-    })
+    return new Response('You are not allowed to preview this page', { status: 403 })
   }
 
   if (!path || !collection || !slug) {
@@ -436,10 +429,7 @@ export async function GET(
   }
 
   if (!path.startsWith('/')) {
-    return new Response(
-      'This endpoint can only be used for relative previews',
-      { status: 500 },
-    )
+    return new Response('This endpoint can only be used for relative previews', { status: 500 })
   }
 
   let user
@@ -450,23 +440,18 @@ export async function GET(
       headers: req.headers,
     })
   } catch (error) {
-    payload.logger.error(
-      { err: error },
-      'Error verifying token for live preview',
-    )
-    return new Response('You are not allowed to preview this page', {
-      status: 403,
-    })
+    payload.logger.error({ err: error }, 'Error verifying token for live preview')
+    return new Response('You are not allowed to preview this page', { status: 403 })
   }
 
   const draft = await draftMode()
 
   if (!user) {
     draft.disable()
-    return new Response('You are not allowed to preview this page', {
-      status: 403,
-    })
+    return new Response('You are not allowed to preview this page', { status: 403 })
   }
+
+  // You can add additional checks here to see if the user is allowed to preview this page
 
   draft.enable()
 
@@ -476,33 +461,44 @@ export async function GET(
 
 ### ⚠️ Critical Implementation Notes:
 
-1. **Function Signature:** MUST use the exact `req` typing with cookies interface
-2. **Request Handling:** Do NOT use `NextRequest` - use the Payload-compatible interface
-3. **draftMode Call:** MUST use `await draftMode()` in async context
+1. **Request Type:** 🚨 **MUST use `NextRequest` from `next/server`**. This is the ONLY correct type for Next.js 15.4+. Custom request types break `draftMode()`.
+2. **Import Required:** `import { NextRequest } from 'next/server'` is mandatory
+3. **draftMode() Position:** Can be called after `getPayload()` and `payload.auth()` - timing doesn't matter as long as `NextRequest` is used
 4. **Error Handling:** Always include try/catch for auth calls
 5. **Response Format:** Use proper Response objects, not NextResponse
 
 ### ❌ Common Mistakes That Break Preview:
 
 ```typescript
-// WRONG - Will cause "called outside request scope" error
-export async function GET(req: NextRequest): Promise<Response>
+// WRONG - Custom request type breaks draftMode() context
+export async function GET(
+  req: {
+    cookies: { get: (name: string) => { value: string } }
+  } & Request,
+): Promise<Response>
+
+// WRONG - Missing NextRequest import
+// Using Request or custom types instead
+
+// WRONG - Missing await on draftMode()
 const draft = draftMode() // Missing await
 
-// WRONG - Will cause type errors
+// ✅ CORRECT - Use NextRequest
 import { NextRequest } from 'next/server'
-
-// WRONG - Will cause auth failures
-user = await payload.auth({ req })
+export async function GET(req: NextRequest): Promise<Response> {
+  // ... implementation
+  const draft = await draftMode()
+}
 ```
 
 ### 🔧 Troubleshooting Steps:
 
-1. **Clear Build Cache:** `rm -rf .next && pnpm dev`
-2. **Check Environment Variables:** Ensure `PREVIEW_SECRET` is set
-3. **Verify Function Signature:** Must match the exact pattern above
-4. **Test Preview URL:** Should return 200, not 500
-5. **Check Server Logs:** No "draftMode called outside request scope" errors
+1. **Verify NextRequest Import:** Ensure `import { NextRequest } from 'next/server'` is present
+2. **Check Function Signature:** Must use `export async function GET(req: NextRequest): Promise<Response>`
+3. **Clear Build Cache:** `rm -rf .next && pnpm dev`
+4. **Check Environment Variables:** Ensure `PREVIEW_SECRET` is set
+5. **Test Preview URL:** Should return 200, not 500
+6. **Check Server Logs:** No "draftMode called outside request scope" errors
 
 ### 🎯 Success Indicators:
 
@@ -517,12 +513,17 @@ user = await payload.auth({ req })
 - `/src/utilities/generatePreviewPath.ts` - Preview URL generation
 - `/src/collections/Pages/index.ts` - Collection preview configuration
 
-This fix has been tested with:
-- **Next.js:** 15.4.4
-- **Payload CMS:** 3.55.0
-- **Node.js:** 18+
+### 📖 Reference:
 
-**⚠️ WARNING:** Do NOT modify this pattern without testing. This is a critical system component and breaking it will disable all preview functionality.
+This implementation is taken directly from the official Payload CMS website template:
+- **Source:** https://github.com/payloadcms/payload/blob/main/templates/website/src/app/(frontend)/next/preview/route.ts
+- **Tested with:** Next.js 15.4.4, Payload CMS 3.55.0, Node.js 18+
+
+### ⚠️ Why This Issue Keeps Recurring:
+
+The issue recurs because the "fix" with custom request types appears in outdated documentation and seems logical, but actually breaks Next.js 15.4+ context tracking. **Always use the official Payload template implementation** rather than custom request types.
+
+**Key Insight:** The problem is NOT the timing of `draftMode()` calls - it's the request type. `NextRequest` is required for proper context tracking.
 
 ## Environment Configuration
 
