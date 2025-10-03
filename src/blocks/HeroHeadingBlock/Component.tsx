@@ -31,7 +31,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   // and automatically switches to lighter brand color in dark mode via theme
   const headlineColorClasses: Record<string, string> = {
     primary: 'text-primary',
-    brand: 'text-brand-700 dark:text-brand-500',
+    brand: 'text-accent-500 dark:text-accent-500',
   }
 
   return (
@@ -60,7 +60,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
           </h1>
           {subtitle && (
             <h2
-              className="text-secondary mt-10 font-normal"
+              className="text-brand-500 dark:text-white mt-10 font-normal"
               style={{
                 fontSize: 'clamp(1.26rem, 3vw + 0.6rem, 3.9rem)',
                 lineHeight: '1.3',

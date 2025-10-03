@@ -59,6 +59,17 @@ export const styles = sortCx({
                 "*:data-icon:text-button-primary-icon hover:*:data-icon:text-button-primary-icon_hover",
             ].join(" "),
         },
+        accent: {
+            root: [
+                "bg-accent-solid text-white shadow-xs-skeumorphic ring-1 ring-transparent ring-inset hover:bg-accent-solid_hover data-loading:bg-accent-solid_hover",
+                // Inner border gradient
+                "before:absolute before:inset-px before:border before:border-white/12 before:mask-b-from-0%",
+                // Disabled styles
+                "disabled:bg-disabled disabled:shadow-xs disabled:ring-disabled_subtle",
+                // Icon styles
+                "*:data-icon:text-button-accent-icon hover:*:data-icon:text-button-accent-icon_hover",
+            ].join(" "),
+        },
         secondary: {
             root: [
                 "bg-primary text-secondary shadow-xs-skeumorphic ring-1 ring-primary ring-inset hover:bg-primary_hover hover:text-secondary_hover data-loading:bg-primary_hover",

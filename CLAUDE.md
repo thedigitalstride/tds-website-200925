@@ -324,61 +324,135 @@ When creating new blocks that use UUI components:
 3. Test all components after changes
 4. Clear cache if changes don't appear
 
-## 🚨 CRITICAL: Database Migration Process
+## 🚨 CRITICAL: Database Migration Process - ABSOLUTE RULES
 
-**NEVER use external database tools for schema changes. ALWAYS use Payload's built-in migration system.**
+**⛔ CLAUDE CODE AGENTS: READ THIS CAREFULLY - VIOLATION OF THESE RULES CAUSES CRITICAL DATABASE CORRUPTION ⛔**
 
-### Required Migration Workflow:
+### 🚫 NEVER - UNDER ANY CIRCUMSTANCES:
 
-1. **Development Environment:**
-   ```bash
-   # Payload automatically handles schema changes in development
-   # DO NOT manually run migrations in development
-   # DO NOT mix "push" mode with manual migrations
-   ```
+1. **❌ NEVER run `pnpm payload migrate` in development** - This command is ONLY for production deployments
+2. **❌ NEVER run `pnpm payload migrate:create` manually** - Only used when explicitly preparing for production deployment
+3. **❌ NEVER run `pnpm payload migrate:down`** - Rolling back migrations in dev causes corruption
+4. **❌ NEVER run `pnpm payload migrate:status`** - Checking migration status implies you might run migrations (don't)
+5. **❌ NEVER attempt to "fix" database schema errors by running migrations**
+6. **❌ NEVER assume migrations are the solution to build errors**
+7. **❌ NEVER use external database tools (pgAdmin, DataGrip, raw SQL) for schema changes**
 
-2. **Before Making Schema Changes:**
-   ```bash
-   # Generate database schema first
-   npx payload generate:db-schema
-   ```
+### ✅ ALWAYS - REQUIRED BEHAVIOR:
 
-3. **Creating Migrations (Required for Production):**
-   ```bash
-   # Create migration after schema changes
-   pnpm payload migrate:create
-   # This generates TypeScript migration files with up() and down() functions
-   # ALWAYS review generated migration files before committing
-   ```
+1. **✅ ALWAYS let Payload's dev mode auto-sync schema changes** - This is automatic, requires zero manual intervention
+2. **✅ ALWAYS start dev server (`pnpm dev`) when schema is out of sync** - Dev mode detects and fixes schema automatically
+3. **✅ ALWAYS wait for dev server to complete auto-sync before testing builds**
+4. **✅ ALWAYS ask the user before touching ANY migration command**
 
-4. **Production Deployment (CRITICAL):**
-   ```bash
-   # Run migrations BEFORE starting application
-   pnpm payload migrate
-   pnpm build
-   # OR use the combined CI command:
-   pnpm ci  # Runs migrations + build
-   ```
+### 🔴 CRITICAL ERROR RECOGNITION:
 
-### Database Management Rules:
+**If you see these error patterns during `pnpm build`:**
+- ❌ "column [name] does not exist"
+- ❌ "relation [name] does not exist"
+- ❌ "type [name] does not exist"
+- ❌ "Failed query: select..."
 
-- ❌ **NEVER** use external tools like pgAdmin, DataGrip, or raw SQL for schema changes
-- ❌ **NEVER** manually alter database schema outside of Payload
-- ❌ **NEVER** mix manual migrations with Payload's automatic schema sync
-- ✅ **ALWAYS** use `payload migrate:create` for schema changes
-- ✅ **ALWAYS** run migrations before builds in production
-- ✅ **ALWAYS** review migration files before deployment
+**THE CORRECT RESPONSE IS:**
+1. ✅ Start dev server: `pnpm dev`
+2. ✅ Wait for Payload to auto-sync schema (watch console output)
+3. ✅ Stop dev server
+4. ✅ Try build again
+5. ✅ **NEVER** run migration commands
 
-### Migration Commands:
+**THE INCORRECT RESPONSE IS:**
+1. ❌ Run `pnpm payload migrate`
+2. ❌ Run `pnpm payload migrate:create`
+3. ❌ Check migration status
+4. ❌ Attempt to manually fix database
+
+### 🎯 Development Workflow (MANDATORY):
+
+**Development Environment (LOCAL):**
 ```bash
-pnpm payload migrate:create    # Create new migration (after schema changes)
-pnpm payload migrate          # Run pending migrations
-pnpm payload migrate:status   # Check migration status
-pnpm payload migrate:down     # Rollback last migration batch
-pnpm payload migrate:refresh  # Rollback and re-run migrations
+# 1. Make schema changes in code (collections, fields, etc.)
+# 2. Start dev server - Payload auto-syncs schema automatically
+pnpm dev
+
+# 3. Payload detects changes and applies them automatically
+# NO MANUAL INTERVENTION REQUIRED
+
+# 4. Build to verify everything works
+pnpm build
+
+# IF BUILD FAILS WITH SCHEMA ERRORS:
+# - Start dev server again (pnpm dev)
+# - Let it complete auto-sync
+# - Try build again
+# DO NOT RUN MIGRATIONS
+```
+
+**Production Deployment (ONLY TIME TO USE MIGRATIONS):**
+```bash
+# This workflow is ONLY for production deployments
+# User must explicitly request this
+
+# 1. Create migration (if deploying schema changes)
+pnpm payload migrate:create
+
+# 2. Review generated migration files
+
+# 3. Deploy to production
+pnpm payload migrate  # Run pending migrations
+pnpm build           # Build application
+
+# OR use combined CI command:
+pnpm ci  # Runs migrations + build
+```
+
+### 🚨 WHEN DATABASE IS CORRUPTED (Due to Incorrect Migration Usage):
+
+**If you have already run migrations in development and database is corrupted:**
+
+1. **STOP** - Do not run any more migration commands
+2. **ASK USER** - Explain situation: "I incorrectly ran migrations in development. Database may be corrupted. Options are:
+   - Option A: `migrate:fresh` (DELETES ALL DATA, clean slate)
+   - Option B: Restore from backup if available"
+3. **WAIT FOR USER DECISION** - Do not proceed without explicit permission
+4. **NEVER** attempt to "fix" by running more migrations
+
+### 🎓 WHY THESE RULES EXIST:
+
+- **Dev mode uses "push" strategy**: Payload automatically syncs schema changes to database
+- **Production uses "migrate" strategy**: Explicit migrations track and apply changes safely
+- **Mixing strategies causes corruption**: Database gets stuck between auto-sync and migration tracking
+- **Recovery is destructive**: Once corrupted, only option is to drop database or restore backup
+
+### 📋 Migration Commands Reference (PRODUCTION ONLY):
+
+```bash
+# ⚠️ ALL OF THESE ARE PRODUCTION-ONLY COMMANDS
+# DO NOT USE IN DEVELOPMENT UNLESS USER EXPLICITLY REQUESTS
+
+pnpm payload migrate:create    # Create new migration (production prep only)
+pnpm payload migrate          # Run pending migrations (production only)
+pnpm payload migrate:status   # Check migration status (production only)
+pnpm payload migrate:down     # Rollback last migration (production only)
+pnpm payload migrate:refresh  # Rollback and re-run (production only)
 pnpm payload migrate:reset    # Rollback all migrations (DESTRUCTIVE)
 pnpm payload migrate:fresh    # Drop and recreate schema (DESTRUCTIVE)
 ```
+
+### ⚠️ SUMMARY FOR CLAUDE CODE AGENTS:
+
+**Your job when you see build errors with "column does not exist":**
+1. Recognize this as schema out of sync
+2. Start dev server to auto-sync schema
+3. Wait for sync to complete
+4. Try build again
+5. **DO NOT TOUCH MIGRATION COMMANDS**
+
+**Your job is NOT:**
+1. ❌ To run migrations
+2. ❌ To "fix" the database
+3. ❌ To check migration status
+4. ❌ To create migrations
+5. ❌ To assume migrations are needed
 
 ## 🚨 CRITICAL: Payload CMS draftMode() Fix for Next.js 15+
 

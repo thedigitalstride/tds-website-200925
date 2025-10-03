@@ -158,10 +158,10 @@ export const FeaturesBlock: Block = {
           defaultValue: 'grey',
           label: 'Card Background',
           options: [
-            { label: 'Grey (Default)', value: 'grey' },
+            { label: 'Default', value: 'grey' },
             { label: 'Brand', value: 'brand' },
             { label: 'Outline', value: 'outline' },
-            { label: 'Line', value: 'line' },
+            { label: 'Line Top', value: 'line' },
           ],
           admin: {
             description: 'Background style for feature cards',
@@ -191,6 +191,7 @@ export const FeaturesBlock: Block = {
             { label: 'Brand', value: 'brand' },
             { label: 'Gray', value: 'gray' },
             { label: 'White', value: 'white' },
+            { label: 'Accent Blue', value: 'accent' },
             { label: 'Success (Green)', value: 'success' },
             { label: 'Warning (Orange)', value: 'warning' },
             { label: 'Error (Red)', value: 'error' },

@@ -1010,7 +1010,7 @@ export interface FeaturesBlock {
     /**
      * Color scheme for the featured icons
      */
-    iconColor?: ('brand' | 'gray' | 'white' | 'success' | 'warning' | 'error') | null;
+    iconColor?: ('brand' | 'gray' | 'white' | 'accent' | 'success' | 'warning' | 'error') | null;
     /**
      * Visual theme for the featured icons
      */

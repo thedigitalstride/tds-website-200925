@@ -125,22 +125,41 @@
     --color-alpha-white: rgb(255 255 255);
     --color-alpha-black: rgb(0 0 0);
 
-    --color-brand-25: rgb(247 251 255);
-    --color-brand-50: rgb(239 246 255);
-    --color-brand-100: rgb(219 234 254);
-    --color-brand-200: rgb(191 219 254);
-    --color-brand-300: rgb(147 197 253);
-    --color-brand-400: rgb(96 165 250);
-    --color-brand-500: rgb(22 137 255);
-    --color-brand-600: rgb(20 123 230);
-    --color-brand-700: rgb(18 110 204);
-    --color-brand-800: rgb(16 96 179);
-    --color-brand-900: rgb(14 83 153);
-    --color-brand-950: rgb(11 66 122);
+    /* TDS Brand Blue (Dark Blue) - Main brand color */
+    --color-brand-25:  rgb(240 244 250);  /* Lightest tint - nearly white with hint of blue */
+    --color-brand-50:  rgb(225 233 245);  /* Very light tint */
+    --color-brand-100: rgb(195 211 235);  /* Light tint */
+    --color-brand-200: rgb(135 169 215);  /* Medium-light tint */
+    --color-brand-300: rgb(75 127 195);   /* Medium tint */
+    --color-brand-400: rgb(39 77 131);    /* Medium-dark - lighter than 500 */
+    --color-brand-500: rgb(3 26 67);      /* Main brand color #031A43 - CENTER */
+    --color-brand-600: rgb(2 21 54);      /* Darker than main */
+    --color-brand-700: rgb(2 18 45);      /* Darker still */
+    --color-brand-800: rgb(1 15 37);      /* Very dark */
+    --color-brand-900: rgb(1 10 25);      /* Almost black */
+    --color-brand-950: rgb(1 5 13);       /* Darkest - nearly black */
 
     /* Brand solid colors for UUI buttons */
     --color-brand-solid: var(--color-brand-500);
-    --color-brand-solid_hover: var(--color-brand-600);
+    --color-brand-solid_hover: var(--color-brand-900);
+
+    /* TDS Brand Accent Blue (Light Blue) - Buttons and highlights */
+    --color-accent-25:  rgb(240 247 255);
+    --color-accent-50:  rgb(219 237 255);
+    --color-accent-100: rgb(178 216 255);
+    --color-accent-200: rgb(102 178 255);
+    --color-accent-300: rgb(26 139 255);
+    --color-accent-400: rgb(24 138 255);
+    --color-accent-500: rgb(22 137 255);  /* Main accent color - light blue for buttons */
+    --color-accent-600: rgb(0 101 204);
+    --color-accent-700: rgb(0 76 153);
+    --color-accent-800: rgb(0 50 102);
+    --color-accent-900: rgb(0 30 61);
+    --color-accent-950: rgb(0 18 36);
+
+    /* Accent solid colors for UUI buttons */
+    --color-accent-solid: var(--color-accent-500);
+    --color-accent-solid_hover: var(--color-accent-600);
 
     --color-error-25: rgb(255 251 250);
     --color-error-50: rgb(254 243 242);
@@ -705,6 +724,15 @@
     --color-text-brand-tertiary_alt: var(--color-brand-600);
     --color-text-brand-secondary_hover: var(--color-brand-800);
     --color-text-error-primary_hover: var(--color-error-700);
+    --color-text-accent-primary: var(--color-accent-900);
+    --color-text-accent-secondary: var(--color-accent-700);
+    --color-text-accent-tertiary: var(--color-accent-600);
+    --color-text-accent-tertiary_alt: var(--color-accent-600);
+    --color-text-accent-secondary_hover: var(--color-accent-800);
+    --color-text-primary_on-accent: var(--color-white);
+    --color-text-secondary_on-accent: var(--color-accent-200);
+    --color-text-tertiary_on-accent: var(--color-accent-200);
+    --color-text-quaternary_on-accent: var(--color-accent-300);
 
     /* BORDER COLORS */
     --color-border-secondary: var(--color-gray-200);
@@ -717,6 +745,9 @@
     --color-border-tertiary: var(--color-gray-100);
     --color-border-brand_alt: var(--color-brand-600);
     --color-border-secondary_alt: rgb(0 0 0 / 0.08);
+    --color-border-accent: var(--color-accent-500);
+    --color-border-accent_alt: var(--color-accent-600);
+    --color-border-accent_subtle: var(--color-accent-300);
 
     /* FOREGROUND COLORS */
     --color-fg-secondary: var(--color-gray-700);
@@ -740,6 +771,11 @@
     --color-fg-brand-primary_alt: var(--color-fg-brand-primary);
     --color-fg-brand-secondary_alt: var(--color-fg-brand-secondary);
     --color-fg-brand-secondary_hover: var(--color-brand-600);
+    --color-fg-accent-primary: var(--color-accent-600);
+    --color-fg-accent-secondary: var(--color-accent-500);
+    --color-fg-accent-primary_alt: var(--color-accent-600);
+    --color-fg-accent-secondary_alt: var(--color-accent-500);
+    --color-fg-accent-secondary_hover: var(--color-accent-600);
 
     /* BACKGROUND COLORS */
     --color-bg-primary: var(--color-white);
@@ -773,6 +809,14 @@
     --color-bg-brand-section: var(--color-brand-800);
     --color-bg-brand-section_subtle: var(--color-brand-700);
     --color-bg-primary-solid: var(--color-gray-950);
+    --color-bg-accent-primary: var(--color-accent-50);
+    --color-bg-accent-secondary: var(--color-accent-100);
+    --color-bg-accent-solid: var(--color-accent-600);
+    --color-bg-accent-solid_hover: var(--color-accent-700);
+    --color-bg-accent-primary_alt: var(--color-accent-50);
+    --color-bg-accent-secondary_alt: var(--color-accent-100);
+    --color-bg-accent-section: var(--color-accent-800);
+    --color-bg-accent-section_subtle: var(--color-accent-700);
 
     /* COMPONENT COLORS */
     --color-app-store-badge-border: rgb(166 166 166);
@@ -784,6 +828,8 @@
     --color-button-destructive-primary-icon_hover: var(--color-error-200);
     --color-button-primary-icon: var(--color-brand-300);
     --color-button-primary-icon_hover: var(--color-brand-200);
+    --color-button-accent-icon: var(--color-accent-300);
+    --color-button-accent-icon_hover: var(--color-accent-200);
     --color-featured-icon-light-fg-brand: var(--color-brand-600);
     --color-featured-icon-light-fg-error: var(--color-error-600);
     --color-featured-icon-light-fg-gray: var(--color-gray-500);
@@ -965,6 +1011,17 @@
         --color-utility-brand-900: var(--color-brand-100);
         --color-utility-brand-900_alt: var(--color-utility-gray-900);
 
+        --color-utility-accent-50: var(--color-accent-950);
+        --color-utility-accent-100: var(--color-accent-900);
+        --color-utility-accent-200: var(--color-accent-800);
+        --color-utility-accent-300: var(--color-accent-700);
+        --color-utility-accent-400: var(--color-accent-600);
+        --color-utility-accent-500: var(--color-accent-500);
+        --color-utility-accent-600: var(--color-accent-400);
+        --color-utility-accent-700: var(--color-accent-300);
+        --color-utility-accent-800: var(--color-accent-200);
+        --color-utility-accent-900: var(--color-accent-100);
+
         --color-utility-gray-50: var(--color-gray-900);
         --color-utility-gray-100: var(--color-gray-800);
         --color-utility-gray-200: var(--color-gray-700);
@@ -1129,6 +1186,15 @@
         --color-text-brand-tertiary_alt: var(--color-gray-50);
         --color-text-brand-secondary_hover: var(--color-gray-200);
         --color-text-error-primary_hover: var(--color-error-300);
+        --color-text-accent-primary: var(--color-accent-300);
+        --color-text-accent-secondary: var(--color-accent-400);
+        --color-text-accent-tertiary: var(--color-accent-400);
+        --color-text-accent-tertiary_alt: var(--color-gray-50);
+        --color-text-accent-secondary_hover: var(--color-gray-200);
+        --color-text-primary_on-accent: var(--color-gray-50);
+        --color-text-secondary_on-accent: var(--color-gray-300);
+        --color-text-tertiary_on-accent: var(--color-gray-400);
+        --color-text-quaternary_on-accent: var(--color-gray-400);
 
         /* BORDER COLORS */
         --color-border-secondary: var(--color-gray-800);
@@ -1141,6 +1207,9 @@
         --color-border-tertiary: var(--color-gray-800);
         --color-border-brand_alt: var(--color-gray-700);
         --color-border-secondary_alt: var(--color-gray-800);
+        --color-border-accent: var(--color-accent-400);
+        --color-border-accent_alt: var(--color-gray-700);
+        --color-border-accent_subtle: var(--color-accent-500);
 
         /* FOREGROUND COLORS */
         --color-fg-secondary: var(--color-gray-300);
@@ -1164,9 +1233,14 @@
         --color-fg-brand-primary_alt: var(--color-gray-300);
         --color-fg-brand-secondary_alt: var(--color-gray-600);
         --color-fg-brand-secondary_hover: var(--color-gray-500);
+        --color-fg-accent-primary: var(--color-accent-500);
+        --color-fg-accent-secondary: var(--color-accent-400);
+        --color-fg-accent-primary_alt: var(--color-gray-300);
+        --color-fg-accent-secondary_alt: var(--color-gray-600);
+        --color-fg-accent-secondary_hover: var(--color-gray-500);
 
         /* BACKGROUND COLORS */
-        --color-bg-primary: var(--color-gray-950);
+        --color-bg-primary: var(--color-brand-500);
         --color-bg-tertiary: var(--color-gray-800);
         --color-bg-brand-primary: var(--color-brand-500);
         --color-bg-error-secondary: var(--color-error-600);
@@ -1197,6 +1271,14 @@
         --color-bg-brand-section: var(--color-bg-secondary);
         --color-bg-brand-section_subtle: var(--color-bg-primary);
         --color-bg-primary-solid: var(--color-bg-secondary);
+        --color-bg-accent-primary: var(--color-accent-500);
+        --color-bg-accent-secondary: var(--color-accent-600);
+        --color-bg-accent-solid: var(--color-accent-600);
+        --color-bg-accent-solid_hover: var(--color-accent-500);
+        --color-bg-accent-primary_alt: var(--color-bg-secondary);
+        --color-bg-accent-secondary_alt: var(--color-bg-primary);
+        --color-bg-accent-section: var(--color-bg-secondary);
+        --color-bg-accent-section_subtle: var(--color-bg-primary);
 
         /* COMPONENT COLORS */
         --color-app-store-badge-border: var(--color-white);
