@@ -10,6 +10,7 @@ import * as migration_20250926_194105 from './20250926_194105';
 import * as migration_20250929_213200_add_button_block from './20250929_213200_add_button_block';
 import * as migration_20250929_215500_header_dropdown_icon_to_varchar from './20250929_215500_header_dropdown_icon_to_varchar';
 import * as migration_20251002_095731 from './20251002_095731';
+import * as migration_20251003_141514 from './20251003_141514';
 
 export const migrations = [
   {
@@ -71,5 +72,10 @@ export const migrations = [
     up: migration_20251002_095731.up,
     down: migration_20251002_095731.down,
     name: '20251002_095731',
+  },
+  {
+    up: migration_20251003_141514.up,
+    down: migration_20251003_141514.down,
+    name: '20251003_141514'
   },
 ];
