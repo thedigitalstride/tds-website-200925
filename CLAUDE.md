@@ -130,6 +130,269 @@ src/
 - **[Styles System Guide](/src/styles/README.md)** - Technical documentation for the styling system. Covers file structure, theme management, and customization workflows.
 - **[Live Style Guide](/style-guide)** - Interactive page showing all typography, colors, buttons, and badges in action.
 
+## 🚨 CRITICAL: Understanding the Styling System - MUST READ BEFORE ANY STYLE CHANGES
+
+**⛔ CLAUDE CODE AGENTS: You MUST fully understand this system before making ANY styling changes. Guessing or making assumptions causes significant issues.**
+
+### How This Styling System Works
+
+This project uses **Tailwind v4 + UntitledUI** with a **CSS variable-based theme system**. Understanding these three layers is CRITICAL:
+
+#### 1. CSS Variables in `theme.css` (Foundation Layer)
+- All colors, typography, spacing defined as CSS variables in `@theme` block
+- Variables automatically change values in dark mode (`.dark-mode` selector)
+- Example:
+  ```css
+  /* Light mode */
+  --color-bg-brand-solid: var(--color-brand-500);  /* Dark blue */
+
+  /* Dark mode (inside .dark-mode selector) */
+  --color-bg-brand-solid: var(--color-white);      /* White */
+  ```
+
+#### 2. Tailwind Classes (Mapping Layer)
+- Tailwind classes map to CSS variables
+- Classes like `bg-brand-solid` reference `var(--color-bg-brand-solid)`
+- The CSS variable changes in dark mode, so the class automatically adapts
+- **NEVER** invent custom class names like `text-primary-inverted` - they don't exist!
+
+#### 3. Dark Mode Overrides (Component Layer)
+- Use `dark:` prefix for component-specific overrides
+- Example: `text-white dark:text-brand-500`
+- Only needed when the CSS variable approach doesn't cover your use case
+
+### ✅ CORRECT Approach to Styling Changes
+
+**Step 1: Check if CSS variables exist**
+```bash
+# Search theme.css for the variable
+grep "color-brand-solid" src/styles/theme.css
+```
+
+**Step 2: Update CSS variables in theme.css (if needed)**
+```css
+/* Light mode */
+--color-brand-solid: var(--color-brand-500);
+
+/* Dark mode (inside .dark-mode { ... } block) */
+--color-brand-solid: var(--color-white);
+```
+
+**Step 3: Use Tailwind classes that map to those variables**
+```tsx
+// CORRECT - Uses CSS variables that change in dark mode
+<button className="bg-brand-solid text-white dark:text-brand-500">
+  Button
+</button>
+```
+
+### ❌ INCORRECT Approaches (DO NOT DO THIS)
+
+**❌ Don't invent class names:**
+```tsx
+// WRONG - text-primary-inverted doesn't exist
+<button className="text-primary-inverted">
+```
+
+**❌ Don't use arbitrary values without checking theme:**
+```tsx
+// WRONG - Bypasses the theme system
+<button className="bg-[#031A43] text-[#ffffff]">
+```
+
+**❌ Don't add CSS variables outside the @theme block:**
+```css
+/* WRONG - CSS variables must be in @theme block or .dark-mode selector */
+.my-component {
+  --my-custom-color: blue;
+}
+```
+
+**❌ Don't guess - READ the documentation first:**
+- `/docs/STYLE_GUIDE.md` - Shows ALL available classes
+- `/docs/STYLING_BEST_PRACTICES.md` - Shows HOW to use them
+- `/src/styles/theme.css` - Shows the actual CSS variables
+
+### 🔍 How to Find the Right Class/Variable
+
+**Question: "I need white text on a dark blue button that inverts in dark mode"**
+
+1. **Check Style Guide:** `/docs/STYLE_GUIDE.md`
+   - Look for text color section
+   - Look for button examples
+
+2. **Search theme.css:**
+   ```bash
+   grep "text.*brand" src/styles/theme.css
+   grep "color-fg" src/styles/theme.css
+   ```
+
+3. **Check existing components:**
+   ```bash
+   # See how other buttons handle this
+   grep -r "text-white" src/components/uui/
+   ```
+
+4. **Ask the user if uncertain:**
+   - "I see these options in theme.css: [list]. Which should I use?"
+   - Better to ask than to guess wrong!
+
+### 🎯 Real Example: Primary Button Styling
+
+**Requirement:** Dark blue button with white text (light mode), white button with dark blue text (dark mode)
+
+**Step 1: Update CSS variables in theme.css**
+```css
+/* Light mode defaults (lines 143-144) */
+--color-brand-solid: var(--color-brand-500);        /* Dark blue */
+--color-brand-solid_hover: var(--color-brand-900);  /* Darker blue */
+
+/* Dark mode overrides (inside .dark-mode block, lines 1251-1260) */
+--color-bg-brand-solid: var(--color-white);         /* White background */
+--color-bg-brand-solid_hover: var(--color-brand-50); /* Light blue hover */
+```
+
+**Step 2: Update button component**
+```tsx
+// src/components/uui/base/buttons/button.tsx
+colors: {
+  primary: {
+    root: [
+      "bg-brand-solid text-white dark:text-brand-500",
+      "hover:bg-brand-solid_hover",
+      "*:data-icon:text-white dark:*:data-icon:text-brand-500",
+    ].join(" "),
+  },
+}
+```
+
+**Why this works:**
+- `bg-brand-solid` → references CSS variable that changes in dark mode
+- `text-white` → white in light mode
+- `dark:text-brand-500` → dark blue in dark mode (explicit override)
+- Icons use the same pattern with `*:data-icon:` selector
+
+### 📋 Before Making Style Changes - Checklist
+
+- [ ] Read `/docs/STYLE_GUIDE.md` to understand available classes
+- [ ] Read `/docs/STYLING_BEST_PRACTICES.md` to understand patterns
+- [ ] Search `theme.css` for relevant CSS variables
+- [ ] Check existing components for similar patterns
+- [ ] Test changes in both light AND dark modes
+- [ ] Clear cache: `rm -rf .next && pnpm dev`
+- [ ] Verify on `/style-guide` page
+
+### 🚨 Key Takeaway
+
+**The theme system is NOT magic - it's CSS variables + Tailwind mappings + dark mode overrides.**
+
+If you don't understand how these three pieces work together, **STOP and read the documentation** before making changes. Guessing causes broken styles, wasted time, and user frustration.
+
+## 🎨 Button System - Important Configuration Details
+
+### Current Button Variants (Simplified)
+
+**Available Colors:**
+- `color="primary"` - **Brand button** (dark blue #031A43 in light mode, white in dark mode)
+- `color="accent"` - **Accent button** (light blue #1689FF in both modes)
+- `color="secondary"` - Secondary button (system colors)
+- `color="tertiary"` - Tertiary button (minimal styling)
+- `color="link"` - Link button (brand-colored text with underline)
+- Destructive variants: `primary-destructive`, `secondary-destructive`, `tertiary-destructive`, `link-destructive`
+
+**Key Design Decisions:**
+1. **Removed `link-gray` variant** - Simplified to one link variant (`link`) that uses brand colors
+2. **Primary renamed to "Brand" in UI** - More accurate naming, though code still uses `color="primary"`
+3. **Flat design** - No shadows, rings, or gradients on primary/accent buttons
+4. **Hover scale animation** - All buttons scale to 105% on hover (`hover:scale-105`) with 100ms transition
+
+### Button Color Configuration
+
+**Critical CSS Variables (in `theme.css`):**
+
+```css
+/* Light Mode (base @theme block, lines 789-798, 814-815) */
+--color-bg-brand-solid: var(--color-brand-500);     /* #031A43 dark blue */
+--color-bg-brand-solid_hover: var(--color-brand-700); /* Darker on hover */
+--color-bg-accent-solid: var(--color-accent-500);   /* #1689FF light blue */
+--color-bg-accent-solid_hover: var(--color-accent-600); /* Darker on hover */
+
+/* Dark Mode (.dark-mode block, lines 1251-1260, 1276-1277) */
+--color-bg-brand-solid: var(--color-white);         /* White background */
+--color-bg-brand-solid_hover: var(--color-brand-100); /* Light blue tint on hover */
+--color-bg-accent-solid: var(--color-accent-500);   /* Same as light mode */
+--color-bg-accent-solid_hover: var(--color-accent-600); /* Same as light mode */
+```
+
+**IMPORTANT:** Always use the 500 (non-tinted) colors as base:
+- Brand button base: `brand-500` (#031A43)
+- Accent button base: `accent-500` (#1689FF)
+- Hover states use lighter (100) or darker (600-700) shades
+
+### Button Component Structure
+
+**File:** `src/components/uui/base/buttons/button.tsx`
+
+**Key Implementation Details:**
+1. **Text color handling:**
+   - Primary button uses `text-white` in light mode, `dark:text-brand-500` in dark mode
+   - Icons follow same pattern: `*:data-icon:text-white dark:*:data-icon:text-brand-500`
+
+2. **Link-type detection:**
+   ```tsx
+   const isLinkType = ["link", "link-destructive"].includes(color);
+   ```
+   Link buttons have no padding and use underline effects
+
+3. **Hover animation:**
+   - Applied at root level: `hover:scale-105` (line 13)
+   - Smooth 100ms transition with `ease-linear`
+   - Scales entire button content (text + icons + spacing together)
+
+### Icon Integration
+
+**Icons from `@untitledui/icons`:**
+```tsx
+import { ArrowRight } from "@untitledui/icons/ArrowRight";
+import { Download01 as Download } from "@untitledui/icons/Download01";
+import { Plus } from "@untitledui/icons/Plus";
+```
+
+**Usage patterns:**
+```tsx
+// Leading icon
+<Button color="primary" iconLeading={Plus}>Create New</Button>
+
+// Trailing icon
+<Button color="primary" iconTrailing={ArrowRight}>Continue</Button>
+
+// Icon only (with aria-label)
+<Button color="primary" iconLeading={Plus} aria-label="Add" />
+```
+
+**IMPORTANT:** Icons must be passed as props (`iconLeading`/`iconTrailing`), NOT as children. Passing icons as children breaks layout.
+
+### Testing Location
+
+**Style Guide Page:** `/style-guide`
+- Shows all button variants in one place
+- Includes theme toggle for light/dark mode testing
+- Demonstrates buttons with icons, sizes, and colors
+
+### Common Mistakes to Avoid
+
+❌ **Don't:** Use `color="brand"` in code
+✅ **Do:** Use `color="primary"` (only the UI label says "Brand")
+
+❌ **Don't:** Pass icons as children: `<Button><Icon /></Button>`
+✅ **Do:** Pass icons as props: `<Button iconLeading={Icon} />`
+
+❌ **Don't:** Use brand-600 or accent-600 as base colors
+✅ **Do:** Always use 500 colors as base (brand-500, accent-500)
+
+❌ **Don't:** Modify button component styles without updating theme.css CSS variables
+✅ **Do:** Update CSS variables in theme.css first, then button component classes reference those variables
+
 ### Database & Deployment
 - **[Database Preview Strategy](/docs/DATABASE_PREVIEW_STRATEGY.md)** - **⭐ CRITICAL** - Three-tier database setup with Neon branching for safe migration testing. Explains preview database workflow, migration best practices, and production protection.
 

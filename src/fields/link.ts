@@ -5,10 +5,12 @@ import deepMerge from '@/utilities/deepMerge'
 // UntitledUI Button Color Variants
 export type UUIButtonColors =
   | 'primary'
+  | 'accent'
   | 'secondary'
   | 'tertiary'
-  | 'link-gray'
-  | 'link-color'
+  | 'link'
+  | 'link-gray' // DEPRECATED: Kept for backward compatibility, maps to 'link'
+  | 'link-color' // DEPRECATED: Kept for backward compatibility, maps to 'link'
   | 'primary-destructive'
   | 'secondary-destructive'
   | 'tertiary-destructive'
@@ -24,9 +26,14 @@ export type LinkAppearances = 'default' | 'outline'
 // UntitledUI Color Options
 export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: string; description?: string }> = {
   primary: {
-    label: 'Primary',
+    label: 'Brand',
     value: 'primary',
-    description: 'Brand colored button with strong emphasis'
+    description: 'Dark blue brand button for primary CTAs'
+  },
+  accent: {
+    label: 'Accent',
+    value: 'accent',
+    description: 'Light blue accent button for secondary actions'
   },
   secondary: {
     label: 'Secondary',
@@ -38,15 +45,21 @@ export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: st
     value: 'tertiary',
     description: 'Minimal button with no background'
   },
+  link: {
+    label: 'Link',
+    value: 'link',
+    description: 'Brand-colored text link with underline'
+  },
+  // DEPRECATED: Kept for backward compatibility only
   'link-gray': {
-    label: 'Text Link (Gray)',
+    label: 'Link (Deprecated)',
     value: 'link-gray',
-    description: 'Simple text link with gray color'
+    description: 'DEPRECATED: Use "Link" instead'
   },
   'link-color': {
-    label: 'Text Link (Brand)',
+    label: 'Link Color (Deprecated)',
     value: 'link-color',
-    description: 'Simple text link with brand color'
+    description: 'DEPRECATED: Use "Link" instead'
   },
   'primary-destructive': {
     label: 'Primary Destructive',

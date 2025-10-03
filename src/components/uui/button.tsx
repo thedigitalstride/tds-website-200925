@@ -50,7 +50,7 @@ export const styles = sortCx({
     colors: {
         primary: {
             root: [
-                "bg-brand-solid text-white shadow-xs-skeumorphic ring-1 ring-transparent ring-inset hover:bg-brand-solid_hover data-loading:bg-brand-solid_hover",
+                "bg-brand-solid text-white hover:bg-brand-solid_hover data-loading:bg-brand-solid_hover",
                 // Inner border gradient
                 "before:absolute before:inset-px before:border before:border-white/12 before:mask-b-from-0%",
                 // Disabled styles
@@ -96,6 +96,15 @@ export const styles = sortCx({
             ].join(" "),
         },
         "link-color": {
+            root: [
+                "justify-normal rounded p-0! text-brand-secondary hover:text-brand-secondary_hover",
+                // Inner text underline
+                "*:data-text:underline *:data-text:decoration-transparent *:data-text:underline-offset-2 hover:*:data-text:decoration-current",
+                // Icon styles
+                "*:data-icon:text-fg-brand-secondary_alt hover:*:data-icon:text-fg-brand-secondary_hover",
+            ].join(" "),
+        },
+        "link": {
             root: [
                 "justify-normal rounded p-0! text-brand-secondary hover:text-brand-secondary_hover",
                 // Inner text underline
@@ -198,7 +207,7 @@ export const Button = ({
     const Component = href ? AriaLink : AriaButton;
 
     const isIcon = (IconLeading || IconTrailing) && !children;
-    const isLinkType = ["link-gray", "link-color", "link-destructive"].includes(color);
+    const isLinkType = ["link", "link-gray", "link-color", "link-destructive"].includes(color);
 
     noTextPadding = isLinkType || noTextPadding;
 

@@ -23,6 +23,8 @@ type CMSLinkType = {
   // UUI Button properties
   uuiColor?: 'primary' | 'secondary' | 'tertiary' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
   uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
+  buttonIcon?: string | null
+  iconPos?: 'leading' | 'trailing' | null
 }
 
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
@@ -38,6 +40,8 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     url,
     uuiColor,
     uuiSize,
+    buttonIcon,
+    iconPos,
   } = props
 
   const href =
@@ -55,17 +59,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   // Check if UUI button properties are provided
   const hasUUIProps = uuiColor || uuiSize
 
-  /* Ensure we don't break any styles set by richText */
-  if (appearance === 'inline') {
-    return (
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && label}
-        {children && children}
-      </Link>
-    )
-  }
-
-  // Use UUIButton if UUI properties are provided (preferred approach)
+  // Use UUIButton if UUI properties are provided (preferred approach - takes priority)
   if (hasUUIProps) {
     return (
       <UUIButton
@@ -77,9 +71,21 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
           reference: reference as ({ relationTo: 'pages'; value: number | Page } | { relationTo: 'posts'; value: number | Post } | null), // Type assertion needed due to different reference type constraints
           uuiColor,
           uuiSize,
+          buttonIcon,
+          iconPos,
         }}
         className={className}
       />
+    )
+  }
+
+  /* Ensure we don't break any styles set by richText */
+  if (appearance === 'inline') {
+    return (
+      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
+        {label && label}
+        {children && children}
+      </Link>
     )
   }
 

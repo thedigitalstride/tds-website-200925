@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { Button } from '@/components/uui/button'
 import type { ButtonProps } from '@/components/uui/button'
@@ -24,7 +26,7 @@ export interface PayloadLinkObject {
     | ({ relationTo: 'pages'; value: number | Page } | null)
     | ({ relationTo: 'posts'; value: number | Post } | null)
   // UUI Button styling properties
-  uuiColor?: 'primary' | 'secondary' | 'tertiary' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
+  uuiColor?: 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
   uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
   // UUI Button icon properties
   buttonIcon?: string | null

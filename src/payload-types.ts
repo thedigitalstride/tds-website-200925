@@ -103,10 +103,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    notFound: NotFound;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    notFound: NotFoundSelect<false> | NotFoundSelect<true>;
   };
   locale: null;
   user: User & {
@@ -884,8 +886,10 @@ export interface ButtonBlock {
           uuiColor?:
             | (
                 | 'primary'
+                | 'accent'
                 | 'secondary'
                 | 'tertiary'
+                | 'link'
                 | 'link-gray'
                 | 'link-color'
                 | 'primary-destructive'
@@ -907,11 +911,6 @@ export interface ButtonBlock {
            */
           iconPos?: ('leading' | 'trailing') | null;
         };
-        /**
-         * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01")
-         */
-        icon?: string | null;
-        iconPosition?: ('leading' | 'trailing') | null;
         id?: string | null;
       }[]
     | null;
@@ -1472,8 +1471,6 @@ export interface ButtonBlockSelect<T extends boolean = true> {
               buttonIcon?: T;
               iconPos?: T;
             };
-        icon?: T;
-        iconPosition?: T;
         id?: T;
       };
   layout?: T;
@@ -2181,6 +2178,57 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notFound".
+ */
+export interface NotFound {
+  id: number;
+  /**
+   * Main heading displayed on the 404 page
+   */
+  heading: string;
+  /**
+   * Subheading text displayed below the main heading
+   */
+  subheading?: string | null;
+  /**
+   * Link to help users navigate back (typically to the home page)
+   */
+  link: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Button color variant from UntitledUI design system
+     */
+    uuiColor?: ('primary' | 'secondary') | null;
+    /**
+     * Button size variant
+     */
+    uuiSize?: ('md' | 'lg') | null;
+    /**
+     * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+     */
+    buttonIcon?: string | null;
+    /**
+     * Position of the icon relative to the button text
+     */
+    iconPos?: ('leading' | 'trailing') | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2285,6 +2333,30 @@ export interface FooterSelect<T extends boolean = true> {
         id?: T;
       };
   copyrightText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notFound_select".
+ */
+export interface NotFoundSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        uuiColor?: T;
+        uuiSize?: T;
+        buttonIcon?: T;
+        iconPos?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

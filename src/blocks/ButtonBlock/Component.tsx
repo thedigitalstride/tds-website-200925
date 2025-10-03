@@ -3,10 +3,6 @@
 import React from 'react'
 import type { ButtonBlock as ButtonBlockProps } from '@/payload-types'
 import { UUIButton } from '@/components/payload-ui/UUIButton'
-import * as UUIIcons from '@untitledui/icons'
-
-// Type for dynamic icon imports
-type IconComponent = React.FC<{ className?: string }>
 
 export const ButtonBlockComponent: React.FC<ButtonBlockProps & { className?: string }> = ({
   buttons,
@@ -34,27 +30,13 @@ export const ButtonBlockComponent: React.FC<ButtonBlockProps & { className?: str
       className={`flex ${layoutClasses[layout || 'horizontal']} ${alignmentClasses[alignment || 'left']} flex-wrap ${className || ''}`}
     >
       {buttons.map((button, index) => {
-        const { link, icon, iconPosition } = button
-
-        // Dynamic icon loading from @untitledui/icons
-        let IconComponent: IconComponent | undefined
-
-        if (icon && typeof icon === 'string') {
-          // Get the icon component from the UUIIcons namespace
-          IconComponent = (UUIIcons as Record<string, IconComponent>)[icon]
-
-          if (!IconComponent) {
-            console.warn(`Icon "${icon}" not found in @untitledui/icons. Available icons must match exact export names (e.g., "ArrowRight", "Download01").`)
-          }
-        }
+        const { link } = button
 
         return (
           <UUIButton
             key={index}
             label={link?.label || `Button ${index + 1}`}
             link={link}
-            icon={IconComponent}
-            iconPosition={iconPosition || 'leading'}
           />
         )
       })}
