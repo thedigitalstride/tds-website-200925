@@ -26,7 +26,7 @@ export interface PayloadLinkObject {
     | ({ relationTo: 'pages'; value: number | Page } | null)
     | ({ relationTo: 'posts'; value: number | Post } | null)
   // UUI Button styling properties
-  uuiColor?: 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
+  uuiColor?: 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
   uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
   // UUI Button icon properties
   buttonIcon?: string | null
@@ -107,8 +107,13 @@ export const UUIButton: React.FC<UUIButtonProps> = ({
   const isLink = !!href
 
   // Extract UUI styling from link object
-  const uuiColor = typeof link === 'object' && link?.uuiColor ? link.uuiColor : buttonProps.color || 'primary'
+  let uuiColor = typeof link === 'object' && link?.uuiColor ? link.uuiColor : buttonProps.color || 'primary'
   const uuiSize = typeof link === 'object' && link?.uuiSize ? link.uuiSize : buttonProps.size || 'md'
+
+  // Map deprecated color variants to current ones
+  if (uuiColor === 'link-gray' || uuiColor === 'link-color') {
+    uuiColor = 'link'
+  }
 
   // Dynamic icon loading from link object (takes precedence over icon prop)
   let IconComponent: React.FC<{ className?: string }> | undefined = IconProp
