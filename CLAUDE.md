@@ -293,18 +293,21 @@ If you don't understand how these three pieces work together, **STOP and read th
 ### Current Button Variants (Simplified)
 
 **Available Colors:**
-- `color="primary"` - **Brand button** (dark blue #031A43 in light mode, white in dark mode)
-- `color="accent"` - **Accent button** (light blue #1689FF in both modes)
-- `color="secondary"` - Secondary button (system colors)
-- `color="tertiary"` - Tertiary button (minimal styling)
-- `color="link"` - Link button (brand-colored text with underline)
+- `color="primary"` - **Brand button** (solid brand color, scales on hover)
+- `color="accent"` - **Accent button** (solid accent color, scales on hover)
+- `color="secondary"` - **Outlined button** (transparent with 20% opacity outline, scales on hover)
+- `color="tertiary"` - **Tinted button** (20% tinted background, scales on hover)
+- `color="link"` - **Link button** (text with underline, no transformation)
 - Destructive variants: `primary-destructive`, `secondary-destructive`, `tertiary-destructive`, `link-destructive`
 
 **Key Design Decisions:**
-1. **Removed `link-gray` variant** - Simplified to one link variant (`link`) that uses brand colors
-2. **Primary renamed to "Brand" in UI** - More accurate naming, though code still uses `color="primary"`
-3. **Flat design** - No shadows, rings, or gradients on primary/accent buttons
-4. **Hover scale animation** - All buttons scale to 105% on hover (`hover:scale-105`) with 100ms transition
+1. **Removed `link-gray` and `link-color` variants** - Simplified to one link variant (`link`) that uses brand colors
+2. **Consistent sizing** - All buttons use `ring-1 ring-inset` (transparent for solid buttons, visible for outlined)
+3. **20% opacity standard** - Secondary outline and tertiary background both use 20% opacity
+4. **Selective hover effects:**
+   - Primary/Accent/Secondary/Tertiary: `hover:scale-105` transformation
+   - Link variants: No transformation, only underline effect
+5. **Width control** - All buttons use `w-fit` to always shrink to content
 
 ### Button Color Configuration
 
@@ -331,23 +334,42 @@ If you don't understand how these three pieces work together, **STOP and read th
 
 ### Button Component Structure
 
-**File:** `src/components/uui/base/buttons/button.tsx`
+**File:** `src/components/uui/button.tsx`
 
 **Key Implementation Details:**
-1. **Text color handling:**
-   - Primary button uses `text-white` in light mode, `dark:text-brand-500` in dark mode
-   - Icons follow same pattern: `*:data-icon:text-white dark:*:data-icon:text-brand-500`
 
-2. **Link-type detection:**
+1. **Consistent sizing strategy:**
+   ```tsx
+   // ALL variants use ring-1 ring-inset for identical internal structure
+   primary: "ring-1 ring-transparent ring-inset"  // Invisible ring
+   accent: "ring-1 ring-transparent ring-inset"   // Invisible ring
+   secondary: "ring-1 ring-black/20 dark:ring-white/20 ring-inset"  // Visible outline
+   ```
+   - `ring-inset` draws INSIDE padding (no box model changes)
+   - Transparent rings maintain spacing without being visible
+   - All buttons have identical dimensions
+
+2. **Width control:**
+   ```tsx
+   common: {
+     root: "inline-flex w-fit"  // Always shrink to content, never expand
+   }
+   ```
+
+3. **Opacity standards:**
+   - Outlines: `20%` (`ring-black/20`, `ring-white/20`)
+   - Backgrounds: `20%` (`bg-black/20`, `bg-white/20`)
+
+4. **Hover effects:**
+   - Primary/Accent/Secondary/Tertiary: `hover:scale-105` (scales entire button)
+   - Link variants: NO transformation (only underline effect)
+   - Icons in Secondary/Tertiary: NO color change on hover
+
+5. **Link-type detection:**
    ```tsx
    const isLinkType = ["link", "link-destructive"].includes(color);
    ```
    Link buttons have no padding and use underline effects
-
-3. **Hover animation:**
-   - Applied at root level: `hover:scale-105` (line 13)
-   - Smooth 100ms transition with `ease-linear`
-   - Scales entire button content (text + icons + spacing together)
 
 ### Icon Integration
 
@@ -390,8 +412,14 @@ import { Plus } from "@untitledui/icons/Plus";
 ❌ **Don't:** Use brand-600 or accent-600 as base colors
 ✅ **Do:** Always use 500 colors as base (brand-500, accent-500)
 
-❌ **Don't:** Modify button component styles without updating theme.css CSS variables
-✅ **Do:** Update CSS variables in theme.css first, then button component classes reference those variables
+❌ **Don't:** Add size-controlling styles to individual button variants
+✅ **Do:** Use `ring-1 ring-inset` on ALL variants (transparent for solid, visible for outlined)
+
+❌ **Don't:** Mix opacity percentages (e.g., 50% outline, 20% background)
+✅ **Do:** Use consistent 20% opacity for outlines and backgrounds
+
+❌ **Don't:** Add hover transformations to link buttons
+✅ **Do:** Only apply `hover:scale-105` to solid/outlined/tinted buttons, NOT link variants
 
 ### Database & Deployment
 - **[Database Preview Strategy](/docs/DATABASE_PREVIEW_STRATEGY.md)** - **⭐ CRITICAL** - Three-tier database setup with Neon branching for safe migration testing. Explains preview database workflow, migration best practices, and production protection.
@@ -722,6 +750,51 @@ pnpm dev          # Start dev server
 pnpm build       # Try build again
 ```
 
+#### Problem: "invalid input value for enum" Error
+
+**Symptoms:**
+```
+Error: invalid input value for enum enum_table_column: "deprecated-value"
+Failed query: ALTER TABLE "table" ALTER COLUMN "column" SET DATA TYPE...
+```
+
+**Root Cause:**
+- Dev mode auto-syncs enum TYPE definition (removes deprecated values from enum)
+- BUT does NOT update existing DATA that uses deprecated values
+- Database has data with values that no longer exist in the enum type
+
+**Solution for Development:**
+1. Identify which tables have deprecated enum values
+2. Update data directly using Docker/psql:
+   ```bash
+   # Check what values exist in the data
+   docker exec <postgres-container> psql -U postgres -d <database> -c \
+     "SELECT enum_column, COUNT(*) FROM table_name GROUP BY enum_column"
+
+   # Update deprecated values to new values
+   docker exec <postgres-container> psql -U postgres -d <database> -c \
+     "UPDATE table_name SET enum_column = 'new-value'
+      WHERE enum_column IN ('old-value-1', 'old-value-2')"
+
+   # Don't forget version history tables (prefixed with _)
+   docker exec <postgres-container> psql -U postgres -d <database> -c \
+     "UPDATE _table_name_v SET enum_column = 'new-value'
+      WHERE enum_column IN ('old-value-1', 'old-value-2')"
+   ```
+3. Restart dev server - should start cleanly without errors
+
+**Solution for Production:**
+Create a data migration that:
+1. Updates data first (transform deprecated values to new values)
+2. Then alters enum type (remove deprecated values from type)
+
+See `/src/migrations/20251004_update_button_colors.ts` for example pattern.
+
+**Prevention:**
+- When removing enum values from code, create migration BEFORE deploying
+- Migration should handle both data transformation AND type changes
+- Test locally by checking for deprecated data before pushing
+
 #### Problem: Forgot to create migration before deploying
 ```bash
 # You'll see in Vercel logs:
@@ -792,57 +865,14 @@ pnpm payload migrate:fresh    # Drop and recreate schema (DESTRUCTIVE)
 4. ❌ To create migrations (unless preparing for production deployment)
 5. ❌ To assume migrations are needed
 
-### 🔥 CRITICAL LESSON LEARNED: Environment File Management
+### 📚 Additional Troubleshooting Resources
 
-**Problem:** Local `pnpm build` was using `.env.production` instead of `.env`, causing builds to connect to remote database instead of local Docker database.
-
-**Key Insights:**
-1. **Next.js automatically loads `.env.production` during `next build`** - This is default Next.js behavior
-2. **`.env.production` should NOT be committed to the repository** - It contains production database credentials
-3. **Local builds should use local database** - Development and builds should use the same database (local Docker)
-4. **Production env vars belong on Vercel** - Set them in Vercel dashboard, not in committed files
-
-**Solution:**
-- ✅ Remove `.env.production` from the repository
-- ✅ Add `.env.production` to `.gitignore`
-- ✅ Set production environment variables in Vercel dashboard
-- ✅ Local development and builds use `.env` with local Docker database
-
-**Environment Variable Priority (Next.js):**
-1. `.env.production.local` (highest priority for production builds, gitignored)
-2. `.env.production` (should NOT be committed)
-3. `.env.local` (gitignored)
-4. `.env` (can be committed for local development defaults)
-
-### 🎯 CRITICAL LESSON: Schema Changes Require Migrations for Production
-
-**Problem:** After adding new fields (`buttonIcon`, `iconPos`) to the `link` field configuration, local database was auto-synced but production/preview deployments failed.
-
-**Key Insights:**
-1. **Dev mode auto-syncs schema silently** - No prompts shown locally, columns added automatically
-2. **Production uses migrations** - Preview/production deployments run `payload migrate`, not auto-sync
-3. **Schema changes after last migration are invisible to production** - If you add fields without creating a migration, production won't have them
-
-**Required Workflow for Schema Changes:**
-1. Make schema changes in code (add fields, change types, etc.)
-2. Dev server auto-syncs to local database automatically
-3. **BEFORE deploying to preview/production:**
-   ```bash
-   pnpm payload migrate:create
-   ```
-4. Review the generated migration file
-5. Commit and push the migration
-6. Vercel will run the migration during deployment
-
-**Warning Signs You Forgot to Create a Migration:**
-- ✅ Local build works fine
-- ❌ Preview/production deployment fails with "column does not exist"
-- ❌ Error mentions columns that you recently added to your code
-
-**Solution:**
-- Always run `pnpm payload migrate:create` before deploying schema changes to preview/production
-- The migration captures all schema differences between code and last migration
-- Commit the migration files (both `.ts` and `.json`) to git
+For detailed troubleshooting guides on common database issues, see:
+- **[Database Troubleshooting Guide](/docs/DATABASE_TROUBLESHOOTING.md)** - Comprehensive guide covering:
+  - Environment file management (`.env` vs `.env.production`)
+  - Schema changes and migration workflow
+  - Common error patterns and solutions
+  - Quick reference checklists
 
 ## 🚨 CRITICAL: Payload CMS draftMode() Fix for Next.js 15+
 

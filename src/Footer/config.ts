@@ -44,9 +44,9 @@ export const Footer: GlobalConfig = {
           fields: [
             link({
               enableUUIButton: true,
-              uuiColors: ['link-gray'],
-              uuiSizes: ['lg'],
-              defaultUUIColor: 'link-gray',
+              uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+              uuiSizes: ['sm', 'md', 'lg', 'xl'],
+              defaultUUIColor: 'link',
               defaultUUISize: 'lg',
               appearances: false,
             }),

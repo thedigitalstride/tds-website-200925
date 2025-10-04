@@ -149,7 +149,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                   <ul className="flex flex-col gap-3">
                     {tableOfContents.map((item, index) => (
                       <li key={index}>
-                        <Button href={item.href} size="lg" color="link-gray">
+                        <Button href={item.href} size="lg" color="link">
                           {item.title}
                         </Button>
                       </li>

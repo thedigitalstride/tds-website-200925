@@ -31,10 +31,10 @@ export const DropdownMenuFeatureCard = () => {
                         description="Check out the all new dashboard view. Pages now load up to 3x faster."
                         actionsContent={
                             <div className="inline-flex gap-3">
-                                <Button color="link-gray" size="sm">
+                                <Button color="link" size="sm">
                                     Dismiss
                                 </Button>
-                                <Button color="link-color" size="sm">
+                                <Button color="link" size="sm">
                                     Changelog
                                 </Button>
                             </div>

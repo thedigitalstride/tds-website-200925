@@ -51,7 +51,7 @@ export const FeaturesIconCards01 = () => {
                                     title={item.title}
                                     subtitle={item.subtitle}
                                     footer={
-                                        <Button color="link-color" size="lg" href={item.href} iconTrailing={ArrowRight} className="hidden md:inline-flex">
+                                        <Button color="link" size="lg" href={item.href} iconTrailing={ArrowRight} className="hidden md:inline-flex">
                                             Learn more
                                         </Button>
                                     }

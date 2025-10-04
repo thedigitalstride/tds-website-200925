@@ -342,10 +342,10 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
               // Only override text color for link-style buttons to match card text
               const buttonColor = typeof feature.link === 'object' && feature.link?.uuiColor
                 ? feature.link.uuiColor
-                : 'link-color' // Default is link-color
+                : 'link' // Default is link
 
-              // Override link button colors to match text colors (link variants only)
-              const isLinkVariant = buttonColor === 'link-gray' || buttonColor === 'link-color'
+              // Override link button colors to match text colors (link variant only)
+              const isLinkVariant = buttonColor === 'link'
               let buttonTextClass = undefined
 
               if (isLinkVariant) {

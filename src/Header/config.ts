@@ -164,8 +164,8 @@ export const Header: GlobalConfig = {
         link({
           appearances: false,
           enableUUIButton: true,
-          uuiColors: ['primary', 'secondary', 'tertiary'],
-          uuiSizes: ['sm', 'md', 'lg'],
+          uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+          uuiSizes: ['sm', 'md', 'lg', 'xl'],
           defaultUUIColor: 'primary',
           defaultUUISize: 'sm',
         }),

@@ -49,7 +49,7 @@ export const DropdownMenuSimpleWithFooter = () => {
                     ))}
                 </ul>
                 <div className="px-4 py-5 text-center sm:px-5">
-                    <Button href="#" color="link-color" size="lg">
+                    <Button href="#" color="link" size="lg">
                         All resources
                     </Button>
                 </div>

@@ -91,9 +91,9 @@ export const FeaturesBlock: Block = {
         },
         link({
           enableUUIButton: true,
-          uuiColors: ['primary', 'secondary', 'tertiary', 'link-color', 'link-gray'],
-          uuiSizes: ['sm', 'md', 'lg'],
-          defaultUUIColor: 'link-color',
+          uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+          uuiSizes: ['sm', 'md', 'lg', 'xl'],
+          defaultUUIColor: 'link',
           defaultUUISize: 'md',
           overrides: {
             admin: {

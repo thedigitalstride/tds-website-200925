@@ -80,7 +80,7 @@ export const PaginationPageDefault = ({ rounded, page = 1, total = 10, className
         >
             <div className="hidden flex-1 justify-start md:flex">
                 <Pagination.PrevTrigger asChild>
-                    <Button iconLeading={ArrowLeft} color="link-gray" size="sm">
+                    <Button iconLeading={ArrowLeft} color="link" size="sm">
                         {isDesktop ? "Previous" : undefined}{" "}
                     </Button>
                 </Pagination.PrevTrigger>
@@ -116,7 +116,7 @@ export const PaginationPageDefault = ({ rounded, page = 1, total = 10, className
 
             <div className="hidden flex-1 justify-end md:flex">
                 <Pagination.NextTrigger asChild>
-                    <Button iconTrailing={ArrowRight} color="link-gray" size="sm">
+                    <Button iconTrailing={ArrowRight} color="link" size="sm">
                         {isDesktop ? "Next" : undefined}
                     </Button>
                 </Pagination.NextTrigger>

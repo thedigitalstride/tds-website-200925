@@ -60,7 +60,7 @@ export const ContentSplitImage03 = () => {
                                     },
                                 ].map((item) => (
                                     <li key={item.title}>
-                                        <Button href={item.href} size="lg" color="link-gray">
+                                        <Button href={item.href} size="lg" color="link">
                                             {item.title}
                                         </Button>
                                     </li>

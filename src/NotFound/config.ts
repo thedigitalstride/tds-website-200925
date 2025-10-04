@@ -31,8 +31,8 @@ export const NotFound: GlobalConfig = {
     },
     link({
       enableUUIButton: true,
-      uuiColors: ['primary', 'secondary'],
-      uuiSizes: ['md', 'lg'],
+      uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+      uuiSizes: ['sm', 'md', 'lg', 'xl'],
       defaultUUIColor: 'primary',
       defaultUUISize: 'md',
       overrides: {

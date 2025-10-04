@@ -39,8 +39,8 @@ const columnFields: Field[] = [
   },
   link({
     enableUUIButton: true,
-    uuiColors: ['primary', 'secondary', 'tertiary', 'link-color'],
-    uuiSizes: ['sm', 'md', 'lg'],
+    uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+    uuiSizes: ['sm', 'md', 'lg', 'xl'],
     defaultUUIColor: 'primary',
     defaultUUISize: 'md',
     overrides: {

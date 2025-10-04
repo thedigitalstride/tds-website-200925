@@ -90,7 +90,7 @@ export const DropdownMenuWithTwoColsAndLinksAndFooter = () => {
                                     { title: "Dashboard templates", href: "#" },
                                 ].map((item) => (
                                     <li key={item.title}>
-                                        <Button href={item.href} color="link-gray" size="lg">
+                                        <Button href={item.href} color="link" size="lg">
                                             {item.title}
                                         </Button>
                                     </li>

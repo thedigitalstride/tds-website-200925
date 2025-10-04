@@ -273,11 +273,11 @@ export interface CallToActionBlock {
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?: ('primary' | 'secondary' | 'tertiary' | 'link-color') | null;
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
           /**
            * Button size variant
            */
-          uuiSize?: ('md' | 'lg') | null;
+          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
           /**
            * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
            */
@@ -567,11 +567,11 @@ export interface ContentBlock {
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?: ('primary' | 'secondary' | 'tertiary' | 'link-color') | null;
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
           /**
            * Button size variant
            */
-          uuiSize?: ('sm' | 'md' | 'lg') | null;
+          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
           /**
            * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
            */
@@ -883,21 +883,7 @@ export interface ButtonBlock {
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?:
-            | (
-                | 'primary'
-                | 'accent'
-                | 'secondary'
-                | 'tertiary'
-                | 'link'
-                | 'link-gray'
-                | 'link-color'
-                | 'primary-destructive'
-                | 'secondary-destructive'
-                | 'tertiary-destructive'
-                | 'link-destructive'
-              )
-            | null;
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
           /**
            * Button size variant
            */
@@ -974,11 +960,11 @@ export interface FeaturesBlock {
       /**
        * Button color variant from UntitledUI design system
        */
-      uuiColor?: ('primary' | 'secondary' | 'tertiary' | 'link-color' | 'link-gray') | null;
+      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
       /**
        * Button size variant
        */
-      uuiSize?: ('sm' | 'md' | 'lg') | null;
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
       /**
        * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
        */
@@ -2059,11 +2045,11 @@ export interface Header {
       /**
        * Button color variant from UntitledUI design system
        */
-      uuiColor?: ('primary' | 'secondary' | 'tertiary') | null;
+      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
       /**
        * Button size variant
        */
-      uuiSize?: ('sm' | 'md' | 'lg') | null;
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
       /**
        * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
        */
@@ -2120,11 +2106,11 @@ export interface Footer {
                 /**
                  * Button color variant from UntitledUI design system
                  */
-                uuiColor?: 'link-gray' | null;
+                uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
                 /**
                  * Button size variant
                  */
-                uuiSize?: 'lg' | null;
+                uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
                 /**
                  * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
                  */
@@ -2210,11 +2196,11 @@ export interface NotFound {
     /**
      * Button color variant from UntitledUI design system
      */
-    uuiColor?: ('primary' | 'secondary') | null;
+    uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
     /**
      * Button size variant
      */
-    uuiSize?: ('md' | 'lg') | null;
+    uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
     /**
      * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
      */

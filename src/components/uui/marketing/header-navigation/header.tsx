@@ -74,7 +74,7 @@ const MobileFooter = () => {
                 <ul className="grid grid-flow-col grid-cols-2 grid-rows-4 gap-x-6 gap-y-3">
                     {footerNavItems.map((navItem) => (
                         <li key={navItem.label}>
-                            <Button color="link-gray" size="lg" href={navItem.href}>
+                            <Button color="link" size="lg" href={navItem.href}>
                                 {navItem.label}
                             </Button>
                         </li>

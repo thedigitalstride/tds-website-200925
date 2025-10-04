@@ -9,8 +9,6 @@ export type UUIButtonColors =
   | 'secondary'
   | 'tertiary'
   | 'link'
-  | 'link-gray' // DEPRECATED: Kept for backward compatibility, maps to 'link'
-  | 'link-color' // DEPRECATED: Kept for backward compatibility, maps to 'link'
   | 'primary-destructive'
   | 'secondary-destructive'
   | 'tertiary-destructive'
@@ -48,18 +46,7 @@ export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: st
   link: {
     label: 'Link',
     value: 'link',
-    description: 'Brand-colored text link with underline'
-  },
-  // DEPRECATED: Kept for backward compatibility only
-  'link-gray': {
-    label: 'Link (Deprecated)',
-    value: 'link-gray',
-    description: 'DEPRECATED: Use "Link" instead'
-  },
-  'link-color': {
-    label: 'Link Color (Deprecated)',
-    value: 'link-color',
-    description: 'DEPRECATED: Use "Link" instead'
+    description: 'Text link with underline (brand blue in light mode, white in dark mode)'
   },
   'primary-destructive': {
     label: 'Primary Destructive',

@@ -229,7 +229,7 @@ export const Simple04Vertical = ({ article, imageClassName, className }: { artic
                 <p className="line-clamp-2 text-md text-tertiary">{article.summary}</p>
             </div>
 
-            <Button href={article.href} color="link-color" size="lg" iconTrailing={ArrowUpRight}>
+            <Button href={article.href} color="link" size="lg" iconTrailing={ArrowUpRight}>
                 Read post
             </Button>
         </div>
@@ -396,7 +396,7 @@ export const Simple04Horizontal = ({ article }: { article: Article }) => (
                 <p className="line-clamp-2 text-md text-tertiary lg:line-clamp-3">{article.summary}</p>
             </div>
 
-            <Button href={article.href} color="link-color" size="lg" iconTrailing={ArrowUpRight}>
+            <Button href={article.href} color="link" size="lg" iconTrailing={ArrowUpRight}>
                 Read post
             </Button>
         </div>
@@ -411,12 +411,12 @@ export const CardFullWidthImage01Vertical = ({ article }: { article: Article }) 
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
             <div className="flex flex-col gap-2">
-                <Button color="link-color" href={article.href}>
+                <Button color="link" href={article.href}>
                     {article.categories[0]?.name || 'Uncategorized'}
                 </Button>
                 <div className="flex flex-col gap-2">
                     <Button
-                        color="link-gray"
+                        color="link"
                         href={article.href}
                         className="flex justify-between gap-4 text-xl font-semibold text-primary hover:text-brand-secondary md:text-display-xs"
                         iconTrailing={<ArrowUpRight className="size-6 shrink-0" aria-hidden="true" />}
@@ -434,7 +434,7 @@ export const CardFullWidthImage01Vertical = ({ article }: { article: Article }) 
 
                 <div>
                     <p className="text-sm font-semibold">
-                        <Button color="link-color" href={article.href} className="text-primary">
+                        <Button color="link" href={article.href} className="text-primary">
                             {article.author.name}
                         </Button>
                     </p>
@@ -458,7 +458,7 @@ export const CardFullWidthImage02Vertical = ({ article }: { article: Article }) 
                 </BadgeGroup>
                 <div className="flex flex-col gap-2">
                     <Button
-                        color="link-gray"
+                        color="link"
                         href={article.href}
                         className="flex justify-between gap-4 text-xl font-semibold text-primary hover:text-brand-secondary md:text-display-xs"
                         iconTrailing={<ArrowUpRight className="size-6 shrink-0" aria-hidden="true" />}
@@ -476,7 +476,7 @@ export const CardFullWidthImage02Vertical = ({ article }: { article: Article }) 
 
                 <div>
                     <p className="text-sm font-semibold">
-                        <Button color="link-color" href={article.href} className="text-primary">
+                        <Button color="link" href={article.href} className="text-primary">
                             {article.author.name}
                         </Button>
                     </p>
@@ -496,14 +496,14 @@ export const CardFullWidthImage03Vertical = ({ article }: { article: Article }) 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
             <div className="flex flex-col gap-2">
                 <p className="text-sm font-semibold text-brand-secondary">
-                    <Button href={article.author.href} color="link-color">
+                    <Button href={article.author.href} color="link">
                         {article.author.name}
                     </Button>{" "}
                     • <time>{article.publishedAt}</time>
                 </p>
                 <div className="flex flex-col gap-2">
                     <Button
-                        color="link-gray"
+                        color="link"
                         href={article.href}
                         className="flex justify-between gap-4 text-xl font-semibold text-primary hover:text-brand-secondary md:text-display-xs"
                         iconTrailing={<ArrowUpRight className="size-6 shrink-0" aria-hidden="true" />}
@@ -537,14 +537,14 @@ export const CardFullWidthImage04Vertical = ({ article }: { article: Article }) 
                 <div className="relative flex items-start justify-between bg-alpha-white/30 p-4 backdrop-blur-md before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-alpha-white/30 md:p-6">
                     <div>
                         <p className="text-sm font-semibold">
-                            <Button href={article.author.href} color="link-gray" className="text-white">
+                            <Button href={article.author.href} color="link" className="text-white">
                                 {article.author.name}
                             </Button>
                         </p>
                         <time className="block text-sm text-white">{article.publishedAt}</time>
                     </div>
                     <p className="text-sm font-semibold">
-                        <Button href={article.href} color="link-gray" className="text-white">
+                        <Button href={article.href} color="link" className="text-white">
                             {article.categories[0]?.name || 'Uncategorized'}
                         </Button>
                     </p>
@@ -556,7 +556,7 @@ export const CardFullWidthImage04Vertical = ({ article }: { article: Article }) 
             <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-2">
                     <Button
-                        color="link-gray"
+                        color="link"
                         href={article.href}
                         className="flex justify-between gap-4 text-xl font-semibold text-primary hover:text-brand-secondary md:text-display-xs"
                         iconTrailing={<ArrowUpRight className="size-6 shrink-0" aria-hidden="true" />}
@@ -567,7 +567,7 @@ export const CardFullWidthImage04Vertical = ({ article }: { article: Article }) 
                 </div>
             </div>
 
-            <Button href={article.href} color="link-color" size="lg" iconTrailing={ArrowUpRight}>
+            <Button href={article.href} color="link" size="lg" iconTrailing={ArrowUpRight}>
                 Read post
             </Button>
         </div>
@@ -582,11 +582,11 @@ export const CardFullWidthImage01Horizontal = ({ article }: { article: Article }
 
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
             <div className="flex flex-col gap-2">
-                <Button href={article.href} color="link-color">
+                <Button href={article.href} color="link">
                     {article.categories[0]?.name || 'Uncategorized'}
                 </Button>
                 <div className="flex flex-col gap-2">
-                    <Button href={article.href} color="link-gray" size="xl" className="text-xl font-semibold text-primary md:text-lg">
+                    <Button href={article.href} color="link" size="xl" className="text-xl font-semibold text-primary md:text-lg">
                         {article.title}
                     </Button>
 
@@ -601,7 +601,7 @@ export const CardFullWidthImage01Horizontal = ({ article }: { article: Article }
 
                 <div>
                     <p className="text-sm font-semibold">
-                        <Button href={article.author.href} color="link-gray" className="text-primary">
+                        <Button href={article.author.href} color="link" className="text-primary">
                             {article.author.name}
                         </Button>
                     </p>
@@ -624,7 +624,7 @@ export const CardFullWidthImage02Horizontal = ({ article }: { article: Article }
                     {article.readingTime}
                 </BadgeGroup>
                 <div className="flex flex-col gap-2">
-                    <Button href={article.href} color="link-gray" size="xl" className="text-xl font-semibold text-primary md:text-lg">
+                    <Button href={article.href} color="link" size="xl" className="text-xl font-semibold text-primary md:text-lg">
                         {article.title}
                     </Button>
 
@@ -639,7 +639,7 @@ export const CardFullWidthImage02Horizontal = ({ article }: { article: Article }
 
                 <div>
                     <p className="text-sm font-semibold">
-                        <Button href={article.author.href} color="link-gray" className="text-primary">
+                        <Button href={article.author.href} color="link" className="text-primary">
                             {article.author.name}
                         </Button>
                     </p>
@@ -659,13 +659,13 @@ export const CardFullWidthImage03Horizontal = ({ article }: { article: Article }
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
             <div className="flex flex-col gap-2">
                 <p className="text-sm font-semibold text-brand-secondary">
-                    <Button href={article.author.href} color="link-color">
+                    <Button href={article.author.href} color="link">
                         {article.author.name}
                     </Button>{" "}
                     • <time>{article.publishedAt}</time>
                 </p>
                 <div className="flex flex-col gap-2">
-                    <Button href={article.href} color="link-gray" size="xl" className="text-xl font-semibold text-primary md:text-lg">
+                    <Button href={article.href} color="link" size="xl" className="text-xl font-semibold text-primary md:text-lg">
                         {article.title}
                     </Button>
 
@@ -696,14 +696,14 @@ export const CardFullWidthImage04Horizontal = ({ article }: { article: Article }
                 <div className="relative flex items-start justify-between bg-alpha-white/30 p-4 backdrop-blur-md before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-alpha-white/30 md:p-6">
                     <div>
                         <p className="text-sm font-semibold">
-                            <Button href={article.author.href} color="link-gray" className="text-white">
+                            <Button href={article.author.href} color="link" className="text-white">
                                 {article.author.name}
                             </Button>
                         </p>
                         <time className="block text-sm text-white">{article.publishedAt}</time>
                     </div>
                     <p className="text-sm font-semibold">
-                        <Button href={article.href} color="link-gray" className="text-white">
+                        <Button href={article.href} color="link" className="text-white">
                             {article.categories[0]?.name || 'Uncategorized'}
                         </Button>
                     </p>
@@ -714,7 +714,7 @@ export const CardFullWidthImage04Horizontal = ({ article }: { article: Article }
         <div className="flex flex-col gap-6 p-5 pb-6 md:p-6">
             <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-2">
-                    <Button href={article.href} color="link-gray" size="xl" className="text-xl font-semibold text-primary md:text-lg">
+                    <Button href={article.href} color="link" size="xl" className="text-xl font-semibold text-primary md:text-lg">
                         {article.title}
                     </Button>
 
@@ -722,7 +722,7 @@ export const CardFullWidthImage04Horizontal = ({ article }: { article: Article }
                 </div>
             </div>
 
-            <Button href={article.href} color="link-color" size="lg" iconTrailing={ArrowUpRight}>
+            <Button href={article.href} color="link" size="lg" iconTrailing={ArrowUpRight}>
                 Read post
             </Button>
         </div>
