@@ -9,8 +9,10 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postg
  *
  * Deprecated values can be removed in a future migration after data cleanup.
  *
- * IMPORTANT: This migration is defensive - it only adds values to enum types that exist.
- * If the enum type doesn't exist, it skips gracefully.
+ * IMPORTANT: This migration is completely defensive:
+ * - Checks if enum types exist before attempting to modify them
+ * - Gracefully skips missing enum types (they'll be created by Payload's auto-sync)
+ * - Safe to run multiple times (idempotent)
  */
 
 export async function up({ db }: MigrateUpArgs): Promise<void> {
@@ -29,36 +31,66 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
 
   const newValues = ['accent', 'tertiary', 'link']
 
-  for (const enumType of enumTypes) {
-    for (const newValue of newValues) {
+  let successCount = 0
+  let skipCount = 0
+
+  for (const newValue of newValues) {
+    console.log(`  → Processing "${newValue}" value...`)
+
+    for (const enumType of enumTypes) {
       try {
-        await db.execute(sql`
-          DO $$
-          BEGIN
-            -- Check if enum type exists
-            IF EXISTS (SELECT 1 FROM pg_type WHERE typname = ${enumType}) THEN
-              -- Check if value doesn't already exist
-              IF NOT EXISTS (
-                SELECT 1 FROM pg_enum
-                WHERE enumlabel = ${newValue}
-                AND enumtypid = ${enumType}::regtype
-              ) THEN
-                EXECUTE format('ALTER TYPE %I ADD VALUE %L', ${enumType}, ${newValue});
-              END IF;
-            END IF;
-          END $$;
+        // First check if the type exists
+        const typeCheck = await db.execute(sql`
+          SELECT EXISTS (
+            SELECT 1 FROM pg_type WHERE typname = ${enumType}
+          ) as exists
         `)
-        console.log(`  ✓ Added "${newValue}" to ${enumType} (if it exists)`)
+
+        const typeExists = typeCheck.rows?.[0]?.exists || false
+
+        if (!typeExists) {
+          skipCount++
+          continue
+        }
+
+        // Type exists, now check if value already exists
+        const valueCheck = await db.execute(sql`
+          SELECT EXISTS (
+            SELECT 1 FROM pg_enum e
+            JOIN pg_type t ON e.enumtypid = t.oid
+            WHERE t.typname = ${enumType}
+            AND e.enumlabel = ${newValue}
+          ) as exists
+        `)
+
+        const valueExists = valueCheck.rows?.[0]?.exists || false
+
+        if (valueExists) {
+          console.log(`    ✓ "${newValue}" already exists in ${enumType}`)
+          successCount++
+          continue
+        }
+
+        // Add the new value
+        await db.execute(sql`
+          ALTER TYPE ${sql.identifier(enumType)} ADD VALUE ${newValue}
+        `)
+
+        console.log(`    ✓ Added "${newValue}" to ${enumType}`)
+        successCount++
       } catch (error) {
-        // Silently skip if enum type doesn't exist
-        console.log(`  → Skipped ${enumType} (doesn't exist)`)
+        // Silently skip errors (enum might not exist, value might be being added concurrently, etc.)
+        console.log(`    → Skipped ${enumType} (${error instanceof Error ? error.message : 'unknown error'})`)
+        skipCount++
       }
     }
   }
 
-  console.log('✅ Migration completed successfully!')
-  console.log('   New values added: accent, tertiary, link')
-  console.log('   Deprecated values preserved: link-color, link-gray (for backward compatibility)')
+  console.log('✅ Migration completed!')
+  console.log(`   Successfully processed: ${successCount}`)
+  console.log(`   Skipped: ${skipCount}`)
+  console.log('   New values: accent, tertiary, link')
+  console.log('   Deprecated values preserved: link-color, link-gray')
 }
 
 export async function down({ db: _db }: MigrateDownArgs): Promise<void> {
