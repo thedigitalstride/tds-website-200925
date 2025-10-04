@@ -23,32 +23,19 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     ADD VALUE IF NOT EXISTS 'round';
   `)
 
-  // Step 2: Update existing data - map old values to new values
-  // Map: modern, light, gradient, modern-neue → rounded-square
+  // Step 2: Update existing data - set all to rounded-square as default
+  // Cannot use WHERE clause with invalid enum values, so update all rows
   await db.execute(sql`
     UPDATE pages_blocks_features
     SET layout_options_icon_theme = 'rounded-square'
-    WHERE layout_options_icon_theme IN ('modern', 'light', 'gradient', 'modern-neue');
-  `)
-
-  // Map: dark, outline → round
-  await db.execute(sql`
-    UPDATE pages_blocks_features
-    SET layout_options_icon_theme = 'round'
-    WHERE layout_options_icon_theme IN ('dark', 'outline');
+    WHERE layout_options_icon_theme IS NOT NULL;
   `)
 
   // Update version history table
   await db.execute(sql`
     UPDATE _pages_v_blocks_features
     SET layout_options_icon_theme = 'rounded-square'
-    WHERE layout_options_icon_theme IN ('modern', 'light', 'gradient', 'modern-neue');
-  `)
-
-  await db.execute(sql`
-    UPDATE _pages_v_blocks_features
-    SET layout_options_icon_theme = 'round'
-    WHERE layout_options_icon_theme IN ('dark', 'outline');
+    WHERE layout_options_icon_theme IS NOT NULL;
   `)
 }
 
