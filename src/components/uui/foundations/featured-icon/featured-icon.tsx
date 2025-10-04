@@ -57,6 +57,9 @@ interface FeaturedIconProps {
 export const FeaturedIcon = (props: FeaturedIconProps) => {
     const { size = "sm", shape = "rounded-square", color = "brand", icon: Icon, ...otherProps } = props;
 
+    // Defensive: Handle legacy shape values from database by falling back to rounded-square
+    const validShape = (shape in styles) ? shape : "rounded-square";
+
     return (
         <div
             {...otherProps}
@@ -65,9 +68,9 @@ export const FeaturedIcon = (props: FeaturedIconProps) => {
                 "relative flex shrink-0 items-center justify-center",
 
                 iconsSizes[size],
-                styles[shape].base,
-                styles[shape].sizes[size],
-                styles[shape].colors[color],
+                styles[validShape].base,
+                styles[validShape].sizes[size],
+                styles[validShape].colors[color],
 
                 props.className,
             )}
