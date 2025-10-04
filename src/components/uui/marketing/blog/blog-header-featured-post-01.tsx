@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowUpRight } from "@untitledui/icons";
 import { PaginationPageDefault } from "@/components/uui/application/pagination/pagination";
 import { TabList, Tabs } from "@/components/uui/application/tabs/tabs";
-import { Avatar } from "@/components/uui/base/avatar/avatar";
 import { Select } from "@/components/uui/base/select/select";
 import { type Article, Simple01Vertical } from "@/components/uui/marketing/blog/base-components/blog-cards";
 import { useBreakpoint } from "@/hooks/use-breakpoint";

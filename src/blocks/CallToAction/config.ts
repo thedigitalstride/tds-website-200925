@@ -15,9 +15,8 @@ export const CallToAction: Block = {
     },
     linkGroup({
       enableUUIButton: true,
-      // Enable most common button styles for CTAs
-      uuiColors: ['primary', 'secondary', 'tertiary', 'link-color'],
-      uuiSizes: ['md', 'lg'],
+      uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+      uuiSizes: ['sm', 'md', 'lg', 'xl'],
       defaultUUIColor: 'primary',
       defaultUUISize: 'lg',
       overrides: {

@@ -130,6 +130,300 @@ src/
 - **[Styles System Guide](/src/styles/README.md)** - Technical documentation for the styling system. Covers file structure, theme management, and customization workflows.
 - **[Live Style Guide](/style-guide)** - Interactive page showing all typography, colors, buttons, and badges in action.
 
+## 🚨 CRITICAL: Understanding the Styling System - MUST READ BEFORE ANY STYLE CHANGES
+
+**⛔ CLAUDE CODE AGENTS: You MUST fully understand this system before making ANY styling changes. Guessing or making assumptions causes significant issues.**
+
+### How This Styling System Works
+
+This project uses **Tailwind v4 + UntitledUI** with a **CSS variable-based theme system**. Understanding these three layers is CRITICAL:
+
+#### 1. CSS Variables in `theme.css` (Foundation Layer)
+- All colors, typography, spacing defined as CSS variables in `@theme` block
+- Variables automatically change values in dark mode (`.dark-mode` selector)
+- Example:
+  ```css
+  /* Light mode */
+  --color-bg-brand-solid: var(--color-brand-500);  /* Dark blue */
+
+  /* Dark mode (inside .dark-mode selector) */
+  --color-bg-brand-solid: var(--color-white);      /* White */
+  ```
+
+#### 2. Tailwind Classes (Mapping Layer)
+- Tailwind classes map to CSS variables
+- Classes like `bg-brand-solid` reference `var(--color-bg-brand-solid)`
+- The CSS variable changes in dark mode, so the class automatically adapts
+- **NEVER** invent custom class names like `text-primary-inverted` - they don't exist!
+
+#### 3. Dark Mode Overrides (Component Layer)
+- Use `dark:` prefix for component-specific overrides
+- Example: `text-white dark:text-brand-500`
+- Only needed when the CSS variable approach doesn't cover your use case
+
+### ✅ CORRECT Approach to Styling Changes
+
+**Step 1: Check if CSS variables exist**
+```bash
+# Search theme.css for the variable
+grep "color-brand-solid" src/styles/theme.css
+```
+
+**Step 2: Update CSS variables in theme.css (if needed)**
+```css
+/* Light mode */
+--color-brand-solid: var(--color-brand-500);
+
+/* Dark mode (inside .dark-mode { ... } block) */
+--color-brand-solid: var(--color-white);
+```
+
+**Step 3: Use Tailwind classes that map to those variables**
+```tsx
+// CORRECT - Uses CSS variables that change in dark mode
+<button className="bg-brand-solid text-white dark:text-brand-500">
+  Button
+</button>
+```
+
+### ❌ INCORRECT Approaches (DO NOT DO THIS)
+
+**❌ Don't invent class names:**
+```tsx
+// WRONG - text-primary-inverted doesn't exist
+<button className="text-primary-inverted">
+```
+
+**❌ Don't use arbitrary values without checking theme:**
+```tsx
+// WRONG - Bypasses the theme system
+<button className="bg-[#031A43] text-[#ffffff]">
+```
+
+**❌ Don't add CSS variables outside the @theme block:**
+```css
+/* WRONG - CSS variables must be in @theme block or .dark-mode selector */
+.my-component {
+  --my-custom-color: blue;
+}
+```
+
+**❌ Don't guess - READ the documentation first:**
+- `/docs/STYLE_GUIDE.md` - Shows ALL available classes
+- `/docs/STYLING_BEST_PRACTICES.md` - Shows HOW to use them
+- `/src/styles/theme.css` - Shows the actual CSS variables
+
+### 🔍 How to Find the Right Class/Variable
+
+**Question: "I need white text on a dark blue button that inverts in dark mode"**
+
+1. **Check Style Guide:** `/docs/STYLE_GUIDE.md`
+   - Look for text color section
+   - Look for button examples
+
+2. **Search theme.css:**
+   ```bash
+   grep "text.*brand" src/styles/theme.css
+   grep "color-fg" src/styles/theme.css
+   ```
+
+3. **Check existing components:**
+   ```bash
+   # See how other buttons handle this
+   grep -r "text-white" src/components/uui/
+   ```
+
+4. **Ask the user if uncertain:**
+   - "I see these options in theme.css: [list]. Which should I use?"
+   - Better to ask than to guess wrong!
+
+### 🎯 Real Example: Primary Button Styling
+
+**Requirement:** Dark blue button with white text (light mode), white button with dark blue text (dark mode)
+
+**Step 1: CSS variables in theme.css**
+```css
+/* Light mode defaults */
+--color-bg-brand-solid: var(--color-brand-500);        /* Dark blue */
+--color-bg-brand-solid_hover: var(--color-brand-700);  /* Darker blue */
+
+/* Dark mode overrides (inside .dark-mode block) */
+--color-bg-brand-solid: var(--color-white);            /* White background */
+--color-bg-brand-solid_hover: var(--color-brand-200);  /* Light blue hover */
+```
+
+**Step 2: Update button component**
+```tsx
+// src/components/uui/base/buttons/button.tsx
+colors: {
+  primary: {
+    root: [
+      "bg-brand-solid text-white dark:text-brand-500",
+      "hover:bg-brand-solid_hover",
+      "*:data-icon:text-white dark:*:data-icon:text-brand-500",
+    ].join(" "),
+  },
+}
+```
+
+**Why this works:**
+- `bg-brand-solid` → references CSS variable that changes in dark mode
+- `text-white` → white in light mode
+- `dark:text-brand-500` → dark blue in dark mode (explicit override)
+- Icons use the same pattern with `*:data-icon:` selector
+
+### 📋 Before Making Style Changes - Checklist
+
+- [ ] Read `/docs/STYLE_GUIDE.md` to understand available classes
+- [ ] Read `/docs/STYLING_BEST_PRACTICES.md` to understand patterns
+- [ ] Search `theme.css` for relevant CSS variables
+- [ ] Check existing components for similar patterns
+- [ ] Test changes in both light AND dark modes
+- [ ] Clear cache: `rm -rf .next && pnpm dev`
+- [ ] Verify on `/style-guide` page
+
+### 🚨 Key Takeaway
+
+**The theme system is NOT magic - it's CSS variables + Tailwind mappings + dark mode overrides.**
+
+If you don't understand how these three pieces work together, **STOP and read the documentation** before making changes. Guessing causes broken styles, wasted time, and user frustration.
+
+## 🎨 Button System - Important Configuration Details
+
+### Current Button Variants (Simplified)
+
+**Available Colors:**
+- `color="primary"` - **Brand button** (solid brand color, scales on hover)
+- `color="accent"` - **Accent button** (solid accent color, scales on hover)
+- `color="secondary"` - **Outlined button** (transparent with 20% opacity outline, scales on hover)
+- `color="tertiary"` - **Tinted button** (20% tinted background, scales on hover)
+- `color="link"` - **Link button** (text with underline, no transformation)
+- Destructive variants: `primary-destructive`, `secondary-destructive`, `tertiary-destructive`, `link-destructive`
+
+**Key Design Decisions:**
+1. **Removed `link-gray` and `link-color` variants** - Simplified to one link variant (`link`) that uses brand colors
+2. **Consistent sizing** - All buttons use `ring-1 ring-inset` (transparent for solid buttons, visible for outlined)
+3. **20% opacity standard** - Secondary outline and tertiary background both use 20% opacity
+4. **Selective hover effects:**
+   - Primary/Accent/Secondary/Tertiary: `hover:scale-105` transformation
+   - Link variants: No transformation, only underline effect
+5. **Width control** - All buttons use `w-fit` to always shrink to content
+
+### Button Color Configuration
+
+**Critical CSS Variables (in `theme.css`):**
+
+```css
+/* Light Mode (base @theme block) */
+--color-bg-brand-solid: var(--color-brand-500);     /* #031A43 dark blue */
+--color-bg-brand-solid_hover: var(--color-brand-700); /* Darker on hover */
+--color-bg-accent-solid: var(--color-accent-500);   /* #1689FF light blue */
+--color-bg-accent-solid_hover: var(--color-accent-600); /* Darker on hover */
+
+/* Dark Mode (.dark-mode block) */
+--color-bg-brand-solid: var(--color-white);         /* White background */
+--color-bg-brand-solid_hover: var(--color-brand-200); /* Light blue tint on hover */
+--color-bg-accent-solid: var(--color-accent-500);   /* Same as light mode */
+--color-bg-accent-solid_hover: var(--color-accent-600); /* Same as light mode */
+```
+
+**IMPORTANT:** Always use the 500 (non-tinted) colors as base:
+- Brand button base: `brand-500` (#031A43)
+- Accent button base: `accent-500` (#1689FF)
+- Hover states use lighter (100) or darker (600-700) shades
+
+### Button Component Structure
+
+**File:** `src/components/uui/button.tsx`
+
+**Key Implementation Details:**
+
+1. **Consistent sizing strategy:**
+   ```tsx
+   // ALL variants use ring-1 ring-inset for identical internal structure
+   primary: "ring-1 ring-transparent ring-inset"  // Invisible ring
+   accent: "ring-1 ring-transparent ring-inset"   // Invisible ring
+   secondary: "ring-1 ring-black/20 dark:ring-white/20 ring-inset"  // Visible outline
+   ```
+   - `ring-inset` draws INSIDE padding (no box model changes)
+   - Transparent rings maintain spacing without being visible
+   - All buttons have identical dimensions
+
+2. **Width control:**
+   ```tsx
+   common: {
+     root: "inline-flex w-fit"  // Always shrink to content, never expand
+   }
+   ```
+
+3. **Opacity standards:**
+   - Outlines: `20%` (`ring-black/20`, `ring-white/20`)
+   - Backgrounds: `20%` (`bg-black/20`, `bg-white/20`)
+
+4. **Hover effects:**
+   - Primary/Accent/Secondary/Tertiary: `hover:scale-105` (scales entire button)
+   - Link variants: NO transformation (only underline effect)
+   - Icons in Secondary/Tertiary: NO color change on hover
+
+5. **Link-type detection:**
+   ```tsx
+   const isLinkType = ["link", "link-destructive"].includes(color);
+   ```
+   Link buttons have no padding and use underline effects
+
+### Icon Integration
+
+**Icons from `@untitledui/icons`:**
+```tsx
+import { ArrowRight } from "@untitledui/icons/ArrowRight";
+import { Download01 as Download } from "@untitledui/icons/Download01";
+import { Plus } from "@untitledui/icons/Plus";
+```
+
+**Usage patterns:**
+```tsx
+// Leading icon
+<Button color="primary" iconLeading={Plus}>Create New</Button>
+
+// Trailing icon
+<Button color="primary" iconTrailing={ArrowRight}>Continue</Button>
+
+// Icon only (with aria-label)
+<Button color="primary" iconLeading={Plus} aria-label="Add" />
+```
+
+**IMPORTANT:** Icons must be passed as props (`iconLeading`/`iconTrailing`), NOT as children. Passing icons as children breaks layout.
+
+### Testing Location
+
+**Style Guide Page:** `/style-guide`
+- Shows all button variants in one place
+- Includes theme toggle for light/dark mode testing
+- Demonstrates buttons with icons, sizes, and colors
+
+### Common Mistakes to Avoid
+
+❌ **Don't:** Use `color="brand"` in code
+✅ **Do:** Use `color="primary"` (only the UI label says "Brand")
+
+❌ **Don't:** Pass icons as children: `<Button><Icon /></Button>`
+✅ **Do:** Pass icons as props: `<Button iconLeading={Icon} />`
+
+❌ **Don't:** Use brand-600 or accent-600 as base colors
+✅ **Do:** Always use 500 colors as base (brand-500, accent-500)
+
+❌ **Don't:** Add size-controlling styles to individual button variants
+✅ **Do:** Use `ring-1 ring-inset` on ALL variants (transparent for solid, visible for outlined)
+
+❌ **Don't:** Mix opacity percentages (e.g., 50% outline, 20% background)
+✅ **Do:** Use consistent 20% opacity for outlines and backgrounds
+
+❌ **Don't:** Add hover transformations to link buttons
+✅ **Do:** Only apply `hover:scale-105` to solid/outlined/tinted buttons, NOT link variants
+
+### Database & Deployment
+- **[Database Preview Strategy](/docs/DATABASE_PREVIEW_STRATEGY.md)** - **⭐ CRITICAL** - Three-tier database setup with Neon branching for safe migration testing. Explains preview database workflow, migration best practices, and production protection.
+
 ### Other Guides
 - **[Image Optimization Guide](/docs/IMAGES.md)** - Complete guide for handling images in this project, including the OptimizedImage component, Payload Media integration, and performance best practices.
 - **[Row Labels Guide](/docs/ROW_LABELS.md)** - Complete guide for implementing row labels in array fields to improve admin UX. Includes when to use row labels, implementation patterns, and code examples.
@@ -219,14 +513,14 @@ Brand colors are defined in `src/styles/theme.css` lines 124-139:
   --color-brand-950: rgb(11 66 122);     /* Darkest */
 
   /* UUI Button Integration */
-  --color-brand-solid: var(--color-brand-500);
-  --color-brand-solid_hover: var(--color-brand-600);
+  --color-bg-brand-solid: var(--color-brand-500);
+  --color-bg-brand-solid_hover: var(--color-brand-700);
 }
 ```
 
 **To Change Brand Color:**
 1. Update the RGB values in the brand color scale
-2. Ensure `--color-brand-solid` points to the correct main color
+2. Ensure `--color-bg-brand-solid` points to the correct main color
 3. Test all UUI components after changes
 
 ### UntitledUI Component Usage
@@ -279,7 +573,7 @@ import { Button } from '@/components/uui/button'
 ### Troubleshooting
 
 **If buttons/components don't show brand colors:**
-1. Check `--color-brand-solid` is defined in `theme.css`
+1. Check `--color-bg-brand-solid` is defined in `theme.css`
 2. Verify `globals.css` imports `../../styles/theme.css` correctly
 3. Clear Next.js cache: `rm -rf .next && pnpm dev`
 4. Check browser developer tools for missing CSS variables
@@ -321,61 +615,264 @@ When creating new blocks that use UUI components:
 3. Test all components after changes
 4. Clear cache if changes don't appear
 
-## 🚨 CRITICAL: Database Migration Process
+## 🚨 CRITICAL: Database Migration Process - ABSOLUTE RULES
 
-**NEVER use external database tools for schema changes. ALWAYS use Payload's built-in migration system.**
+**⛔ CLAUDE CODE AGENTS: READ THIS CAREFULLY - VIOLATION OF THESE RULES CAUSES CRITICAL DATABASE CORRUPTION ⛔**
 
-### Required Migration Workflow:
+### 🚫 NEVER - UNDER ANY CIRCUMSTANCES:
 
-1. **Development Environment:**
-   ```bash
-   # Payload automatically handles schema changes in development
-   # DO NOT manually run migrations in development
-   # DO NOT mix "push" mode with manual migrations
-   ```
+1. **❌ NEVER run `pnpm payload migrate` in development** - This command is ONLY for production deployments
+2. **❌ NEVER run `pnpm payload migrate:create` manually** - Only used when explicitly preparing for production deployment
+3. **❌ NEVER run `pnpm payload migrate:down`** - Rolling back migrations in dev causes corruption
+4. **❌ NEVER run `pnpm payload migrate:status`** - Checking migration status implies you might run migrations (don't)
+5. **❌ NEVER attempt to "fix" database schema errors by running migrations**
+6. **❌ NEVER assume migrations are the solution to build errors**
+7. **❌ NEVER use external database tools (pgAdmin, DataGrip, raw SQL) for schema changes**
 
-2. **Before Making Schema Changes:**
-   ```bash
-   # Generate database schema first
-   npx payload generate:db-schema
-   ```
+### ✅ ALWAYS - REQUIRED BEHAVIOR:
 
-3. **Creating Migrations (Required for Production):**
-   ```bash
-   # Create migration after schema changes
-   pnpm payload migrate:create
-   # This generates TypeScript migration files with up() and down() functions
-   # ALWAYS review generated migration files before committing
-   ```
+1. **✅ ALWAYS let Payload's dev mode auto-sync schema changes** - This is automatic, requires zero manual intervention
+2. **✅ ALWAYS start dev server (`pnpm dev`) when schema is out of sync** - Dev mode detects and fixes schema automatically
+3. **✅ ALWAYS wait for dev server to complete auto-sync before testing builds**
+4. **✅ ALWAYS ask the user before touching ANY migration command**
 
-4. **Production Deployment (CRITICAL):**
-   ```bash
-   # Run migrations BEFORE starting application
-   pnpm payload migrate
-   pnpm build
-   # OR use the combined CI command:
-   pnpm ci  # Runs migrations + build
-   ```
+### 🔴 CRITICAL ERROR RECOGNITION:
 
-### Database Management Rules:
+**If you see these error patterns during `pnpm build`:**
+- ❌ "column [name] does not exist"
+- ❌ "relation [name] does not exist"
+- ❌ "type [name] does not exist"
+- ❌ "Failed query: select..."
 
-- ❌ **NEVER** use external tools like pgAdmin, DataGrip, or raw SQL for schema changes
-- ❌ **NEVER** manually alter database schema outside of Payload
-- ❌ **NEVER** mix manual migrations with Payload's automatic schema sync
-- ✅ **ALWAYS** use `payload migrate:create` for schema changes
-- ✅ **ALWAYS** run migrations before builds in production
-- ✅ **ALWAYS** review migration files before deployment
+**THE CORRECT RESPONSE IS:**
+1. ✅ Start dev server: `pnpm dev`
+2. ✅ Wait for Payload to auto-sync schema (watch console output)
+3. ✅ Stop dev server
+4. ✅ Try build again
+5. ✅ **NEVER** run migration commands
 
-### Migration Commands:
+**THE INCORRECT RESPONSE IS:**
+1. ❌ Run `pnpm payload migrate`
+2. ❌ Run `pnpm payload migrate:create`
+3. ❌ Check migration status
+4. ❌ Attempt to manually fix database
+
+### 🎯 Development Workflow (MANDATORY):
+
+**Development Environment (LOCAL):**
 ```bash
-pnpm payload migrate:create    # Create new migration (after schema changes)
-pnpm payload migrate          # Run pending migrations
-pnpm payload migrate:status   # Check migration status
-pnpm payload migrate:down     # Rollback last migration batch
-pnpm payload migrate:refresh  # Rollback and re-run migrations
+# 1. Make schema changes in code (collections, fields, etc.)
+# 2. Start dev server - Payload auto-syncs schema automatically
+pnpm dev
+
+# 3. Payload detects changes and applies them automatically
+# NO MANUAL INTERVENTION REQUIRED
+
+# 4. Build to verify everything works
+pnpm build
+
+# IF BUILD FAILS WITH SCHEMA ERRORS:
+# - Start dev server again (pnpm dev)
+# - Let it complete auto-sync
+# - Try build again
+# DO NOT RUN MIGRATIONS
+```
+
+### 📋 EXACT MANUAL PROCESS FOR PRODUCTION DEPLOYMENT
+
+**⚠️ IMPORTANT: This section is for the USER to follow manually, NOT for AI agents to execute**
+
+#### Phase 1: Local Development (Your Daily Work)
+```bash
+# 1. Make your code changes (collections, fields, etc.)
+
+# 2. Start dev server - it auto-syncs schema
+pnpm dev
+# Watch console: "✓ Schema synchronized with database"
+
+# 3. Test your changes locally
+# Everything works? Great! Dev database is auto-synced
+
+# 4. Build to verify
+pnpm build
+# Should succeed if dev server synced properly
+```
+
+#### Phase 2: Preparing for Production Deployment (Manual Process)
+```bash
+# 1. STOP dev server completely (Ctrl+C)
+
+# 2. Create migration for production
+pnpm payload migrate:create
+
+# 3. You'll see a prompt:
+# "Name this migration (optional):"
+# Enter a descriptive name like: "add_blog_categories"
+# Or just press Enter for timestamp-based name
+
+# 4. Check what was created
+ls src/migrations/
+# You'll see new files:
+# - 20251004_XXXXXX_your_name.ts (migration code)
+# - 20251004_XXXXXX_your_name.json (migration metadata)
+
+# 5. Review the migration file
+# Open the .ts file and check it captured your changes
+
+# 6. Commit BOTH migration files
+git add src/migrations/
+git commit -m "feat: add migration for [your changes]"
+
+# 7. Push to your branch
+git push origin your-branch
+```
+
+#### Phase 3: Vercel Deployment (Automatic)
+```bash
+# When you push to GitHub, Vercel automatically runs:
+# (from package.json "ci" script)
+payload migrate && pnpm build
+
+# This:
+# 1. Applies your new migration to production database
+# 2. Updates the schema
+# 3. Builds the application
+```
+
+### 🛠️ TROUBLESHOOTING COMMON ISSUES
+
+#### Problem: "Column does not exist" in local build
+```bash
+# Solution:
+pnpm dev          # Start dev server
+# Wait 5-10 seconds for auto-sync
+# Ctrl+C to stop
+pnpm build       # Try build again
+```
+
+#### Problem: "invalid input value for enum" Error
+
+**Symptoms:**
+```
+Error: invalid input value for enum enum_table_column: "deprecated-value"
+Failed query: ALTER TABLE "table" ALTER COLUMN "column" SET DATA TYPE...
+```
+
+**Root Cause:**
+- Dev mode auto-syncs enum TYPE definition (removes deprecated values from enum)
+- BUT does NOT update existing DATA that uses deprecated values
+- Database has data with values that no longer exist in the enum type
+
+**Solution for Development:**
+1. Identify which tables have deprecated enum values
+2. Update data directly using Docker/psql:
+   ```bash
+   # Check what values exist in the data
+   docker exec <postgres-container> psql -U postgres -d <database> -c \
+     "SELECT enum_column, COUNT(*) FROM table_name GROUP BY enum_column"
+
+   # Update deprecated values to new values
+   docker exec <postgres-container> psql -U postgres -d <database> -c \
+     "UPDATE table_name SET enum_column = 'new-value'
+      WHERE enum_column IN ('old-value-1', 'old-value-2')"
+
+   # Don't forget version history tables (prefixed with _)
+   docker exec <postgres-container> psql -U postgres -d <database> -c \
+     "UPDATE _table_name_v SET enum_column = 'new-value'
+      WHERE enum_column IN ('old-value-1', 'old-value-2')"
+   ```
+3. Restart dev server - should start cleanly without errors
+
+**Solution for Production:**
+Create a data migration that:
+1. Updates data first (transform deprecated values to new values)
+2. Then alters enum type (remove deprecated values from type)
+
+See `/src/migrations/20251004_update_button_colors.ts` for example pattern.
+
+**Prevention:**
+- When removing enum values from code, create migration BEFORE deploying
+- Migration should handle both data transformation AND type changes
+- Test locally by checking for deprecated data before pushing
+
+#### Problem: Forgot to create migration before deploying
+```bash
+# You'll see in Vercel logs:
+# "Error: column xyz does not exist"
+
+# Fix:
+pnpm payload migrate:create  # Create migration locally
+git add src/migrations/
+git commit -m "fix: add missing migration"
+git push                     # Redeploy
+```
+
+#### Problem: Migration failed in production
+```bash
+# Check Vercel function logs for error
+# Common fixes:
+# 1. If data transformation issue: Edit migration file
+# 2. If timeout: Split into smaller migrations
+# 3. If critical: May need database backup restore
+```
+
+### 🚨 WHEN DATABASE IS CORRUPTED (Due to Incorrect Migration Usage):
+
+**If you have already run migrations in development and database is corrupted:**
+
+1. **STOP** - Do not run any more migration commands
+2. **ASK USER** - Explain situation: "I incorrectly ran migrations in development. Database may be corrupted. Options are:
+   - Option A: `migrate:fresh` (DELETES ALL DATA, clean slate)
+   - Option B: Restore from backup if available"
+3. **WAIT FOR USER DECISION** - Do not proceed without explicit permission
+4. **NEVER** attempt to "fix" by running more migrations
+
+### 🎓 WHY THESE RULES EXIST:
+
+- **Dev mode uses "push" strategy**: Payload automatically syncs schema changes to database
+- **Production uses "migrate" strategy**: Explicit migrations track and apply changes safely
+- **Mixing strategies causes corruption**: Database gets stuck between auto-sync and migration tracking
+- **Recovery is destructive**: Once corrupted, only option is to drop database or restore backup
+
+### 📋 Migration Commands Reference (PRODUCTION ONLY):
+
+```bash
+# ⚠️ ALL OF THESE ARE PRODUCTION-ONLY COMMANDS
+# DO NOT USE IN DEVELOPMENT UNLESS USER EXPLICITLY REQUESTS
+
+pnpm payload migrate:create    # Create new migration (production prep only)
+pnpm payload migrate          # Run pending migrations (production only)
+pnpm payload migrate:status   # Check migration status (production only)
+pnpm payload migrate:down     # Rollback last migration (production only)
+pnpm payload migrate:refresh  # Rollback and re-run (production only)
 pnpm payload migrate:reset    # Rollback all migrations (DESTRUCTIVE)
 pnpm payload migrate:fresh    # Drop and recreate schema (DESTRUCTIVE)
 ```
+
+### ⚠️ SUMMARY FOR CLAUDE CODE AGENTS:
+
+**Your job when you see build errors with "column does not exist":**
+1. Recognize this as schema out of sync
+2. Start dev server to auto-sync schema
+3. Wait for sync to complete
+4. Try build again
+5. **DO NOT TOUCH MIGRATION COMMANDS**
+
+**Your job is NOT:**
+1. ❌ To run migrations
+2. ❌ To "fix" the database
+3. ❌ To check migration status
+4. ❌ To create migrations (unless preparing for production deployment)
+5. ❌ To assume migrations are needed
+
+### 📚 Additional Troubleshooting Resources
+
+For detailed troubleshooting guides on common database issues, see:
+- **[Database Troubleshooting Guide](/docs/DATABASE_TROUBLESHOOTING.md)** - Comprehensive guide covering:
+  - Environment file management (`.env` vs `.env.production`)
+  - Schema changes and migration workflow
+  - Common error patterns and solutions
+  - Quick reference checklists
 
 ## 🚨 CRITICAL: Payload CMS draftMode() Fix for Next.js 15+
 
@@ -389,11 +886,13 @@ Failed to create URL object from URL: , falling back to http://localhost
 ```
 
 ### Root Cause:
-Next.js 15+ has stricter requirements for when `draftMode()` can be called. The function signature and request handling in API routes must match Payload's expected pattern exactly.
+Next.js 15.4+ requires `NextRequest` type for proper request context tracking with `draftMode()`. Using custom request types breaks the context.
 
 ### ✅ CRITICAL FIX - Preview Route Implementation:
 
 **File:** `/src/app/(frontend)/next/preview/route.ts`
+
+**⚠️ This implementation is copied directly from the official Payload CMS website template.**
 
 ```typescript
 import type { CollectionSlug, PayloadRequest } from 'payload'
@@ -401,18 +900,11 @@ import { getPayload } from 'payload'
 
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { NextRequest } from 'next/server'
 
 import configPromise from '@payload-config'
 
-export async function GET(
-  req: {
-    cookies: {
-      get: (name: string) => {
-        value: string
-      }
-    }
-  } & Request,
-): Promise<Response> {
+export async function GET(req: NextRequest): Promise<Response> {
   const payload = await getPayload({ config: configPromise })
 
   const { searchParams } = new URL(req.url)
@@ -423,9 +915,7 @@ export async function GET(
   const previewSecret = searchParams.get('previewSecret')
 
   if (previewSecret !== process.env.PREVIEW_SECRET) {
-    return new Response('You are not allowed to preview this page', {
-      status: 403,
-    })
+    return new Response('You are not allowed to preview this page', { status: 403 })
   }
 
   if (!path || !collection || !slug) {
@@ -433,10 +923,7 @@ export async function GET(
   }
 
   if (!path.startsWith('/')) {
-    return new Response(
-      'This endpoint can only be used for relative previews',
-      { status: 500 },
-    )
+    return new Response('This endpoint can only be used for relative previews', { status: 500 })
   }
 
   let user
@@ -447,23 +934,18 @@ export async function GET(
       headers: req.headers,
     })
   } catch (error) {
-    payload.logger.error(
-      { err: error },
-      'Error verifying token for live preview',
-    )
-    return new Response('You are not allowed to preview this page', {
-      status: 403,
-    })
+    payload.logger.error({ err: error }, 'Error verifying token for live preview')
+    return new Response('You are not allowed to preview this page', { status: 403 })
   }
 
   const draft = await draftMode()
 
   if (!user) {
     draft.disable()
-    return new Response('You are not allowed to preview this page', {
-      status: 403,
-    })
+    return new Response('You are not allowed to preview this page', { status: 403 })
   }
+
+  // You can add additional checks here to see if the user is allowed to preview this page
 
   draft.enable()
 
@@ -473,33 +955,44 @@ export async function GET(
 
 ### ⚠️ Critical Implementation Notes:
 
-1. **Function Signature:** MUST use the exact `req` typing with cookies interface
-2. **Request Handling:** Do NOT use `NextRequest` - use the Payload-compatible interface
-3. **draftMode Call:** MUST use `await draftMode()` in async context
+1. **Request Type:** 🚨 **MUST use `NextRequest` from `next/server`**. This is the ONLY correct type for Next.js 15.4+. Custom request types break `draftMode()`.
+2. **Import Required:** `import { NextRequest } from 'next/server'` is mandatory
+3. **draftMode() Position:** Can be called after `getPayload()` and `payload.auth()` - timing doesn't matter as long as `NextRequest` is used
 4. **Error Handling:** Always include try/catch for auth calls
 5. **Response Format:** Use proper Response objects, not NextResponse
 
 ### ❌ Common Mistakes That Break Preview:
 
 ```typescript
-// WRONG - Will cause "called outside request scope" error
-export async function GET(req: NextRequest): Promise<Response>
+// WRONG - Custom request type breaks draftMode() context
+export async function GET(
+  req: {
+    cookies: { get: (name: string) => { value: string } }
+  } & Request,
+): Promise<Response>
+
+// WRONG - Missing NextRequest import
+// Using Request or custom types instead
+
+// WRONG - Missing await on draftMode()
 const draft = draftMode() // Missing await
 
-// WRONG - Will cause type errors
+// ✅ CORRECT - Use NextRequest
 import { NextRequest } from 'next/server'
-
-// WRONG - Will cause auth failures
-user = await payload.auth({ req })
+export async function GET(req: NextRequest): Promise<Response> {
+  // ... implementation
+  const draft = await draftMode()
+}
 ```
 
 ### 🔧 Troubleshooting Steps:
 
-1. **Clear Build Cache:** `rm -rf .next && pnpm dev`
-2. **Check Environment Variables:** Ensure `PREVIEW_SECRET` is set
-3. **Verify Function Signature:** Must match the exact pattern above
-4. **Test Preview URL:** Should return 200, not 500
-5. **Check Server Logs:** No "draftMode called outside request scope" errors
+1. **Verify NextRequest Import:** Ensure `import { NextRequest } from 'next/server'` is present
+2. **Check Function Signature:** Must use `export async function GET(req: NextRequest): Promise<Response>`
+3. **Clear Build Cache:** `rm -rf .next && pnpm dev`
+4. **Check Environment Variables:** Ensure `PREVIEW_SECRET` is set
+5. **Test Preview URL:** Should return 200, not 500
+6. **Check Server Logs:** No "draftMode called outside request scope" errors
 
 ### 🎯 Success Indicators:
 
@@ -514,12 +1007,17 @@ user = await payload.auth({ req })
 - `/src/utilities/generatePreviewPath.ts` - Preview URL generation
 - `/src/collections/Pages/index.ts` - Collection preview configuration
 
-This fix has been tested with:
-- **Next.js:** 15.4.4
-- **Payload CMS:** 3.55.0
-- **Node.js:** 18+
+### 📖 Reference:
 
-**⚠️ WARNING:** Do NOT modify this pattern without testing. This is a critical system component and breaking it will disable all preview functionality.
+This implementation is taken directly from the official Payload CMS website template:
+- **Source:** https://github.com/payloadcms/payload/blob/main/templates/website/src/app/(frontend)/next/preview/route.ts
+- **Tested with:** Next.js 15.4.4, Payload CMS 3.55.0, Node.js 18+
+
+### ⚠️ Why This Issue Keeps Recurring:
+
+The issue recurs because the "fix" with custom request types appears in outdated documentation and seems logical, but actually breaks Next.js 15.4+ context tracking. **Always use the official Payload template implementation** rather than custom request types.
+
+**Key Insight:** The problem is NOT the timing of `draftMode()` calls - it's the request type. `NextRequest` is required for proper context tracking.
 
 ## Environment Configuration
 

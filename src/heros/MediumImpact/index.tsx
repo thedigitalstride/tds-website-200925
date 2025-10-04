@@ -1,13 +1,21 @@
 import React from 'react'
 
-import type { Page } from '@/payload-types'
+import type { Media as MediaType } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 
 // Hero field removed, this component is deprecated
-export const MediumImpactHero: React.FC<any> = ({ links, media, richText }) => {
+type MediumImpactHeroType = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  links?: Array<{ link: any }>
+  media?: MediaType
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  richText?: any
+}
+
+export const MediumImpactHero: React.FC<MediumImpactHeroType> = ({ links, media, richText }) => {
   return (
     <div className="">
       <div className="container mb-8">

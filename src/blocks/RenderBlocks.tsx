@@ -10,6 +10,7 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { ButtonBlockComponent } from '@/blocks/ButtonBlock/Component'
 import { HeroHeadingBlock } from '@/blocks/HeroHeadingBlock/Component'
 import { BreadcrumbBlock } from '@/blocks/BreadcrumbBlock/Component'
+import { FeaturesBlock } from '@/blocks/FeaturesBlock/Component'
 
 const blockComponents = {
   heroHeading: HeroHeadingBlock,
@@ -20,6 +21,7 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   buttonBlock: ButtonBlockComponent,
+  features: FeaturesBlock,
 }
 
 type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]

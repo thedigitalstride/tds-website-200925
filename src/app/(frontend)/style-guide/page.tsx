@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
 import { Badge } from "@/components/uui/base/badges/badges";
 
@@ -29,7 +29,7 @@ export default function StyleGuidePage() {
       {/* Sticky Theme Toggle Button */}
       <button
         onClick={toggleTheme}
-        className="fixed bottom-8 right-8 z-50 bg-brand-solid hover:bg-brand-solid_hover text-primary-inverted p-4 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
+        className="fixed bottom-8 right-8 z-50 bg-brand-solid hover:bg-brand-solid_hover text-white p-4 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
         aria-label="Toggle dark mode"
       >
         {isDark ? (
@@ -134,6 +134,86 @@ export default function StyleGuidePage() {
         {/* Color System */}
         <section>
           <h2 className="text-display-md font-semibold text-primary mb-8">Color System</h2>
+          <div className="mb-8 p-6 bg-secondary rounded-lg border border-primary">
+            <h3 className="text-lg font-semibold text-primary mb-3">Brand & Accent Colors</h3>
+            <div className="space-y-2 text-sm text-secondary">
+              <p><span className="font-semibold text-primary">Brand (Dark Blue #031A43):</span> Main brand identity, primary CTAs, key UI elements</p>
+              <p><span className="font-semibold text-primary">Accent (Light Blue #1689FF):</span> Secondary actions, buttons, highlights, visual interest</p>
+            </div>
+          </div>
+
+          {/* Color Palettes */}
+          <div className="mb-12">
+            <h3 className="text-xl font-semibold text-primary mb-6">Brand Color Palette</h3>
+            <p className="text-sm text-tertiary mb-4">Dark Blue (#031A43) - Primary brand color scale</p>
+            <div className="grid grid-cols-11 gap-2 mb-3">
+              {[
+                { shade: '25', color: 'rgb(240 244 250)' },
+                { shade: '50', color: 'rgb(225 233 245)' },
+                { shade: '100', color: 'rgb(195 211 235)' },
+                { shade: '200', color: 'rgb(135 169 215)' },
+                { shade: '300', color: 'rgb(75 127 195)' },
+                { shade: '400', color: 'rgb(39 77 131)' },
+                { shade: '500', color: 'rgb(3 26 67)', main: true },
+                { shade: '600', color: 'rgb(2 21 54)' },
+                { shade: '700', color: 'rgb(2 18 45)' },
+                { shade: '800', color: 'rgb(1 15 37)' },
+                { shade: '900', color: 'rgb(1 10 25)', hover: true },
+                { shade: '950', color: 'rgb(1 5 13)' },
+              ].map((item) => (
+                <div key={item.shade} className="space-y-1.5">
+                  <div
+                    className={`h-16 rounded-md shadow-sm ${item.main ? 'ring-2 ring-offset-2 ring-brand-solid' : ''}`}
+                    style={{ backgroundColor: item.color }}
+                  />
+                  <div className="text-center">
+                    <p className="text-xs font-medium text-primary">{item.shade}</p>
+                    {item.main && <p className="text-[10px] font-semibold text-brand-secondary">Main</p>}
+                    {item.hover && <p className="text-[10px] font-semibold text-brand-secondary">Hover</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <code className="block text-xs text-brand-secondary bg-secondary px-3 py-2 rounded-md">
+              bg-brand-500 (Main) • bg-brand-900 (Hover) • Use: Buttons, headers, key UI elements
+            </code>
+          </div>
+
+          <div className="mb-12">
+            <h3 className="text-xl font-semibold text-primary mb-6">Accent Color Palette</h3>
+            <p className="text-sm text-tertiary mb-4">Light Blue (#1689FF) - Secondary accent color scale</p>
+            <div className="grid grid-cols-11 gap-2 mb-3">
+              {[
+                { shade: '25', color: 'rgb(240 247 255)' },
+                { shade: '50', color: 'rgb(219 237 255)' },
+                { shade: '100', color: 'rgb(178 216 255)' },
+                { shade: '200', color: 'rgb(102 178 255)' },
+                { shade: '300', color: 'rgb(26 139 255)' },
+                { shade: '400', color: 'rgb(24 138 255)' },
+                { shade: '500', color: 'rgb(22 137 255)', main: true },
+                { shade: '600', color: 'rgb(0 101 204)', hover: true },
+                { shade: '700', color: 'rgb(0 76 153)' },
+                { shade: '800', color: 'rgb(0 50 102)' },
+                { shade: '900', color: 'rgb(0 30 61)' },
+                { shade: '950', color: 'rgb(0 18 36)' },
+              ].map((item) => (
+                <div key={item.shade} className="space-y-1.5">
+                  <div
+                    className={`h-16 rounded-md shadow-sm ${item.main ? 'ring-2 ring-offset-2 ring-accent-solid' : ''}`}
+                    style={{ backgroundColor: item.color }}
+                  />
+                  <div className="text-center">
+                    <p className="text-xs font-medium text-primary">{item.shade}</p>
+                    {item.main && <p className="text-[10px] font-semibold text-accent-tertiary">Main</p>}
+                    {item.hover && <p className="text-[10px] font-semibold text-accent-tertiary">Hover</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <code className="block text-xs text-brand-secondary bg-secondary px-3 py-2 rounded-md">
+              bg-accent-500 (Main) • bg-accent-600 (Hover) • Use: Secondary buttons, highlights, badges
+            </code>
+          </div>
 
           {/* Text Colors */}
           <div className="mb-12">
@@ -163,9 +243,16 @@ export default function StyleGuidePage() {
               <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
                 <div>
                   <p className="text-brand-secondary font-medium">Brand Text</p>
-                  <code className="text-xs text-tertiary">text-brand-secondary - Links</code>
+                  <code className="text-xs text-tertiary">text-brand-secondary - Brand links</code>
                 </div>
                 <span className="text-brand-secondary text-2xl">Aa</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                <div>
+                  <p className="text-accent-tertiary font-medium">Accent Text</p>
+                  <code className="text-xs text-tertiary">text-accent-tertiary - Accent links & highlights</code>
+                </div>
+                <span className="text-accent-tertiary text-2xl">Aa</span>
               </div>
             </div>
           </div>
@@ -231,10 +318,37 @@ export default function StyleGuidePage() {
               <div className="p-6 bg-brand-solid border-2 border-brand rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-primary-inverted mb-1">Brand Solid Background</p>
-                    <code className="text-xs text-primary-inverted">bg-brand-solid - Solid brand color (buttons)</code>
+                    <p className="text-sm font-semibold text-white mb-1">Brand Solid Background</p>
+                    <code className="text-xs text-white">bg-brand-solid - Solid brand color (buttons)</code>
                   </div>
                   <div className="w-12 h-12 bg-brand-solid border-2 border-brand rounded-md"></div>
+                </div>
+              </div>
+              <div className="p-6 bg-accent-primary border-2 border-accent rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Accent Primary Background</p>
+                    <code className="text-xs text-tertiary">bg-accent-primary - Accent highlights</code>
+                  </div>
+                  <div className="w-12 h-12 bg-accent-primary border-2 border-accent rounded-md"></div>
+                </div>
+              </div>
+              <div className="p-6 bg-accent-secondary border-2 border-accent rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Accent Secondary Background</p>
+                    <code className="text-xs text-tertiary">bg-accent-secondary - Subtle accent tints</code>
+                  </div>
+                  <div className="w-12 h-12 bg-accent-secondary border-2 border-accent rounded-md"></div>
+                </div>
+              </div>
+              <div className="p-6 bg-accent-solid border-2 border-accent rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-white mb-1">Accent Solid Background</p>
+                    <code className="text-xs text-white">bg-accent-solid - Solid accent color (buttons)</code>
+                  </div>
+                  <div className="w-12 h-12 bg-accent-solid border-2 border-accent rounded-md"></div>
                 </div>
               </div>
             </div>
@@ -271,6 +385,15 @@ export default function StyleGuidePage() {
                   <div className="w-12 h-12 bg-primary border-4 border-brand rounded-md"></div>
                 </div>
               </div>
+              <div className="p-6 bg-secondary border-2 border-accent rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary mb-1">Accent Border</p>
+                    <code className="text-xs text-tertiary">border-accent - Accent borders</code>
+                  </div>
+                  <div className="w-12 h-12 bg-primary border-4 border-accent rounded-md"></div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -295,15 +418,20 @@ export default function StyleGuidePage() {
           <div className="mb-12">
             <h3 className="text-xl font-semibold text-primary mb-6">Button Colors</h3>
             <div className="flex flex-wrap gap-4">
-              <Button color="primary">Primary</Button>
+              <Button color="primary">Primary (Brand)</Button>
+              <Button color="accent">Accent</Button>
               <Button color="secondary">Secondary</Button>
               <Button color="tertiary">Tertiary</Button>
-              <Button color="link-gray">Link Gray</Button>
-              <Button color="link-color">Link Color</Button>
+              <Button color="link">Link</Button>
             </div>
             <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-              {'<Button color="primary|secondary|tertiary">Label</Button>'}
+              {'<Button color="primary|accent|secondary|tertiary|link">Label</Button>'}
             </code>
+            <p className="mt-3 text-sm text-tertiary">
+              <span className="font-semibold">Primary:</span> Dark blue brand color for primary CTAs<br/>
+              <span className="font-semibold">Accent:</span> Light blue accent color for secondary actions and highlights<br/>
+              <span className="font-semibold">Link:</span> Brand-colored text link with underline on hover
+            </p>
           </div>
 
           <div>
@@ -312,9 +440,10 @@ export default function StyleGuidePage() {
               <Button color="primary-destructive">Delete</Button>
               <Button color="secondary-destructive">Remove</Button>
               <Button color="tertiary-destructive">Cancel</Button>
+              <Button color="link-destructive">Delete Link</Button>
             </div>
             <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-              {'<Button color="primary-destructive">Label</Button>'}
+              {'<Button color="primary-destructive|secondary-destructive|tertiary-destructive|link-destructive">Label</Button>'}
             </code>
           </div>
         </section>

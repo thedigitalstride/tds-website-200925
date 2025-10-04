@@ -103,10 +103,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    notFound: NotFound;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    notFound: NotFoundSelect<false> | NotFoundSelect<true>;
   };
   locale: null;
   user: User & {
@@ -158,6 +160,7 @@ export interface Page {
         | ArchiveBlock
         | FormBlock
         | ButtonBlock
+        | FeaturesBlock
       )[]
     | null;
   publishedAt?: string | null;
@@ -270,11 +273,19 @@ export interface CallToActionBlock {
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?: ('primary' | 'secondary' | 'tertiary' | 'link-color') | null;
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
           /**
            * Button size variant
            */
-          uuiSize?: ('md' | 'lg') | null;
+          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+          /**
+           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+           */
+          buttonIcon?: string | null;
+          /**
+           * Position of the icon relative to the button text
+           */
+          iconPos?: ('leading' | 'trailing') | null;
         };
         id?: string | null;
       }[]
@@ -556,11 +567,19 @@ export interface ContentBlock {
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?: ('primary' | 'secondary' | 'tertiary' | 'link-color') | null;
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
           /**
            * Button size variant
            */
-          uuiSize?: ('sm' | 'md' | 'lg') | null;
+          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+          /**
+           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+           */
+          buttonIcon?: string | null;
+          /**
+           * Position of the icon relative to the button text
+           */
+          iconPos?: ('leading' | 'trailing') | null;
         };
         id?: string | null;
       }[]
@@ -864,29 +883,20 @@ export interface ButtonBlock {
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?:
-            | (
-                | 'primary'
-                | 'secondary'
-                | 'tertiary'
-                | 'link-gray'
-                | 'link-color'
-                | 'primary-destructive'
-                | 'secondary-destructive'
-                | 'tertiary-destructive'
-                | 'link-destructive'
-              )
-            | null;
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
           /**
            * Button size variant
            */
           uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+          /**
+           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+           */
+          buttonIcon?: string | null;
+          /**
+           * Position of the icon relative to the button text
+           */
+          iconPos?: ('leading' | 'trailing') | null;
         };
-        /**
-         * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01")
-         */
-        icon?: string | null;
-        iconPosition?: ('leading' | 'trailing') | null;
         id?: string | null;
       }[]
     | null;
@@ -895,6 +905,109 @@ export interface ButtonBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'buttonBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturesBlock".
+ */
+export interface FeaturesBlock {
+  header?: {
+    /**
+     * Toggle to show/hide the header section
+     */
+    showHeader?: boolean | null;
+    /**
+     * Small text above heading (e.g., "Features")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for the features section
+     */
+    heading?: string | null;
+    /**
+     * Description text that appears below the heading
+     */
+    description?: string | null;
+  };
+  features: {
+    /**
+     * Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+     */
+    icon?: string | null;
+    title: string;
+    /**
+     * Brief description of this feature
+     */
+    description: string;
+    /**
+     * Add an optional call-to-action link or button
+     */
+    enableLink?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+      /**
+       * Button color variant from UntitledUI design system
+       */
+      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      /**
+       * Button size variant
+       */
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+      /**
+       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+       */
+      buttonIcon?: string | null;
+      /**
+       * Position of the icon relative to the button text
+       */
+      iconPos?: ('leading' | 'trailing') | null;
+    };
+    id?: string | null;
+  }[];
+  /**
+   * Configure how the features section is displayed
+   */
+  layoutOptions?: {
+    /**
+     * Visual style for feature cards
+     */
+    cardStyle?: ('card' | 'centered-icon' | 'left-icon' | 'horizontal-icon' | 'simple-card' | 'elevated-box') | null;
+    /**
+     * Background style for feature cards
+     */
+    cardBackground?: ('grey' | 'brand' | 'outline' | 'line') | null;
+    /**
+     * Number of columns in the grid. Automatically switches to full-width if only one feature exists.
+     */
+    columns?: ('2' | '3' | '4') | null;
+    /**
+     * Color scheme for the featured icons
+     */
+    iconColor?: ('brand' | 'gray' | 'white' | 'accent' | 'success' | 'warning' | 'error') | null;
+    /**
+     * Visual theme for the featured icons
+     */
+    iconTheme?: ('light' | 'dark' | 'gradient' | 'modern' | 'outline') | null;
+    /**
+     * Vertical spacing around this section
+     */
+    spacing?: ('compact' | 'normal' | 'spacious') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'features';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1168,6 +1281,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         buttonBlock?: T | ButtonBlockSelect<T>;
+        features?: T | FeaturesBlockSelect<T>;
       };
   publishedAt?: T;
   slug?: T;
@@ -1237,6 +1351,8 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               label?: T;
               uuiColor?: T;
               uuiSize?: T;
+              buttonIcon?: T;
+              iconPos?: T;
             };
         id?: T;
       };
@@ -1265,6 +1381,8 @@ export interface ContentBlockSelect<T extends boolean = true> {
               label?: T;
               uuiColor?: T;
               uuiSize?: T;
+              buttonIcon?: T;
+              iconPos?: T;
             };
         id?: T;
       };
@@ -1336,13 +1454,61 @@ export interface ButtonBlockSelect<T extends boolean = true> {
               label?: T;
               uuiColor?: T;
               uuiSize?: T;
+              buttonIcon?: T;
+              iconPos?: T;
             };
-        icon?: T;
-        iconPosition?: T;
         id?: T;
       };
   layout?: T;
   alignment?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturesBlock_select".
+ */
+export interface FeaturesBlockSelect<T extends boolean = true> {
+  header?:
+    | T
+    | {
+        showHeader?: T;
+        eyebrow?: T;
+        heading?: T;
+        description?: T;
+      };
+  features?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        enableLink?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              uuiColor?: T;
+              uuiSize?: T;
+              buttonIcon?: T;
+              iconPos?: T;
+            };
+        id?: T;
+      };
+  layoutOptions?:
+    | T
+    | {
+        cardStyle?: T;
+        cardBackground?: T;
+        columns?: T;
+        iconColor?: T;
+        iconTheme?: T;
+        spacing?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1879,11 +2045,19 @@ export interface Header {
       /**
        * Button color variant from UntitledUI design system
        */
-      uuiColor?: ('primary' | 'secondary' | 'tertiary') | null;
+      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
       /**
        * Button size variant
        */
-      uuiSize?: ('sm' | 'md' | 'lg') | null;
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+      /**
+       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+       */
+      buttonIcon?: string | null;
+      /**
+       * Position of the icon relative to the button text
+       */
+      iconPos?: ('leading' | 'trailing') | null;
     };
   };
   updatedAt?: string | null;
@@ -1932,11 +2106,19 @@ export interface Footer {
                 /**
                  * Button color variant from UntitledUI design system
                  */
-                uuiColor?: 'link-gray' | null;
+                uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
                 /**
                  * Button size variant
                  */
-                uuiSize?: 'lg' | null;
+                uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+                /**
+                 * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+                 */
+                buttonIcon?: string | null;
+                /**
+                 * Position of the icon relative to the button text
+                 */
+                iconPos?: ('leading' | 'trailing') | null;
               };
               /**
                * Optional badge to highlight new or featured items
@@ -1977,6 +2159,57 @@ export interface Footer {
    * Copyright notice that appears at the bottom
    */
   copyrightText?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notFound".
+ */
+export interface NotFound {
+  id: number;
+  /**
+   * Main heading displayed on the 404 page
+   */
+  heading: string;
+  /**
+   * Subheading text displayed below the main heading
+   */
+  subheading?: string | null;
+  /**
+   * Link to help users navigate back (typically to the home page)
+   */
+  link: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Button color variant from UntitledUI design system
+     */
+    uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+    /**
+     * Button size variant
+     */
+    uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+    /**
+     * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+     */
+    buttonIcon?: string | null;
+    /**
+     * Position of the icon relative to the button text
+     */
+    iconPos?: ('leading' | 'trailing') | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2030,6 +2263,8 @@ export interface HeaderSelect<T extends boolean = true> {
               label?: T;
               uuiColor?: T;
               uuiSize?: T;
+              buttonIcon?: T;
+              iconPos?: T;
             };
       };
   updatedAt?: T;
@@ -2063,6 +2298,8 @@ export interface FooterSelect<T extends boolean = true> {
                     label?: T;
                     uuiColor?: T;
                     uuiSize?: T;
+                    buttonIcon?: T;
+                    iconPos?: T;
                   };
               badge?:
                 | T
@@ -2082,6 +2319,30 @@ export interface FooterSelect<T extends boolean = true> {
         id?: T;
       };
   copyrightText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notFound_select".
+ */
+export interface NotFoundSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        uuiColor?: T;
+        uuiSize?: T;
+        buttonIcon?: T;
+        iconPos?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

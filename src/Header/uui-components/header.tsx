@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { useRef, useState } from "react";
 import { ChevronDown } from "@untitledui/icons";
 import { Button as AriaButton, Dialog as AriaDialog, DialogTrigger as AriaDialogTrigger, Popover as AriaPopover } from "react-aria-components";
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { TDSLogo } from '@/components/Logo/tds-logo';
 import { cx } from "@/utils/cx";
 import Link from "next/link";
@@ -95,8 +95,8 @@ const MobileFooter = ({ ctaButton }: { ctaButton?: HeaderProps['ctaButton'] }) =
         const size = (linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize))
             ? linkData.uuiSize as "sm" | "md" | "lg" | "xl"
             : defaultSize;
-        const color = (linkData.uuiColor && ['primary', 'secondary', 'tertiary', 'link-gray', 'link-color'].includes(linkData.uuiColor))
-            ? linkData.uuiColor as "primary" | "secondary" | "tertiary" | "link-gray" | "link-color"
+        const color = (linkData.uuiColor && ['primary', 'accent', 'secondary', 'tertiary', 'link'].includes(linkData.uuiColor))
+            ? linkData.uuiColor as "primary" | "accent" | "secondary" | "tertiary" | "link"
             : "secondary";
 
         return (
@@ -117,7 +117,7 @@ const MobileFooter = ({ ctaButton }: { ctaButton?: HeaderProps['ctaButton'] }) =
                 <ul className="grid grid-flow-col grid-cols-2 grid-rows-4 gap-x-6 gap-y-3">
                     {footerNavItems.map((navItem) => (
                         <li key={navItem.label}>
-                            <Button color="link-gray" size="lg" href={navItem.href}>
+                            <Button color="link" size="lg" href={navItem.href}>
                                 {navItem.label}
                             </Button>
                         </li>
@@ -141,7 +141,7 @@ interface HeaderProps {
         link: {
             label?: string;
             type: 'reference' | 'custom';
-            reference?: any;
+            reference?: { value: number | { slug?: string | null }; relationTo: string };
             url?: string;
             newTab?: boolean;
             uuiColor?: string;
@@ -180,8 +180,8 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
         const size = (linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize))
             ? linkData.uuiSize as "sm" | "md" | "lg" | "xl"
             : defaultSize;
-        const color = (linkData.uuiColor && ['primary', 'secondary', 'tertiary', 'link-gray', 'link-color'].includes(linkData.uuiColor))
-            ? linkData.uuiColor as "primary" | "secondary" | "tertiary" | "link-gray" | "link-color"
+        const color = (linkData.uuiColor && ['primary', 'accent', 'secondary', 'tertiary', 'link'].includes(linkData.uuiColor))
+            ? linkData.uuiColor as "primary" | "accent" | "secondary" | "tertiary" | "link"
             : "secondary";
 
         return (

@@ -1,4 +1,3 @@
-import { Button, type ButtonProps } from '@/components/ui/button'
 import { UUIButton } from '@/components/payload-ui/UUIButton'
 import { cn } from '@/utilities/ui'
 import Link from 'next/link'
@@ -8,7 +7,7 @@ import type { Page, Post } from '@/payload-types'
 import { getPageUrl } from '@/utilities/pageHelpers'
 
 type CMSLinkType = {
-  appearance?: 'inline' | ButtonProps['variant'] // DEPRECATED: Only used for fallback to legacy Button
+  appearance?: 'inline' | 'default' | 'outline' // Legacy appearance prop (not used for UUI buttons)
   children?: React.ReactNode
   className?: string
   label?: string | null
@@ -17,12 +16,14 @@ type CMSLinkType = {
     relationTo: 'pages' | 'posts'
     value: Page | Post | string | number
   } | null
-  size?: ButtonProps['size'] | null
+  size?: 'sm' | 'md' | 'lg' | 'xl' | null // Legacy size prop (not used for UUI buttons)
   type?: 'custom' | 'reference' | null
   url?: string | null
   // UUI Button properties
-  uuiColor?: 'primary' | 'secondary' | 'tertiary' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
+  uuiColor?: 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
   uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
+  buttonIcon?: string | null
+  iconPos?: 'leading' | 'trailing' | null
 }
 
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
@@ -34,10 +35,11 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     label,
     newTab,
     reference,
-    size: sizeFromProps,
     url,
     uuiColor,
     uuiSize,
+    buttonIcon,
+    iconPos,
   } = props
 
   const href =
@@ -49,11 +51,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   if (!href) return null
 
-  const size = appearance === 'link' ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
-
-  // Check if UUI button properties are provided
-  const hasUUIProps = uuiColor || uuiSize
 
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
@@ -65,31 +63,21 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     )
   }
 
-  // Use UUIButton if UUI properties are provided (preferred approach)
-  if (hasUUIProps) {
-    return (
-      <UUIButton
-        label={label || undefined}
-        link={{
-          type,
-          url,
-          newTab,
-          reference: reference as ({ relationTo: 'pages'; value: number | Page } | { relationTo: 'posts'; value: number | Post } | null), // Type assertion needed due to different reference type constraints
-          uuiColor,
-          uuiSize,
-        }}
-        className={className}
-      />
-    )
-  }
-
-  // Fallback to legacy Button component for backward compatibility
+  // Always use UUIButton for button-styled links (with defaults if UUI props not provided)
   return (
-    <Button asChild className={className} size={size} variant={appearance}>
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && label}
-        {children && children}
-      </Link>
-    </Button>
+    <UUIButton
+      label={label || ''}
+      link={{
+        type,
+        url,
+        newTab,
+        reference: reference as ({ relationTo: 'pages'; value: number | Page } | { relationTo: 'posts'; value: number | Post } | null),
+        uuiColor: uuiColor || 'primary', // Default to primary if not specified
+        uuiSize: uuiSize || 'md', // Default to md if not specified
+        buttonIcon,
+        iconPos,
+      }}
+      className={className}
+    />
   )
 }

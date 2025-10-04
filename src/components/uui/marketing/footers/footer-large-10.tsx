@@ -1,5 +1,5 @@
 import { Badge } from "@/components/uui/base/badges/badges";
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { UntitledLogo } from "@/components/uui/foundations/logo/untitledui-logo";
 import { AngelList, Dribbble, Facebook, GitHub, Layers, LinkedIn, X } from "@/components/uui/foundations/social-icons";
 
@@ -224,7 +224,7 @@ export const FooterLarge10 = () => {
                                     <ul className="mt-4 flex flex-col gap-3">
                                         {category.items.map((item) => (
                                             <li key={item.label}>
-                                                <Button color="link-gray" size="lg" href={item.href} iconTrailing={item.badge} className="gap-1">
+                                                <Button color="link" size="lg" href={item.href} iconTrailing={item.badge} className="gap-1">
                                                     {item.label}
                                                 </Button>
                                             </li>

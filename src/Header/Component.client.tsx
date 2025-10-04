@@ -69,7 +69,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       }
 
       // Build navigation item
-      const navItem: any = {
+      const navItem: { label: string; href?: string; menu?: React.ReactNode } = {
         label,
         href,
       }

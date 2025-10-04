@@ -10,7 +10,7 @@ import { isReactComponent } from "@/utilities/is-react-component";
 export const styles = sortCx({
     common: {
         root: [
-            "group relative inline-flex h-max cursor-pointer items-center justify-center whitespace-nowrap outline-brand transition duration-100 ease-linear before:absolute focus-visible:outline-2 focus-visible:outline-offset-2",
+            "group relative inline-flex w-fit h-max cursor-pointer items-center justify-center whitespace-nowrap outline-brand transition-transform duration-100 ease-linear before:absolute focus-visible:outline-2 focus-visible:outline-offset-2",
             // When button is used within `InputGroup`
             "in-data-input-wrapper:shadow-xs in-data-input-wrapper:focus:!z-50 in-data-input-wrapper:in-data-leading:-mr-px in-data-input-wrapper:in-data-leading:rounded-r-none in-data-input-wrapper:in-data-leading:before:rounded-r-none in-data-input-wrapper:in-data-trailing:-ml-px in-data-input-wrapper:in-data-trailing:rounded-l-none in-data-input-wrapper:in-data-trailing:before:rounded-l-none",
             // Disabled styles
@@ -18,9 +18,9 @@ export const styles = sortCx({
             // Icon styles
             "disabled:*:data-icon:text-fg-disabled_subtle",
             // Same as `icon` but for SSR icons that cannot be passed to the client as functions.
-            "*:data-icon:pointer-events-none *:data-icon:size-5 *:data-icon:shrink-0 *:data-icon:transition-inherit-all",
+            "*:data-icon:pointer-events-none *:data-icon:size-5 *:data-icon:shrink-0",
         ].join(" "),
-        icon: "pointer-events-none size-5 shrink-0 transition-inherit-all",
+        icon: "pointer-events-none size-5 shrink-0",
     },
     sizes: {
         sm: {
@@ -50,52 +50,50 @@ export const styles = sortCx({
     colors: {
         primary: {
             root: [
-                "bg-brand-solid text-white shadow-xs-skeumorphic ring-1 ring-transparent ring-inset hover:bg-brand-solid_hover data-loading:bg-brand-solid_hover",
-                // Inner border gradient
-                "before:absolute before:inset-px before:border before:border-white/12 before:mask-b-from-0%",
+                "bg-brand-solid text-white dark:text-brand-500 ring-1 ring-transparent ring-inset hover:scale-105 data-loading:bg-brand-solid_hover",
                 // Disabled styles
-                "disabled:bg-disabled disabled:shadow-xs disabled:ring-disabled_subtle",
+                "disabled:bg-disabled disabled:text-fg-disabled",
                 // Icon styles
-                "*:data-icon:text-button-primary-icon hover:*:data-icon:text-button-primary-icon_hover",
+                "*:data-icon:text-white dark:*:data-icon:text-brand-500",
+            ].join(" "),
+        },
+        accent: {
+            root: [
+                "bg-accent-solid text-white ring-1 ring-transparent ring-inset hover:scale-105 data-loading:bg-accent-solid_hover",
+                // Disabled styles
+                "disabled:bg-disabled disabled:text-fg-disabled",
+                // Icon styles
+                "*:data-icon:text-white",
             ].join(" "),
         },
         secondary: {
             root: [
-                "bg-primary text-secondary shadow-xs-skeumorphic ring-1 ring-primary ring-inset hover:bg-primary_hover hover:text-secondary_hover data-loading:bg-primary_hover",
+                "bg-transparent text-secondary ring-1 ring-black/20 dark:ring-white/20 ring-inset hover:scale-105 hover:text-secondary_hover",
                 // Disabled styles
-                "disabled:shadow-xs disabled:ring-disabled_subtle",
+                "disabled:ring-disabled_subtle",
                 // Icon styles
-                "*:data-icon:text-fg-quaternary hover:*:data-icon:text-fg-quaternary_hover",
+                "*:data-icon:text-fg-quaternary",
             ].join(" "),
         },
         tertiary: {
             root: [
-                "text-tertiary hover:bg-primary_hover hover:text-tertiary_hover data-loading:bg-primary_hover",
+                "bg-black/20 dark:bg-white/20 text-gray-900 dark:text-white hover:scale-105 hover:text-gray-950 dark:hover:text-gray-50",
                 // Icon styles
-                "*:data-icon:text-fg-quaternary hover:*:data-icon:text-fg-quaternary_hover",
+                "*:data-icon:text-gray-900 dark:*:data-icon:text-white",
             ].join(" "),
         },
-        "link-gray": {
+        "link": {
             root: [
-                "justify-normal rounded p-0! text-tertiary hover:text-tertiary_hover",
+                "justify-normal rounded p-0! text-brand-secondary hover:text-brand-secondary_hover dark:text-white dark:hover:text-gray-200",
                 // Inner text underline
                 "*:data-text:underline *:data-text:decoration-transparent *:data-text:underline-offset-2 hover:*:data-text:decoration-current",
                 // Icon styles
-                "*:data-icon:text-fg-quaternary hover:*:data-icon:text-fg-quaternary_hover",
-            ].join(" "),
-        },
-        "link-color": {
-            root: [
-                "justify-normal rounded p-0! text-brand-secondary hover:text-brand-secondary_hover",
-                // Inner text underline
-                "*:data-text:underline *:data-text:decoration-transparent *:data-text:underline-offset-2 hover:*:data-text:decoration-current",
-                // Icon styles
-                "*:data-icon:text-fg-brand-secondary_alt hover:*:data-icon:text-fg-brand-secondary_hover",
+                "*:data-icon:text-fg-brand-secondary_alt hover:*:data-icon:text-fg-brand-secondary_hover dark:*:data-icon:text-white dark:hover:*:data-icon:text-gray-200",
             ].join(" "),
         },
         "primary-destructive": {
             root: [
-                "bg-error-solid text-white shadow-xs-skeumorphic ring-1 ring-transparent outline-error ring-inset",
+                "bg-error-solid text-white shadow-xs-skeumorphic ring-1 ring-transparent outline-error ring-inset hover:scale-105",
                 // Inner border gradient
                 "before:absolute before:inset-px before:border before:border-white/12 before:mask-b-from-0%",
                 // Disabled styles
@@ -106,7 +104,7 @@ export const styles = sortCx({
         },
         "secondary-destructive": {
             root: [
-                "bg-primary text-error-primary shadow-xs-skeumorphic ring-1 ring-error_subtle outline-error ring-inset hover:bg-error-primary hover:text-error-primary_hover data-loading:bg-error-primary",
+                "bg-primary text-error-primary shadow-xs-skeumorphic ring-1 ring-error_subtle outline-error ring-inset hover:bg-error-primary hover:scale-105 hover:text-error-primary_hover data-loading:bg-error-primary",
                 // Disabled styles
                 "disabled:bg-primary disabled:shadow-xs disabled:ring-disabled_subtle",
                 // Icon styles
@@ -115,7 +113,7 @@ export const styles = sortCx({
         },
         "tertiary-destructive": {
             root: [
-                "text-error-primary outline-error hover:bg-error-primary hover:text-error-primary_hover data-loading:bg-error-primary",
+                "text-error-primary outline-error hover:bg-error-primary hover:scale-105 hover:text-error-primary_hover data-loading:bg-error-primary",
                 // Icon styles
                 "*:data-icon:text-fg-error-secondary hover:*:data-icon:text-fg-error-primary",
             ].join(" "),
@@ -187,7 +185,7 @@ export const Button = ({
     const Component = href ? AriaLink : AriaButton;
 
     const isIcon = (IconLeading || IconTrailing) && !children;
-    const isLinkType = ["link-gray", "link-color", "link-destructive"].includes(color);
+    const isLinkType = ["link", "link-destructive"].includes(color);
 
     noTextPadding = isLinkType || noTextPadding;
 
@@ -258,7 +256,7 @@ export const Button = ({
             )}
 
             {children && (
-                <span data-text className={cx("transition-inherit-all", !noTextPadding && "px-0.5")}>
+                <span data-text className={cx(!noTextPadding && "px-0.5")}>
                     {children}
                 </span>
             )}

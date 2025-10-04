@@ -13,30 +13,12 @@ export const ButtonBlock: Block = {
       fields: [
         link({
           enableUUIButton: true,
+          uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+          uuiSizes: ['sm', 'md', 'lg', 'xl'],
           defaultUUIColor: 'primary',
           defaultUUISize: 'md',
-          appearances: false, // Disable legacy appearance options for buttons
+          appearances: false,
         }),
-        {
-          name: 'icon',
-          type: 'text',
-          admin: {
-            description: 'Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01")',
-          },
-          label: 'Icon Name',
-        },
-        {
-          name: 'iconPosition',
-          type: 'radio',
-          admin: {
-            layout: 'horizontal',
-          },
-          defaultValue: 'leading',
-          options: [
-            { label: 'Leading', value: 'leading' },
-            { label: 'Trailing', value: 'trailing' },
-          ],
-        },
       ],
       label: 'Buttons',
       maxRows: 4,

@@ -5,10 +5,10 @@ import deepMerge from '@/utilities/deepMerge'
 // UntitledUI Button Color Variants
 export type UUIButtonColors =
   | 'primary'
+  | 'accent'
   | 'secondary'
   | 'tertiary'
-  | 'link-gray'
-  | 'link-color'
+  | 'link'
   | 'primary-destructive'
   | 'secondary-destructive'
   | 'tertiary-destructive'
@@ -24,9 +24,14 @@ export type LinkAppearances = 'default' | 'outline'
 // UntitledUI Color Options
 export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: string; description?: string }> = {
   primary: {
-    label: 'Primary',
+    label: 'Brand',
     value: 'primary',
-    description: 'Brand colored button with strong emphasis'
+    description: 'Dark blue brand button for primary CTAs'
+  },
+  accent: {
+    label: 'Accent',
+    value: 'accent',
+    description: 'Light blue accent button for secondary actions'
   },
   secondary: {
     label: 'Secondary',
@@ -38,15 +43,10 @@ export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: st
     value: 'tertiary',
     description: 'Minimal button with no background'
   },
-  'link-gray': {
-    label: 'Text Link (Gray)',
-    value: 'link-gray',
-    description: 'Simple text link with gray color'
-  },
-  'link-color': {
-    label: 'Text Link (Brand)',
-    value: 'link-color',
-    description: 'Simple text link with brand color'
+  link: {
+    label: 'Link',
+    value: 'link',
+    description: 'Text link with underline (brand blue in light mode, white in dark mode)'
   },
   'primary-destructive': {
     label: 'Primary Destructive',
@@ -263,6 +263,38 @@ export const link: LinkType = ({
           defaultValue: defaultUUISize,
           label: 'Button Size',
           options: sizeOptionsToUse,
+        },
+      ],
+    })
+
+    // Add icon configuration for buttons
+    linkResult.fields.push({
+      type: 'row',
+      fields: [
+        {
+          name: 'buttonIcon',
+          type: 'text',
+          label: 'Button Icon',
+          admin: {
+            description: 'Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com',
+            placeholder: 'ArrowRight',
+            width: '50%',
+          },
+        },
+        {
+          name: 'iconPos',
+          type: 'select',
+          label: 'Icon Position',
+          defaultValue: 'trailing',
+          options: [
+            { label: 'Before Text (Leading)', value: 'leading' },
+            { label: 'After Text (Trailing)', value: 'trailing' },
+          ],
+          admin: {
+            description: 'Position of the icon relative to the button text',
+            width: '50%',
+            condition: (_, siblingData) => !!siblingData?.buttonIcon,
+          },
         },
       ],
     })

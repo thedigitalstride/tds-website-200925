@@ -1,9 +1,10 @@
 "use client";
 
-import { type FC, type ReactNode, useState } from "react";
+import { type FC, type ReactNode } from "react";
 import { User01 } from "@untitledui/icons";
 import { cx } from "@/utils/cx";
 import { AvatarOnlineIndicator, VerifiedTick } from "./base-components";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 type AvatarSize = "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
@@ -54,13 +55,13 @@ export interface AvatarProps {
 }
 
 const styles = {
-    xxs: { root: "size-4 outline-[0.5px] -outline-offset-[0.5px]", initials: "text-xs font-semibold", icon: "size-3" },
-    xs: { root: "size-6 outline-[0.5px] -outline-offset-[0.5px]", initials: "text-xs font-semibold", icon: "size-4" },
-    sm: { root: "size-8 outline-[0.75px] -outline-offset-[0.75px]", initials: "text-sm font-semibold", icon: "size-5" },
-    md: { root: "size-10 outline-1 -outline-offset-1", initials: "text-md font-semibold", icon: "size-6" },
-    lg: { root: "size-12 outline-1 -outline-offset-1", initials: "text-lg font-semibold", icon: "size-7" },
-    xl: { root: "size-14 outline-1 -outline-offset-1", initials: "text-xl font-semibold", icon: "size-8" },
-    "2xl": { root: "size-16 outline-1 -outline-offset-1", initials: "text-display-xs font-semibold", icon: "size-8" },
+    xxs: { root: "size-4 outline-[0.5px] -outline-offset-[0.5px]", initials: "text-xs font-semibold", icon: "size-3", pixels: 16 },
+    xs: { root: "size-6 outline-[0.5px] -outline-offset-[0.5px]", initials: "text-xs font-semibold", icon: "size-4", pixels: 24 },
+    sm: { root: "size-8 outline-[0.75px] -outline-offset-[0.75px]", initials: "text-sm font-semibold", icon: "size-5", pixels: 32 },
+    md: { root: "size-10 outline-1 -outline-offset-1", initials: "text-md font-semibold", icon: "size-6", pixels: 40 },
+    lg: { root: "size-12 outline-1 -outline-offset-1", initials: "text-lg font-semibold", icon: "size-7", pixels: 48 },
+    xl: { root: "size-14 outline-1 -outline-offset-1", initials: "text-xl font-semibold", icon: "size-8", pixels: 56 },
+    "2xl": { root: "size-16 outline-1 -outline-offset-1", initials: "text-display-xs font-semibold", icon: "size-8", pixels: 64 },
 };
 
 export const Avatar = ({
@@ -77,11 +78,19 @@ export const Avatar = ({
     focusable = false,
     className,
 }: AvatarProps) => {
-    const [isFailed, setIsFailed] = useState(false);
-
     const renderMainContent = () => {
-        if (src && !isFailed) {
-            return <img data-avatar-img className="size-full rounded-full object-cover" src={src} alt={alt} onError={() => setIsFailed(true)} />;
+        if (src) {
+            const imageSize = styles[size].pixels;
+            return (
+                <OptimizedImage
+                    src={src}
+                    alt={alt || "Avatar"}
+                    width={imageSize}
+                    height={imageSize}
+                    className="size-full rounded-full object-cover"
+                    priority={false}
+                />
+            );
         }
 
         if (initials) {
