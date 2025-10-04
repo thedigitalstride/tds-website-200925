@@ -1,7 +1,7 @@
 "use client";
 
 import { BookClosed, FileCode01, PlayCircle, Stars02 } from "@untitledui/icons";
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { NavMenuItemLink } from "./base-components/nav-menu-item";
 import { FeatureCardVertical } from "./base-components/nav-menu-item-card";
 

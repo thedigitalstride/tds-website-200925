@@ -10,7 +10,7 @@ import { isReactComponent } from "@/utilities/is-react-component";
 export const styles = sortCx({
     common: {
         root: [
-            "group relative inline-flex h-max cursor-pointer items-center justify-center whitespace-nowrap outline-brand transition duration-100 ease-linear hover:scale-105 before:absolute focus-visible:outline-2 focus-visible:outline-offset-2",
+            "group relative inline-flex h-max cursor-pointer items-center justify-center whitespace-nowrap outline-brand transition-transform duration-100 ease-linear hover:scale-105 before:absolute focus-visible:outline-2 focus-visible:outline-offset-2",
             // When button is used within `InputGroup`
             "in-data-input-wrapper:shadow-xs in-data-input-wrapper:focus:!z-50 in-data-input-wrapper:in-data-leading:-mr-px in-data-input-wrapper:in-data-leading:rounded-r-none in-data-input-wrapper:in-data-leading:before:rounded-r-none in-data-input-wrapper:in-data-trailing:-ml-px in-data-input-wrapper:in-data-trailing:rounded-l-none in-data-input-wrapper:in-data-trailing:before:rounded-l-none",
             // Disabled styles
@@ -18,9 +18,9 @@ export const styles = sortCx({
             // Icon styles
             "disabled:*:data-icon:text-fg-disabled_subtle",
             // Same as `icon` but for SSR icons that cannot be passed to the client as functions.
-            "*:data-icon:pointer-events-none *:data-icon:size-5 *:data-icon:shrink-0 *:data-icon:transition-inherit-all",
+            "*:data-icon:pointer-events-none *:data-icon:size-5 *:data-icon:shrink-0",
         ].join(" "),
-        icon: "pointer-events-none size-5 shrink-0 transition-inherit-all",
+        icon: "pointer-events-none size-5 shrink-0",
     },
     sizes: {
         sm: {
@@ -50,16 +50,16 @@ export const styles = sortCx({
     colors: {
         primary: {
             root: [
-                "bg-brand-solid text-white hover:bg-brand-solid_hover data-loading:bg-brand-solid_hover",
+                "bg-brand-solid text-white dark:text-brand-500 data-loading:bg-brand-solid_hover",
                 // Disabled styles
                 "disabled:bg-disabled disabled:text-fg-disabled",
                 // Icon styles
-                "*:data-icon:text-white",
+                "*:data-icon:text-white dark:*:data-icon:text-brand-500",
             ].join(" "),
         },
         accent: {
             root: [
-                "bg-accent-solid text-white hover:bg-accent-solid_hover data-loading:bg-accent-solid_hover",
+                "bg-accent-solid text-white data-loading:bg-accent-solid_hover",
                 // Disabled styles
                 "disabled:bg-disabled disabled:text-fg-disabled",
                 // Icon styles
@@ -274,7 +274,7 @@ export const Button = ({
             )}
 
             {children && (
-                <span data-text className={cx("transition-inherit-all", !noTextPadding && "px-0.5")}>
+                <span data-text className={cx(!noTextPadding && "px-0.5")}>
                     {children}
                 </span>
             )}

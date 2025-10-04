@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight, ChartBreakoutSquare, MessageChatCircle, MessageSmileCircle, Zap } from "@untitledui/icons";
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { FeatureTextFeaturedIconCard } from "./base-components/feature-text";
 
 export const FeaturesIconCards01 = () => {

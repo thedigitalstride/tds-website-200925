@@ -2,7 +2,7 @@
 
 import type { FC, ReactNode } from "react";
 import { BookClosed, BookOpen01, Codepen, FileCode01, LifeBuoy01, PlayCircle, Stars02 } from "@untitledui/icons";
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { NavMenuItemLink } from "./base-components/nav-menu-item";
 
 type MenuItem = {

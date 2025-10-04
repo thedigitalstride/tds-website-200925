@@ -2,7 +2,7 @@
 
 import { Check, Copy01, Link01 } from "@untitledui/icons";
 import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { Form } from "@/components/uui/base/form/form";
 import { Input } from "@/components/uui/base/input/input";
 import { Facebook, LinkedIn, X } from "@/components/uui/foundations/social-icons";

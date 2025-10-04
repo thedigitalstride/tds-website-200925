@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
 import { Badge } from "@/components/uui/base/badges/badges";
 
@@ -29,7 +29,7 @@ export default function StyleGuidePage() {
       {/* Sticky Theme Toggle Button */}
       <button
         onClick={toggleTheme}
-        className="fixed bottom-8 right-8 z-50 bg-brand-solid hover:bg-brand-solid_hover text-primary-inverted p-4 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
+        className="fixed bottom-8 right-8 z-50 bg-brand-solid hover:bg-brand-solid_hover text-white p-4 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
         aria-label="Toggle dark mode"
       >
         {isDark ? (
@@ -318,8 +318,8 @@ export default function StyleGuidePage() {
               <div className="p-6 bg-brand-solid border-2 border-brand rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-primary-inverted mb-1">Brand Solid Background</p>
-                    <code className="text-xs text-primary-inverted">bg-brand-solid - Solid brand color (buttons)</code>
+                    <p className="text-sm font-semibold text-white mb-1">Brand Solid Background</p>
+                    <code className="text-xs text-white">bg-brand-solid - Solid brand color (buttons)</code>
                   </div>
                   <div className="w-12 h-12 bg-brand-solid border-2 border-brand rounded-md"></div>
                 </div>
@@ -345,8 +345,8 @@ export default function StyleGuidePage() {
               <div className="p-6 bg-accent-solid border-2 border-accent rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-primary-inverted mb-1">Accent Solid Background</p>
-                    <code className="text-xs text-primary-inverted">bg-accent-solid - Solid accent color (buttons)</code>
+                    <p className="text-sm font-semibold text-white mb-1">Accent Solid Background</p>
+                    <code className="text-xs text-white">bg-accent-solid - Solid accent color (buttons)</code>
                   </div>
                   <div className="w-12 h-12 bg-accent-solid border-2 border-accent rounded-md"></div>
                 </div>
@@ -422,15 +422,15 @@ export default function StyleGuidePage() {
               <Button color="accent">Accent</Button>
               <Button color="secondary">Secondary</Button>
               <Button color="tertiary">Tertiary</Button>
-              <Button color="link-gray">Link Gray</Button>
-              <Button color="link-color">Link Color</Button>
+              <Button color="link">Link</Button>
             </div>
             <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-              {'<Button color="primary|accent|secondary|tertiary">Label</Button>'}
+              {'<Button color="primary|accent|secondary|tertiary|link">Label</Button>'}
             </code>
             <p className="mt-3 text-sm text-tertiary">
               <span className="font-semibold">Primary:</span> Dark blue brand color for primary CTAs<br/>
-              <span className="font-semibold">Accent:</span> Light blue accent color for secondary actions and highlights
+              <span className="font-semibold">Accent:</span> Light blue accent color for secondary actions and highlights<br/>
+              <span className="font-semibold">Link:</span> Brand-colored text link with underline on hover
             </p>
           </div>
 
@@ -440,9 +440,10 @@ export default function StyleGuidePage() {
               <Button color="primary-destructive">Delete</Button>
               <Button color="secondary-destructive">Remove</Button>
               <Button color="tertiary-destructive">Cancel</Button>
+              <Button color="link-destructive">Delete Link</Button>
             </div>
             <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-              {'<Button color="primary-destructive">Label</Button>'}
+              {'<Button color="primary-destructive|secondary-destructive|tertiary-destructive|link-destructive">Label</Button>'}
             </code>
           </div>
         </section>

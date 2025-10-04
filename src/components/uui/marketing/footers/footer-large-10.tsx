@@ -1,5 +1,5 @@
 import { Badge } from "@/components/uui/base/badges/badges";
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { UntitledLogo } from "@/components/uui/foundations/logo/untitledui-logo";
 import { AngelList, Dribbble, Facebook, GitHub, Layers, LinkedIn, X } from "@/components/uui/foundations/social-icons";
 

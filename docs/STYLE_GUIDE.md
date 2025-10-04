@@ -155,7 +155,7 @@ brand-950 ████  rgb(11, 66, 122)    // Darkest shade
 | `bg-tertiary` | Gray 100 | Gray 800 | Subtle backgrounds |
 | `bg-quaternary` | Gray 200 | Gray 700 | Borders, dividers |
 | `bg-brand-primary` | Brand 50 | Brand 500 | Brand backgrounds |
-| `bg-brand-solid` | Brand 600 | Brand 600 | Solid brand (buttons) |
+| `bg-brand-solid` | Brand 500 | White | Solid brand (buttons) |
 
 **Examples:**
 ```tsx

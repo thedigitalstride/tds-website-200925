@@ -3,7 +3,7 @@
 import React from 'react';
 import { Check, Copy01 } from "@untitledui/icons";
 import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { Facebook, LinkedIn, X } from "@/components/uui/foundations/social-icons";
 import { useClipboard } from "@/hooks/use-clipboard";
 import { Media } from '@/components/Media';

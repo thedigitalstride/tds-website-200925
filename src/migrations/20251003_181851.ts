@@ -1,6 +1,6 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_not_found_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_not_found_link_uui_color" AS ENUM('primary', 'secondary');
@@ -51,7 +51,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   DROP TYPE "public"."enum__pages_v_blocks_button_block_buttons_icon_position";`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_pages_blocks_button_block_buttons_icon_position" AS ENUM('leading', 'trailing');
   CREATE TYPE "public"."enum__pages_v_blocks_button_block_buttons_icon_position" AS ENUM('leading', 'trailing');

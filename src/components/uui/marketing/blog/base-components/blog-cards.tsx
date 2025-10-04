@@ -5,7 +5,7 @@ import { ArrowUpRight } from "@untitledui/icons";
 import { Avatar } from "@/components/uui/base/avatar/avatar";
 import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
 import { Badge, type BadgeColor } from "@/components/uui/base/badges/badges";
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { cx } from "@/utils/cx";
 import { OptimizedImage } from "@/components/OptimizedImage";
 

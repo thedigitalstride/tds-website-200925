@@ -3,7 +3,7 @@
 import { Fragment } from "react";
 import { ArrowRight } from "@untitledui/icons";
 import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { Form } from "@/components/uui/base/form/form";
 import { Input } from "@/components/uui/base/input/input";
 import { Header } from "@/components/uui/marketing/header-navigation/header";

@@ -241,15 +241,15 @@ grep "color-brand-solid" src/styles/theme.css
 
 **Requirement:** Dark blue button with white text (light mode), white button with dark blue text (dark mode)
 
-**Step 1: Update CSS variables in theme.css**
+**Step 1: CSS variables in theme.css**
 ```css
-/* Light mode defaults (lines 143-144) */
---color-brand-solid: var(--color-brand-500);        /* Dark blue */
---color-brand-solid_hover: var(--color-brand-900);  /* Darker blue */
+/* Light mode defaults */
+--color-bg-brand-solid: var(--color-brand-500);        /* Dark blue */
+--color-bg-brand-solid_hover: var(--color-brand-700);  /* Darker blue */
 
-/* Dark mode overrides (inside .dark-mode block, lines 1251-1260) */
---color-bg-brand-solid: var(--color-white);         /* White background */
---color-bg-brand-solid_hover: var(--color-brand-50); /* Light blue hover */
+/* Dark mode overrides (inside .dark-mode block) */
+--color-bg-brand-solid: var(--color-white);            /* White background */
+--color-bg-brand-solid_hover: var(--color-brand-200);  /* Light blue hover */
 ```
 
 **Step 2: Update button component**
@@ -311,15 +311,15 @@ If you don't understand how these three pieces work together, **STOP and read th
 **Critical CSS Variables (in `theme.css`):**
 
 ```css
-/* Light Mode (base @theme block, lines 789-798, 814-815) */
+/* Light Mode (base @theme block) */
 --color-bg-brand-solid: var(--color-brand-500);     /* #031A43 dark blue */
 --color-bg-brand-solid_hover: var(--color-brand-700); /* Darker on hover */
 --color-bg-accent-solid: var(--color-accent-500);   /* #1689FF light blue */
 --color-bg-accent-solid_hover: var(--color-accent-600); /* Darker on hover */
 
-/* Dark Mode (.dark-mode block, lines 1251-1260, 1276-1277) */
+/* Dark Mode (.dark-mode block) */
 --color-bg-brand-solid: var(--color-white);         /* White background */
---color-bg-brand-solid_hover: var(--color-brand-100); /* Light blue tint on hover */
+--color-bg-brand-solid_hover: var(--color-brand-200); /* Light blue tint on hover */
 --color-bg-accent-solid: var(--color-accent-500);   /* Same as light mode */
 --color-bg-accent-solid_hover: var(--color-accent-600); /* Same as light mode */
 ```
@@ -485,14 +485,14 @@ Brand colors are defined in `src/styles/theme.css` lines 124-139:
   --color-brand-950: rgb(11 66 122);     /* Darkest */
 
   /* UUI Button Integration */
-  --color-brand-solid: var(--color-brand-500);
-  --color-brand-solid_hover: var(--color-brand-600);
+  --color-bg-brand-solid: var(--color-brand-500);
+  --color-bg-brand-solid_hover: var(--color-brand-700);
 }
 ```
 
 **To Change Brand Color:**
 1. Update the RGB values in the brand color scale
-2. Ensure `--color-brand-solid` points to the correct main color
+2. Ensure `--color-bg-brand-solid` points to the correct main color
 3. Test all UUI components after changes
 
 ### UntitledUI Component Usage
@@ -545,7 +545,7 @@ import { Button } from '@/components/uui/button'
 ### Troubleshooting
 
 **If buttons/components don't show brand colors:**
-1. Check `--color-brand-solid` is defined in `theme.css`
+1. Check `--color-bg-brand-solid` is defined in `theme.css`
 2. Verify `globals.css` imports `../../styles/theme.css` correctly
 3. Clear Next.js cache: `rm -rf .next && pnpm dev`
 4. Check browser developer tools for missing CSS variables

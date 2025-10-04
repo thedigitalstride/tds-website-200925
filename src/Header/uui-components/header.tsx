@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { useRef, useState } from "react";
 import { ChevronDown } from "@untitledui/icons";
 import { Button as AriaButton, Dialog as AriaDialog, DialogTrigger as AriaDialogTrigger, Popover as AriaPopover } from "react-aria-components";
-import { Button } from "@/components/uui/base/buttons/button";
+import { Button } from "@/components/uui/button";
 import { TDSLogo } from '@/components/Logo/tds-logo';
 import { cx } from "@/utils/cx";
 import Link from "next/link";
