@@ -194,7 +194,7 @@ export const FeaturesBlock: Block = {
           },
         },
         {
-          name: 'iconShape',
+          name: 'iconTheme',
           type: 'select',
           defaultValue: 'rounded-square',
           label: 'Icon Shape',

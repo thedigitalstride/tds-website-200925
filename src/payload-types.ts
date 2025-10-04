@@ -999,7 +999,7 @@ export interface FeaturesBlock {
     /**
      * Shape of the icon container
      */
-    iconShape?: ('rounded-square' | 'round') | null;
+    iconTheme?: ('rounded-square' | 'round') | null;
     /**
      * Vertical spacing around this section
      */
@@ -1506,7 +1506,7 @@ export interface FeaturesBlockSelect<T extends boolean = true> {
         cardBackground?: T;
         columns?: T;
         iconColor?: T;
-        iconShape?: T;
+        iconTheme?: T;
         spacing?: T;
       };
   id?: T;

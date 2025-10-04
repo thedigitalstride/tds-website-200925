@@ -21,7 +21,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const cardLayout = layoutOptions?.cardStyle || 'card' // cardStyle field now controls layout
   const columns = layoutOptions?.columns || '3'
   const iconColor = (layoutOptions?.iconColor || 'brand') as 'brand' | 'accent' | 'secondary' | 'tertiary'
-  const iconShape = (layoutOptions?.iconShape || 'rounded-square') as 'rounded-square' | 'round'
+  const iconShape = (layoutOptions?.iconTheme || 'rounded-square') as 'rounded-square' | 'round'
   const cardStyle = layoutOptions?.cardBackground || 'grey' // cardBackground field now controls visual style
 
   // Dynamic background classes based on cardStyle variant
