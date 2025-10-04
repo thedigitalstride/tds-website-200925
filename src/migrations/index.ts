@@ -87,13 +87,13 @@ export const migrations = [
     name: '20251003_181851',
   },
   {
-    up: migration_20251004_131716.up,
-    down: migration_20251004_131716.down,
-    name: '20251004_131716'
-  },
-  {
     up: migration_20251004_update_button_colors.up,
     down: migration_20251004_update_button_colors.down,
     name: '20251004_update_button_colors'
+  },
+  {
+    up: migration_20251004_131716.up,
+    down: migration_20251004_131716.down,
+    name: '20251004_131716'
   },
 ];
