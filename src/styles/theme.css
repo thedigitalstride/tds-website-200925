@@ -11,8 +11,9 @@
     --text-sm: calc(var(--spacing) * 3.5);
     --text-sm--line-height: calc(var(--spacing) * 5);
 
-    --text-md: calc(var(--spacing) * 4);
-    --text-md--line-height: calc(var(--spacing) * 6);
+    /* Mobile-first: 17px base for better readability */
+    --text-md: 17px;
+    --text-md--line-height: 26px;
 
     --text-lg: calc(var(--spacing) * 4.5);
     --text-lg--line-height: calc(var(--spacing) * 7);
@@ -956,6 +957,24 @@
 }
 
 @layer base {
+    /* Mobile-first: Increase base body text size for better readability */
+    body {
+        font-size: 17px;
+        line-height: 1.6;
+    }
+
+    /* Desktop: Reset text sizes to standard */
+    @media (min-width: 768px) {
+        body {
+            font-size: 16px;
+        }
+
+        :root {
+            --text-md: 16px;
+            --text-md--line-height: 24px;
+        }
+    }
+
     /* DARK MODE VARIABLES */
 
     .dark-mode {

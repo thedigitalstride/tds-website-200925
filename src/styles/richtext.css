@@ -355,11 +355,17 @@
    RESPONSIVE ADJUSTMENTS
    ========================================================================= */
 
+/* Mobile prose - slightly larger base for better readability */
+.prose {
+  font-size: 1.0625rem;  /* 17px base on mobile */
+  line-height: 1.625rem; /* 26px line height */
+}
+
 /* Larger prose on desktop */
 @media (min-width: 768px) {
   .prose {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
+    font-size: 1.125rem;   /* 18px on desktop */
+    line-height: 1.75rem;  /* 28px line height */
   }
 
   .prose p {
