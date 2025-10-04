@@ -121,27 +121,23 @@ export const FeaturesBlock: Block = {
           name: 'cardStyle',
           type: 'select',
           defaultValue: 'card',
-          label: 'Card Style',
+          label: 'Card Layout',
           options: [
             {
-              label: 'Featured Icon Card (Default)',
+              label: 'Icon Top (Default)',
               value: 'card',
             },
             {
-              label: 'Centered with Icon',
+              label: 'Icon Top Centered',
               value: 'centered-icon',
             },
             {
-              label: 'Left Aligned with Icon',
+              label: 'Icon Left (Vertical)',
               value: 'left-icon',
             },
             {
-              label: 'Horizontal Icon Left',
+              label: 'Icon Left (Horizontal)',
               value: 'horizontal-icon',
-            },
-            {
-              label: 'Simple Icon Card',
-              value: 'simple-card',
             },
             {
               label: 'Elevated Box',
@@ -149,22 +145,22 @@ export const FeaturesBlock: Block = {
             },
           ],
           admin: {
-            description: 'Visual style for feature cards',
+            description: 'Layout arrangement for feature cards (icon position and alignment)',
           },
         },
         {
           name: 'cardBackground',
           type: 'select',
           defaultValue: 'grey',
-          label: 'Card Background',
+          label: 'Card Style',
           options: [
-            { label: 'Default', value: 'grey' },
-            { label: 'Brand', value: 'brand' },
-            { label: 'Outline', value: 'outline' },
-            { label: 'Line Top', value: 'line' },
+            { label: 'Grey Background', value: 'grey' },
+            { label: 'Brand Background', value: 'brand' },
+            { label: 'Outline Only', value: 'outline' },
+            { label: 'Top Line', value: 'line' },
           ],
           admin: {
-            description: 'Background style for feature cards',
+            description: 'Visual style for feature cards (background and borders)',
           },
         },
         {
@@ -188,32 +184,26 @@ export const FeaturesBlock: Block = {
           defaultValue: 'brand',
           label: 'Icon Color',
           options: [
-            { label: 'Brand', value: 'brand' },
-            { label: 'Gray', value: 'gray' },
-            { label: 'White', value: 'white' },
-            { label: 'Accent Blue', value: 'accent' },
-            { label: 'Success (Green)', value: 'success' },
-            { label: 'Warning (Orange)', value: 'warning' },
-            { label: 'Error (Red)', value: 'error' },
+            { label: 'Brand (Dark Blue)', value: 'brand' },
+            { label: 'Accent (Light Blue)', value: 'accent' },
+            { label: 'Secondary (Outlined)', value: 'secondary' },
+            { label: 'Tertiary (Tinted)', value: 'tertiary' },
           ],
           admin: {
-            description: 'Color scheme for the featured icons',
+            description: 'Color scheme for icons - matches button system',
           },
         },
         {
-          name: 'iconTheme',
+          name: 'iconShape',
           type: 'select',
-          defaultValue: 'dark',
-          label: 'Icon Theme',
+          defaultValue: 'rounded-square',
+          label: 'Icon Shape',
           options: [
-            { label: 'Light', value: 'light' },
-            { label: 'Dark', value: 'dark' },
-            { label: 'Gradient', value: 'gradient' },
-            { label: 'Modern', value: 'modern' },
-            { label: 'Outline', value: 'outline' },
+            { label: 'Rounded Square', value: 'rounded-square' },
+            { label: 'Round', value: 'round' },
           ],
           admin: {
-            description: 'Visual theme for the featured icons',
+            description: 'Shape of the icon container',
           },
         },
         {

@@ -981,11 +981,11 @@ export interface FeaturesBlock {
    */
   layoutOptions?: {
     /**
-     * Visual style for feature cards
+     * Layout arrangement for feature cards (icon position and alignment)
      */
-    cardStyle?: ('card' | 'centered-icon' | 'left-icon' | 'horizontal-icon' | 'simple-card' | 'elevated-box') | null;
+    cardStyle?: ('card' | 'centered-icon' | 'left-icon' | 'horizontal-icon' | 'elevated-box') | null;
     /**
-     * Background style for feature cards
+     * Visual style for feature cards (background and borders)
      */
     cardBackground?: ('grey' | 'brand' | 'outline' | 'line') | null;
     /**
@@ -993,13 +993,13 @@ export interface FeaturesBlock {
      */
     columns?: ('2' | '3' | '4') | null;
     /**
-     * Color scheme for the featured icons
+     * Color scheme for icons - matches button system
      */
-    iconColor?: ('brand' | 'gray' | 'white' | 'accent' | 'success' | 'warning' | 'error') | null;
+    iconColor?: ('brand' | 'accent' | 'secondary' | 'tertiary') | null;
     /**
-     * Visual theme for the featured icons
+     * Shape of the icon container
      */
-    iconTheme?: ('light' | 'dark' | 'gradient' | 'modern' | 'outline') | null;
+    iconShape?: ('rounded-square' | 'round') | null;
     /**
      * Vertical spacing around this section
      */
@@ -1506,7 +1506,7 @@ export interface FeaturesBlockSelect<T extends boolean = true> {
         cardBackground?: T;
         columns?: T;
         iconColor?: T;
-        iconTheme?: T;
+        iconShape?: T;
         spacing?: T;
       };
   id?: T;

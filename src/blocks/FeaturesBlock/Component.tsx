@@ -5,7 +5,6 @@ import type { FeaturesBlock as FeaturesBlockProps } from '@/payload-types'
 import { getIcon } from '@/Header/utils/IconMap'
 import {
   FeatureTextFeaturedIconTopCentered,
-  FeatureTextIconCard,
   FeatureTextCentered,
   FeatureTextLeft,
 } from '@/components/uui/marketing/features/base-components/feature-text'
@@ -19,38 +18,29 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   layoutOptions,
 }) => {
   const spacing = layoutOptions?.spacing || 'normal'
-  const cardStyle = layoutOptions?.cardStyle || 'card'
+  const cardLayout = layoutOptions?.cardStyle || 'card' // cardStyle field now controls layout
   const columns = layoutOptions?.columns || '3'
-  const rawIconColor = layoutOptions?.iconColor || 'brand'
-  const iconTheme = layoutOptions?.iconTheme || 'dark'
-  const cardBackground = layoutOptions?.cardBackground || 'grey'
+  const iconColor = (layoutOptions?.iconColor || 'brand') as 'brand' | 'accent' | 'secondary' | 'tertiary'
+  const iconShape = (layoutOptions?.iconShape || 'rounded-square') as 'rounded-square' | 'round'
+  const cardStyle = layoutOptions?.cardBackground || 'grey' // cardBackground field now controls visual style
 
-  // Map "white" and "accent" to supported FeaturedIcon colors
-  const iconColor = rawIconColor === 'white'
-    ? 'gray'
-    : rawIconColor === 'accent'
-    ? 'brand'
-    : (rawIconColor as 'brand' | 'gray' | 'success' | 'warning' | 'error')
-
-  // Dynamic background classes based on cardBackground variant
-  const getCardBackgroundClasses = (background: string) => {
-    switch (background) {
+  // Dynamic background classes based on cardStyle variant
+  const getCardBackgroundClasses = (style: string) => {
+    switch (style) {
       case 'brand':
-        return 'bg-brand-solid text-white'
+        return 'bg-brand-solid text-white dark:bg-white dark:text-brand-500'
       case 'outline':
         return 'bg-transparent border border-gray-300'
       case 'line':
         return 'border-t-2 border-gray-300'
       case 'grey':
       default:
-        return rawIconColor === 'white'
-          ? 'bg-white'
-          : 'bg-black/[0.02] dark:bg-black/10'
+        return 'bg-black/[0.03] dark:bg-black/11'
     }
   }
 
-  // Determine padding based on background variant
-  const isLineVariant = cardBackground === 'line'
+  // Determine padding based on style variant
+  const isLineVariant = cardStyle === 'line'
   const getCardPaddingClasses = () => {
     if (isLineVariant) {
       return 'py-5 md:py-6' // No horizontal padding for line variant
@@ -58,12 +48,12 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     return 'p-5 md:p-6' // Standard padding
   }
 
-  // Adjust text colors - white text for brand variant, theme-aware for others
+  // Adjust text colors - white text for brand variant in light mode, brand text in dark mode
   const getTextClasses = () => {
-    if (cardBackground === 'brand') {
+    if (cardStyle === 'brand') {
       return {
-        heading: 'text-white',
-        description: 'text-white/90'
+        heading: 'text-white dark:text-brand-500',
+        description: 'text-white/90 dark:text-brand-500/90'
       }
     }
     return {
@@ -74,10 +64,10 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
 
   const textClasses = getTextClasses()
   const cardPaddingClasses = getCardPaddingClasses()
-  const cardBgClasses = getCardBackgroundClasses(cardBackground)
+  const cardBgClasses = getCardBackgroundClasses(cardStyle)
 
-  // Increase row gap for centered-icon and elevated-box styles
-  const needsExtraRowGap = cardStyle === 'centered-icon' || cardStyle === 'elevated-box'
+  // Increase row gap for centered-icon and elevated-box layouts
+  const needsExtraRowGap = cardLayout === 'centered-icon' || cardLayout === 'elevated-box'
   const gridGapClasses = needsExtraRowGap ? 'gap-x-6 gap-y-12 md:gap-y-16' : 'gap-6'
 
   const spacingClasses: Record<string, string> = {
@@ -100,7 +90,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
       ? 'grid-cols-1 place-items-center'
       : cn('grid-cols-1', columnClasses[columns])
 
-  // Wrapper components with dynamic icon color/theme support
+  // Wrapper components with dynamic icon color/shape support
   const FeatureCardWithIcon = ({ icon, title, subtitle, footer }: any) => (
     <div className={cn(
       "flex flex-col gap-4 md:inline-flex h-full",
@@ -112,14 +102,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
         icon={icon}
         size="lg"
         color={iconColor}
-        theme={iconTheme}
-        className={
-          rawIconColor === 'white'
-            ? 'bg-white ring-1 ring-inset ring-gray-200'
-            : rawIconColor === 'accent'
-            ? 'bg-accent-500 text-white dark:bg-white dark:text-accent-500'
-            : undefined
-        }
+        shape={iconShape}
       />
       <div className="flex flex-col gap-4">
         <div>
@@ -142,29 +125,15 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
         icon={icon}
         size="lg"
         color={iconColor}
-        theme={iconTheme}
-        className={cn(
-          "hidden md:inline-flex",
-          rawIconColor === 'white'
-            ? 'bg-white ring-1 ring-inset ring-gray-200'
-            : rawIconColor === 'accent'
-            ? 'bg-accent-500 text-white dark:bg-white dark:text-accent-500'
-            : undefined
-        )}
+        shape={iconShape}
+        className="hidden md:inline-flex"
       />
       <FeaturedIcon
         icon={icon}
         size="md"
         color={iconColor}
-        theme={iconTheme}
-        className={cn(
-          "inline-flex md:hidden",
-          rawIconColor === 'white'
-            ? 'bg-white ring-1 ring-inset ring-gray-200'
-            : rawIconColor === 'accent'
-            ? 'bg-accent-500 text-white dark:bg-white dark:text-accent-500'
-            : undefined
-        )}
+        shape={iconShape}
+        className="inline-flex md:hidden"
       />
       <div>
         <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
@@ -185,29 +154,15 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
         icon={icon}
         size="lg"
         color={iconColor}
-        theme={iconTheme}
-        className={cn(
-          "hidden md:inline-flex",
-          rawIconColor === 'white'
-            ? 'bg-white ring-1 ring-inset ring-gray-200'
-            : rawIconColor === 'accent'
-            ? 'bg-accent-500 text-white dark:bg-white dark:text-accent-500'
-            : undefined
-        )}
+        shape={iconShape}
+        className="hidden md:inline-flex"
       />
       <FeaturedIcon
         icon={icon}
         size="md"
         color={iconColor}
-        theme={iconTheme}
-        className={cn(
-          "inline-flex md:hidden",
-          rawIconColor === 'white'
-            ? 'bg-white ring-1 ring-inset ring-gray-200'
-            : rawIconColor === 'accent'
-            ? 'bg-accent-500 text-white dark:bg-white dark:text-accent-500'
-            : undefined
-        )}
+        shape={iconShape}
+        className="inline-flex md:hidden"
       />
       <div className="flex flex-col items-start gap-4">
         <div>
@@ -230,15 +185,8 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
         icon={icon}
         size="lg"
         color={iconColor}
-        theme={iconTheme}
-        className={cn(
-          "-mt-6",
-          rawIconColor === 'white'
-            ? 'bg-white ring-1 ring-inset ring-gray-200'
-            : rawIconColor === 'accent'
-            ? 'bg-accent-500 text-white dark:bg-white dark:text-accent-500'
-            : undefined
-        )}
+        shape={iconShape}
+        className="-mt-6"
       />
       <div>
         <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
@@ -248,13 +196,12 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     </div>
   )
 
-  // Map card style to component (with and without icon variants)
+  // Map card layout to component (with and without icon variants)
   const cardComponentsWithIcon = {
     card: FeatureCardWithIcon,
     'centered-icon': FeatureTextFeaturedIconTopCentered,
     'left-icon': FeatureLeftIconWithColors,
     'horizontal-icon': FeatureHorizontalIconWithColors,
-    'simple-card': FeatureTextIconCard,
     'elevated-box': FeatureBoxWithIcon,
   }
 
@@ -276,29 +223,11 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     </div>
   )
 
-  const FeatureSimpleCard = ({ title, subtitle, footer }: { title: string; subtitle: string; footer?: React.ReactNode }) => (
-    <div className={cn(
-      "flex flex-col gap-4 md:max-w-71.5 h-full",
-      !isLineVariant && "rounded-md",
-      cardPaddingClasses,
-      cardBgClasses
-    )}>
-      <div className="flex flex-col gap-4">
-        <div>
-          <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
-          <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
-        </div>
-        {footer}
-      </div>
-    </div>
-  )
-
   const cardComponentsWithoutIcon = {
     card: FeatureTextCard,
     'centered-icon': FeatureTextCentered,
     'left-icon': FeatureTextLeft,
     'horizontal-icon': FeatureTextLeft,
-    'simple-card': FeatureSimpleCard,
     'elevated-box': FeatureTextCard,
   }
 
@@ -335,8 +264,8 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
 
               // Select appropriate component based on whether icon exists
               const CardComponent = hasIcon
-                ? cardComponentsWithIcon[cardStyle] || FeatureTextIconCard
-                : cardComponentsWithoutIcon[cardStyle] || FeatureTextLeft
+                ? cardComponentsWithIcon[cardLayout] || FeatureCardWithIcon
+                : cardComponentsWithoutIcon[cardLayout] || FeatureTextLeft
 
               // Render footer button if link is enabled
               // Only override text color for link-style buttons to match card text
@@ -349,8 +278,8 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
               let buttonTextClass = undefined
 
               if (isLinkVariant) {
-                if (cardBackground === 'brand') {
-                  buttonTextClass = '!text-white hover:!text-white/90 [&_[data-icon]]:!text-white hover:[&_[data-icon]]:!text-white/90'
+                if (cardStyle === 'brand') {
+                  buttonTextClass = '!text-white dark:!text-brand-500 hover:!text-white/90 dark:hover:!text-brand-500/90 [&_[data-icon]]:!text-white dark:[&_[data-icon]]:!text-brand-500 hover:[&_[data-icon]]:!text-white/90 dark:hover:[&_[data-icon]]:!text-brand-500/90'
                 } else {
                   buttonTextClass = '!text-primary hover:!text-primary/90 dark:!text-white dark:hover:!text-white/90 [&_[data-icon]]:!text-primary hover:[&_[data-icon]]:!text-primary/90 dark:[&_[data-icon]]:!text-white dark:hover:[&_[data-icon]]:!text-white/90'
                 }
@@ -369,11 +298,10 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
               const iconProps = hasIcon
                 ? {
                     icon: IconComponent,
-                    ...(cardStyle === 'centered-icon'
+                    ...(cardLayout === 'centered-icon'
                       ? {
                           color: iconColor,
-                          theme: iconTheme,
-                          className: rawIconColor === 'accent' ? 'bg-accent-500 text-white dark:bg-white dark:text-accent-500' : undefined,
+                          shape: iconShape,
                         }
                       : {}),
                   }
