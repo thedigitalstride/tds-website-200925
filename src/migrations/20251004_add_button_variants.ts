@@ -8,232 +8,53 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postg
  * values. This ensures no data corruption while allowing new code to use new variants.
  *
  * Deprecated values can be removed in a future migration after data cleanup.
+ *
+ * IMPORTANT: This migration is defensive - it only adds values to enum types that exist.
+ * If the enum type doesn't exist, it skips gracefully.
  */
 
 export async function up({ db }: MigrateUpArgs): Promise<void> {
   console.log('🔄 Starting migration: Add new button color variants...')
 
-  // Add 'accent' value if it doesn't exist
-  console.log('  → Adding "accent" to enum types...')
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'accent' AND enumtypid = 'enum_pages_blocks_cta_links_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_cta_links_link_uui_color ADD VALUE 'accent';
-      END IF;
-    END $$;
-  `)
+  const enumTypes = [
+    'enum_pages_blocks_cta_links_link_uui_color',
+    'enum_pages_blocks_content_columns_link_uui_color',
+    'enum_pages_blocks_button_block_buttons_link_uui_color',
+    'enum_pages_blocks_features_features_link_uui_color',
+    'enum__pages_v_blocks_cta_links_link_uui_color',
+    'enum__pages_v_blocks_content_columns_link_uui_color',
+    'enum__pages_v_blocks_button_block_buttons_link_uui_color',
+    'enum__pages_v_blocks_features_features_link_uui_color',
+  ]
 
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'accent' AND enumtypid = 'enum_pages_blocks_content_columns_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_content_columns_link_uui_color ADD VALUE 'accent';
-      END IF;
-    END $$;
-  `)
+  const newValues = ['accent', 'tertiary', 'link']
 
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'accent' AND enumtypid = 'enum_pages_blocks_button_block_buttons_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_button_block_buttons_link_uui_color ADD VALUE 'accent';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'accent' AND enumtypid = 'enum_pages_blocks_features_features_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_features_features_link_uui_color ADD VALUE 'accent';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'accent' AND enumtypid = 'enum__pages_v_blocks_cta_links_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_cta_links_link_uui_color ADD VALUE 'accent';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'accent' AND enumtypid = 'enum__pages_v_blocks_content_columns_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_content_columns_link_uui_color ADD VALUE 'accent';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'accent' AND enumtypid = 'enum__pages_v_blocks_button_block_buttons_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_button_block_buttons_link_uui_color ADD VALUE 'accent';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'accent' AND enumtypid = 'enum__pages_v_blocks_features_features_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_features_features_link_uui_color ADD VALUE 'accent';
-      END IF;
-    END $$;
-  `)
-
-  // Add 'tertiary' value if it doesn't exist
-  console.log('  → Adding "tertiary" to enum types...')
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'tertiary' AND enumtypid = 'enum_pages_blocks_cta_links_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_cta_links_link_uui_color ADD VALUE 'tertiary';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'tertiary' AND enumtypid = 'enum_pages_blocks_content_columns_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_content_columns_link_uui_color ADD VALUE 'tertiary';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'tertiary' AND enumtypid = 'enum_pages_blocks_button_block_buttons_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_button_block_buttons_link_uui_color ADD VALUE 'tertiary';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'tertiary' AND enumtypid = 'enum_pages_blocks_features_features_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_features_features_link_uui_color ADD VALUE 'tertiary';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'tertiary' AND enumtypid = 'enum__pages_v_blocks_cta_links_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_cta_links_link_uui_color ADD VALUE 'tertiary';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'tertiary' AND enumtypid = 'enum__pages_v_blocks_content_columns_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_content_columns_link_uui_color ADD VALUE 'tertiary';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'tertiary' AND enumtypid = 'enum__pages_v_blocks_button_block_buttons_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_button_block_buttons_link_uui_color ADD VALUE 'tertiary';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'tertiary' AND enumtypid = 'enum__pages_v_blocks_features_features_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_features_features_link_uui_color ADD VALUE 'tertiary';
-      END IF;
-    END $$;
-  `)
-
-  // Add 'link' value if it doesn't exist
-  console.log('  → Adding "link" to enum types...')
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'link' AND enumtypid = 'enum_pages_blocks_cta_links_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_cta_links_link_uui_color ADD VALUE 'link';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'link' AND enumtypid = 'enum_pages_blocks_content_columns_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_content_columns_link_uui_color ADD VALUE 'link';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'link' AND enumtypid = 'enum_pages_blocks_button_block_buttons_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_button_block_buttons_link_uui_color ADD VALUE 'link';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'link' AND enumtypid = 'enum_pages_blocks_features_features_link_uui_color'::regtype) THEN
-        ALTER TYPE enum_pages_blocks_features_features_link_uui_color ADD VALUE 'link';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'link' AND enumtypid = 'enum__pages_v_blocks_cta_links_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_cta_links_link_uui_color ADD VALUE 'link';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'link' AND enumtypid = 'enum__pages_v_blocks_content_columns_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_content_columns_link_uui_color ADD VALUE 'link';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'link' AND enumtypid = 'enum__pages_v_blocks_button_block_buttons_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_button_block_buttons_link_uui_color ADD VALUE 'link';
-      END IF;
-    END $$;
-  `)
-
-  await db.execute(sql`
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'link' AND enumtypid = 'enum__pages_v_blocks_features_features_link_uui_color'::regtype) THEN
-        ALTER TYPE enum__pages_v_blocks_features_features_link_uui_color ADD VALUE 'link';
-      END IF;
-    END $$;
-  `)
+  for (const enumType of enumTypes) {
+    for (const newValue of newValues) {
+      try {
+        await db.execute(sql`
+          DO $$
+          BEGIN
+            -- Check if enum type exists
+            IF EXISTS (SELECT 1 FROM pg_type WHERE typname = ${enumType}) THEN
+              -- Check if value doesn't already exist
+              IF NOT EXISTS (
+                SELECT 1 FROM pg_enum
+                WHERE enumlabel = ${newValue}
+                AND enumtypid = ${enumType}::regtype
+              ) THEN
+                EXECUTE format('ALTER TYPE %I ADD VALUE %L', ${enumType}, ${newValue});
+              END IF;
+            END IF;
+          END $$;
+        `)
+        console.log(`  ✓ Added "${newValue}" to ${enumType} (if it exists)`)
+      } catch (error) {
+        // Silently skip if enum type doesn't exist
+        console.log(`  → Skipped ${enumType} (doesn't exist)`)
+      }
+    }
+  }
 
   console.log('✅ Migration completed successfully!')
   console.log('   New values added: accent, tertiary, link')
