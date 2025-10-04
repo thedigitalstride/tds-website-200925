@@ -650,22 +650,97 @@ pnpm build
 # DO NOT RUN MIGRATIONS
 ```
 
-**Production Deployment (ONLY TIME TO USE MIGRATIONS):**
-```bash
-# This workflow is ONLY for production deployments
-# User must explicitly request this
+### 📋 EXACT MANUAL PROCESS FOR PRODUCTION DEPLOYMENT
 
-# 1. Create migration (if deploying schema changes)
+**⚠️ IMPORTANT: This section is for the USER to follow manually, NOT for AI agents to execute**
+
+#### Phase 1: Local Development (Your Daily Work)
+```bash
+# 1. Make your code changes (collections, fields, etc.)
+
+# 2. Start dev server - it auto-syncs schema
+pnpm dev
+# Watch console: "✓ Schema synchronized with database"
+
+# 3. Test your changes locally
+# Everything works? Great! Dev database is auto-synced
+
+# 4. Build to verify
+pnpm build
+# Should succeed if dev server synced properly
+```
+
+#### Phase 2: Preparing for Production Deployment (Manual Process)
+```bash
+# 1. STOP dev server completely (Ctrl+C)
+
+# 2. Create migration for production
 pnpm payload migrate:create
 
-# 2. Review generated migration files
+# 3. You'll see a prompt:
+# "Name this migration (optional):"
+# Enter a descriptive name like: "add_blog_categories"
+# Or just press Enter for timestamp-based name
 
-# 3. Deploy to production
-pnpm payload migrate  # Run pending migrations
-pnpm build           # Build application
+# 4. Check what was created
+ls src/migrations/
+# You'll see new files:
+# - 20251004_XXXXXX_your_name.ts (migration code)
+# - 20251004_XXXXXX_your_name.json (migration metadata)
 
-# OR use combined CI command:
-pnpm ci  # Runs migrations + build
+# 5. Review the migration file
+# Open the .ts file and check it captured your changes
+
+# 6. Commit BOTH migration files
+git add src/migrations/
+git commit -m "feat: add migration for [your changes]"
+
+# 7. Push to your branch
+git push origin your-branch
+```
+
+#### Phase 3: Vercel Deployment (Automatic)
+```bash
+# When you push to GitHub, Vercel automatically runs:
+# (from package.json "ci" script)
+payload migrate && pnpm build
+
+# This:
+# 1. Applies your new migration to production database
+# 2. Updates the schema
+# 3. Builds the application
+```
+
+### 🛠️ TROUBLESHOOTING COMMON ISSUES
+
+#### Problem: "Column does not exist" in local build
+```bash
+# Solution:
+pnpm dev          # Start dev server
+# Wait 5-10 seconds for auto-sync
+# Ctrl+C to stop
+pnpm build       # Try build again
+```
+
+#### Problem: Forgot to create migration before deploying
+```bash
+# You'll see in Vercel logs:
+# "Error: column xyz does not exist"
+
+# Fix:
+pnpm payload migrate:create  # Create migration locally
+git add src/migrations/
+git commit -m "fix: add missing migration"
+git push                     # Redeploy
+```
+
+#### Problem: Migration failed in production
+```bash
+# Check Vercel function logs for error
+# Common fixes:
+# 1. If data transformation issue: Edit migration file
+# 2. If timeout: Split into smaller migrations
+# 3. If critical: May need database backup restore
 ```
 
 ### 🚨 WHEN DATABASE IS CORRUPTED (Due to Incorrect Migration Usage):

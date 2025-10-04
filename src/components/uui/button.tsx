@@ -50,7 +50,7 @@ export const styles = sortCx({
     colors: {
         primary: {
             root: [
-                "bg-brand-500 text-white hover:bg-brand-700 data-loading:bg-brand-700",
+                "bg-brand-solid text-white hover:bg-brand-solid_hover data-loading:bg-brand-solid_hover",
                 // Disabled styles
                 "disabled:bg-disabled disabled:text-fg-disabled",
                 // Icon styles
