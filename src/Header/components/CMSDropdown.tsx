@@ -53,7 +53,7 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
 
   return (
     <div className="px-3 pb-2 md:max-w-84 md:p-0">
-      <nav className="overflow-hidden rounded-2xl bg-primary py-2 shadow-xs ring-1 ring-secondary_alt md:p-2 md:shadow-lg">
+      <nav className="overflow-hidden rounded-lg bg-primary py-2 shadow-xs ring-1 ring-primary dark:ring-secondary ring-inset md:p-2 md:shadow-lg">
         <ul className="flex flex-col gap-0.5">
           {items.map((item, index) => {
             const IconComponent = getIcon(item.icon ?? undefined)
