@@ -161,6 +161,7 @@ export interface Page {
         | FormBlock
         | ButtonBlock
         | FeaturesBlock
+        | LatestPostsBlock
       )[]
     | null;
   publishedAt?: string | null;
@@ -1011,6 +1012,101 @@ export interface FeaturesBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestPostsBlock".
+ */
+export interface LatestPostsBlock {
+  header?: {
+    /**
+     * Toggle to show/hide the header section
+     */
+    showHeader?: boolean | null;
+    /**
+     * Small text above heading (e.g., "Our blog")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for the blog section
+     */
+    heading?: string | null;
+    /**
+     * Description text that appears below the heading
+     */
+    description?: string | null;
+  };
+  /**
+   * Choose between automatically showing latest posts or manually selecting specific posts
+   */
+  contentSource?: ('latest' | 'manual') | null;
+  latestPostsOptions?: {
+    /**
+     * How many latest posts to display
+     */
+    numberOfPosts?: ('3' | '6' | '9' | '12') | null;
+    /**
+     * Optional: Show only posts from a specific category
+     */
+    categoryFilter?: (number | null) | Category;
+  };
+  /**
+   * Manually select which posts to display
+   */
+  selectedPosts?: (number | Post)[] | null;
+  buttonConfig?: {
+    /**
+     * Toggle to show/hide the button that links to all posts
+     */
+    showButton?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+      /**
+       * Button color variant from UntitledUI design system
+       */
+      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      /**
+       * Button size variant
+       */
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+      /**
+       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+       */
+      buttonIcon?: string | null;
+      /**
+       * Position of the icon relative to the button text
+       */
+      iconPos?: ('leading' | 'trailing') | null;
+    };
+  };
+  /**
+   * Configure how the blog section is displayed
+   */
+  layoutOptions?: {
+    /**
+     * Number of columns in the grid layout
+     */
+    columns?: ('2' | '3' | '4') | null;
+    /**
+     * Vertical spacing around this section
+     */
+    spacing?: ('compact' | 'normal' | 'spacious') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'latestPosts';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1282,6 +1378,7 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         buttonBlock?: T | ButtonBlockSelect<T>;
         features?: T | FeaturesBlockSelect<T>;
+        latestPosts?: T | LatestPostsBlockSelect<T>;
       };
   publishedAt?: T;
   slug?: T;
@@ -1507,6 +1604,54 @@ export interface FeaturesBlockSelect<T extends boolean = true> {
         columns?: T;
         iconColor?: T;
         iconTheme?: T;
+        spacing?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestPostsBlock_select".
+ */
+export interface LatestPostsBlockSelect<T extends boolean = true> {
+  header?:
+    | T
+    | {
+        showHeader?: T;
+        eyebrow?: T;
+        heading?: T;
+        description?: T;
+      };
+  contentSource?: T;
+  latestPostsOptions?:
+    | T
+    | {
+        numberOfPosts?: T;
+        categoryFilter?: T;
+      };
+  selectedPosts?: T;
+  buttonConfig?:
+    | T
+    | {
+        showButton?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              uuiColor?: T;
+              uuiSize?: T;
+              buttonIcon?: T;
+              iconPos?: T;
+            };
+      };
+  layoutOptions?:
+    | T
+    | {
+        columns?: T;
         spacing?: T;
       };
   id?: T;

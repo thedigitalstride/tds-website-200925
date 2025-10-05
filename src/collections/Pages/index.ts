@@ -11,6 +11,7 @@ import { ButtonBlock } from '../../blocks/ButtonBlock/config'
 import { HeroHeadingBlock } from '../../blocks/HeroHeadingBlock/config'
 import { BreadcrumbBlock } from '../../blocks/BreadcrumbBlock/config'
 import { FeaturesBlock } from '../../blocks/FeaturesBlock/config'
+import { LatestPostsBlock } from '../../blocks/LatestPostsBlock/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -84,7 +85,7 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock, FeaturesBlock],
+      blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock, FeaturesBlock, LatestPostsBlock],
       admin: {
         initCollapsed: true,
       },
