@@ -94,7 +94,7 @@ export const LatestPostsBlock: React.FC<
     id,
     header,
     contentSource,
-    latestPostsOptions,
+    opts,
     selectedPosts,
     buttonConfig,
     layoutOptions,
@@ -109,8 +109,8 @@ export const LatestPostsBlock: React.FC<
   if (contentSource === 'latest') {
     const payload = await getPayload({ config: configPromise })
 
-    const numberOfPosts = parseInt(latestPostsOptions?.numberOfPosts || '3')
-    const categoryFilter = latestPostsOptions?.categoryFilter
+    const numberOfPosts = parseInt(opts?.numPosts || '3')
+    const categoryFilter = opts?.categoryFilter
 
     // Build where clause
     const whereClause: Record<string, unknown> = {

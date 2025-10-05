@@ -1037,11 +1037,11 @@ export interface LatestPostsBlock {
    * Choose between automatically showing latest posts or manually selecting specific posts
    */
   contentSource?: ('latest' | 'manual') | null;
-  latestPostsOptions?: {
+  opts?: {
     /**
      * How many latest posts to display
      */
-    numberOfPosts?: ('3' | '6' | '9' | '12') | null;
+    numPosts?: ('3' | '6' | '9' | '12') | null;
     /**
      * Optional: Show only posts from a specific category
      */
@@ -1623,10 +1623,10 @@ export interface LatestPostsBlockSelect<T extends boolean = true> {
         description?: T;
       };
   contentSource?: T;
-  latestPostsOptions?:
+  opts?:
     | T
     | {
-        numberOfPosts?: T;
+        numPosts?: T;
         categoryFilter?: T;
       };
   selectedPosts?: T;

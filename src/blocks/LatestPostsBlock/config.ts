@@ -70,7 +70,7 @@ export const LatestPostsBlock: Block = {
       },
     },
     {
-      name: 'latestPostsOptions',
+      name: 'opts',
       type: 'group',
       label: 'Latest Posts Options',
       admin: {
@@ -78,11 +78,10 @@ export const LatestPostsBlock: Block = {
       },
       fields: [
         {
-          name: 'numberOfPosts',
+          name: 'numPosts',
           type: 'select',
           label: 'Number of Posts',
           defaultValue: '3',
-          dbName: 'num_posts',
           options: [
             { label: '3 Posts', value: '3' },
             { label: '6 Posts', value: '6' },
