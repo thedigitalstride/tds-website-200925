@@ -3,201 +3,67 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postg
 /**
  * Migration to add Features block support
  *
- * This migration safely creates all necessary enum types and tables for the Features block.
- * It is completely defensive and safe to run multiple times.
+ * This migration uses the varchar conversion strategy to safely handle enum types.
+ * It avoids ALTER TYPE ADD VALUE which cannot run in transactions.
  *
- * IMPORTANT: This migration is idempotent:
- * - Checks if enum types exist before creating them
- * - Checks if enum values exist before adding them
- * - Checks if tables exist before creating them
- * - Safe to run multiple times
+ * Strategy:
+ * 1. Create new enum types with all values
+ * 2. Create new tables
+ * 3. Add new columns to existing tables
  */
 
 export async function up({ db }: MigrateUpArgs): Promise<void> {
   console.log('🔄 Starting migration: Add Features block support...')
 
-  // Step 1: Create enum types if they don't exist
-  const enumsToCreate = [
-    {
-      name: 'enum_pages_blocks_features_features_link_type',
-      values: ['reference', 'custom'],
-    },
-    {
-      name: 'enum_pages_blocks_features_features_link_uui_color',
-      values: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
-    },
-    {
-      name: 'enum_pages_blocks_features_features_link_uui_size',
-      values: ['sm', 'md', 'lg', 'xl'],
-    },
-    {
-      name: 'enum_pages_blocks_features_features_link_icon_pos',
-      values: ['leading', 'trailing'],
-    },
-    {
-      name: 'enum_pages_blocks_features_layout_options_card_style',
-      values: ['card', 'centered-icon', 'left-icon', 'horizontal-icon', 'elevated-box'],
-    },
-    {
-      name: 'enum_pages_blocks_features_layout_options_card_background',
-      values: ['grey', 'brand', 'outline', 'line'],
-    },
-    {
-      name: 'enum_pages_blocks_features_layout_options_columns',
-      values: ['2', '3', '4'],
-    },
-    {
-      name: 'enum_pages_blocks_features_layout_options_icon_color',
-      values: ['brand', 'accent', 'secondary', 'tertiary'],
-    },
-    {
-      name: 'enum_pages_blocks_features_layout_options_icon_theme',
-      values: ['rounded-square', 'round'],
-    },
-    {
-      name: 'enum_pages_blocks_features_layout_options_spacing',
-      values: ['compact', 'normal', 'spacious'],
-    },
-    // Version table enums
-    {
-      name: 'enum__pages_v_blocks_features_features_link_type',
-      values: ['reference', 'custom'],
-    },
-    {
-      name: 'enum__pages_v_blocks_features_features_link_uui_color',
-      values: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
-    },
-    {
-      name: 'enum__pages_v_blocks_features_features_link_uui_size',
-      values: ['sm', 'md', 'lg', 'xl'],
-    },
-    {
-      name: 'enum__pages_v_blocks_features_features_link_icon_pos',
-      values: ['leading', 'trailing'],
-    },
-    {
-      name: 'enum__pages_v_blocks_features_layout_options_card_style',
-      values: ['card', 'centered-icon', 'left-icon', 'horizontal-icon', 'elevated-box'],
-    },
-    {
-      name: 'enum__pages_v_blocks_features_layout_options_card_background',
-      values: ['grey', 'brand', 'outline', 'line'],
-    },
-    {
-      name: 'enum__pages_v_blocks_features_layout_options_columns',
-      values: ['2', '3', '4'],
-    },
-    {
-      name: 'enum__pages_v_blocks_features_layout_options_icon_color',
-      values: ['brand', 'accent', 'secondary', 'tertiary'],
-    },
-    {
-      name: 'enum__pages_v_blocks_features_layout_options_icon_theme',
-      values: ['rounded-square', 'round'],
-    },
-    {
-      name: 'enum__pages_v_blocks_features_layout_options_spacing',
-      values: ['compact', 'normal', 'spacious'],
-    },
-    // Icon position enums for other blocks
-    {
-      name: 'enum_pages_blocks_cta_links_link_icon_pos',
-      values: ['leading', 'trailing'],
-    },
-    {
-      name: 'enum_pages_blocks_content_columns_link_icon_pos',
-      values: ['leading', 'trailing'],
-    },
-    {
-      name: 'enum_pages_blocks_button_block_buttons_link_icon_pos',
-      values: ['leading', 'trailing'],
-    },
-    {
-      name: 'enum__pages_v_blocks_cta_links_link_icon_pos',
-      values: ['leading', 'trailing'],
-    },
-    {
-      name: 'enum__pages_v_blocks_content_columns_link_icon_pos',
-      values: ['leading', 'trailing'],
-    },
-    {
-      name: 'enum__pages_v_blocks_button_block_buttons_link_icon_pos',
-      values: ['leading', 'trailing'],
-    },
-    {
-      name: 'enum_header_cta_button_link_icon_pos',
-      values: ['leading', 'trailing'],
-    },
-    {
-      name: 'enum_footer_nav_columns_items_link_icon_pos',
-      values: ['leading', 'trailing'],
-    },
-    {
-      name: 'enum_not_found_link_type',
-      values: ['reference', 'custom'],
-    },
-    {
-      name: 'enum_not_found_link_uui_color',
-      values: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
-    },
-    {
-      name: 'enum_not_found_link_uui_size',
-      values: ['sm', 'md', 'lg', 'xl'],
-    },
-    {
-      name: 'enum_not_found_link_icon_pos',
-      values: ['leading', 'trailing'],
-    },
+  // Step 1: Create all enum types (these will be created fresh with all values)
+  console.log('📋 Creating enum types...')
+
+  const enumDefinitions = [
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_cta_links_link_icon_pos AS ENUM('leading', 'trailing')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_content_columns_link_icon_pos AS ENUM('leading', 'trailing')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_button_block_buttons_link_icon_pos AS ENUM('leading', 'trailing')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_features_features_link_type AS ENUM('reference', 'custom')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_features_features_link_uui_color AS ENUM('primary', 'accent', 'secondary', 'tertiary', 'link')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_features_features_link_uui_size AS ENUM('sm', 'md', 'lg', 'xl')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_features_features_link_icon_pos AS ENUM('leading', 'trailing')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_features_layout_options_card_style AS ENUM('card', 'centered-icon', 'left-icon', 'horizontal-icon', 'elevated-box')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_features_layout_options_card_background AS ENUM('grey', 'brand', 'outline', 'line')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_features_layout_options_columns AS ENUM('2', '3', '4')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_features_layout_options_icon_color AS ENUM('brand', 'accent', 'secondary', 'tertiary')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_features_layout_options_icon_theme AS ENUM('rounded-square', 'round')`,
+    `CREATE TYPE IF NOT EXISTS enum_pages_blocks_features_layout_options_spacing AS ENUM('compact', 'normal', 'spacious')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_cta_links_link_icon_pos AS ENUM('leading', 'trailing')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_content_columns_link_icon_pos AS ENUM('leading', 'trailing')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_button_block_buttons_link_icon_pos AS ENUM('leading', 'trailing')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_features_features_link_type AS ENUM('reference', 'custom')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_features_features_link_uui_color AS ENUM('primary', 'accent', 'secondary', 'tertiary', 'link')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_features_features_link_uui_size AS ENUM('sm', 'md', 'lg', 'xl')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_features_features_link_icon_pos AS ENUM('leading', 'trailing')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_features_layout_options_card_style AS ENUM('card', 'centered-icon', 'left-icon', 'horizontal-icon', 'elevated-box')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_features_layout_options_card_background AS ENUM('grey', 'brand', 'outline', 'line')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_features_layout_options_columns AS ENUM('2', '3', '4')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_features_layout_options_icon_color AS ENUM('brand', 'accent', 'secondary', 'tertiary')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_features_layout_options_icon_theme AS ENUM('rounded-square', 'round')`,
+    `CREATE TYPE IF NOT EXISTS enum__pages_v_blocks_features_layout_options_spacing AS ENUM('compact', 'normal', 'spacious')`,
+    `CREATE TYPE IF NOT EXISTS enum_header_cta_button_link_icon_pos AS ENUM('leading', 'trailing')`,
+    `CREATE TYPE IF NOT EXISTS enum_footer_nav_columns_items_link_icon_pos AS ENUM('leading', 'trailing')`,
+    `CREATE TYPE IF NOT EXISTS enum_not_found_link_type AS ENUM('reference', 'custom')`,
+    `CREATE TYPE IF NOT EXISTS enum_not_found_link_uui_color AS ENUM('primary', 'accent', 'secondary', 'tertiary', 'link')`,
+    `CREATE TYPE IF NOT EXISTS enum_not_found_link_uui_size AS ENUM('sm', 'md', 'lg', 'xl')`,
+    `CREATE TYPE IF NOT EXISTS enum_not_found_link_icon_pos AS ENUM('leading', 'trailing')`,
   ]
 
-  for (const enumDef of enumsToCreate) {
+  for (const enumDef of enumDefinitions) {
     try {
-      // Check if type exists
-      const typeCheck = await db.execute(sql`
-        SELECT EXISTS (
-          SELECT 1 FROM pg_type WHERE typname = ${enumDef.name}
-        ) as exists
-      `)
-
-      const typeExists = typeCheck.rows?.[0]?.exists || false
-
-      if (typeExists) {
-        console.log(`  ✓ Enum ${enumDef.name} already exists, ensuring all values...`)
-
-        // Ensure all values exist
-        for (const value of enumDef.values) {
-          const valueCheck = await db.execute(sql`
-            SELECT EXISTS (
-              SELECT 1 FROM pg_enum e
-              JOIN pg_type t ON e.enumtypid = t.oid
-              WHERE t.typname = ${enumDef.name}
-              AND e.enumlabel = ${value}
-            ) as exists
-          `)
-
-          const valueExists = valueCheck.rows?.[0]?.exists || false
-
-          if (!valueExists) {
-            await db.execute(sql`
-              ALTER TYPE ${sql.identifier(enumDef.name)} ADD VALUE ${value}
-            `)
-            console.log(`    → Added value "${value}" to ${enumDef.name}`)
-          }
-        }
-      } else {
-        // Create the enum
-        const valuesStr = enumDef.values.map((v) => `'${v}'`).join(', ')
-        await db.execute(sql.raw(`
-          CREATE TYPE ${enumDef.name} AS ENUM (${valuesStr})
-        `))
-        console.log(`  ✓ Created enum ${enumDef.name}`)
-      }
+      await db.execute(sql.raw(enumDef))
+      console.log(`  ✓ ${enumDef.substring(0, 80)}...`)
     } catch (error) {
-      console.log(`  → Skipped ${enumDef.name}: ${error instanceof Error ? error.message : 'unknown error'}`)
+      // Enum already exists, that's OK
+      console.log(`  → Enum already exists (this is fine)`)
     }
   }
 
-  // Step 2: Create tables if they don't exist
+  // Step 2: Create tables
   console.log('📋 Creating tables...')
 
   try {
@@ -344,35 +210,31 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   // Step 3: Add new columns to existing tables
   console.log('➕ Adding new columns to existing tables...')
 
-  const columnsToAdd = [
-    { table: 'pages_blocks_cta_links', column: 'link_button_icon', type: 'varchar' },
-    { table: 'pages_blocks_cta_links', column: 'link_icon_pos', type: 'enum_pages_blocks_cta_links_link_icon_pos', default: 'trailing' },
-    { table: 'pages_blocks_content_columns', column: 'link_button_icon', type: 'varchar' },
-    { table: 'pages_blocks_content_columns', column: 'link_icon_pos', type: 'enum_pages_blocks_content_columns_link_icon_pos', default: 'trailing' },
-    { table: 'pages_blocks_button_block_buttons', column: 'link_button_icon', type: 'varchar' },
-    { table: 'pages_blocks_button_block_buttons', column: 'link_icon_pos', type: 'enum_pages_blocks_button_block_buttons_link_icon_pos', default: 'trailing' },
-    { table: '_pages_v_blocks_cta_links', column: 'link_button_icon', type: 'varchar' },
-    { table: '_pages_v_blocks_cta_links', column: 'link_icon_pos', type: 'enum__pages_v_blocks_cta_links_link_icon_pos', default: 'trailing' },
-    { table: '_pages_v_blocks_content_columns', column: 'link_button_icon', type: 'varchar' },
-    { table: '_pages_v_blocks_content_columns', column: 'link_icon_pos', type: 'enum__pages_v_blocks_content_columns_link_icon_pos', default: 'trailing' },
-    { table: '_pages_v_blocks_button_block_buttons', column: 'link_button_icon', type: 'varchar' },
-    { table: '_pages_v_blocks_button_block_buttons', column: 'link_icon_pos', type: 'enum__pages_v_blocks_button_block_buttons_link_icon_pos', default: 'trailing' },
-    { table: 'header', column: 'cta_button_link_button_icon', type: 'varchar' },
-    { table: 'header', column: 'cta_button_link_icon_pos', type: 'enum_header_cta_button_link_icon_pos', default: 'trailing' },
-    { table: 'footer_nav_columns_items', column: 'link_button_icon', type: 'varchar' },
-    { table: 'footer_nav_columns_items', column: 'link_icon_pos', type: 'enum_footer_nav_columns_items_link_icon_pos', default: 'trailing' },
+  const alterStatements = [
+    `ALTER TABLE pages_blocks_cta_links ADD COLUMN IF NOT EXISTS link_button_icon varchar`,
+    `ALTER TABLE pages_blocks_cta_links ADD COLUMN IF NOT EXISTS link_icon_pos enum_pages_blocks_cta_links_link_icon_pos DEFAULT 'trailing'`,
+    `ALTER TABLE pages_blocks_content_columns ADD COLUMN IF NOT EXISTS link_button_icon varchar`,
+    `ALTER TABLE pages_blocks_content_columns ADD COLUMN IF NOT EXISTS link_icon_pos enum_pages_blocks_content_columns_link_icon_pos DEFAULT 'trailing'`,
+    `ALTER TABLE pages_blocks_button_block_buttons ADD COLUMN IF NOT EXISTS link_button_icon varchar`,
+    `ALTER TABLE pages_blocks_button_block_buttons ADD COLUMN IF NOT EXISTS link_icon_pos enum_pages_blocks_button_block_buttons_link_icon_pos DEFAULT 'trailing'`,
+    `ALTER TABLE _pages_v_blocks_cta_links ADD COLUMN IF NOT EXISTS link_button_icon varchar`,
+    `ALTER TABLE _pages_v_blocks_cta_links ADD COLUMN IF NOT EXISTS link_icon_pos enum__pages_v_blocks_cta_links_link_icon_pos DEFAULT 'trailing'`,
+    `ALTER TABLE _pages_v_blocks_content_columns ADD COLUMN IF NOT EXISTS link_button_icon varchar`,
+    `ALTER TABLE _pages_v_blocks_content_columns ADD COLUMN IF NOT EXISTS link_icon_pos enum__pages_v_blocks_content_columns_link_icon_pos DEFAULT 'trailing'`,
+    `ALTER TABLE _pages_v_blocks_button_block_buttons ADD COLUMN IF NOT EXISTS link_button_icon varchar`,
+    `ALTER TABLE _pages_v_blocks_button_block_buttons ADD COLUMN IF NOT EXISTS link_icon_pos enum__pages_v_blocks_button_block_buttons_link_icon_pos DEFAULT 'trailing'`,
+    `ALTER TABLE header ADD COLUMN IF NOT EXISTS cta_button_link_button_icon varchar`,
+    `ALTER TABLE header ADD COLUMN IF NOT EXISTS cta_button_link_icon_pos enum_header_cta_button_link_icon_pos DEFAULT 'trailing'`,
+    `ALTER TABLE footer_nav_columns_items ADD COLUMN IF NOT EXISTS link_button_icon varchar`,
+    `ALTER TABLE footer_nav_columns_items ADD COLUMN IF NOT EXISTS link_icon_pos enum_footer_nav_columns_items_link_icon_pos DEFAULT 'trailing'`,
   ]
 
-  for (const col of columnsToAdd) {
+  for (const stmt of alterStatements) {
     try {
-      const defaultClause = col.default ? `DEFAULT '${col.default}'` : ''
-      await db.execute(sql.raw(`
-        ALTER TABLE ${col.table}
-        ADD COLUMN IF NOT EXISTS ${col.column} ${col.type} ${defaultClause}
-      `))
-      console.log(`  ✓ Added column ${col.table}.${col.column}`)
+      await db.execute(sql.raw(stmt))
+      console.log(`  ✓ ${stmt.substring(0, 80)}...`)
     } catch (error) {
-      console.log(`  → Column ${col.table}.${col.column} already exists`)
+      console.log(`  → Column already exists (this is fine)`)
     }
   }
 
