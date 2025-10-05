@@ -68,7 +68,7 @@ export const styles = sortCx({
         },
         secondary: {
             root: [
-                "bg-transparent text-secondary ring-1 ring-black/20 dark:ring-white/20 ring-inset hover:scale-105 hover:text-secondary_hover",
+                "bg-transparent text-secondary ring-1 ring-primary dark:ring-secondary ring-inset hover:scale-105 hover:text-secondary_hover",
                 // Disabled styles
                 "disabled:ring-disabled_subtle",
                 // Icon styles

@@ -10,8 +10,9 @@ import * as migration_20250926_194105 from './20250926_194105';
 import * as migration_20250929_213200_add_button_block from './20250929_213200_add_button_block';
 import * as migration_20250929_215500_header_dropdown_icon_to_varchar from './20250929_215500_header_dropdown_icon_to_varchar';
 import * as migration_20251002_095731 from './20251002_095731';
-import * as migration_20251004_add_button_variants from './20251004_add_button_variants';
 import * as migration_20251004_222500_update_icon_theme_enum from './20251004_222500_update_icon_theme_enum';
+import * as migration_20251004_add_button_variants from './20251004_add_button_variants';
+import * as migration_20251005_073233 from './20251005_073233';
 
 export const migrations = [
   {
@@ -75,13 +76,18 @@ export const migrations = [
     name: '20251002_095731',
   },
   {
+    up: migration_20251004_222500_update_icon_theme_enum.up,
+    down: migration_20251004_222500_update_icon_theme_enum.down,
+    name: '20251004_222500_update_icon_theme_enum',
+  },
+  {
     up: migration_20251004_add_button_variants.up,
     down: migration_20251004_add_button_variants.down,
     name: '20251004_add_button_variants',
   },
   {
-    up: migration_20251004_222500_update_icon_theme_enum.up,
-    down: migration_20251004_222500_update_icon_theme_enum.down,
-    name: '20251004_222500_update_icon_theme_enum',
+    up: migration_20251005_073233.up,
+    down: migration_20251005_073233.down,
+    name: '20251005_073233'
   },
 ];

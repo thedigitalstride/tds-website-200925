@@ -93,51 +93,53 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   // Wrapper components with dynamic icon color/shape support
   const FeatureCardWithIcon = ({ icon, title, subtitle, footer }: any) => (
     <div className={cn(
-      "flex flex-col gap-4 md:inline-flex h-full",
+      "flex flex-col justify-between gap-4 md:inline-flex h-full",
       !isLineVariant && "rounded-md",
       cardPaddingClasses,
       cardBgClasses
     )}>
-      <FeaturedIcon
-        icon={icon}
-        size="lg"
-        color={iconColor}
-        shape={iconShape}
-      />
       <div className="flex flex-col gap-4">
+        <FeaturedIcon
+          icon={icon}
+          size="lg"
+          color={iconColor}
+          shape={iconShape}
+        />
         <div>
           <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
           <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
         </div>
-        {footer}
       </div>
+      {footer}
     </div>
   )
 
   const FeatureLeftIconWithColors = ({ icon, title, subtitle, footer }: any) => (
     <div className={cn(
-      "flex max-w-sm flex-col gap-4 h-full",
+      "flex max-w-sm flex-col justify-between gap-4 h-full",
       !isLineVariant && "rounded-md",
       cardPaddingClasses,
       cardBgClasses
     )}>
-      <FeaturedIcon
-        icon={icon}
-        size="lg"
-        color={iconColor}
-        shape={iconShape}
-        className="hidden md:inline-flex"
-      />
-      <FeaturedIcon
-        icon={icon}
-        size="md"
-        color={iconColor}
-        shape={iconShape}
-        className="inline-flex md:hidden"
-      />
-      <div>
-        <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
-        <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
+      <div className="flex flex-col gap-4">
+        <FeaturedIcon
+          icon={icon}
+          size="lg"
+          color={iconColor}
+          shape={iconShape}
+          className="hidden md:inline-flex"
+        />
+        <FeaturedIcon
+          icon={icon}
+          size="md"
+          color={iconColor}
+          shape={iconShape}
+          className="inline-flex md:hidden"
+        />
+        <div>
+          <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
+          <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
+        </div>
       </div>
       {footer}
     </div>
@@ -164,7 +166,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
         shape={iconShape}
         className="inline-flex md:hidden"
       />
-      <div className="flex flex-col items-start gap-4">
+      <div className="flex flex-col justify-between items-start gap-4 flex-1">
         <div>
           <h3 className={cn("mt-1.5 text-lg font-semibold md:mt-2.5", textClasses.heading)}>{title}</h3>
           <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
@@ -176,21 +178,23 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
 
   const FeatureBoxWithIcon = ({ icon, title, subtitle, footer }: any) => (
     <div className={cn(
-      "mt-6 flex max-w-sm flex-col items-center gap-4 text-center h-full",
+      "mt-6 flex max-w-sm flex-col justify-between items-center gap-4 text-center h-full",
       !isLineVariant && "rounded-md",
       isLineVariant ? 'px-0 pb-8' : 'px-6 pb-8',
       cardBgClasses
     )}>
-      <FeaturedIcon
-        icon={icon}
-        size="lg"
-        color={iconColor}
-        shape={iconShape}
-        className="-mt-6"
-      />
-      <div>
-        <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
-        <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
+      <div className="flex flex-col items-center gap-4">
+        <FeaturedIcon
+          icon={icon}
+          size="lg"
+          color={iconColor}
+          shape={iconShape}
+          className="-mt-6"
+        />
+        <div>
+          <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
+          <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
+        </div>
       </div>
       {footer}
     </div>
@@ -208,18 +212,16 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   // Wrapper components that maintain card styling without icons
   const FeatureTextCard = ({ title, subtitle, footer }: { title: string; subtitle: string; footer?: React.ReactNode }) => (
     <div className={cn(
-      "flex flex-col gap-4 md:inline-flex h-full",
+      "flex flex-col justify-between gap-4 md:inline-flex h-full",
       !isLineVariant && "rounded-md",
       cardPaddingClasses,
       cardBgClasses
     )}>
-      <div className="flex flex-col gap-4">
-        <div>
-          <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
-          <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
-        </div>
-        {footer}
+      <div>
+        <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
+        <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
       </div>
+      {footer}
     </div>
   )
 

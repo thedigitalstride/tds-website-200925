@@ -88,13 +88,15 @@ export const FeatureTextFeaturedIconTopCentered = ({
     color?: "brand" | "accent" | "secondary" | "tertiary";
     shape?: "rounded-square" | "round";
 }) => (
-    <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-        <FeaturedIcon icon={icon} size="lg" color={color} shape={shape} className="hidden md:inline-flex" />
-        <FeaturedIcon icon={icon} size="md" color={color} shape={shape} className="inline-flex md:hidden" />
+    <div className="flex max-w-sm flex-col justify-between items-center gap-4 text-center h-full">
+        <div className="flex flex-col items-center gap-4">
+            <FeaturedIcon icon={icon} size="lg" color={color} shape={shape} className="hidden md:inline-flex" />
+            <FeaturedIcon icon={icon} size="md" color={color} shape={shape} className="inline-flex md:hidden" />
 
-        <div>
-            <h3 className="text-lg font-semibold text-primary">{title}</h3>
-            <p className="mt-1 text-md text-tertiary">{subtitle}</p>
+            <div>
+                <h3 className="text-lg font-semibold text-primary">{title}</h3>
+                <p className="mt-1 text-md text-tertiary">{subtitle}</p>
+            </div>
         </div>
 
         {footer}

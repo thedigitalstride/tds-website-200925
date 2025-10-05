@@ -1212,7 +1212,7 @@
         --color-text-quaternary_on-accent: var(--color-gray-400);
 
         /* BORDER COLORS */
-        --color-border-secondary: var(--color-gray-800);
+        --color-border-secondary: var(--color-gray-500);
         --color-border-error_subtle: var(--color-error-500);
         --color-border-primary: var(--color-gray-700);
         --color-border-brand: var(--color-brand-400);

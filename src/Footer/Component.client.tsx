@@ -54,7 +54,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
     <footer className="bg-primary py-12 md:pt-16">
       <div className="mx-auto max-w-container px-4 md:px-8">
         {/* Top Border */}
-        <div className="mb-12 border-t border-secondary md:mb-16" />
+        <div className="mb-12 border-t border-gray-200 dark:border-gray-500 md:mb-16" />
         {/* Main Content */}
         <div className="flex flex-col gap-12 md:gap-16 lg:flex-row lg:justify-between">
           {/* Company Info */}
@@ -105,7 +105,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
         </div>
 
         {/* Footer Bottom */}
-        <div className="mt-12 flex flex-col-reverse justify-between gap-6 border-t border-secondary pt-8 md:mt-16 md:flex-row">
+        <div className="mt-12 flex flex-col-reverse justify-between gap-6 border-t border-gray-200 dark:border-gray-500 pt-8 md:mt-16 md:flex-row">
           <p className="text-md text-quaternary">{copyrightText}</p>
 
           <div className="flex items-center gap-6">
