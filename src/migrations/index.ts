@@ -14,6 +14,7 @@ import * as migration_20251004_222500_update_icon_theme_enum from './20251004_22
 import * as migration_20251004_add_button_variants from './20251004_add_button_variants';
 import * as migration_20251005_163000_add_features_block from './20251005_163000_add_features_block';
 import * as migration_20251005_164500_fix_features_enums from './20251005_164500_fix_features_enums';
+import * as migration_20251005_204728 from './20251005_204728';
 
 export const migrations = [
   {
@@ -95,5 +96,10 @@ export const migrations = [
     up: migration_20251005_164500_fix_features_enums.up,
     down: migration_20251005_164500_fix_features_enums.down,
     name: '20251005_164500_fix_features_enums',
+  },
+  {
+    up: migration_20251005_204728.up,
+    down: migration_20251005_204728.down,
+    name: '20251005_204728'
   },
 ];
