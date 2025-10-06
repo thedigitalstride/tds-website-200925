@@ -233,12 +233,19 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     'elevated-box': FeatureTextCard,
   }
 
+  // Header alignment
+  const headerAlignment = header?.headerAlignment || 'left'
+  const isHeaderCentered = headerAlignment === 'center'
+
   return (
     <section className={cn('bg-primary', spacingClasses[spacing])}>
       <div className="mx-auto w-full max-w-container px-4 md:px-8">
         {/* Optional Header Section */}
         {header?.showHeader && (
-          <div className="flex w-full max-w-3xl flex-col">
+          <div className={cn(
+            "flex w-full max-w-3xl flex-col",
+            isHeaderCentered && "mx-auto text-center"
+          )}>
             {header.eyebrow && (
               <span className="text-sm font-semibold text-brand-secondary md:text-md">
                 {header.eyebrow}

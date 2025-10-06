@@ -929,6 +929,10 @@ export interface FeaturesBlock {
      * Description text that appears below the heading
      */
     description?: string | null;
+    /**
+     * Alignment of the section header
+     */
+    headerAlignment?: ('left' | 'center') | null;
   };
   features: {
     /**
@@ -1573,6 +1577,7 @@ export interface FeaturesBlockSelect<T extends boolean = true> {
         eyebrow?: T;
         heading?: T;
         description?: T;
+        headerAlignment?: T;
       };
   features?:
     | T

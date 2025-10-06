@@ -46,6 +46,20 @@ export const FeaturesBlock: Block = {
             condition: (_, siblingData) => siblingData?.showHeader === true,
           },
         },
+        {
+          name: 'headerAlignment',
+          type: 'select',
+          defaultValue: 'left',
+          label: 'Header Alignment',
+          options: [
+            { label: 'Left', value: 'left' },
+            { label: 'Center', value: 'center' },
+          ],
+          admin: {
+            description: 'Alignment of the section header',
+            condition: (_, siblingData) => siblingData?.showHeader === true,
+          },
+        },
       ],
     },
     {
