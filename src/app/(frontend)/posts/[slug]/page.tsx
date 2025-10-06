@@ -13,6 +13,7 @@ import { PostLayout } from '@/components/PostLayout'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import RenderBlocks from '@/blocks/RenderBlocks'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -71,6 +72,11 @@ export default async function Post({ params: paramsPromise }: Args) {
           </div>
         </div>
       )}
+
+      {/* After Content Blocks */}
+      {post.afterContent && post.afterContent.length > 0 && (
+        <RenderBlocks blocks={post.afterContent} />
+      )}
     </>
   )
 }
@@ -116,6 +122,7 @@ const queryPostBySlug = cache(async ({ slug, draft }: { slug: string; draft: boo
           description: true,
         },
       },
+      afterContent: true,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,
   })

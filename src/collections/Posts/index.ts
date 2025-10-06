@@ -7,6 +7,8 @@ import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { Quote } from '../../blocks/Quote/config'
 import { Conclusion } from '../../blocks/Conclusion/config'
+import { LatestPostsBlock } from '../../blocks/LatestPostsBlock/config'
+import { CallToAction } from '../../blocks/CallToAction/config'
 import { richTextEditorFull } from '@/fields/richTextWithButtons'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
@@ -247,6 +249,16 @@ export const Posts: CollectionConfig<'posts'> = {
           relationTo: 'media',
         },
       ],
+    },
+    {
+      name: 'afterContent',
+      type: 'blocks',
+      label: 'After Content Blocks',
+      blocks: [LatestPostsBlock, CallToAction, MediaBlock],
+      admin: {
+        description: 'Optional blocks to display after the main post content',
+        initCollapsed: true,
+      },
     },
     ...slugField(),
   ],

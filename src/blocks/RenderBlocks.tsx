@@ -30,7 +30,7 @@ type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]
 type LayoutBlock = NonNullable<Page['layout']>[number]
 
 export const RenderBlocks: React.FC<{
-  blocks: LayoutBlock[]
+  blocks: (LayoutBlock | any)[]
   breadcrumbs?: BreadcrumbItem[] | null
 }> = (props) => {
   const { blocks, breadcrumbs } = props
@@ -43,12 +43,11 @@ export const RenderBlocks: React.FC<{
         {blocks.map((block, index) => {
           const { blockType } = block
 
-          if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType]
+          if (blockType && typeof blockType === 'string' && blockType in blockComponents) {
+            const Block = blockComponents[blockType as keyof typeof blockComponents]
 
             if (Block) {
               return (
-                // @ts-expect-error there may be some mismatch between the expected types here
                 <Block key={index} {...block} breadcrumbs={breadcrumbs} disableInnerContainer />
               )
             }
@@ -61,3 +60,5 @@ export const RenderBlocks: React.FC<{
 
   return null
 }
+
+export default RenderBlocks

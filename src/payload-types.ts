@@ -367,6 +367,10 @@ export interface Post {
         avatar?: (number | null) | Media;
       }[]
     | null;
+  /**
+   * Optional blocks to display after the main post content
+   */
+  afterContent?: (LatestPostsBlock | CallToActionBlock | MediaBlock)[] | null;
   slug?: string | null;
   slugLock?: boolean | null;
   meta?: {
@@ -533,6 +537,127 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestPostsBlock".
+ */
+export interface LatestPostsBlock {
+  header?: {
+    /**
+     * Toggle to show/hide the header section
+     */
+    showHeader?: boolean | null;
+    /**
+     * Small text above heading (e.g., "Our blog")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for the blog section
+     */
+    heading?: string | null;
+    /**
+     * Description text that appears below the heading
+     */
+    description?: string | null;
+  };
+  /**
+   * Choose between automatically showing latest posts or manually selecting specific posts
+   */
+  contentSource?: ('latest' | 'manual') | null;
+  opts?: {
+    /**
+     * How many latest posts to display
+     */
+    numPosts?: ('3' | '6' | '9' | '12') | null;
+    /**
+     * Optional: Show only posts from a specific category
+     */
+    categoryFilter?: (number | null) | Category;
+  };
+  /**
+   * Manually select which posts to display
+   */
+  selectedPosts?: (number | Post)[] | null;
+  buttonConfig?: {
+    /**
+     * Toggle to show/hide the button that links to all posts
+     */
+    showButton?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+      /**
+       * Button color variant from UntitledUI design system
+       */
+      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      /**
+       * Button size variant
+       */
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+      /**
+       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+       */
+      buttonIcon?: string | null;
+      /**
+       * Position of the icon relative to the button text
+       */
+      iconPos?: ('leading' | 'trailing') | null;
+    };
+  };
+  /**
+   * Configure how the blog section is displayed
+   */
+  layoutOptions?: {
+    /**
+     * Number of columns in the grid layout
+     */
+    columns?: ('2' | '3' | '4') | null;
+    /**
+     * Vertical spacing around this section
+     */
+    spacing?: ('compact' | 'normal' | 'spacious') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'latestPosts';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  caption?: {
+    /**
+     * Caption text
+     */
+    text?: string | null;
+    link?: {
+      /**
+       * Link URL (e.g., https://example.com)
+       */
+      url?: string | null;
+      /**
+       * Link text
+       */
+      text?: string | null;
+    };
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
@@ -596,32 +721,6 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
- */
-export interface MediaBlock {
-  media: number | Media;
-  caption?: {
-    /**
-     * Caption text
-     */
-    text?: string | null;
-    link?: {
-      /**
-       * Link URL (e.g., https://example.com)
-       */
-      url?: string | null;
-      /**
-       * Link text
-       */
-      text?: string | null;
-    };
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1017,101 +1116,6 @@ export interface FeaturesBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'features';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LatestPostsBlock".
- */
-export interface LatestPostsBlock {
-  header?: {
-    /**
-     * Toggle to show/hide the header section
-     */
-    showHeader?: boolean | null;
-    /**
-     * Small text above heading (e.g., "Our blog")
-     */
-    eyebrow?: string | null;
-    /**
-     * Main heading for the blog section
-     */
-    heading?: string | null;
-    /**
-     * Description text that appears below the heading
-     */
-    description?: string | null;
-  };
-  /**
-   * Choose between automatically showing latest posts or manually selecting specific posts
-   */
-  contentSource?: ('latest' | 'manual') | null;
-  opts?: {
-    /**
-     * How many latest posts to display
-     */
-    numPosts?: ('3' | '6' | '9' | '12') | null;
-    /**
-     * Optional: Show only posts from a specific category
-     */
-    categoryFilter?: (number | null) | Category;
-  };
-  /**
-   * Manually select which posts to display
-   */
-  selectedPosts?: (number | Post)[] | null;
-  buttonConfig?: {
-    /**
-     * Toggle to show/hide the button that links to all posts
-     */
-    showButton?: boolean | null;
-    link?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null);
-      url?: string | null;
-      label: string;
-      /**
-       * Button color variant from UntitledUI design system
-       */
-      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
-      /**
-       * Button size variant
-       */
-      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-      /**
-       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
-       */
-      buttonIcon?: string | null;
-      /**
-       * Position of the icon relative to the button text
-       */
-      iconPos?: ('leading' | 'trailing') | null;
-    };
-  };
-  /**
-   * Configure how the blog section is displayed
-   */
-  layoutOptions?: {
-    /**
-     * Number of columns in the grid layout
-     */
-    columns?: ('2' | '3' | '4') | null;
-    /**
-     * Vertical spacing around this section
-     */
-    spacing?: ('compact' | 'normal' | 'spacious') | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'latestPosts';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1703,6 +1707,13 @@ export interface PostsSelect<T extends boolean = true> {
         name?: T;
         nickname?: T;
         avatar?: T;
+      };
+  afterContent?:
+    | T
+    | {
+        latestPosts?: T | LatestPostsBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
       };
   slug?: T;
   slugLock?: T;
