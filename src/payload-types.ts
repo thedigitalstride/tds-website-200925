@@ -217,6 +217,10 @@ export interface HeroHeadingBlock {
      * Vertical spacing around the hero section
      */
     spacing?: ('compact' | 'normal' | 'spacious') | null;
+    /**
+     * Size variant for the subtitle text
+     */
+    subtitleSize?: ('small' | 'normal') | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -1420,6 +1424,7 @@ export interface HeroHeadingBlockSelect<T extends boolean = true> {
         headlineColor?: T;
         textAlignment?: T;
         spacing?: T;
+        subtitleSize?: T;
       };
   id?: T;
   blockName?: T;

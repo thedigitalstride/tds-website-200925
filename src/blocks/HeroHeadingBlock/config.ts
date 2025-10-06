@@ -69,6 +69,18 @@ export const HeroHeadingBlock: Block = {
             description: 'Vertical spacing around the hero section',
           },
         },
+        {
+          name: 'subtitleSize',
+          type: 'select',
+          defaultValue: 'normal',
+          options: [
+            { label: 'Small (75% smaller)', value: 'small' },
+            { label: 'Normal', value: 'normal' },
+          ],
+          admin: {
+            description: 'Size variant for the subtitle text',
+          },
+        },
       ],
     },
   ],

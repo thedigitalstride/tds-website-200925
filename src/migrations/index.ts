@@ -15,6 +15,7 @@ import * as migration_20251004_add_button_variants from './20251004_add_button_v
 import * as migration_20251005_163000_add_features_block from './20251005_163000_add_features_block';
 import * as migration_20251005_164500_fix_features_enums from './20251005_164500_fix_features_enums';
 import * as migration_20251005_222355_add_latest_posts_block from './20251005_222355_add_latest_posts_block';
+import * as migration_20251006_153732 from './20251006_153732';
 
 export const migrations = [
   {
@@ -101,5 +102,10 @@ export const migrations = [
     up: migration_20251005_222355_add_latest_posts_block.up,
     down: migration_20251005_222355_add_latest_posts_block.down,
     name: '20251005_222355_add_latest_posts_block',
+  },
+  {
+    up: migration_20251006_153732.up,
+    down: migration_20251006_153732.down,
+    name: '20251006_153732'
   },
 ];

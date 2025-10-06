@@ -15,6 +15,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   const textAlignment = layoutOptions?.textAlignment || 'left'
   const spacing = layoutOptions?.spacing || 'normal'
   const headlineColor = layoutOptions?.headlineColor || 'primary'
+  const subtitleSize = layoutOptions?.subtitleSize || 'normal'
 
   const spacingClasses: Record<string, string> = {
     compact: 'py-12 lg:py-16',
@@ -32,6 +33,18 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   const headlineColorClasses: Record<string, string> = {
     primary: 'text-primary',
     brand: 'text-accent-500 dark:text-accent-500',
+  }
+
+  // Subtitle size variants
+  const subtitleSizeStyles: Record<string, React.CSSProperties> = {
+    normal: {
+      fontSize: 'clamp(1.26rem, 3vw + 0.6rem, 3.9rem)',
+      lineHeight: '1.3',
+    },
+    small: {
+      fontSize: 'clamp(0.95rem, 0.75vw + 0.5rem, 1.2rem)',
+      lineHeight: '1.4',
+    },
   }
 
   return (
@@ -61,10 +74,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
           {subtitle && (
             <h2
               className="text-brand-500 dark:text-white mt-10 font-normal"
-              style={{
-                fontSize: 'clamp(1.26rem, 3vw + 0.6rem, 3.9rem)',
-                lineHeight: '1.3',
-              }}
+              style={subtitleSizeStyles[subtitleSize]}
             >
               {subtitle}
             </h2>
