@@ -218,7 +218,7 @@ export interface HeroHeadingBlock {
      */
     spacing?: ('compact' | 'normal' | 'spacious') | null;
     /**
-     * Size variant for the subtitle text
+     * Size variant for the subtitle text - Small reduces to 75% of normal size
      */
     subtitleSize?: ('small' | 'normal') | null;
   };

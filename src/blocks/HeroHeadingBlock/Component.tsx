@@ -42,8 +42,9 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
       lineHeight: '1.3',
     },
     small: {
-      fontSize: 'clamp(0.95rem, 0.75vw + 0.5rem, 1.2rem)',
-      lineHeight: '1.4',
+      // 75% of normal size (25% reduction)
+      fontSize: 'clamp(0.95rem, 2.25vw + 0.45rem, 2.925rem)',
+      lineHeight: '1.35',
     },
   }
 

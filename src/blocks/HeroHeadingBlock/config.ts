@@ -74,11 +74,11 @@ export const HeroHeadingBlock: Block = {
           type: 'select',
           defaultValue: 'normal',
           options: [
-            { label: 'Small (75% smaller)', value: 'small' },
-            { label: 'Normal', value: 'normal' },
+            { label: 'Small (75% of normal size)', value: 'small' },
+            { label: 'Normal (100%)', value: 'normal' },
           ],
           admin: {
-            description: 'Size variant for the subtitle text',
+            description: 'Size variant for the subtitle text - Small reduces to 75% of normal size',
           },
         },
       ],
