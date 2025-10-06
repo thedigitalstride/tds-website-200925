@@ -93,7 +93,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
           <Media
             resource={heroImage}
             className="order-first -ml-4 w-screen max-w-none md:order-1 md:ml-0 md:w-full md:max-w-full"
-            imgClassName="w-full md:rounded-lg"
+            imgClassName="w-full md:rounded-md"
             priority
           />
         )}
