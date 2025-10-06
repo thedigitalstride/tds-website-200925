@@ -58,7 +58,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
         {/* Main Content */}
         <div className="flex flex-col gap-12 md:gap-16 lg:flex-row lg:justify-between">
           {/* Company Info */}
-          <div className="flex flex-col gap-4 lg:max-w-xs">
+          <div className="flex flex-col gap-4 items-start lg:max-w-xs">
             <TDSLogo variant="auto" size="xl" className="h-12 w-min shrink-0" />
             {companyInfo?.description && (
               <p className="text-md text-tertiary">{companyInfo.description}</p>
