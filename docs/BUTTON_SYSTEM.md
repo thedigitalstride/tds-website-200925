@@ -38,7 +38,7 @@ All buttons use `ring-1 ring-inset` for identical internal structure:
 ```tsx
 primary: "ring-1 ring-transparent ring-inset"  // Invisible ring
 accent: "ring-1 ring-transparent ring-inset"   // Invisible ring
-secondary: "ring-1 ring-black/20 dark:ring-white/20 ring-inset"  // Visible outline
+secondary: "ring-1 ring-primary dark:ring-secondary ring-inset"  // Visible outline
 ```
 
 **How it works**:
@@ -46,13 +46,13 @@ secondary: "ring-1 ring-black/20 dark:ring-white/20 ring-inset"  // Visible outl
 - Transparent rings maintain spacing without being visible
 - All buttons have identical dimensions
 
-### 3. 20% Opacity Standard
+### 3. Outline and Background Standards
 
-**Outlines**: `20%` opacity (`ring-black/20`, `ring-white/20`)
+**Secondary Outlines**: Solid colors (`ring-primary`, `ring-secondary` in dark mode)
 
-**Backgrounds**: `20%` opacity (`bg-black/20`, `bg-white/20`)
+**Tertiary Backgrounds**: `20%` opacity (`bg-black/20`, `bg-white/20`)
 
-**Reasoning**: Consistent visual weight across secondary and tertiary variants
+**Reasoning**: Secondary buttons use solid color outlines for better definition, while tertiary variants use translucent backgrounds for subtle emphasis
 
 ### 4. Selective Hover Effects
 
@@ -117,7 +117,7 @@ common: {
 // ALL variants use ring-1 ring-inset for identical internal structure
 primary: "ring-1 ring-transparent ring-inset"  // Invisible ring
 accent: "ring-1 ring-transparent ring-inset"   // Invisible ring
-secondary: "ring-1 ring-black/20 dark:ring-white/20 ring-inset"  // Visible outline
+secondary: "ring-1 ring-primary dark:ring-secondary ring-inset"  // Visible outline
 tertiary: "bg-black/20 dark:bg-white/20"       // 20% tinted background
 ```
 
@@ -220,11 +220,11 @@ secondary: "ring-black/50"  // 50% outline
 tertiary: "bg-black/20"     // 20% background
 ```
 
-✅ **Do**: Use consistent 20% opacity
+✅ **Do**: Use appropriate opacity and colors
 ```tsx
 // CORRECT
-secondary: "ring-black/20"  // 20% outline
-tertiary: "bg-black/20"     // 20% background
+secondary: "ring-primary dark:ring-secondary"  // Solid color outline
+tertiary: "bg-black/20"     // 20% opacity background
 ```
 
 ---

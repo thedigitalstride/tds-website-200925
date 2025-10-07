@@ -17,6 +17,7 @@ import * as migration_20251005_164500_fix_features_enums from './20251005_164500
 import * as migration_20251005_222355_add_latest_posts_block from './20251005_222355_add_latest_posts_block';
 import * as migration_20251006_153732 from './20251006_153732';
 import * as migration_20251006_172209 from './20251006_172209';
+import * as migration_20251007_154811 from './20251007_154811';
 
 export const migrations = [
   {
@@ -112,6 +113,11 @@ export const migrations = [
   {
     up: migration_20251006_172209.up,
     down: migration_20251006_172209.down,
-    name: '20251006_172209'
+    name: '20251006_172209',
+  },
+  {
+    up: migration_20251007_154811.up,
+    down: migration_20251007_154811.down,
+    name: '20251007_154811'
   },
 ];

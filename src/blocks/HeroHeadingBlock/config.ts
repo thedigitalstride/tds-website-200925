@@ -85,7 +85,7 @@ export const HeroHeadingBlock: Block = {
     },
   ],
   labels: {
-    singular: 'Hero Heading',
-    plural: 'Hero Headings',
+    singular: 'Hero Header',
+    plural: 'Hero Headers',
   },
 }
