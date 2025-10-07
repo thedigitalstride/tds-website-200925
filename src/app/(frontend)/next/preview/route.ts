@@ -10,9 +10,6 @@ import configPromise from '@payload-config'
 export const runtime = 'nodejs'
 
 export async function GET(req: NextRequest): Promise<Response> {
-  // Call draftMode() at the very beginning to establish request context
-  const draft = await draftMode()
-
   const payload = await getPayload({ config: configPromise })
 
   const { searchParams } = new URL(req.url)
@@ -43,9 +40,10 @@ export async function GET(req: NextRequest): Promise<Response> {
     })
   } catch (error) {
     payload.logger.error({ err: error }, 'Error verifying token for live preview')
-    draft.disable()
     return new Response('You are not allowed to preview this page', { status: 403 })
   }
+
+  const draft = await draftMode()
 
   if (!user) {
     draft.disable()
