@@ -234,6 +234,25 @@
   color: var(--tw-prose-counters);
 }
 
+/* Override link colors within list items to match body text */
+.prose li a {
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+}
+
+.prose li a:hover {
+  color: var(--color-text-primary);
+}
+
+/* Dark mode link colors in lists */
+.dark-mode .prose li a {
+  color: var(--color-text-secondary);
+}
+
+.dark-mode .prose li a:hover {
+  color: var(--color-text-primary);
+}
+
 /* Nested lists */
 .prose ul ul,
 .prose ul ol,
