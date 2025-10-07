@@ -38,8 +38,8 @@
   --tw-prose-pre-bg: var(--color-gray-900);
 
   /* Lists */
-  --tw-prose-bullets: var(--color-text-tertiary);
-  --tw-prose-counters: var(--color-text-tertiary);
+  --tw-prose-bullets: var(--color-text-secondary);
+  --tw-prose-counters: var(--color-text-secondary);
 
   /* Horizontal rules */
   --tw-prose-hr: var(--color-border-secondary);
@@ -83,8 +83,8 @@
   --tw-prose-pre-bg: var(--color-gray-800);
 
   /* Lists */
-  --tw-prose-bullets: var(--color-text-tertiary);
-  --tw-prose-counters: var(--color-text-tertiary);
+  --tw-prose-bullets: var(--color-text-secondary);
+  --tw-prose-counters: var(--color-text-secondary);
 
   /* Horizontal rules */
   --tw-prose-hr: var(--color-border-primary);
@@ -222,6 +222,16 @@
 .prose li {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+  color: var(--tw-prose-body);  /* Explicitly set list item text color */
+}
+
+/* List markers - ensure they use the defined colors */
+.prose li::marker {
+  color: var(--tw-prose-bullets);
+}
+
+.prose ol li::marker {
+  color: var(--tw-prose-counters);
 }
 
 /* Nested lists */
