@@ -169,9 +169,10 @@ export const FeaturesBlock: Block = {
           label: 'Card Background',
           options: [
             { label: 'Brand', value: 'brand' },
-            { label: 'Accent', value: 'grey' },
+            { label: 'Accent', value: 'accent' },
             { label: 'Outlined', value: 'outline' },
             { label: 'Top Line', value: 'line' },
+            { label: 'Do not use', value: 'grey' },
           ],
           admin: {
             description: 'Visual style for feature cards (background and borders)',

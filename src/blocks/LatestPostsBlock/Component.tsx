@@ -181,7 +181,7 @@ export const LatestPostsBlock: React.FC<
       <div className="mx-auto max-w-container px-4 md:px-8">
         {/* Header with button */}
         {header?.showHeader && (
-          <div className="flex flex-col items-start justify-between lg:flex-row">
+          <div className="flex flex-col items-start justify-between lg:flex-row lg:items-end">
             <div className="max-w-3xl">
               {header.eyebrow && (
                 <p className="text-sm font-semibold text-brand-secondary md:text-md">

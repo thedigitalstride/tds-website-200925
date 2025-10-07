@@ -1095,7 +1095,7 @@ export interface FeaturesBlock {
     /**
      * Visual style for feature cards (background and borders)
      */
-    cardBackground?: ('brand' | 'grey' | 'outline' | 'line') | null;
+    cardBackground?: ('brand' | 'accent' | 'outline' | 'line' | 'grey') | null;
     /**
      * Number of columns in the grid (1-4). Automatically switches to full-width if only one feature exists.
      */

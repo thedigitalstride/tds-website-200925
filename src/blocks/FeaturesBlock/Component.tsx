@@ -20,7 +20,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const columns = layoutOptions?.columns || '3'
   const iconColor = (layoutOptions?.iconColor || 'brand') as 'brand' | 'accent' | 'secondary' | 'tertiary'
   const iconShape = (layoutOptions?.iconTheme || 'rounded-square') as 'rounded-square' | 'round'
-  const cardStyle = layoutOptions?.cardBackground || 'grey' // cardBackground field now controls visual style
+  const cardStyle = layoutOptions?.cardBackground || 'accent' // cardBackground field now controls visual style
 
   // Dynamic background classes based on cardStyle variant
   const getCardBackgroundClasses = (style: string) => {
@@ -31,9 +31,10 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
         return 'bg-transparent border border-gray-300'
       case 'line':
         return 'border-t-2 border-gray-300'
+      case 'accent':
       case 'grey':
       default:
-        return 'bg-black/[0.03] dark:bg-black/11'
+        return 'bg-accent-500'
     }
   }
 
