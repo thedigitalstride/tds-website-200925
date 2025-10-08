@@ -172,7 +172,7 @@ export const FeaturesBlock: Block = {
             { label: 'Accent', value: 'accent' },
             { label: 'Outlined', value: 'outline' },
             { label: 'Top Line', value: 'line' },
-            { label: 'Do not use', value: 'grey' },
+            { label: 'Tinted', value: 'grey' },
           ],
           admin: {
             description: 'Visual style for feature cards (background and borders)',

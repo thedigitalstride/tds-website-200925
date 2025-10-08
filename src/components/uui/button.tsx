@@ -77,18 +77,18 @@ export const styles = sortCx({
         },
         tertiary: {
             root: [
-                "bg-black/20 dark:bg-white/20 text-white hover:scale-105",
+                "bg-brand-500/10 dark:bg-white/20 text-brand-500/70 dark:text-white/70 hover:scale-105",
                 // Icon styles
-                "*:data-icon:text-white",
+                "*:data-icon:text-brand-500/70 dark:*:data-icon:text-white/70",
             ].join(" "),
         },
         "link": {
             root: [
-                "justify-normal rounded p-0! text-brand-500 dark:text-white/80",
+                "justify-normal rounded p-0! text-brand-500/70 dark:text-white/70",
                 // Inner text underline
                 "*:data-text:underline *:data-text:decoration-transparent *:data-text:underline-offset-2 hover:*:data-text:decoration-current",
                 // Icon styles
-                "*:data-icon:text-brand-500 dark:*:data-icon:text-white",
+                "*:data-icon:text-brand-500/70 dark:*:data-icon:text-white/70",
             ].join(" "),
         },
         "primary-destructive": {

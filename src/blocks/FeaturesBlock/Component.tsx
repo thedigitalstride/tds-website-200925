@@ -26,15 +26,16 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const getCardBackgroundClasses = (style: string) => {
     switch (style) {
       case 'brand':
+        default:
         return 'bg-brand-50/30 dark:bg-brand-700'
       case 'outline':
         return 'bg-transparent border border-gray-300'
       case 'line':
         return 'border-t-2 border-gray-300'
       case 'accent':
-      case 'grey':
-      default:
         return 'bg-accent-500'
+      case 'grey':
+        return 'bg-black/5 dark:bg-black/25'
     }
   }
 
