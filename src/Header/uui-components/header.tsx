@@ -201,7 +201,7 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
             ref={headerRef}
             className={cx(
                 "relative flex h-18 w-full items-center justify-center md:h-20",
-                isFloating && "h-16 md:h-19 md:pt-3",
+                isFloating && "h-16 md:h-19 md:pt-3  max-md:backdrop-blur-lg max-md:pt-3 max-md:pb-3",
                 isFullWidth && !isFloating ? "has-aria-expanded:bg-primary" : "max-md:has-aria-expanded:bg-primary",
                 className,
             )}
@@ -210,7 +210,7 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
                 <div
                     className={cx(
                         "flex w-full justify-between gap-4",
-                        isFloating && "ring-secondary_alt md:rounded-2xl md:bg-primary md:py-3 md:pr-3 md:pl-4 md:shadow-xs md:ring-1",
+                        isFloating && "md:backdrop-blur-lg md:rounded-lg md:py-3 md:pr-3 md:pl-4",
                     )}
                 >
                     {/* Logo Section */}

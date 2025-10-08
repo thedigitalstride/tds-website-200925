@@ -5,6 +5,15 @@ export const HeroHeadingBlock: Block = {
   interfaceName: 'HeroHeadingBlock',
   fields: [
     {
+      name: 'fullHeight',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Full Height Hero',
+      admin: {
+        description: 'Enable to create full-screen hero that extends behind the header. Unlocks background options.',
+      },
+    },
+    {
       name: 'headline',
       type: 'textarea',
       required: true,
@@ -79,6 +88,79 @@ export const HeroHeadingBlock: Block = {
           ],
           admin: {
             description: 'Size variant for the subtitle text - Small reduces to 75% of normal size',
+          },
+        },
+      ],
+    },
+    {
+      name: 'bg',
+      type: 'group',
+      label: 'Background',
+      admin: {
+        condition: (_, siblingData) => siblingData?.fullHeight === true,
+        description: 'Configure hero background - only available when Full Height is enabled',
+      },
+      fields: [
+        {
+          name: 'type',
+          type: 'select',
+          label: 'Background Type',
+          defaultValue: 'none',
+          options: [
+            { label: 'None (transparent)', value: 'none' },
+            { label: 'Gradient', value: 'gradient' },
+            { label: 'Image', value: 'image' },
+            { label: 'Custom Class (for animations)', value: 'custom' },
+          ],
+          admin: {
+            description: 'Background type - choose gradient for CSS gradients, image for uploads, or custom for animation containers',
+          },
+        },
+        {
+          name: 'gradient',
+          type: 'select',
+          label: 'Gradient Preset',
+          defaultValue: 'brand-radial',
+          options: [
+            { label: 'Brand Blue Radial', value: 'brand-radial' },
+            { label: 'Accent Gradient', value: 'accent-gradient' },
+            { label: 'Dark to Light', value: 'dark-light' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.type === 'gradient',
+            description: 'Pre-configured gradient styles using theme colors',
+          },
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          label: 'Background Image',
+          relationTo: 'media',
+          admin: {
+            condition: (_, siblingData) => siblingData?.type === 'image',
+            description: 'Upload background image - will be optimized automatically',
+          },
+        },
+        {
+          name: 'imageOpacity',
+          type: 'number',
+          label: 'Image Overlay Opacity',
+          min: 0,
+          max: 100,
+          defaultValue: 40,
+          admin: {
+            condition: (_, siblingData) => siblingData?.type === 'image',
+            description: 'Overlay darkness (0-100) - helps ensure text readability over images',
+          },
+        },
+        {
+          name: 'customClass',
+          type: 'text',
+          label: 'Custom Class Name',
+          admin: {
+            condition: (_, siblingData) => siblingData?.type === 'custom',
+            description: 'Custom CSS class for animation containers or React-based effects',
+            placeholder: 'animated-gradient',
           },
         },
       ],

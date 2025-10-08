@@ -194,6 +194,10 @@ export interface Page {
  */
 export interface HeroHeadingBlock {
   /**
+   * Enable to create full-screen hero that extends behind the header. Unlocks background options.
+   */
+  fullHeight?: boolean | null;
+  /**
    * Main headline text. Use line breaks to create multiple lines that will scale responsively.
    */
   headline: string;
@@ -222,9 +226,126 @@ export interface HeroHeadingBlock {
      */
     subtitleSize?: ('small' | 'normal') | null;
   };
+  /**
+   * Configure hero background - only available when Full Height is enabled
+   */
+  bg?: {
+    /**
+     * Background type - choose gradient for CSS gradients, image for uploads, or custom for animation containers
+     */
+    type?: ('none' | 'gradient' | 'image' | 'custom') | null;
+    /**
+     * Pre-configured gradient styles using theme colors
+     */
+    gradient?: ('brand-radial' | 'accent-gradient' | 'dark-light') | null;
+    /**
+     * Upload background image - will be optimized automatically
+     */
+    image?: (number | null) | Media;
+    /**
+     * Overlay darkness (0-100) - helps ensure text readability over images
+     */
+    imageOpacity?: number | null;
+    /**
+     * Custom CSS class for animation containers or React-based effects
+     */
+    customClass?: string | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'heroHeading';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  alt?: string | null;
+  caption?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    square?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    large?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    xlarge?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    og?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -384,98 +505,6 @@ export interface Post {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt?: string | null;
-  caption?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    square?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    small?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    large?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    xlarge?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    og?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1420,6 +1449,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "HeroHeadingBlock_select".
  */
 export interface HeroHeadingBlockSelect<T extends boolean = true> {
+  fullHeight?: T;
   headline?: T;
   subtitle?: T;
   layoutOptions?:
@@ -1429,6 +1459,15 @@ export interface HeroHeadingBlockSelect<T extends boolean = true> {
         textAlignment?: T;
         spacing?: T;
         subtitleSize?: T;
+      };
+  bg?:
+    | T
+    | {
+        type?: T;
+        gradient?: T;
+        image?: T;
+        imageOpacity?: T;
+        customClass?: T;
       };
   id?: T;
   blockName?: T;

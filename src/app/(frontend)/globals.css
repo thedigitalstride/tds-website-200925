@@ -58,6 +58,31 @@ h1, h2, h3, h4, h5, h6,
     font-weight: 700;
 }
 
+/* Hero gradient background utilities - light and dark mode variants */
+@utility bg-gradient-hero-brand-radial {
+    background: radial-gradient(ellipse at center, rgb(39 77 131) 0%, rgb(2 21 54) 50%, rgb(1 10 25) 100%);
+}
+
+.dark-mode @utility bg-gradient-hero-brand-radial {
+    background: radial-gradient(ellipse at center, rgb(195 211 235) 0%, rgb(75 127 195) 50%, rgb(2 18 45) 100%);
+}
+
+@utility bg-gradient-hero-accent {
+    background: linear-gradient(135deg, rgb(22 137 255) 0%, rgb(3 26 67) 100%);
+}
+
+.dark-mode @utility bg-gradient-hero-accent {
+    background: linear-gradient(135deg, rgb(26 139 255) 0%, rgb(75 127 195) 100%);
+}
+
+@utility bg-gradient-hero-dark-light {
+    background: linear-gradient(180deg, rgb(19 22 27) 0%, rgb(55 58 65) 50%, rgb(133 136 142) 100%);
+}
+
+.dark-mode @utility bg-gradient-hero-dark-light {
+    background: linear-gradient(180deg, rgb(247 247 247) 0%, rgb(236 236 237) 50%, rgb(148 151 156) 100%);
+}
+
 /* Hide the default expand arrow on Safari.  */
 details summary::-webkit-details-marker {
     display: none;
