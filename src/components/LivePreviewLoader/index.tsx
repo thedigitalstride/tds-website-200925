@@ -18,7 +18,7 @@ export const LivePreviewLoader: React.FC = () => {
   const isEnabled = process.env.NEXT_PUBLIC_ENABLE_PREVIEW_LOADING === 'true'
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
-  const hideTimeoutRef = useRef<NodeJS.Timeout>()
+  const hideTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
   // Use React's useTransition to detect when router.refresh() is running
   useEffect(() => {
