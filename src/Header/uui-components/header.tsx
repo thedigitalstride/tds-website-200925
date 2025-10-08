@@ -215,8 +215,9 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
                 >
                     {/* Logo Section */}
                     <Link href="/" className="flex items-center">
-                        <TDSLogo variant="auto" size="xl" className="h-12 md:max-lg:hidden" />
-                        <TDSLogo variant="minimal" size="lg" className="hidden h-8 md:inline-block lg:hidden" />
+                        <TDSLogo variant="auto" size="xl" className="hidden h-12 lg:inline-block" />
+                        <TDSLogo variant="auto" size="lg" className="hidden h-10 md:inline-block lg:hidden" />
+                        <TDSLogo variant="auto" size="md" className="h-8 md:hidden" />
                     </Link>
 
                     {/* Centered Navigation */}

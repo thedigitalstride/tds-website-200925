@@ -184,7 +184,7 @@ export const LatestPostsBlock: Block = {
     },
   ],
   labels: {
-    singular: 'Latest Posts Section',
-    plural: 'Latest Posts Sections',
+    singular: 'Latest Posts',
+    plural: 'Latest Posts',
   },
 }
