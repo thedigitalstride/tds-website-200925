@@ -68,19 +68,46 @@ h1, h2, h3, h4, h5, h6,
 }
 
 @utility bg-gradient-hero-accent {
-    background: linear-gradient(135deg, rgb(22 137 255) 0%, rgb(3 26 67) 100%);
+    background: linear-gradient(-60deg, rgb(22 137 255) 0%, rgb(22 137 255) 20%, rgb(3 26 67) 90%, rgb(3 26 67) 100%);
 }
 
 .dark-mode @utility bg-gradient-hero-accent {
-    background: linear-gradient(135deg, rgb(26 139 255) 0%, rgb(75 127 195) 100%);
+    background: linear-gradient(-60deg, rgb(22 137 255) 0%, rgb(22 137 255) 20%, rgb(3 26 67) 90%, rgb(3 26 67) 100%);
 }
 
 @utility bg-gradient-hero-dark-light {
-    background: linear-gradient(180deg, rgb(19 22 27) 0%, rgb(55 58 65) 50%, rgb(133 136 142) 100%);
+    background: linear-gradient(180deg, rgb(1 10 25) 0%, rgb(3 26 67) 100%);
 }
 
 .dark-mode @utility bg-gradient-hero-dark-light {
-    background: linear-gradient(180deg, rgb(247 247 247) 0%, rgb(236 236 237) 50%, rgb(148 151 156) 100%);
+    background: linear-gradient(180deg, rgb(1 10 25) 0%, rgb(3 26 67) 100%);
+}
+
+/* Header variant colors - per-page header color control */
+/* Light header variant (white text for dark backgrounds) */
+[data-header-variant="light"] .text-secondary {
+    color: rgb(255 255 255) !important;
+}
+
+[data-header-variant="light"] .text-secondary_hover:hover {
+    color: rgb(229 229 229) !important;
+}
+
+[data-header-variant="light"] .text-fg-quaternary {
+    color: rgb(229 229 229) !important;
+}
+
+/* Dark header variant (brand color text for light backgrounds) */
+[data-header-variant="dark"] .text-secondary {
+    color: rgb(3 26 67) !important; /* brand-900 */
+}
+
+[data-header-variant="dark"] .text-secondary_hover:hover {
+    color: rgb(22 137 255) !important; /* accent-500 */
+}
+
+[data-header-variant="dark"] .text-fg-quaternary {
+    color: rgb(3 26 67) !important; /* brand-900 */
 }
 
 /* Hide the default expand arrow on Safari.  */

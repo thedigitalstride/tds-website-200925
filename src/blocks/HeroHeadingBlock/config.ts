@@ -5,15 +5,6 @@ export const HeroHeadingBlock: Block = {
   interfaceName: 'HeroHeadingBlock',
   fields: [
     {
-      name: 'fullHeight',
-      type: 'checkbox',
-      defaultValue: false,
-      label: 'Full Height Hero',
-      admin: {
-        description: 'Enable to create full-screen hero that extends behind the header. Unlocks background options.',
-      },
-    },
-    {
       name: 'headline',
       type: 'textarea',
       required: true,
@@ -34,10 +25,10 @@ export const HeroHeadingBlock: Block = {
       },
     },
     {
-      name: 'layoutOptions',
-      type: 'group',
       label: 'Layout & Styling',
+      type: 'collapsible',
       admin: {
+        initCollapsed: true,
         description: 'Configure how the hero section is displayed',
       },
       fields: [
@@ -47,10 +38,22 @@ export const HeroHeadingBlock: Block = {
           defaultValue: 'primary',
           options: [
             { label: 'Primary (Dark/Light Gray)', value: 'primary' },
-            { label: 'Brand Blue (Accent)', value: 'brand' },
+            { label: 'Accent Blue', value: 'brand' },
           ],
           admin: {
             description: 'Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.',
+          },
+        },
+        {
+          name: 'subheadingColor',
+          type: 'select',
+          defaultValue: 'default',
+          options: [
+            { label: 'Default (Brand/White)', value: 'default' },
+            { label: 'White (White/White)', value: 'white' },
+          ],
+          admin: {
+            description: 'Color scheme for the subheading. Default shows brand-500 in light mode and white in dark mode.',
           },
         },
         {
@@ -95,12 +98,34 @@ export const HeroHeadingBlock: Block = {
     {
       name: 'bg',
       type: 'group',
-      label: 'Background',
+      label: 'Custom Background',
       admin: {
-        condition: (_, siblingData) => siblingData?.fullHeight === true,
-        description: 'Configure hero background - only available when Full Height is enabled',
+        description: 'Add custom background with image, gradient, or custom styling',
       },
       fields: [
+        {
+          name: 'enabled',
+          type: 'checkbox',
+          label: 'Enable Custom Background',
+          defaultValue: false,
+          admin: {
+            description: 'Toggle to enable background customization',
+          },
+        },
+        {
+          name: 'heightVariant',
+          type: 'select',
+          label: 'Height Variant',
+          defaultValue: 'default',
+          options: [
+            { label: 'Default (Standard Height)', value: 'default' },
+            { label: 'Full Height (Extends Behind Header)', value: 'fullHeight' },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.enabled === true,
+            description: 'Choose how tall the hero section should be. Full Height creates a full-screen hero that extends behind the header.',
+          },
+        },
         {
           name: 'type',
           type: 'select',
@@ -113,6 +138,7 @@ export const HeroHeadingBlock: Block = {
             { label: 'Custom Class (for animations)', value: 'custom' },
           ],
           admin: {
+            condition: (_, siblingData) => siblingData?.enabled === true,
             description: 'Background type - choose gradient for CSS gradients, image for uploads, or custom for animation containers',
           },
         },
@@ -127,7 +153,7 @@ export const HeroHeadingBlock: Block = {
             { label: 'Dark to Light', value: 'dark-light' },
           ],
           admin: {
-            condition: (_, siblingData) => siblingData?.type === 'gradient',
+            condition: (_, siblingData) => siblingData?.enabled === true && siblingData?.type === 'gradient',
             description: 'Pre-configured gradient styles using theme colors',
           },
         },
@@ -137,7 +163,7 @@ export const HeroHeadingBlock: Block = {
           label: 'Background Image',
           relationTo: 'media',
           admin: {
-            condition: (_, siblingData) => siblingData?.type === 'image',
+            condition: (_, siblingData) => siblingData?.enabled === true && siblingData?.type === 'image',
             description: 'Upload background image - will be optimized automatically',
           },
         },
@@ -149,7 +175,7 @@ export const HeroHeadingBlock: Block = {
           max: 100,
           defaultValue: 40,
           admin: {
-            condition: (_, siblingData) => siblingData?.type === 'image',
+            condition: (_, siblingData) => siblingData?.enabled === true && siblingData?.type === 'image',
             description: 'Overlay darkness (0-100) - helps ensure text readability over images',
           },
         },
@@ -158,7 +184,7 @@ export const HeroHeadingBlock: Block = {
           type: 'text',
           label: 'Custom Class Name',
           admin: {
-            condition: (_, siblingData) => siblingData?.type === 'custom',
+            condition: (_, siblingData) => siblingData?.enabled === true && siblingData?.type === 'custom',
             description: 'Custom CSS class for animation containers or React-based effects',
             placeholder: 'animated-gradient',
           },

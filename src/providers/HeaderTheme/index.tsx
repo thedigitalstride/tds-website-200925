@@ -1,10 +1,17 @@
 'use client'
 
 type Theme = 'light' | 'dark'
+type HeaderColorSetting = 'auto' | 'dark' | 'light'
 
-import React, { createContext, useCallback, use, useState } from 'react'
+import React, { createContext, useCallback, use, useState, useEffect } from 'react'
+import { useTheme } from 'next-themes'
 
 import canUseDOM from '@/utilities/canUseDOM'
+
+export interface HeaderColorConfig {
+  lightMode?: HeaderColorSetting
+  darkMode?: HeaderColorSetting
+}
 
 export interface ContextType {
   headerTheme?: Theme | null
@@ -18,7 +25,13 @@ const initialContext: ContextType = {
 
 const HeaderThemeContext = createContext(initialContext)
 
-export const HeaderThemeProvider = ({ children }: { children: React.ReactNode }) => {
+interface HeaderThemeProviderProps {
+  children: React.ReactNode
+  pageHeaderColor?: HeaderColorConfig
+}
+
+export const HeaderThemeProvider = ({ children, pageHeaderColor }: HeaderThemeProviderProps) => {
+  const { resolvedTheme } = useTheme()
   const [headerTheme, setThemeState] = useState<Theme | undefined | null>(() => {
     if (!canUseDOM) return 'dark' // Default to dark during SSR
 
@@ -33,6 +46,27 @@ export const HeaderThemeProvider = ({ children }: { children: React.ReactNode })
     // Default to dark if nothing found
     return 'dark'
   })
+
+  // Compute effective header color based on global theme and page config
+  useEffect(() => {
+    if (!pageHeaderColor || !resolvedTheme) return
+
+    const globalTheme = resolvedTheme as Theme
+    const setting = globalTheme === 'light'
+      ? pageHeaderColor.lightMode
+      : pageHeaderColor.darkMode
+
+    let effectiveTheme: Theme
+    if (setting === 'auto' || !setting) {
+      // Auto: dark header in light mode, light header in dark mode
+      effectiveTheme = globalTheme === 'light' ? 'dark' : 'light'
+    } else {
+      // Explicit setting
+      effectiveTheme = setting as Theme
+    }
+
+    setThemeState(effectiveTheme)
+  }, [pageHeaderColor, resolvedTheme])
 
   const setHeaderTheme = useCallback((themeToSet: Theme | null) => {
     setThemeState(themeToSet)

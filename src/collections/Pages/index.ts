@@ -78,26 +78,81 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Header',
+          description: 'Configure header appearance for this page',
+          fields: [
+            {
+              name: 'headerColor',
+              type: 'group',
+              label: 'Header Colors',
+              admin: {
+                description: 'Control header logo and text colors for each theme mode. Choose "Light" for dark backgrounds, "Dark" for light backgrounds.',
+              },
+              fields: [
+                {
+                  name: 'lightMode',
+                  type: 'select',
+                  defaultValue: 'auto',
+                  options: [
+                    { label: 'Auto (Dark Logo/Text)', value: 'auto' },
+                    { label: 'Dark (Dark Logo/Text)', value: 'dark' },
+                    { label: 'Light (White Logo/Text)', value: 'light' },
+                  ],
+                  admin: {
+                    description: 'Header colors when site is in light mode',
+                  },
+                },
+                {
+                  name: 'darkMode',
+                  type: 'select',
+                  defaultValue: 'auto',
+                  options: [
+                    { label: 'Auto (White Logo/Text)', value: 'auto' },
+                    { label: 'Dark (Dark Logo/Text)', value: 'dark' },
+                    { label: 'Light (White Logo/Text)', value: 'light' },
+                  ],
+                  admin: {
+                    description: 'Header colors when site is in dark mode',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'layout',
+              type: 'blocks',
+              blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock, FeaturesBlock, LatestPostsBlock],
+              admin: {
+                initCollapsed: true,
+              },
+            },
+          ],
+        },
+        {
+          label: 'Meta',
+          description: 'Page metadata and settings',
+          fields: [
+            {
+              name: 'publishedAt',
+              type: 'date',
+            },
+            ...slugField(),
+          ],
+        },
+      ],
     },
-    {
-      name: 'layout',
-      type: 'blocks',
-      blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock, FeaturesBlock, LatestPostsBlock],
-      admin: {
-        initCollapsed: true,
-      },
-    },
-    {
-      name: 'publishedAt',
-      type: 'date',
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    ...slugField(),
   ],
   hooks: {
     afterChange: [revalidatePage],

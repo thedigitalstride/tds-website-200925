@@ -149,6 +149,19 @@ export interface UserAuthOperations {
  */
 export interface Page {
   id: number;
+  /**
+   * Control header logo and text colors for each theme mode. Choose "Light" for dark backgrounds, "Dark" for light backgrounds.
+   */
+  headerColor?: {
+    /**
+     * Header colors when site is in light mode
+     */
+    lightMode?: ('auto' | 'dark' | 'light') | null;
+    /**
+     * Header colors when site is in dark mode
+     */
+    darkMode?: ('auto' | 'dark' | 'light') | null;
+  };
   title: string;
   layout?:
     | (
@@ -167,6 +180,14 @@ export interface Page {
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   parent?: (number | null) | Page;
   breadcrumbs?:
     | {
@@ -176,14 +197,6 @@ export interface Page {
         id?: string | null;
       }[]
     | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -194,10 +207,6 @@ export interface Page {
  */
 export interface HeroHeadingBlock {
   /**
-   * Enable to create full-screen hero that extends behind the header. Unlocks background options.
-   */
-  fullHeight?: boolean | null;
-  /**
    * Main headline text. Use line breaks to create multiple lines that will scale responsively.
    */
   headline: string;
@@ -206,30 +215,37 @@ export interface HeroHeadingBlock {
    */
   subtitle?: string | null;
   /**
-   * Configure how the hero section is displayed
+   * Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.
    */
-  layoutOptions?: {
-    /**
-     * Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.
-     */
-    headlineColor?: ('primary' | 'brand') | null;
-    /**
-     * Text alignment for headline and subtitle
-     */
-    textAlignment?: ('left' | 'center') | null;
-    /**
-     * Vertical spacing around the hero section
-     */
-    spacing?: ('compact' | 'normal' | 'spacious') | null;
-    /**
-     * Size variant for the subtitle text - Small reduces to 75% of normal size
-     */
-    subtitleSize?: ('small' | 'normal') | null;
-  };
+  headlineColor?: ('primary' | 'brand') | null;
   /**
-   * Configure hero background - only available when Full Height is enabled
+   * Color scheme for the subheading. Default shows brand-500 in light mode and white in dark mode.
+   */
+  subheadingColor?: ('default' | 'white') | null;
+  /**
+   * Text alignment for headline and subtitle
+   */
+  textAlignment?: ('left' | 'center') | null;
+  /**
+   * Vertical spacing around the hero section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  /**
+   * Size variant for the subtitle text - Small reduces to 75% of normal size
+   */
+  subtitleSize?: ('small' | 'normal') | null;
+  /**
+   * Add custom background with image, gradient, or custom styling
    */
   bg?: {
+    /**
+     * Toggle to enable background customization
+     */
+    enabled?: boolean | null;
+    /**
+     * Choose how tall the hero section should be. Full Height creates a full-screen hero that extends behind the header.
+     */
+    heightVariant?: ('default' | 'fullHeight') | null;
     /**
      * Background type - choose gradient for CSS gradients, image for uploads, or custom for animation containers
      */
@@ -1406,6 +1422,12 @@ export interface PayloadMigration {
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
+  headerColor?:
+    | T
+    | {
+        lightMode?: T;
+        darkMode?: T;
+      };
   title?: T;
   layout?:
     | T
@@ -1424,6 +1446,13 @@ export interface PagesSelect<T extends boolean = true> {
   publishedAt?: T;
   slug?: T;
   slugLock?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   parent?: T;
   breadcrumbs?:
     | T
@@ -1432,13 +1461,6 @@ export interface PagesSelect<T extends boolean = true> {
         url?: T;
         label?: T;
         id?: T;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1449,20 +1471,18 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "HeroHeadingBlock_select".
  */
 export interface HeroHeadingBlockSelect<T extends boolean = true> {
-  fullHeight?: T;
   headline?: T;
   subtitle?: T;
-  layoutOptions?:
-    | T
-    | {
-        headlineColor?: T;
-        textAlignment?: T;
-        spacing?: T;
-        subtitleSize?: T;
-      };
+  headlineColor?: T;
+  subheadingColor?: T;
+  textAlignment?: T;
+  spacing?: T;
+  subtitleSize?: T;
   bg?:
     | T
     | {
+        enabled?: T;
+        heightVariant?: T;
         type?: T;
         gradient?: T;
         image?: T;

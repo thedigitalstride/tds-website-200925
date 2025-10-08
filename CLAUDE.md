@@ -88,6 +88,7 @@ src/
 - **[TYPESCRIPT_PATTERNS.md](/docs/TYPESCRIPT_PATTERNS.md)** - TypeScript best practices for Payload/Next.js
 - **[IMAGES.md](/docs/IMAGES.md)** - OptimizedImage component usage and image handling
 - **[ROW_LABELS.md](/docs/ROW_LABELS.md)** - Admin UX improvements for array fields
+- **[COLLAPSIBLE_FIELDS.md](/docs/COLLAPSIBLE_FIELDS.md)** - Collapsible sections for reducing admin panel clutter
 
 ### 📖 Implementation Guides
 
@@ -146,6 +147,7 @@ src/
 **✅ DO:**
 - Use `OptimizedImage` component (never `<img>` tags)
 - Implement row labels for array fields with identifiable content
+- Use collapsible fields for grouping optional/advanced settings
 - Import UUI components from `/src/components/uui/`
 - Pass icons as props (`iconLeading={Icon}`), not children
 - Use `categories` array (not `category` object) in blog queries
@@ -156,7 +158,7 @@ src/
 - Use `export const dynamic = 'force-static'` with URL parameters
 - Destructure `searchParams` in Next.js 15 pages
 
-**See**: [IMAGES.md](/docs/IMAGES.md), [ROW_LABELS.md](/docs/ROW_LABELS.md), [BLOG_IMPLEMENTATION.md](/docs/BLOG_IMPLEMENTATION.md)
+**See**: [IMAGES.md](/docs/IMAGES.md), [ROW_LABELS.md](/docs/ROW_LABELS.md), [COLLAPSIBLE_FIELDS.md](/docs/COLLAPSIBLE_FIELDS.md), [BLOG_IMPLEMENTATION.md](/docs/BLOG_IMPLEMENTATION.md)
 
 ## Collections Overview
 

@@ -137,6 +137,7 @@ interface HeaderProps {
     isFullWidth?: boolean;
     isFloating?: boolean;
     className?: string;
+    logoVariant?: 'auto' | 'dark' | 'light';
     ctaButton?: {
         enabled: boolean;
         link: {
@@ -151,7 +152,7 @@ interface HeaderProps {
     };
 }
 
-export const Header = ({ items = headerNavItems, isFullWidth, isFloating, className, ctaButton }: HeaderProps) => {
+export const Header = ({ items = headerNavItems, isFullWidth, isFloating, className, logoVariant = 'auto', ctaButton }: HeaderProps) => {
     const headerRef = useRef<HTMLElement>(null);
 
     // Helper function to render CTA button
@@ -212,13 +213,16 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
                     className={cx(
                         "flex w-full justify-between gap-4",
                         isFloating && "md:backdrop-blur-lg md:rounded-lg md:py-3 md:pr-3 md:pl-4",
+                        // Transparent header styling
+                        className?.includes('header-transparent') && "text-white md:backdrop-blur-md",
                     )}
+                    data-header-variant={logoVariant}
                 >
                     {/* Logo Section */}
                     <Link href="/" className="flex items-center">
-                        <TDSLogo variant="auto" size="xl" className="hidden h-12 lg:inline-block" />
-                        <TDSLogo variant="auto" size="lg" className="hidden h-10 md:inline-block lg:hidden" />
-                        <TDSLogo variant="auto" size="md" className="h-8 md:hidden" />
+                        <TDSLogo variant={logoVariant} size="xl" className="hidden h-12 lg:inline-block" />
+                        <TDSLogo variant={logoVariant} size="lg" className="hidden h-10 md:inline-block lg:hidden" />
+                        <TDSLogo variant={logoVariant} size="md" className="h-8 md:hidden" />
                     </Link>
 
                     {/* Centered Navigation */}

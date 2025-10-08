@@ -16,19 +16,22 @@ interface HeaderClientProps {
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   /* Storing the value in a useState to avoid hydration errors */
-  const [theme, setTheme] = useState<string | null>(null)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
+  const [logoVariant, setLogoVariant] = useState<'auto' | 'dark' | 'light'>('auto')
+  const { headerTheme } = useHeaderTheme()
   const pathname = usePathname()
 
   useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
-
-  useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
+    // Compute logo variant from headerTheme
+    if (!headerTheme) {
+      setLogoVariant('auto')
+    } else if (headerTheme === 'dark') {
+      // Dark header theme = dark logo/text
+      setLogoVariant('dark')
+    } else {
+      // Light header theme = white logo/text
+      setLogoVariant('light')
+    }
+  }, [headerTheme, pathname])
 
   // Build navigation items from CMS data
   const navigationItems = useMemo(() => {
@@ -84,10 +87,14 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [data?.navItems])
 
   return (
-    <div className="sticky top-0 z-20" {...(theme ? { 'data-theme': theme } : {})}>
+    <div
+      className="sticky top-0 z-20"
+      {...(logoVariant !== 'auto' ? { 'data-header-variant': logoVariant } : {})}
+    >
       <UUIHeader
         isFloating={true}
         items={navigationItems}
+        logoVariant={logoVariant}
         ctaButton={data?.ctaButton?.enabled === true ? {
           enabled: data.ctaButton.enabled,
           link: {
