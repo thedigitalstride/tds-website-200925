@@ -9,7 +9,7 @@ import React, { cache } from 'react'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
-import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { LivePreviewLoader } from '@/components/LivePreviewLoader'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -72,7 +72,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      {draft && <LivePreviewListener />}
+      {draft && <LivePreviewLoader />}
 
       <RenderBlocks blocks={layout || []} breadcrumbs={breadcrumbs} />
     </article>
