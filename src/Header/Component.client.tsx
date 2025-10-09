@@ -17,7 +17,7 @@ interface HeaderClientProps {
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   /* Storing the value in a useState to avoid hydration errors */
   const [logoVariant, setLogoVariant] = useState<'auto' | 'dark' | 'light'>('auto')
-  const { headerTheme } = useHeaderTheme()
+  const { headerTheme, ctaButton: pageCtaButton } = useHeaderTheme()
   const pathname = usePathname()
 
   useEffect(() => {
@@ -86,6 +86,34 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     })
   }, [data?.navItems])
 
+  // Determine which CTA button config to use: page override > global header
+  const effectiveCtaButton = useMemo(() => {
+    // If page has a CTA button override, use it
+    if (pageCtaButton?.enabled) {
+      return pageCtaButton
+    }
+
+    // Otherwise use global header CTA button
+    if (data?.ctaButton?.enabled === true) {
+      return {
+        enabled: data.ctaButton.enabled,
+        link: {
+          type: data.ctaButton.link.type as 'reference' | 'custom',
+          url: data.ctaButton.link.url ?? undefined,
+          label: data.ctaButton.link.label ?? undefined,
+          newTab: data.ctaButton.link.newTab ?? undefined,
+          reference: data.ctaButton.link.reference ?? undefined,
+          uuiColor: data.ctaButton.link.uuiColor ?? undefined,
+          uuiSize: data.ctaButton.link.uuiSize ?? undefined,
+          buttonIcon: data.ctaButton.link.buttonIcon ?? undefined,
+          iconPos: data.ctaButton.link.iconPos ?? undefined,
+        }
+      }
+    }
+
+    return undefined
+  }, [pageCtaButton, data?.ctaButton])
+
   return (
     <div
       className="sticky top-0 z-20"
@@ -95,18 +123,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         isFloating={true}
         items={navigationItems}
         logoVariant={logoVariant}
-        ctaButton={data?.ctaButton?.enabled === true ? {
-          enabled: data.ctaButton.enabled,
-          link: {
-            type: data.ctaButton.link.type as 'reference' | 'custom',
-            url: data.ctaButton.link.url ?? undefined,
-            label: data.ctaButton.link.label ?? undefined,
-            newTab: data.ctaButton.link.newTab ?? undefined,
-            reference: data.ctaButton.link.reference ?? undefined,
-            uuiColor: data.ctaButton.link.uuiColor ?? undefined,
-            uuiSize: data.ctaButton.link.uuiSize ?? undefined,
-          }
-        } : undefined}
+        ctaButton={effectiveCtaButton}
       />
     </div>
   )

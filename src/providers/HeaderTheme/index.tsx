@@ -13,14 +13,33 @@ export interface HeaderColorConfig {
   darkMode?: HeaderColorSetting
 }
 
+export interface CTAButtonConfig {
+  enabled: boolean
+  link: {
+    label?: string
+    type: 'reference' | 'custom'
+    reference?: { value: number | { slug?: string | null }; relationTo: string }
+    url?: string
+    newTab?: boolean
+    uuiColor?: string
+    uuiSize?: string
+    buttonIcon?: string
+    iconPos?: 'leading' | 'trailing'
+  }
+}
+
 export interface ContextType {
   headerTheme?: Theme | null
   setHeaderTheme: (theme: Theme | null) => void
+  ctaButton?: CTAButtonConfig | null
+  setCtaButton: (config: CTAButtonConfig | null) => void
 }
 
 const initialContext: ContextType = {
   headerTheme: undefined,
   setHeaderTheme: () => null,
+  ctaButton: null,
+  setCtaButton: () => null,
 }
 
 const HeaderThemeContext = createContext(initialContext)
@@ -47,6 +66,8 @@ export const HeaderThemeProvider = ({ children, pageHeaderColor }: HeaderThemePr
     return 'dark'
   })
 
+  const [ctaButton, setCtaButtonState] = useState<CTAButtonConfig | null>(null)
+
   // Compute effective header color based on global theme and page config
   useEffect(() => {
     if (!pageHeaderColor || !resolvedTheme) return
@@ -72,7 +93,11 @@ export const HeaderThemeProvider = ({ children, pageHeaderColor }: HeaderThemePr
     setThemeState(themeToSet)
   }, [])
 
-  return <HeaderThemeContext value={{ headerTheme, setHeaderTheme }}>{children}</HeaderThemeContext>
+  const setCtaButton = useCallback((config: CTAButtonConfig | null) => {
+    setCtaButtonState(config)
+  }, [])
+
+  return <HeaderThemeContext value={{ headerTheme, setHeaderTheme, ctaButton, setCtaButton }}>{children}</HeaderThemeContext>
 }
 
 export const useHeaderTheme = (): ContextType => use(HeaderThemeContext)
