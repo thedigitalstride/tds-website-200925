@@ -203,18 +203,18 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
             ref={headerRef}
             className={cx(
                 "relative flex h-18 w-full items-center justify-center md:h-20",
-                isFloating && "h-16 md:h-19 md:pt-3  max-md:backdrop-blur-lg max-md:pt-3 max-md:pb-3",
+                isFloating && "h-16 md:h-19 md:backdrop-blur-sm max-md:backdrop-blur-sm max-md:pt-3 max-md:pb-3",
                 isFullWidth && !isFloating ? "has-aria-expanded:bg-primary" : "max-md:has-aria-expanded:bg-primary",
                 className,
             )}
         >
-            <div className="flex size-full max-w-container flex-1 items-center pr-3 pl-4 md:px-8">
+            <div className="flex size-full max-w-container flex-1 items-center pr-3 pl-4 md:px-8 md:pt-3">
                 <div
                     className={cx(
                         "flex w-full justify-between gap-4",
-                        isFloating && "md:backdrop-blur-lg md:rounded-lg md:py-3 md:pr-3 md:pl-4",
+                        isFloating && "md:rounded-lg md:py-3 md:pr-3 md:pl-4",
                         // Transparent header styling
-                        className?.includes('header-transparent') && "text-white md:backdrop-blur-md",
+                        className?.includes('header-transparent') && "text-white",
                     )}
                     data-header-variant={logoVariant}
                 >

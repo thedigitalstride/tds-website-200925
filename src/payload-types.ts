@@ -163,6 +163,19 @@ export interface Page {
     darkMode?: ('auto' | 'dark' | 'light') | null;
   };
   /**
+   * Optional: Configure different header colors after scrolling past the hero section. Leave as "inherit" to maintain consistent colors throughout the page.
+   */
+  scrolledHeaderColor?: {
+    /**
+     * Header colors after scrolling past hero when site is in light mode
+     */
+    lightMode?: ('inherit' | 'auto' | 'dark' | 'light') | null;
+    /**
+     * Header colors after scrolling past hero when site is in dark mode
+     */
+    darkMode?: ('inherit' | 'auto' | 'dark' | 'light') | null;
+  };
+  /**
    * Override the global header CTA button for this page. Useful for matching button style to page-specific header backgrounds. Leave disabled to use the global header CTA button.
    */
   ctaButton?: {
@@ -1463,6 +1476,12 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   headerColor?:
+    | T
+    | {
+        lightMode?: T;
+        darkMode?: T;
+      };
+  scrolledHeaderColor?:
     | T
     | {
         lightMode?: T;

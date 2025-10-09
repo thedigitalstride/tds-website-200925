@@ -95,6 +95,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
 
   return (
     <section
+      data-hero-section
       className={cn(
         'relative lg:flex lg:items-center',
         // Always pull section behind header when background is enabled

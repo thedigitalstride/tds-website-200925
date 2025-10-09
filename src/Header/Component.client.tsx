@@ -2,6 +2,7 @@
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState, useMemo } from 'react'
+import { motion } from 'motion/react'
 
 import type { Header, Page } from '@/payload-types'
 
@@ -115,9 +116,18 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [pageCtaButton, data?.ctaButton])
 
   return (
-    <div
+    <motion.div
       className="sticky top-0 z-20"
       {...(logoVariant !== 'auto' ? { 'data-header-variant': logoVariant } : {})}
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1], // Smooth ease-out curve
+        delay: 0.5, // Half second delay ensures theme is ready
+      }}
+      // Suppress hydration warning for logoVariant since it's computed client-side
+      suppressHydrationWarning
     >
       <UUIHeader
         isFloating={true}
@@ -125,6 +135,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         logoVariant={logoVariant}
         ctaButton={effectiveCtaButton}
       />
-    </div>
+    </motion.div>
   )
 }

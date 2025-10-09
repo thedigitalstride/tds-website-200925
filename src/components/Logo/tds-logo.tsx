@@ -1,8 +1,6 @@
 "use client";
 
 import type { SVGProps } from "react";
-import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
 import { cx } from "@/utils/cx";
 
 interface TDSLogoProps extends SVGProps<SVGSVGElement> {
@@ -19,29 +17,9 @@ const sizeClasses = {
 };
 
 export const TDSLogo = ({ variant = "auto", size = "md", ...props }: TDSLogoProps) => {
-    const { theme, resolvedTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-    
-    // Determine text color based on variant or theme
-    let textColor: string;
-    if (variant === "auto") {
-        if (!mounted) {
-            // During SSR and initial hydration, default to dark text
-            textColor = "#031a43";
-        } else {
-            // Use resolved theme once mounted to avoid hydration mismatches
-            textColor = (resolvedTheme || theme) === "dark" ? "#fff" : "#031a43";
-        }
-    } else if (variant === "light") {
-        textColor = "#fff";
-    } else {
-        textColor = "#031a43";
-    }
-    
+    // Use CSS variable for logo color - instant, no hydration flash
+    // CSS handles theme switching via data attributes and .dark-mode class
+    const textColor = "var(--color-header-logo)";
     const accentColor = "#1689ff";
     const sizeClass = sizeClasses[size];
     
@@ -62,7 +40,7 @@ export const TDSLogo = ({ variant = "auto", size = "md", ...props }: TDSLogoProp
     
     // Full logo with text
     return (
-        <svg viewBox="0 0 1250.47 476.91" fill="none" {...props} className={cx(sizeClass, props.className)}>
+        <svg viewBox="0 0 1250.47 476.91" fill="none" {...props} className={cx("header-logo-svg", sizeClass, props.className)}>
             {/* THE text */}
             <path fill={textColor} d="M481.95,12.61h-30.5V0h74.49v12.61h-30.5v88.57h-13.49V12.61Z"/>
             <path fill={textColor} d="M547.92,0h13.49v43.99h56.31V0h13.49v101.18h-13.49v-44.58h-56.31v44.58h-13.49V0Z"/>

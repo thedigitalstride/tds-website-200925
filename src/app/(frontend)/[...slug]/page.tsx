@@ -64,11 +64,11 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { layout, breadcrumbs, headerColor, ctaButton } = page
+  const { layout, breadcrumbs, headerColor, scrolledHeaderColor, ctaButton } = page
 
   return (
     <article>
-      <PageClient headerColor={headerColor} ctaButton={ctaButton} />
+      <PageClient headerColor={headerColor} scrolledHeaderColor={scrolledHeaderColor} ctaButton={ctaButton} />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 

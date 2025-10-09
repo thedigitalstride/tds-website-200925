@@ -122,6 +122,44 @@ export const Pages: CollectionConfig<'pages'> = {
               ],
             },
             {
+              name: 'scrolledHeaderColor',
+              type: 'group',
+              label: 'Scrolled Header Colors',
+              admin: {
+                description: 'Optional: Configure different header colors after scrolling past the hero section. Leave as "inherit" to maintain consistent colors throughout the page.',
+              },
+              fields: [
+                {
+                  name: 'lightMode',
+                  type: 'select',
+                  defaultValue: 'inherit',
+                  options: [
+                    { label: 'Inherit (Same as hero)', value: 'inherit' },
+                    { label: 'Auto (Dark Logo/Text)', value: 'auto' },
+                    { label: 'Dark (Dark Logo/Text)', value: 'dark' },
+                    { label: 'Light (White Logo/Text)', value: 'light' },
+                  ],
+                  admin: {
+                    description: 'Header colors after scrolling past hero when site is in light mode',
+                  },
+                },
+                {
+                  name: 'darkMode',
+                  type: 'select',
+                  defaultValue: 'inherit',
+                  options: [
+                    { label: 'Inherit (Same as hero)', value: 'inherit' },
+                    { label: 'Auto (White Logo/Text)', value: 'auto' },
+                    { label: 'Dark (Dark Logo/Text)', value: 'dark' },
+                    { label: 'Light (White Logo/Text)', value: 'light' },
+                  ],
+                  admin: {
+                    description: 'Header colors after scrolling past hero when site is in dark mode',
+                  },
+                },
+              ],
+            },
+            {
               name: 'ctaButton',
               type: 'group',
               label: 'CTA Button Override',

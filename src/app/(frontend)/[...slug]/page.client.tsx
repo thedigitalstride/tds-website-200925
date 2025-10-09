@@ -1,12 +1,15 @@
 'use client'
 import React, { useEffect } from 'react'
-import { useTheme } from 'next-themes'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 
 interface PageClientProps {
   headerColor?: {
     lightMode?: 'auto' | 'dark' | 'light' | null
     darkMode?: 'auto' | 'dark' | 'light' | null
+  } | null
+  scrolledHeaderColor?: {
+    lightMode?: 'auto' | 'dark' | 'light' | 'inherit' | null
+    darkMode?: 'auto' | 'dark' | 'light' | 'inherit' | null
   } | null
   ctaButton?: {
     enabled?: boolean | null
@@ -24,33 +27,46 @@ interface PageClientProps {
   } | null
 }
 
-const PageClient: React.FC<PageClientProps> = ({ headerColor, ctaButton }) => {
-  const { setHeaderTheme, setCtaButton } = useHeaderTheme()
-  const { resolvedTheme } = useTheme()
+const PageClient: React.FC<PageClientProps> = ({ headerColor, scrolledHeaderColor, ctaButton }) => {
+  const { setCtaButton, setPageHeaderConfigs } = useHeaderTheme()
 
+  // Set page-level header configs via data attributes (CSS handles theming)
   useEffect(() => {
-    if (!headerColor || !resolvedTheme) {
-      // No page config, reset to auto behavior
-      setHeaderTheme(null)
-      return
+    // Determine which header theme setting to use based on current global theme
+    const isLightMode = document.documentElement.classList.contains('light-mode')
+
+    // Set initial header theme
+    if (headerColor) {
+      const setting = isLightMode ? headerColor.lightMode : headerColor.darkMode
+      if (setting && setting !== 'auto') {
+        document.body.dataset.pageHeader = setting
+      } else {
+        delete document.body.dataset.pageHeader
+      }
     }
 
-    const globalTheme = resolvedTheme as 'light' | 'dark'
-    const setting = globalTheme === 'light'
-      ? headerColor.lightMode
-      : headerColor.darkMode
-
-    let effectiveTheme: 'light' | 'dark'
-    if (setting === 'auto' || !setting) {
-      // Auto: dark header in light mode, light header in dark mode
-      effectiveTheme = globalTheme === 'light' ? 'dark' : 'light'
-    } else {
-      // Explicit setting
-      effectiveTheme = setting as 'light' | 'dark'
+    // Set scrolled header theme
+    if (scrolledHeaderColor) {
+      const setting = isLightMode ? scrolledHeaderColor.lightMode : scrolledHeaderColor.darkMode
+      if (setting && setting !== 'auto' && setting !== 'inherit') {
+        document.body.dataset.scrolledHeader = setting
+      } else {
+        delete document.body.dataset.scrolledHeader
+      }
     }
 
-    setHeaderTheme(effectiveTheme)
-  }, [headerColor, resolvedTheme, setHeaderTheme])
+    // Keep old provider-based system for backwards compatibility
+    setPageHeaderConfigs(
+      headerColor ? {
+        lightMode: headerColor.lightMode ?? undefined,
+        darkMode: headerColor.darkMode ?? undefined,
+      } : undefined,
+      scrolledHeaderColor ? {
+        lightMode: scrolledHeaderColor.lightMode ?? undefined,
+        darkMode: scrolledHeaderColor.darkMode ?? undefined,
+      } : undefined
+    )
+  }, [headerColor, scrolledHeaderColor, setPageHeaderConfigs])
 
   // Set page-level CTA button override if enabled
   useEffect(() => {
