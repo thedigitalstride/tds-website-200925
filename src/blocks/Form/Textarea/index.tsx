@@ -1,8 +1,7 @@
 import type { TextField } from '@payloadcms/plugin-form-builder/types'
 import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
 
-import { Label } from '@/components/ui/label'
-import { Textarea as TextAreaComponent } from '@/components/ui/textarea'
+import { TextArea } from '@/components/uui/base/textarea/textarea'
 import React from 'react'
 
 import { Error } from '../Error'
@@ -15,26 +14,27 @@ export const Textarea: React.FC<
     rows?: number
   }
 > = ({ name, defaultValue, errors, label, register, required, rows = 3, width }) => {
+  const hasError = !!errors[name]
+  const { ref, onChange, onBlur, name: fieldName } = register(name, { required: required })
+
   return (
     <Width width={width}>
-      <Label htmlFor={name}>
-        {label}
-
-        {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
-          </span>
-        )}
-      </Label>
-
-      <TextAreaComponent
+      <TextArea
+        label={label || ''}
         defaultValue={defaultValue}
+        name={fieldName}
         id={name}
         rows={rows}
-        {...register(name, { required: required })}
+        isRequired={required}
+        isInvalid={hasError}
+        placeholder={label || 'Enter text'}
+        textAreaRef={ref}
+        onChange={(value) => {
+          onChange({ target: { value, name: fieldName }, type: 'change' })
+        }}
+        onBlur={onBlur}
       />
-
-      {errors[name] && <Error name={name} />}
+      {hasError && <Error name={name} />}
     </Width>
   )
 }

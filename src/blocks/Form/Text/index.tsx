@@ -1,8 +1,7 @@
 import type { TextField } from '@payloadcms/plugin-form-builder/types'
 import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
 
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Input } from '@/components/uui/input'
 import React from 'react'
 
 import { Error } from '../Error'
@@ -14,19 +13,28 @@ export const Text: React.FC<
     register: UseFormRegister<FieldValues>
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
+  const hasError = !!errors[name]
+  const { ref, onChange, onBlur, name: fieldName } = register(name, { required })
+
   return (
     <Width width={width}>
-      <Label htmlFor={name}>
-        {label}
-
-        {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
-          </span>
-        )}
-      </Label>
-      <Input defaultValue={defaultValue} id={name} type="text" {...register(name, { required })} />
-      {errors[name] && <Error name={name} />}
+      <Input
+        label={label || ''}
+        defaultValue={defaultValue}
+        name={fieldName}
+        id={name}
+        type="text"
+        isRequired={required}
+        isInvalid={hasError}
+        size="md"
+        placeholder={label || ''}
+        ref={ref}
+        onChange={(value) => {
+          onChange({ target: { value, name: fieldName }, type: 'change' })
+        }}
+        onBlur={onBlur}
+      />
+      {hasError && <Error name={name} />}
     </Width>
   )
 }

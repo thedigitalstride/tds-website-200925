@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import type { FC, ReactNode } from 'react'
 import type { FeaturesBlock as FeaturesBlockProps } from '@/payload-types'
 import { getIcon } from '@/Header/utils/IconMap'
 import {
@@ -9,6 +10,13 @@ import {
 import { FeaturedIcon } from '@/components/uui/foundations/featured-icon/featured-icon'
 import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
+
+interface FeatureCardProps {
+  icon: FC<{ className?: string }>
+  title: string
+  subtitle: string
+  footer?: ReactNode
+}
 
 export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   header,
@@ -92,7 +100,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     : cn('grid-cols-1', columnClasses[columns])
 
   // Wrapper components with dynamic icon color/shape support
-  const FeatureCardWithIcon = ({ icon, title, subtitle, footer }: any) => (
+  const FeatureCardWithIcon = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
       !isLineVariant && "rounded-md",
@@ -115,7 +123,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     </div>
   )
 
-  const FeatureLeftIconWithColors = ({ icon, title, subtitle, footer }: any) => (
+  const FeatureLeftIconWithColors = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
       !isLineVariant && "rounded-md",
@@ -146,7 +154,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     </div>
   )
 
-  const FeatureHorizontalIconWithColors = ({ icon, title, subtitle, footer }: any) => (
+  const FeatureHorizontalIconWithColors = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex gap-4 h-full w-full",
       !isLineVariant && "rounded-md",
@@ -177,7 +185,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     </div>
   )
 
-  const FeatureBoxWithIcon = ({ icon, title, subtitle, footer }: any) => (
+  const FeatureBoxWithIcon = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "mt-6 flex flex-col justify-between items-center gap-4 text-center h-full w-full",
       !isLineVariant && "rounded-md",
@@ -338,6 +346,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
                   className="flex w-full"
                 >
                   <CardComponent
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     {...(iconProps as any)}
                     title={feature.title || ''}
                     subtitle={feature.description || ''}

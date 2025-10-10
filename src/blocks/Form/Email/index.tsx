@@ -1,9 +1,9 @@
 import type { EmailField } from '@payloadcms/plugin-form-builder/types'
 import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
 
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Input } from '@/components/uui/input'
 import React from 'react'
+import { Mail01 } from '@untitledui/icons'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
@@ -14,25 +14,29 @@ export const Email: React.FC<
     register: UseFormRegister<FieldValues>
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
+  const hasError = !!errors[name]
+  const { ref, onChange, onBlur, name: fieldName } = register(name, { pattern: /^\S[^\s@]*@\S+$/, required })
+
   return (
     <Width width={width}>
-      <Label htmlFor={name}>
-        {label}
-
-        {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
-          </span>
-        )}
-      </Label>
       <Input
+        label={label || 'Email'}
         defaultValue={defaultValue}
+        name={fieldName}
         id={name}
-        type="text"
-        {...register(name, { pattern: /^\S[^\s@]*@\S+$/, required })}
+        type="email"
+        isRequired={required}
+        isInvalid={hasError}
+        size="md"
+        placeholder={label || 'Enter your email'}
+        icon={Mail01}
+        ref={ref}
+        onChange={(value) => {
+          onChange({ target: { value, name: fieldName }, type: 'change' })
+        }}
+        onBlur={onBlur}
       />
-
-      {errors[name] && <Error name={name} />}
+      {hasError && <Error name={name} />}
     </Width>
   )
 }

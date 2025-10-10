@@ -4,13 +4,39 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/uui/button";
 import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
 import { Badge } from "@/components/uui/base/badges/badges";
+import { Zap, ArrowRight, Download03, Plus } from '@untitledui/icons';
+import { FormElementsSection } from './FormElementsSection';
+import { BlocksSection } from './BlocksSection';
+import { AdvancedComponentsSection } from './AdvancedComponentsSection';
+import { RadioGroupsSection } from './RadioGroupsSection';
+import { PayloadPatternsSection } from './PayloadPatternsSection';
+import { StylingSystemSection } from './StylingSystemSection';
 
 export default function StyleGuidePage() {
   const [isDark, setIsDark] = useState(false);
+  const [activeSection, setActiveSection] = useState('typography');
 
   useEffect(() => {
     // Check initial theme
     setIsDark(document.documentElement.classList.contains('dark-mode'));
+
+    // Intersection Observer for active section tracking
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -70% 0px' }
+    );
+
+    // Observe all sections
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
   }, []);
 
   const toggleTheme = () => {
@@ -23,6 +49,36 @@ export default function StyleGuidePage() {
       setIsDark(true);
     }
   };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80; // Header offset
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const navItems = [
+    { id: 'typography', label: 'Typography' },
+    { id: 'colors', label: 'Colors' },
+    { id: 'blocks', label: 'Blocks System' },
+    { id: 'buttons', label: 'Buttons' },
+    { id: 'advanced', label: 'Advanced Components' },
+    { id: 'forms', label: 'Form Elements' },
+    { id: 'radio-groups', label: 'Radio Groups' },
+    { id: 'badges', label: 'Badges' },
+    { id: 'spacing', label: 'Spacing' },
+    { id: 'borders', label: 'Border Radius' },
+    { id: 'patterns', label: 'Payload Patterns' },
+    { id: 'styling', label: 'Styling System' },
+    { id: 'docs', label: 'Documentation' },
+  ];
 
   return (
     <div className="min-h-screen bg-primary">
@@ -49,16 +105,43 @@ export default function StyleGuidePage() {
         <div className="container max-w-[1280px] mx-auto px-8 py-12">
           <h1 className="text-display-lg font-semibold text-primary">Style Guide</h1>
           <p className="mt-3 text-lg text-tertiary max-w-[48rem]">
-            Complete visual reference for the Tailwind v4 + UntitledUI design system. This guide shows typography, colors, spacing, and all component variants in action.
+            Complete visual reference for the Payload CMS block-based system using Tailwind v4 + UntitledUI components. This guide shows typography, colors, blocks, components, and all variants in action.
           </p>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="container max-w-[1280px] mx-auto px-8 py-16 space-y-24">
+      {/* Content with Sidebar */}
+      <div className="container max-w-[1280px] mx-auto px-8 py-16">
+        <div className="flex gap-12">
+          {/* Sticky Navigation Sidebar */}
+          <aside className="hidden lg:block w-64 flex-shrink-0">
+            <nav className="sticky top-24 space-y-1">
+              <p className="text-xs font-semibold text-tertiary uppercase tracking-wide mb-4">
+                On This Page
+              </p>
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`
+                    block w-full text-left px-3 py-2 text-sm rounded-md transition-colors
+                    ${activeSection === item.id
+                      ? 'bg-brand-secondary text-brand-solid font-medium'
+                      : 'text-secondary hover:text-primary hover:bg-secondary'
+                    }
+                  `}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+          </aside>
+
+          {/* Main Content */}
+          <div className="flex-1 min-w-0 space-y-24">
 
         {/* Typography Scale */}
-        <section>
+        <section id="typography">
           <h2 className="text-display-md font-semibold text-primary mb-8">Typography Scale</h2>
           <div className="space-y-8">
             <div className="space-y-2">
@@ -132,7 +215,7 @@ export default function StyleGuidePage() {
         </section>
 
         {/* Color System */}
-        <section>
+        <section id="colors">
           <h2 className="text-display-md font-semibold text-primary mb-8">Color System</h2>
           <div className="mb-8 p-6 bg-secondary rounded-lg border border-primary">
             <h3 className="text-lg font-semibold text-primary mb-3">Brand & Accent Colors</h3>
@@ -399,7 +482,7 @@ export default function StyleGuidePage() {
         </section>
 
         {/* Buttons */}
-        <section>
+        <section id="buttons">
           <h2 className="text-display-md font-semibold text-primary mb-8">Buttons</h2>
 
           <div className="mb-12">
@@ -434,7 +517,7 @@ export default function StyleGuidePage() {
             </p>
           </div>
 
-          <div>
+          <div className="mb-12">
             <h3 className="text-xl font-semibold text-primary mb-6">Destructive Buttons</h3>
             <div className="flex flex-wrap gap-4">
               <Button color="primary-destructive">Delete</Button>
@@ -446,10 +529,55 @@ export default function StyleGuidePage() {
               {'<Button color="primary-destructive|secondary-destructive|tertiary-destructive|link-destructive">Label</Button>'}
             </code>
           </div>
+
+          <div className="mb-12">
+            <h3 className="text-xl font-semibold text-primary mb-6">Buttons with Icons</h3>
+            <div className="space-y-4">
+              <div className="flex flex-wrap gap-4">
+                <Button color="primary" size="md" iconLeading={Zap}>With Leading Icon</Button>
+                <Button color="secondary" size="md" iconTrailing={ArrowRight}>With Trailing Icon</Button>
+                <Button color="accent" size="md" iconLeading={Download03} iconTrailing={ArrowRight}>Both Icons</Button>
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <Button color="primary" size="sm" iconLeading={Plus}>Small with Icon</Button>
+                <Button color="primary" size="lg" iconLeading={Plus}>Large with Icon</Button>
+                <Button color="primary" size="xl" iconLeading={Plus}>XL with Icon</Button>
+              </div>
+            </div>
+            <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
+              {'<Button color="primary" iconLeading={Icon}>Label</Button>\n<Button color="primary" iconTrailing={Icon}>Label</Button>'}
+            </code>
+            <p className="mt-3 text-sm text-tertiary">
+              Icons are imported from <code className="text-brand-secondary">@untitledui/icons</code> and passed as props. Browse all 1000+ icons at <a href="https://icons.untitledui.com" target="_blank" rel="noopener noreferrer" className="text-brand-secondary hover:underline">icons.untitledui.com</a>
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-primary mb-6">Button States</h3>
+            <div className="flex flex-wrap items-center gap-4">
+              <Button color="primary">Default</Button>
+              <Button color="primary" isDisabled>Disabled</Button>
+            </div>
+            <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
+              {'<Button color="primary" isDisabled>Label</Button>'}
+            </code>
+          </div>
         </section>
 
+        {/* Blocks System */}
+        <BlocksSection />
+
+        {/* Advanced Components */}
+        <AdvancedComponentsSection />
+
+        {/* Form Elements */}
+        <FormElementsSection />
+
+        {/* Radio Groups */}
+        <RadioGroupsSection />
+
         {/* Badges */}
-        <section>
+        <section id="badges">
           <h2 className="text-display-md font-semibold text-primary mb-8">Badges</h2>
 
           <div className="mb-12">
@@ -486,7 +614,7 @@ export default function StyleGuidePage() {
         </section>
 
         {/* Spacing */}
-        <section>
+        <section id="spacing">
           <h2 className="text-display-md font-semibold text-primary mb-8">Spacing Scale</h2>
           <p className="text-md text-secondary mb-6">Based on 4px base unit</p>
           <div className="space-y-4">
@@ -512,7 +640,7 @@ export default function StyleGuidePage() {
         </section>
 
         {/* Border Radius */}
-        <section>
+        <section id="borders">
           <h2 className="text-display-md font-semibold text-primary mb-8">Border Radius</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
@@ -534,8 +662,14 @@ export default function StyleGuidePage() {
           </div>
         </section>
 
+        {/* Payload Patterns */}
+        <PayloadPatternsSection />
+
+        {/* Styling System */}
+        <StylingSystemSection />
+
         {/* Documentation Links */}
-        <section className="border-t border-secondary pt-12">
+        <section id="docs" className="border-t border-secondary pt-12">
           <h2 className="text-display-md font-semibold text-primary mb-8">Documentation</h2>
           <div className="bg-secondary p-6 rounded-lg space-y-4">
             <p className="text-md text-primary font-medium">For complete documentation:</p>
@@ -553,6 +687,8 @@ export default function StyleGuidePage() {
           </div>
         </section>
 
+        </div>
+        </div>
       </div>
     </div>
   );

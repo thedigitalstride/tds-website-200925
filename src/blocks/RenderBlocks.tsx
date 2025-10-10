@@ -30,6 +30,7 @@ type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]
 type LayoutBlock = NonNullable<Page['layout']>[number]
 
 export const RenderBlocks: React.FC<{
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   blocks: (LayoutBlock | any)[]
   breadcrumbs?: BreadcrumbItem[] | null
 }> = (props) => {
