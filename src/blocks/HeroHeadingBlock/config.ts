@@ -25,6 +25,14 @@ export const HeroHeadingBlock: Block = {
       },
     },
     {
+      name: 'enableTypewriter',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Enable typewriter animation effect for the headline',
+      },
+    },
+    {
       label: 'Layout & Styling',
       type: 'collapsible',
       admin: {

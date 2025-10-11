@@ -659,6 +659,10 @@ export interface HeroHeadingBlock {
    */
   subtitle?: string | null;
   /**
+   * Enable typewriter animation effect for the headline
+   */
+  enableTypewriter?: boolean | null;
+  /**
    * Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.
    */
   headlineColor?: ('primary' | 'brand') | null;
@@ -1512,6 +1516,7 @@ export interface PagesSelect<T extends boolean = true> {
 export interface HeroHeadingBlockSelect<T extends boolean = true> {
   headline?: T;
   subtitle?: T;
+  enableTypewriter?: T;
   headlineColor?: T;
   subheadingColor?: T;
   textAlignment?: T;
