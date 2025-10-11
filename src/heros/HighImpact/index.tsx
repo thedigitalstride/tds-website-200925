@@ -1,6 +1,5 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import type { Media as MediaType } from '@/payload-types'
 
@@ -18,11 +17,7 @@ type HighImpactHeroType = {
 }
 
 export const HighImpactHero: React.FC<HighImpactHeroType> = ({ links, media, richText }) => {
-  const { setHeaderTheme } = useHeaderTheme()
-
-  useEffect(() => {
-    setHeaderTheme('dark')
-  })
+  // Header is now always brand blue with white text, no theme setting needed
 
   return (
     <div

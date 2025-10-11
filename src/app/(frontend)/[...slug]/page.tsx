@@ -8,7 +8,6 @@ import React, { cache } from 'react'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { generateMeta } from '@/utilities/generateMeta'
-import PageClient from './page.client'
 import { LivePreviewLoader } from '@/components/LivePreviewLoader'
 
 export async function generateStaticParams() {
@@ -64,11 +63,10 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { layout, breadcrumbs, headerColor, scrolledHeaderColor, ctaButton } = page
+  const { layout, breadcrumbs } = page
 
   return (
     <article>
-      <PageClient headerColor={headerColor} scrolledHeaderColor={scrolledHeaderColor} ctaButton={ctaButton} />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 

@@ -17,9 +17,16 @@ const sizeClasses = {
 };
 
 export const TDSLogo = ({ variant = "auto", size = "md", ...props }: TDSLogoProps) => {
-    // Use CSS variable for logo color - instant, no hydration flash
-    // CSS handles theme switching via data attributes and .dark-mode class
-    const textColor = "var(--color-header-logo)";
+    // Determine text color based on variant
+    let textColor: string;
+    if (variant === "light") {
+        textColor = "#ffffff"; // White for dark backgrounds
+    } else if (variant === "dark") {
+        textColor = "#031A43"; // Brand blue for light backgrounds
+    } else {
+        // Auto: use CSS variable that responds to theme
+        textColor = "var(--color-text-primary)";
+    }
     const accentColor = "#1689ff";
     const sizeClass = sizeClasses[size];
     

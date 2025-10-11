@@ -168,10 +168,6 @@
     --color-accent-solid: var(--color-accent-500);
     --color-accent-solid_hover: var(--color-accent-600);
 
-    /* HEADER THEME COLORS - Default to dark logo/text (for light mode backgrounds) */
-    --color-header-text: var(--color-brand-500);   /* Dark blue text */
-    --color-header-logo: var(--color-brand-500);   /* Dark blue logo */
-
     --color-error-25: rgb(255 251 250);
     --color-error-50: rgb(254 243 242);
     --color-error-100: rgb(254 228 226);
@@ -995,10 +991,6 @@
         --color-alpha-white: rgb(12 14 18);
         --color-alpha-black: rgb(255 255 255);
 
-        /* HEADER THEME COLORS - Override for dark mode */
-        --color-header-text: var(--color-white);   /* White text */
-        --color-header-logo: var(--color-white);   /* White logo */
-
         /* UTILITY COLORS */
 
         --color-gray-25: rgb(250 250 250);
@@ -1459,30 +1451,6 @@
 /* These override the global theme-based colors for specific pages */
 /* Using body selector for higher specificity */
 
-/* Light header (white logo/text) - for dark hero backgrounds */
-body[data-page-header="light"] {
-    --color-header-text: var(--color-white) !important;
-    --color-header-logo: var(--color-white) !important;
-}
-
-/* Dark header (dark blue logo/text) - for light hero backgrounds */
-body[data-page-header="dark"] {
-    --color-header-text: var(--color-brand-500) !important;
-    --color-header-logo: var(--color-brand-500) !important;
-}
-
-/* SCROLLED HEADER OVERRIDES */
-/* Higher specificity - applied when scrolled past hero */
-
-body[data-header-scrolled="true"][data-scrolled-header="light"] {
-    --color-header-text: var(--color-white) !important;
-    --color-header-logo: var(--color-white) !important;
-}
-
-body[data-header-scrolled="true"][data-scrolled-header="dark"] {
-    --color-header-text: var(--color-brand-500) !important;
-    --color-header-logo: var(--color-brand-500) !important;
-}
 
 /* Smooth transitions for header theme changes */
 .header-logo-svg path,

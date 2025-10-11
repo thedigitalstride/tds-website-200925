@@ -11,7 +11,6 @@ import type { Post } from '@/payload-types'
 
 import { PostLayout } from '@/components/PostLayout'
 import { generateMeta } from '@/utilities/generateMeta'
-import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import RenderBlocks from '@/blocks/RenderBlocks'
 
@@ -51,8 +50,6 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   return (
     <>
-      <PageClient />
-
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 

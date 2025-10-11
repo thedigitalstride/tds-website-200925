@@ -1,38 +1,33 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
-import { usePathname } from 'next/navigation'
-import React, { useEffect, useState, useMemo } from 'react'
-import { motion } from 'motion/react'
+import React, { useMemo } from 'react'
+import { motion, useReducedMotion } from 'motion/react'
 
 import type { Header, Page } from '@/payload-types'
 
-// Import UUI Header and CMS dropdown component
+// Import UUI Header, CMS dropdown, and new hooks/components
 import { Header as UUIHeader } from './uui-components/header'
 import { CMSDropdown } from './components/CMSDropdown'
 import { getPageUrl } from '@/utilities/pageHelpers'
+import { useHeaderAutoHide } from './hooks/useHeaderAutoHide'
+import { MiniTab } from './components/MiniTab'
 
 interface HeaderClientProps {
   data: Header
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  /* Storing the value in a useState to avoid hydration errors */
-  const [logoVariant, setLogoVariant] = useState<'auto' | 'dark' | 'light'>('auto')
-  const { headerTheme, ctaButton: pageCtaButton } = useHeaderTheme()
-  const pathname = usePathname()
+  const { isHidden, showHeader } = useHeaderAutoHide()
+  const shouldReduceMotion = useReducedMotion()
 
-  useEffect(() => {
-    // Compute logo variant from headerTheme
-    if (!headerTheme) {
-      setLogoVariant('auto')
-    } else if (headerTheme === 'dark') {
-      // Dark header theme = dark logo/text
-      setLogoVariant('dark')
-    } else {
-      // Light header theme = white logo/text
-      setLogoVariant('light')
-    }
-  }, [headerTheme, pathname])
+  // Spring transition for smooth animations, instant for reduced motion
+  const transition = shouldReduceMotion
+    ? { duration: 0 }
+    : {
+        type: "spring" as const,
+        stiffness: 300,
+        damping: 30,
+        mass: 0.8
+      }
 
   // Build navigation items from CMS data
   const navigationItems = useMemo(() => {
@@ -87,14 +82,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     })
   }, [data?.navItems])
 
-  // Determine which CTA button config to use: page override > global header
+  // Use global header CTA button
   const effectiveCtaButton = useMemo(() => {
-    // If page has a CTA button override, use it
-    if (pageCtaButton?.enabled) {
-      return pageCtaButton
-    }
-
-    // Otherwise use global header CTA button
     if (data?.ctaButton?.enabled === true) {
       return {
         enabled: data.ctaButton.enabled,
@@ -113,28 +102,40 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     }
 
     return undefined
-  }, [pageCtaButton, data?.ctaButton])
+  }, [data?.ctaButton])
 
   return (
-    <motion.div
-      className="sticky top-0 z-20"
-      {...(logoVariant !== 'auto' ? { 'data-header-variant': logoVariant } : {})}
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{
-        duration: 0.5,
-        ease: [0.22, 1, 0.36, 1], // Smooth ease-out curve
-        delay: 0.5, // Half second delay ensures theme is ready
-      }}
-      // Suppress hydration warning for logoVariant since it's computed client-side
-      suppressHydrationWarning
-    >
-      <UUIHeader
-        isFloating={true}
-        items={navigationItems}
-        logoVariant={logoVariant}
-        ctaButton={effectiveCtaButton}
-      />
-    </motion.div>
+    <>
+      {/* Main Header with auto-hide functionality */}
+      <motion.header
+        className="fixed top-0 left-0 right-0 z-50"
+        initial={false}  // Prevents animation flash on load
+        animate={{
+          y: isHidden ? -100 : 0,
+          opacity: isHidden ? 0 : 1
+        }}
+        transition={transition}
+        style={{
+          // GPU acceleration - zero layout recalc
+          transform: 'translateZ(0)',
+          willChange: isHidden ? 'transform' : 'auto'  // Only hint when animating
+        }}
+      >
+        <div className="mx-auto max-w-container md:px-8">
+          {/* Brand blue header with rounded bottom corners */}
+          <div className="bg-brand-solid text-white md:rounded-b-2xl shadow-lg">
+            <UUIHeader
+              items={navigationItems}
+              logoVariant="light"  // Always white logo on brand blue
+              ctaButton={effectiveCtaButton}
+              isFloating={false}
+            />
+          </div>
+        </div>
+      </motion.header>
+
+      {/* Mini tab (appears when header is hidden) - desktop only */}
+      <MiniTab isVisible={isHidden} ctaButton={effectiveCtaButton} onShowHeader={showHeader} />
+    </>
   )
 }

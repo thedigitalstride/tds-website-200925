@@ -82,89 +82,14 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Header',
-          description: 'Configure header appearance for this page',
+          label: 'Content',
           fields: [
-            {
-              name: 'headerColor',
-              type: 'group',
-              label: 'Header Colors',
-              admin: {
-                description: 'Control header logo and text colors for each theme mode. Choose "Light" for dark backgrounds, "Dark" for light backgrounds.',
-              },
-              fields: [
-                {
-                  name: 'lightMode',
-                  type: 'select',
-                  defaultValue: 'auto',
-                  options: [
-                    { label: 'Auto (Dark Logo/Text)', value: 'auto' },
-                    { label: 'Dark (Dark Logo/Text)', value: 'dark' },
-                    { label: 'Light (White Logo/Text)', value: 'light' },
-                  ],
-                  admin: {
-                    description: 'Header colors when site is in light mode',
-                  },
-                },
-                {
-                  name: 'darkMode',
-                  type: 'select',
-                  defaultValue: 'auto',
-                  options: [
-                    { label: 'Auto (White Logo/Text)', value: 'auto' },
-                    { label: 'Dark (Dark Logo/Text)', value: 'dark' },
-                    { label: 'Light (White Logo/Text)', value: 'light' },
-                  ],
-                  admin: {
-                    description: 'Header colors when site is in dark mode',
-                  },
-                },
-              ],
-            },
-            {
-              name: 'scrolledHeaderColor',
-              type: 'group',
-              label: 'Scrolled Header Colors',
-              admin: {
-                description: 'Optional: Configure different header colors after scrolling past the hero section. Leave as "inherit" to maintain consistent colors throughout the page.',
-              },
-              fields: [
-                {
-                  name: 'lightMode',
-                  type: 'select',
-                  defaultValue: 'inherit',
-                  options: [
-                    { label: 'Inherit (Same as hero)', value: 'inherit' },
-                    { label: 'Auto (Dark Logo/Text)', value: 'auto' },
-                    { label: 'Dark (Dark Logo/Text)', value: 'dark' },
-                    { label: 'Light (White Logo/Text)', value: 'light' },
-                  ],
-                  admin: {
-                    description: 'Header colors after scrolling past hero when site is in light mode',
-                  },
-                },
-                {
-                  name: 'darkMode',
-                  type: 'select',
-                  defaultValue: 'inherit',
-                  options: [
-                    { label: 'Inherit (Same as hero)', value: 'inherit' },
-                    { label: 'Auto (White Logo/Text)', value: 'auto' },
-                    { label: 'Dark (Dark Logo/Text)', value: 'dark' },
-                    { label: 'Light (White Logo/Text)', value: 'light' },
-                  ],
-                  admin: {
-                    description: 'Header colors after scrolling past hero when site is in dark mode',
-                  },
-                },
-              ],
-            },
             {
               name: 'ctaButton',
               type: 'group',
               label: 'CTA Button Override',
               admin: {
-                description: 'Override the global header CTA button for this page. Useful for matching button style to page-specific header backgrounds. Leave disabled to use the global header CTA button.',
+                description: 'Override the global header CTA button for this page. Leave disabled to use the global header CTA button.',
               },
               fields: [
                 {
@@ -181,7 +106,7 @@ export const Pages: CollectionConfig<'pages'> = {
                   enableUUIButton: true,
                   uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
                   uuiSizes: ['sm', 'md', 'lg', 'xl'],
-                  defaultUUIColor: 'primary',
+                  defaultUUIColor: 'accent',
                   defaultUUISize: 'md',
                   overrides: {
                     admin: {
@@ -191,11 +116,6 @@ export const Pages: CollectionConfig<'pages'> = {
                 }),
               ],
             },
-          ],
-        },
-        {
-          label: 'Content',
-          fields: [
             {
               name: 'title',
               type: 'text',

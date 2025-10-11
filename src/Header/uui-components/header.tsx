@@ -208,15 +208,12 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
                 className,
             )}
         >
-            <div className="flex size-full max-w-container flex-1 items-center pr-3 pl-4 md:px-8 md:pt-3">
+            <div className="flex size-full max-w-container flex-1 items-center px-4 py-3 md:px-5 md:py-3">
                 <div
                     className={cx(
                         "flex w-full justify-between gap-4",
                         isFloating && "md:rounded-lg md:py-3 md:pr-3 md:pl-4",
-                        // Transparent header styling
-                        className?.includes('header-transparent') && "text-white",
                     )}
-                    data-header-variant={logoVariant}
                 >
                     {/* Logo Section */}
                     <Link href="/" className="flex items-center">

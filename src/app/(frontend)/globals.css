@@ -83,31 +83,29 @@ h1, h2, h3, h4, h5, h6,
     background: linear-gradient(180deg, rgb(1 10 25) 0%, rgb(3 26 67) 100%);
 }
 
-/* Header variant colors - per-page header color control */
-/* Light header variant (white text for dark backgrounds) */
-[data-header-variant="light"] .text-secondary {
-    color: rgb(255 255 255) !important;
+/* Fixed brand header styles - always white text on brand blue */
+.bg-brand-solid * {
+    color: var(--color-white) !important;
 }
 
-[data-header-variant="light"] .text-secondary_hover:hover {
-    color: rgb(229 229 229) !important;
+/* Ensure nav links and text are white */
+.bg-brand-solid .text-secondary {
+    color: var(--color-white) !important;
 }
 
-[data-header-variant="light"] .text-fg-quaternary {
-    color: rgb(229 229 229) !important;
+.bg-brand-solid .text-secondary_hover:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* Dark header variant (brand color text for light backgrounds) */
-[data-header-variant="dark"] .text-secondary {
-    color: rgb(3 26 67) !important; /* brand-900 */
+.bg-brand-solid .text-fg-quaternary {
+    color: rgba(255, 255, 255, 0.7) !important;
 }
 
-[data-header-variant="dark"] .text-secondary_hover:hover {
-    color: rgb(22 137 255) !important; /* accent-500 */
-}
-
-[data-header-variant="dark"] .text-fg-quaternary {
-    color: rgb(3 26 67) !important; /* brand-900 */
+/* Dropdown menus match header styling */
+.bg-brand-solid [role="menu"],
+.bg-brand-solid [role="dialog"] {
+    background: var(--color-bg-brand-solid);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Hide the default expand arrow on Safari.  */

@@ -33,26 +33,8 @@ export const MobileMenuButton = () => {
     const updateColor = () => {
       if (!colorProbeRef.current) return
 
-      // Get the computed color from our probe element
-      const computedColor = getComputedStyle(colorProbeRef.current).color
-
-      // Convert rgb(r, g, b) or rgb(r g b) to hex
-      const match = computedColor.match(/rgb\((\d+),?\s*(\d+),?\s*(\d+)\)/)
-      if (match) {
-        const [, r, g, b] = match
-        let hex = '#' + [r, g, b].map(x => {
-          const val = parseInt(x)
-          return val.toString(16).padStart(2, '0')
-        }).join('')
-
-        // When menu is open, invert color for visibility against menu background
-        if (isOpen) {
-          const isLightColor = parseInt(r) > 200 && parseInt(g) > 200 && parseInt(b) > 200
-          hex = isLightColor ? '#031a43' : '#ffffff'
-        }
-
-        setColor(hex)
-      }
+      // Always use white for hamburger icon on brand blue header
+      setColor('#ffffff')
     }
 
     // Initial update

@@ -150,33 +150,7 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   /**
-   * Control header logo and text colors for each theme mode. Choose "Light" for dark backgrounds, "Dark" for light backgrounds.
-   */
-  headerColor?: {
-    /**
-     * Header colors when site is in light mode
-     */
-    lightMode?: ('auto' | 'dark' | 'light') | null;
-    /**
-     * Header colors when site is in dark mode
-     */
-    darkMode?: ('auto' | 'dark' | 'light') | null;
-  };
-  /**
-   * Optional: Configure different header colors after scrolling past the hero section. Leave as "inherit" to maintain consistent colors throughout the page.
-   */
-  scrolledHeaderColor?: {
-    /**
-     * Header colors after scrolling past hero when site is in light mode
-     */
-    lightMode?: ('inherit' | 'auto' | 'dark' | 'light') | null;
-    /**
-     * Header colors after scrolling past hero when site is in dark mode
-     */
-    darkMode?: ('inherit' | 'auto' | 'dark' | 'light') | null;
-  };
-  /**
-   * Override the global header CTA button for this page. Useful for matching button style to page-specific header backgrounds. Leave disabled to use the global header CTA button.
+   * Override the global header CTA button for this page. Leave disabled to use the global header CTA button.
    */
   ctaButton?: {
     /**
@@ -1475,18 +1449,6 @@ export interface PayloadMigration {
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
-  headerColor?:
-    | T
-    | {
-        lightMode?: T;
-        darkMode?: T;
-      };
-  scrolledHeaderColor?:
-    | T
-    | {
-        lightMode?: T;
-        darkMode?: T;
-      };
   ctaButton?:
     | T
     | {
