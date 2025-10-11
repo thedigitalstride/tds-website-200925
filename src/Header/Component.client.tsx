@@ -1,6 +1,6 @@
 'use client'
 import React, { useMemo } from 'react'
-import { motion, useReducedMotion } from 'motion/react'
+import { motion } from 'motion/react'
 
 import type { Header, Page } from '@/payload-types'
 
@@ -9,25 +9,13 @@ import { Header as UUIHeader } from './uui-components/header'
 import { CMSDropdown } from './components/CMSDropdown'
 import { getPageUrl } from '@/utilities/pageHelpers'
 import { useHeaderAutoHide } from './hooks/useHeaderAutoHide'
-import { MiniTab } from './components/MiniTab'
 
 interface HeaderClientProps {
   data: Header
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  const { isHidden, showHeader } = useHeaderAutoHide()
-  const shouldReduceMotion = useReducedMotion()
-
-  // Spring transition for smooth animations, instant for reduced motion
-  const transition = shouldReduceMotion
-    ? { duration: 0 }
-    : {
-        type: "spring" as const,
-        stiffness: 300,
-        damping: 30,
-        mass: 0.8
-      }
+  const { isCollapsed } = useHeaderAutoHide()
 
   // Build navigation items from CMS data
   const navigationItems = useMemo(() => {
@@ -105,37 +93,30 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [data?.ctaButton])
 
   return (
-    <>
-      {/* Main Header with auto-hide functionality */}
-      <motion.header
-        className="fixed top-0 left-0 right-0 z-50"
-        initial={false}  // Prevents animation flash on load
-        animate={{
-          y: isHidden ? -100 : 0,
-          opacity: isHidden ? 0 : 1
-        }}
-        transition={transition}
-        style={{
-          // GPU acceleration - zero layout recalc
-          transform: 'translateZ(0)',
-          willChange: isHidden ? 'transform' : 'auto'  // Only hint when animating
-        }}
-      >
-        <div className="mx-auto max-w-container md:px-8">
-          {/* Brand blue header with rounded bottom corners */}
-          <div className="bg-brand-solid text-white md:rounded-b-2xl shadow-lg">
-            <UUIHeader
-              items={navigationItems}
-              logoVariant="light"  // Always white logo on brand blue
-              ctaButton={effectiveCtaButton}
-              isFloating={false}
-            />
-          </div>
-        </div>
-      </motion.header>
-
-      {/* Mini tab (appears when header is hidden) - desktop only */}
-      <MiniTab isVisible={isHidden} ctaButton={effectiveCtaButton} onShowHeader={showHeader} />
-    </>
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <div className="mx-auto max-w-container md:px-8 flex justify-end">
+        {/* Brand blue header with rounded bottom corners - shrinks from left to right */}
+        <motion.div
+          className="bg-brand-solid text-white md:rounded-b-2xl shadow-lg overflow-hidden"
+          initial={false}
+          animate={{
+            width: isCollapsed ? "auto" : "100%"
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+            mass: 0.8
+          }}
+        >
+          <UUIHeader
+            items={navigationItems}
+            logoVariant="light"
+            ctaButton={effectiveCtaButton}
+            isCollapsed={isCollapsed}
+          />
+        </motion.div>
+      </div>
+    </header>
   )
 }

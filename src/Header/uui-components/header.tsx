@@ -12,6 +12,7 @@ import { DropdownMenuFeatureCard } from "./dropdown-menu-feature-card";
 import { DropdownMenuSimpleWithFooter } from "./dropdown-menu-simple-with-footer";
 import { DropdownMenuWithTwoColsAndLinksAndFooter } from "./dropdown-menu-with-two-cols-and-links-and-footer";
 import { MobileMenuButton } from "../components/MobileMenuButton";
+import { motion } from "motion/react";
 
 type HeaderNavItem = {
     label: string;
@@ -138,6 +139,7 @@ interface HeaderProps {
     isFloating?: boolean;
     className?: string;
     logoVariant?: 'auto' | 'dark' | 'light';
+    isCollapsed?: boolean;
     ctaButton?: {
         enabled: boolean;
         link: {
@@ -152,7 +154,7 @@ interface HeaderProps {
     };
 }
 
-export const Header = ({ items = headerNavItems, isFullWidth, isFloating, className, logoVariant = 'auto', ctaButton }: HeaderProps) => {
+export const Header = ({ items = headerNavItems, isFullWidth, isFloating, className, logoVariant = 'auto', ctaButton, isCollapsed = false }: HeaderProps) => {
     const headerRef = useRef<HTMLElement>(null);
 
     // Helper function to render CTA button
@@ -208,111 +210,138 @@ export const Header = ({ items = headerNavItems, isFullWidth, isFloating, classN
                 className,
             )}
         >
-            <div className="flex size-full max-w-container flex-1 items-center px-4 py-3 md:px-5 md:py-3">
+            <div className="flex size-full flex-1 items-center px-4 py-3 md:px-5 md:py-3">
                 <div
                     className={cx(
-                        "flex w-full justify-between gap-4",
+                        "relative flex w-full items-center",
                         isFloating && "md:rounded-lg md:py-3 md:pr-3 md:pl-4",
                     )}
                 >
-                    {/* Logo Section */}
-                    <Link href="/" className="flex items-center">
-                        <TDSLogo variant={logoVariant} size="xl" className="hidden h-12 lg:inline-block" />
-                        <TDSLogo variant={logoVariant} size="lg" className="hidden h-10 md:inline-block lg:hidden" />
-                        <TDSLogo variant={logoVariant} size="md" className="h-8 md:hidden" />
-                    </Link>
-
-                    {/* Centered Navigation */}
-                    <nav className="max-md:hidden flex-1 flex justify-center">
-                        <ul className="flex items-center gap-0.5">
-                                {items.map((navItem) => (
-                                    <li key={navItem.label}>
-                                        {navItem.menu ? (
-                                            <AriaDialogTrigger>
-                                                <AriaButton className="flex cursor-pointer items-center gap-0.5 rounded-lg px-1.5 py-1 text-md font-semibold text-secondary outline-focus-ring transition duration-100 ease-linear hover:text-secondary_hover focus-visible:outline-2 focus-visible:outline-offset-2">
-                                                    <span className="px-0.5">{navItem.label}</span>
-
-                                                    <ChevronDown className="size-4 rotate-0 stroke-[2.625px] text-fg-quaternary transition duration-100 ease-linear in-aria-expanded:-rotate-180" />
-                                                </AriaButton>
-
-                                                <AriaPopover
-                                                    className={({ isEntering, isExiting }) =>
-                                                        cx(
-                                                            "hidden origin-top will-change-transform md:block",
-                                                            isFullWidth && "w-full",
-                                                            isEntering && "duration-200 ease-out animate-in fade-in slide-in-from-top-1",
-                                                            isExiting && "duration-150 ease-in animate-out fade-out slide-out-to-top-1",
-                                                        )
-                                                    }
-                                                    offset={isFloating || isFullWidth ? 0 : 8}
-                                                    containerPadding={0}
-                                                    triggerRef={(isFloating && isFullWidth) || isFullWidth ? headerRef : undefined}
-                                                >
-                                                    {({ isEntering, isExiting }) => (
-                                                        <AriaDialog
-                                                            className={cx(
-                                                                "mx-auto origin-top outline-hidden",
-                                                                isFloating && "max-w-7xl px-8 pt-3",
-                                                                // Have to use the scale animation inside the popover to avoid
-                                                                // miscalculating the popover's position when opening.
-                                                                isEntering && !isFullWidth && "duration-200 ease-out animate-in zoom-in-95",
-                                                                isExiting && !isFullWidth && "duration-150 ease-in animate-out zoom-out-95",
-                                                            )}
-                                                        >
-                                                            {navItem.menu}
-                                                        </AriaDialog>
-                                                    )}
-                                                </AriaPopover>
-                                            </AriaDialogTrigger>
-                                        ) : (
-                                            <a
-                                                href={navItem.href}
-                                                className="flex cursor-pointer items-center gap-0.5 rounded-lg px-1.5 py-1 text-md font-semibold text-secondary outline-focus-ring transition duration-100 ease-linear hover:text-secondary_hover focus:outline-offset-2 focus-visible:outline-2"
-                                            >
-                                                <span className="px-0.5">{navItem.label}</span>
-                                            </a>
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
-                    </nav>
-
-                    <div className="hidden items-center gap-3 md:flex">
-                        {renderCtaButton()}
-                    </div>
-
-                    {/* Mobile menu and menu trigger */}
-                    <AriaDialogTrigger>
-                        <MobileMenuButton />
-                        <AriaPopover
-                            triggerRef={headerRef}
-                            className="h-calc(100%-72px) scrollbar-hide w-full overflow-y-auto shadow-lg md:hidden"
-                            offset={0}
-                            crossOffset={20}
-                            containerPadding={0}
-                            placement="bottom left"
+                        {/* Logo and Nav Container - absolutely positioned, removed from flow */}
+                        <motion.div
+                            initial={false}
+                            animate={{
+                                x: isCollapsed ? 100 : 0,
+                                opacity: isCollapsed ? 0 : 1
+                            }}
+                            transition={{
+                                opacity: {
+                                    duration: 0.15,
+                                    ease: "easeOut",
+                                    delay: isCollapsed ? 0 : 0.2  // Delay fade-in when expanding
+                                },
+                                x: {
+                                    type: "spring",
+                                    stiffness: 400,
+                                    damping: 35,
+                                    mass: 0.5
+                                }
+                            }}
+                            className="absolute left-0 top-0 flex h-full w-full items-center gap-4"
                         >
-                            <AriaDialog className="outline-hidden">
-                                <nav className="w-full bg-primary shadow-lg">
-                                    <ul className="flex flex-col gap-0.5 py-5">
-                                        {items.map((navItem) =>
-                                            navItem.menu ? (
-                                                <MobileNavItem key={navItem.label} label={navItem.label}>
-                                                    {navItem.menu}
-                                                </MobileNavItem>
-                                            ) : (
-                                                <MobileNavItem key={navItem.label} label={navItem.label} href={navItem.href} />
-                                            ),
-                                        )}
-                                    </ul>
+                            {/* Logo Section */}
+                            <Link href="/" className="flex items-center whitespace-nowrap">
+                                <TDSLogo variant={logoVariant} size="xl" className="hidden h-12 lg:inline-block" />
+                                <TDSLogo variant={logoVariant} size="lg" className="hidden h-10 md:inline-block lg:hidden" />
+                                <TDSLogo variant={logoVariant} size="md" className="h-8 md:hidden" />
+                            </Link>
 
-                                    <MobileFooter ctaButton={ctaButton} />
-                                </nav>
-                            </AriaDialog>
-                        </AriaPopover>
-                    </AriaDialogTrigger>
+                            {/* Centered Navigation */}
+                            <nav className="max-md:hidden flex-1 flex justify-center">
+                                <ul className="flex items-center gap-0.5 whitespace-nowrap">
+                                    {items.map((navItem) => (
+                                        <li key={navItem.label}>
+                                            {navItem.menu ? (
+                                                <AriaDialogTrigger>
+                                                    <AriaButton className="flex cursor-pointer items-center gap-0.5 rounded-lg px-1.5 py-1 text-md font-semibold text-secondary outline-focus-ring transition duration-100 ease-linear hover:text-secondary_hover focus-visible:outline-2 focus-visible:outline-offset-2">
+                                                        <span className="px-0.5">{navItem.label}</span>
+
+                                                        <ChevronDown className="size-4 rotate-0 stroke-[2.625px] text-fg-quaternary transition duration-100 ease-linear in-aria-expanded:-rotate-180" />
+                                                    </AriaButton>
+
+                                                    <AriaPopover
+                                                        className={({ isEntering, isExiting }) =>
+                                                            cx(
+                                                                "hidden origin-top will-change-transform md:block",
+                                                                isFullWidth && "w-full",
+                                                                isEntering && "duration-200 ease-out animate-in fade-in slide-in-from-top-1",
+                                                                isExiting && "duration-150 ease-in animate-out fade-out slide-out-to-top-1",
+                                                            )
+                                                        }
+                                                        offset={isFloating || isFullWidth ? 0 : 8}
+                                                        containerPadding={0}
+                                                        triggerRef={(isFloating && isFullWidth) || isFullWidth ? headerRef : undefined}
+                                                    >
+                                                        {({ isEntering, isExiting }) => (
+                                                            <AriaDialog
+                                                                className={cx(
+                                                                    "mx-auto origin-top outline-hidden",
+                                                                    isFloating && "max-w-7xl px-8 pt-3",
+                                                                    // Have to use the scale animation inside the popover to avoid
+                                                                    // miscalculating the popover's position when opening.
+                                                                    isEntering && !isFullWidth && "duration-200 ease-out animate-in zoom-in-95",
+                                                                    isExiting && !isFullWidth && "duration-150 ease-in animate-out zoom-out-95",
+                                                                )}
+                                                            >
+                                                                {navItem.menu}
+                                                            </AriaDialog>
+                                                        )}
+                                                    </AriaPopover>
+                                                </AriaDialogTrigger>
+                                            ) : (
+                                                <a
+                                                    href={navItem.href}
+                                                    className="flex cursor-pointer items-center gap-0.5 rounded-lg px-1.5 py-1 text-md font-semibold text-secondary outline-focus-ring transition duration-100 ease-linear hover:text-secondary_hover focus:outline-offset-2 focus-visible:outline-2"
+                                                >
+                                                    <span className="px-0.5">{navItem.label}</span>
+                                                </a>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </nav>
+                        </motion.div>
+
+                        {/* Button container - in normal flow, determines width when collapsed */}
+                        <div className="ml-auto flex items-center gap-3">
+                            {/* CTA Button - stays visible */}
+                            <div className="hidden items-center gap-3 md:flex">
+                                {renderCtaButton()}
+                            </div>
+                        </div>
+
+                        {/* Mobile menu and menu trigger - stays visible */}
+                        <AriaDialogTrigger>
+                            <MobileMenuButton />
+                            <AriaPopover
+                                triggerRef={headerRef}
+                                className="h-calc(100%-72px) scrollbar-hide w-full overflow-y-auto shadow-lg md:hidden"
+                                offset={0}
+                                crossOffset={20}
+                                containerPadding={0}
+                                placement="bottom left"
+                            >
+                                <AriaDialog className="outline-hidden">
+                                    <nav className="w-full bg-primary shadow-lg">
+                                        <ul className="flex flex-col gap-0.5 py-5">
+                                            {items.map((navItem) =>
+                                                navItem.menu ? (
+                                                    <MobileNavItem key={navItem.label} label={navItem.label}>
+                                                        {navItem.menu}
+                                                    </MobileNavItem>
+                                                ) : (
+                                                    <MobileNavItem key={navItem.label} label={navItem.label} href={navItem.href} />
+                                                ),
+                                            )}
+                                        </ul>
+
+                                        <MobileFooter ctaButton={ctaButton} />
+                                    </nav>
+                                </AriaDialog>
+                            </AriaPopover>
+                        </AriaDialogTrigger>
+                    </div>
                 </div>
-            </div>
-        </header>
-    );
+            </header>
+        );
 };
