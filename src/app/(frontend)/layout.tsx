@@ -7,24 +7,37 @@ import { Providers } from '@/providers'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 import type { Metadata, Viewport } from 'next'
-import { Inter, Poppins } from 'next/font/google'
+import localFont from 'next/font/local'
 import { RouteProvider } from '@/providers/route-provider'
 import { ThemeProvider } from '@/providers/theme-provider'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
+const inter = localFont({
+  src: '../../../public/fonts/Inter-VariableFont_opsz,wght.ttf',
   variable: '--font-inter',
+  display: 'swap',
+  weight: '100 900',
+  preload: true,
 })
 
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['600', '700'],
-  display: 'swap',
+const poppins = localFont({
+  src: [
+    {
+      path: '../../../public/fonts/Poppins-SemiBold.ttf',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../../../public/fonts/Poppins-Bold.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
   variable: '--font-poppins',
+  display: 'swap',
+  preload: true,
 })
 
 export const viewport: Viewport = {
@@ -41,21 +54,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <head>
-        {/* Preload fonts for better PageSpeed scores */}
-        <link
-          rel="preload"
-          href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLEj6Z1xlFQ.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
