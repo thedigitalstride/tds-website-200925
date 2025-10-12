@@ -56,15 +56,43 @@ NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 
 **Development**: `http://localhost:3000`
 
-**Production**: Your Vercel deployment URL (no trailing slash)
+**Production**: Optional - custom domain is automatically detected via `VERCEL_URL`
 
 **Example**:
 ```bash
 # Development
 NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 
-# Production
-NEXT_PUBLIC_SERVER_URL=https://your-site.vercel.app
+# Production (optional override)
+NEXT_PUBLIC_SERVER_URL=https://your-custom-domain.com
+```
+
+---
+
+### Custom Domain Configuration
+
+When you configure a custom domain in Vercel (e.g., `prod.thedigitalstride.co.uk`):
+
+**Vercel automatically sets**:
+- `VERCEL_URL=prod.thedigitalstride.co.uk` ✅ Your custom domain
+- `VERCEL_PROJECT_PRODUCTION_URL=my-site.vercel.app` (Vercel's default)
+
+**The app uses VERCEL_URL** for all assets and metadata
+
+**No manual configuration needed** - it just works!
+
+#### Override (Optional)
+
+If you need to force a specific URL:
+- Set `NEXT_PUBLIC_SERVER_URL=https://your-domain.com` in Vercel
+- This overrides automatic detection
+
+#### Verification
+
+After deployment, check in browser DevTools Network tab:
+```
+✅ favicon.ico → https://prod.thedigitalstride.co.uk/favicon.svg
+❌ NOT       → https://my-site.vercel.app/favicon.svg
 ```
 
 ---
