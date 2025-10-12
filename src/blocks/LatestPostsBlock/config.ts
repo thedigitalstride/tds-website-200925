@@ -177,6 +177,7 @@ export const LatestPostsBlock: Block = {
               type: 'select',
               label: 'Desktop Columns',
               defaultValue: '3',
+              dbName: 'cols_desktop',
               options: [
                 { label: '2 Columns', value: '2' },
                 { label: '3 Columns', value: '3' },
@@ -191,6 +192,7 @@ export const LatestPostsBlock: Block = {
               type: 'select',
               label: 'Tablet Columns',
               defaultValue: '2',
+              dbName: 'cols_tablet',
               options: [
                 { label: '2 Columns', value: '2' },
                 { label: '3 Columns', value: '3' },
@@ -205,6 +207,7 @@ export const LatestPostsBlock: Block = {
               type: 'select',
               label: 'Mobile Columns',
               defaultValue: '1',
+              dbName: 'cols_mobile',
               options: [
                 { label: '1 Column', value: '1' },
                 { label: '2 Columns', value: '2' },
