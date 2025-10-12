@@ -48,6 +48,12 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   if (!post) return <PayloadRedirects url={url} />
 
+  // Fetch posts settings for grid columns
+  const payload = await getPayload({ config: configPromise })
+  const postsSettings = await payload.findGlobal({
+    slug: 'postsSettings',
+  })
+
   return (
     <>
       {/* Allows redirects for valid pages too */}
@@ -65,6 +71,7 @@ export default async function Post({ params: paramsPromise }: Args) {
             <RelatedPosts
               className="max-w-[52rem] mx-auto lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
               docs={post.relatedPosts.filter((post) => typeof post === 'object')}
+              gridColumns={postsSettings?.gridColumns}
             />
           </div>
         </div>

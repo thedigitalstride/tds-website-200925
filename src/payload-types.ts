@@ -104,11 +104,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     notFound: NotFound;
+    postsSettings: PostsSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     notFound: NotFoundSelect<false> | NotFoundSelect<true>;
+    postsSettings: PostsSettingsSelect<false> | PostsSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -2484,6 +2486,42 @@ export interface NotFound {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "postsSettings".
+ */
+export interface PostsSetting {
+  id: number;
+  pageHeader: {
+    /**
+     * Main heading displayed at the top of the posts page
+     */
+    heading: string;
+    /**
+     * Description text displayed below the main heading
+     */
+    description?: string | null;
+  };
+  /**
+   * Configure how many columns to display in the posts grid for different screen sizes
+   */
+  gridColumns?: {
+    /**
+     * Number of columns on large screens (1024px and above)
+     */
+    desktop?: ('2' | '3' | '4') | null;
+    /**
+     * Number of columns on medium screens (768px - 1023px)
+     */
+    tablet?: ('2' | '3' | '4') | null;
+    /**
+     * Number of columns on small screens (below 768px)
+     */
+    mobile?: ('1' | '2') | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2611,6 +2649,28 @@ export interface NotFoundSelect<T extends boolean = true> {
         uuiSize?: T;
         buttonIcon?: T;
         iconPos?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "postsSettings_select".
+ */
+export interface PostsSettingsSelect<T extends boolean = true> {
+  pageHeader?:
+    | T
+    | {
+        heading?: T;
+        description?: T;
+      };
+  gridColumns?:
+    | T
+    | {
+        desktop?: T;
+        tablet?: T;
+        mobile?: T;
       };
   updatedAt?: T;
   createdAt?: T;

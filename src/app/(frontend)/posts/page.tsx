@@ -24,28 +24,43 @@ export default async function Page(props: Args) {
   // Fetch all categories first to resolve category slug to ID if needed
   const categories = await payload.find({
     collection: 'categories',
-    limit: 100
+    limit: 100,
   })
 
   // Find the category by slug if one is specified
   let selectedCategory: Category | undefined
   if (categorySlug) {
-    selectedCategory = categories.docs.find(cat => cat.slug === categorySlug)
+    selectedCategory = categories.docs.find((cat) => cat.slug === categorySlug)
   }
 
   // Build where clause with optional category filter
   const whereClause: Where = {
-    _status: { equals: 'published' }
+    _status: { equals: 'published' },
   }
 
   // Enable server-side filtering
   if (selectedCategory) {
     whereClause.categories = {
-      in: [selectedCategory.id]
+      in: [selectedCategory.id],
     }
   }
 
-  // Fetch posts for page 1 with all required fields for BlogListing
+  // Fetch ALL published posts (just IDs and categories) for category counting
+  const allPostsForCounting = await payload.find({
+    collection: 'posts',
+    depth: 1,
+    limit: 1000, // High limit to get all posts
+    overrideAccess: false,
+    where: {
+      _status: { equals: 'published' },
+    },
+    select: {
+      id: true,
+      categories: true,
+    },
+  })
+
+  // Fetch filtered posts for display
   const posts = await payload.find({
     collection: 'posts',
     depth: 2,
@@ -53,17 +68,23 @@ export default async function Page(props: Args) {
     page: 1, // Explicitly set to page 1
     overrideAccess: false,
     where: whereClause,
-    sort: '-publishedAt'
+    sort: '-publishedAt',
   })
 
+  // Fetch posts settings
+  const postsSettings = await payload.findGlobal({
+    slug: 'postsSettings',
+  })
 
   return (
     <BlogListing
       posts={posts.docs}
+      allPosts={allPostsForCounting.docs}
       categories={categories.docs}
       currentPage={1} // Page 1
       totalPages={posts.totalPages}
       selectedCategory={categorySlug || undefined}
+      settings={postsSettings}
     />
   )
 }
