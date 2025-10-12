@@ -545,9 +545,26 @@ export interface LatestPostsBlock {
    */
   layoutOptions?: {
     /**
-     * Number of columns in the grid layout
+     * Use column settings from Posts Settings global. Uncheck to customize columns for this block.
      */
-    columns?: ('2' | '3' | '4') | null;
+    usePostsSettings?: boolean | null;
+    /**
+     * Configure columns for different screen sizes
+     */
+    gridColumns?: {
+      /**
+       * Number of columns on large screens (1024px and above)
+       */
+      desktop?: ('2' | '3' | '4') | null;
+      /**
+       * Number of columns on medium screens (768px - 1023px)
+       */
+      tablet?: ('2' | '3' | '4') | null;
+      /**
+       * Number of columns on small screens (below 768px)
+       */
+      mobile?: ('1' | '2') | null;
+    };
     /**
      * Vertical spacing around this section
      */
@@ -1770,7 +1787,14 @@ export interface LatestPostsBlockSelect<T extends boolean = true> {
   layoutOptions?:
     | T
     | {
-        columns?: T;
+        usePostsSettings?: T;
+        gridColumns?:
+          | T
+          | {
+              desktop?: T;
+              tablet?: T;
+              mobile?: T;
+            };
         spacing?: T;
       };
   id?: T;

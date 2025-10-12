@@ -1,5 +1,11 @@
 import React from 'react'
-import type { Post, Category, User, Media, LatestPostsBlock as LatestPostsBlockProps } from '@/payload-types'
+import type {
+  Post,
+  Category,
+  User,
+  Media,
+  LatestPostsBlock as LatestPostsBlockProps,
+} from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -19,7 +25,8 @@ const transformPostToArticle = (post: Post): PayloadArticle => {
   const firstAuthor = post.populatedAuthors?.[0]
   const author =
     firstAuthor && typeof firstAuthor === 'object' ? (firstAuthor as unknown as User) : undefined
-  const authorAvatar = author?.avatar && typeof author.avatar === 'object' ? (author.avatar as Media) : undefined
+  const authorAvatar =
+    author?.avatar && typeof author.avatar === 'object' ? (author.avatar as Media) : undefined
 
   // Extract categories array
   const categories =
@@ -90,25 +97,35 @@ export const LatestPostsBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const {
-    id,
-    header,
-    contentSource,
-    opts,
-    selectedPosts,
-    buttonConfig,
-    layoutOptions,
-  } = props
+  const { id, header, contentSource, opts, selectedPosts, buttonConfig, layoutOptions } = props
 
   const spacing = layoutOptions?.spacing || 'normal'
-  const columns = layoutOptions?.columns || '3'
+
+  // Fetch Posts Settings for fallback
+  const payload = await getPayload({ config: configPromise })
+  const postsSettings = await payload.findGlobal({
+    slug: 'postsSettings',
+  })
+
+  // Determine which column settings to use
+  const usePostsSettings = layoutOptions?.usePostsSettings !== false // Default to true
+
+  const desktopCols = usePostsSettings
+    ? postsSettings?.gridColumns?.desktop || '3'
+    : layoutOptions?.gridColumns?.desktop || '3'
+
+  const tabletCols = usePostsSettings
+    ? postsSettings?.gridColumns?.tablet || '2'
+    : layoutOptions?.gridColumns?.tablet || '2'
+
+  const mobileCols = usePostsSettings
+    ? postsSettings?.gridColumns?.mobile || '1'
+    : layoutOptions?.gridColumns?.mobile || '1'
 
   let posts: Post[] = []
 
   // Fetch posts based on content source
   if (contentSource === 'latest') {
-    const payload = await getPayload({ config: configPromise })
-
     const numberOfPosts = parseInt(opts?.numPosts || '3')
     const categoryFilter = opts?.categoryFilter
 
@@ -162,12 +179,29 @@ export const LatestPostsBlock: React.FC<
   // Transform posts to Article interface
   const articles = posts.map(transformPostToArticle)
 
-  // Grid column classes
-  const columnClasses: Record<string, string> = {
-    '2': 'sm:grid-cols-2',
-    '3': 'sm:grid-cols-2 lg:grid-cols-3',
-    '4': 'sm:grid-cols-2 lg:grid-cols-4',
-  }
+  // Build responsive grid classes
+  const gridClasses = cn(
+    'mt-12 grid gap-x-8 gap-y-12 md:mt-16 md:gap-y-16',
+    // Mobile columns
+    mobileCols === '1' ? 'grid-cols-1' : 'grid-cols-2',
+    // Tablet columns
+    tabletCols === '2'
+      ? 'md:grid-cols-2'
+      : tabletCols === '3'
+        ? 'md:grid-cols-3'
+        : tabletCols === '4'
+          ? 'md:grid-cols-4'
+          : 'md:grid-cols-2',
+    // Desktop columns
+    desktopCols === '2'
+      ? 'lg:grid-cols-2'
+      : desktopCols === '3'
+        ? 'lg:grid-cols-3'
+        : desktopCols === '4'
+          ? 'lg:grid-cols-4'
+          : 'lg:grid-cols-3',
+    !header?.showHeader && 'mt-0',
+  )
 
   // Spacing classes (match FeaturesBlock)
   const spacingClasses: Record<string, string> = {
@@ -213,13 +247,7 @@ export const LatestPostsBlock: React.FC<
         )}
 
         {/* Grid */}
-        <ul
-          className={cn(
-            'mt-12 grid grid-cols-1 gap-x-8 gap-y-12 md:mt-16 md:gap-y-16',
-            columnClasses[columns],
-            !header?.showHeader && 'mt-0',
-          )}
-        >
+        <ul className={gridClasses}>
           {articles.map((article) => (
             <li key={article.id}>
               <PayloadBlogCard article={article} />

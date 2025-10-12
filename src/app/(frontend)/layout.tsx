@@ -10,6 +10,8 @@ import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { RouteProvider } from '@/providers/route-provider'
 import { ThemeProvider } from '@/providers/theme-provider'
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -77,6 +79,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </ThemeProvider>
           </RouteProvider>
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   )
