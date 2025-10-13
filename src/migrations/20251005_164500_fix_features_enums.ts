@@ -43,8 +43,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       ALTER COLUMN layout_options_icon_color TYPE varchar(50)
     `)
     console.log('  ✓ Converted pages_blocks_features.layout_options_icon_color to varchar')
-  } catch (error) {
-    console.log(`  → Could not convert pages_blocks_features.layout_options_icon_color: ${error instanceof Error ? error.message : 'unknown'}`)
+  } catch (_error) {
+    console.log(`  → Could not convert pages_blocks_features.layout_options_icon_color: ${_error instanceof Error ? _error.message : 'unknown'}`)
   }
 
   try {
@@ -53,8 +53,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       ALTER COLUMN layout_options_icon_color TYPE varchar(50)
     `)
     console.log('  ✓ Converted _pages_v_blocks_features.layout_options_icon_color to varchar')
-  } catch (error) {
-    console.log(`  → Could not convert _pages_v_blocks_features.layout_options_icon_color: ${error instanceof Error ? error.message : 'unknown'}`)
+  } catch (_error) {
+    console.log(`  → Could not convert _pages_v_blocks_features.layout_options_icon_color: ${_error instanceof Error ? _error.message : 'unknown'}`)
   }
 
   // Step 2: Drop old enum types
@@ -65,8 +65,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       DROP TYPE IF EXISTS enum_pages_blocks_features_layout_options_icon_color CASCADE
     `)
     console.log('  ✓ Dropped enum_pages_blocks_features_layout_options_icon_color')
-  } catch (error) {
-    console.log(`  → Could not drop enum: ${error instanceof Error ? error.message : 'unknown'}`)
+  } catch (_error) {
+    console.log(`  → Could not drop enum: ${_error instanceof Error ? _error.message : 'unknown'}`)
   }
 
   try {
@@ -74,8 +74,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       DROP TYPE IF EXISTS enum__pages_v_blocks_features_layout_options_icon_color CASCADE
     `)
     console.log('  ✓ Dropped enum__pages_v_blocks_features_layout_options_icon_color')
-  } catch (error) {
-    console.log(`  → Could not drop enum: ${error instanceof Error ? error.message : 'unknown'}`)
+  } catch (_error) {
+    console.log(`  → Could not drop enum: ${_error instanceof Error ? _error.message : 'unknown'}`)
   }
 
   // Step 3: Create new enum types with all values
@@ -87,8 +87,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       AS ENUM('brand', 'accent', 'secondary', 'tertiary')
     `)
     console.log('  ✓ Created enum_pages_blocks_features_layout_options_icon_color')
-  } catch (error) {
-    console.log(`  → Could not create enum: ${error instanceof Error ? error.message : 'unknown'}`)
+  } catch (_error) {
+    console.log(`  → Could not create enum: ${_error instanceof Error ? _error.message : 'unknown'}`)
   }
 
   try {
@@ -97,8 +97,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       AS ENUM('brand', 'accent', 'secondary', 'tertiary')
     `)
     console.log('  ✓ Created enum__pages_v_blocks_features_layout_options_icon_color')
-  } catch (error) {
-    console.log(`  → Could not create enum: ${error instanceof Error ? error.message : 'unknown'}`)
+  } catch (_error) {
+    console.log(`  → Could not create enum: ${_error instanceof Error ? _error.message : 'unknown'}`)
   }
 
   // Step 4: Convert columns back to enum
@@ -111,8 +111,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       USING layout_options_icon_color::enum_pages_blocks_features_layout_options_icon_color
     `)
     console.log('  ✓ Converted pages_blocks_features.layout_options_icon_color back to enum')
-  } catch (error) {
-    console.log(`  → Could not convert back to enum: ${error instanceof Error ? error.message : 'unknown'}`)
+  } catch (_error) {
+    console.log(`  → Could not convert back to enum: ${_error instanceof Error ? _error.message : 'unknown'}`)
   }
 
   try {
@@ -122,15 +122,15 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       USING layout_options_icon_color::enum__pages_v_blocks_features_layout_options_icon_color
     `)
     console.log('  ✓ Converted _pages_v_blocks_features.layout_options_icon_color back to enum')
-  } catch (error) {
-    console.log(`  → Could not convert back to enum: ${error instanceof Error ? error.message : 'unknown'}`)
+  } catch (_error) {
+    console.log(`  → Could not convert back to enum: ${_error instanceof Error ? _error.message : 'unknown'}`)
   }
 
   console.log('✅ Migration completed!')
   console.log('   Enum types fixed - all values (brand, accent, secondary, tertiary) now available')
 }
 
-export async function down({ db }: MigrateDownArgs): Promise<void> {
+export async function down({ db: _db }: MigrateDownArgs): Promise<void> {
   console.log('⏪ Rolling back not supported for this fix')
   console.log('   Manual intervention required if rollback needed')
   console.log('✅ Rollback acknowledged (no action taken)')

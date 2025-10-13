@@ -1,7 +1,7 @@
 import type { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-vercel-postgres'
 import { sql } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): Promise<void> {
   // Step 1: Convert enum columns to varchar to allow updates
   await db.execute(sql`
     ALTER TABLE pages_blocks_features
@@ -58,7 +58,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   `)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db: _db, payload, req: _req }: MigrateDownArgs): Promise<void> {
   // Note: PostgreSQL doesn't support removing enum values easily
   // This is a one-way migration
   payload.logger.warn('Cannot rollback enum value additions in PostgreSQL')

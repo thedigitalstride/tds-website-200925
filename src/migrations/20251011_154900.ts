@@ -1,6 +1,6 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    ALTER TABLE "pages" ALTER COLUMN "cta_button_link_uui_color" SET DEFAULT 'accent';
   ALTER TABLE "_pages_v" ALTER COLUMN "version_cta_button_link_uui_color" SET DEFAULT 'accent';
@@ -22,7 +22,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   DROP TYPE "public"."enum__pages_v_version_scrolled_header_color_dark_mode";`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_pages_header_color_light_mode" AS ENUM('auto', 'dark', 'light');
   CREATE TYPE "public"."enum_pages_header_color_dark_mode" AS ENUM('auto', 'dark', 'light');

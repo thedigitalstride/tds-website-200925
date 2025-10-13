@@ -1,6 +1,6 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."cols_desktop" AS ENUM('2', '3', '4');
   CREATE TYPE "public"."cols_tablet" AS ENUM('2', '3', '4');
@@ -31,7 +31,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   DROP TYPE "public"."enum__posts_v_blocks_latest_posts_layout_options_columns";`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_pages_blocks_latest_posts_layout_options_columns" AS ENUM('2', '3', '4');
   CREATE TYPE "public"."enum__pages_v_blocks_latest_posts_layout_options_columns" AS ENUM('2', '3', '4');

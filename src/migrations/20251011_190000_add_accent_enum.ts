@@ -1,4 +1,4 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
+import { MigrateUpArgs, sql } from '@payloadcms/db-vercel-postgres'
 
 export async function up({ db }: MigrateUpArgs): Promise<void> {
   // Add 'accent' to the enum_header_cta_button_link_uui_color enum

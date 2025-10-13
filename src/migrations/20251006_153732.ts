@@ -1,6 +1,6 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_pages_blocks_hero_heading_layout_options_subtitle_size" AS ENUM('small', 'normal');
   CREATE TYPE "public"."enum_pages_blocks_features_header_header_alignment" AS ENUM('left', 'center');
@@ -12,7 +12,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "_pages_v_blocks_features" ADD COLUMN "header_header_alignment" "enum__pages_v_blocks_features_header_header_alignment" DEFAULT 'left';`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    ALTER TABLE "pages_blocks_hero_heading" DROP COLUMN "layout_options_subtitle_size";
   ALTER TABLE "pages_blocks_features" DROP COLUMN "header_header_alignment";

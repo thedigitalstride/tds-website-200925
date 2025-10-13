@@ -1,6 +1,6 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_posts_blocks_latest_posts_content_source" AS ENUM('latest', 'manual');
   CREATE TYPE "public"."enum_posts_blocks_latest_posts_opts_num_posts" AS ENUM('3', '6', '9', '12');
@@ -202,7 +202,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_posts_v_rels_pages_id_idx" ON "_posts_v_rels" USING btree ("pages_id");`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    ALTER TABLE "posts_blocks_latest_posts" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "posts_blocks_cta_links" DISABLE ROW LEVEL SECURITY;

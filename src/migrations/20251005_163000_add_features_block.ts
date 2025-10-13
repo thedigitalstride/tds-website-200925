@@ -57,7 +57,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
     try {
       await db.execute(sql.raw(enumDef))
       console.log(`  ✓ ${enumDef.substring(0, 80)}...`)
-    } catch (error) {
+    } catch (_error) {
       // Enum already exists, that's OK
       console.log(`  → Enum already exists (this is fine)`)
     }
@@ -87,7 +87,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       )
     `)
     console.log('  ✓ Created table pages_blocks_features_features')
-  } catch (error) {
+  } catch (_error) {
     console.log(`  → Table pages_blocks_features_features already exists`)
   }
 
@@ -112,7 +112,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       )
     `)
     console.log('  ✓ Created table pages_blocks_features')
-  } catch (error) {
+  } catch (_error) {
     console.log(`  → Table pages_blocks_features already exists`)
   }
 
@@ -138,7 +138,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       )
     `)
     console.log('  ✓ Created table _pages_v_blocks_features_features')
-  } catch (error) {
+  } catch (_error) {
     console.log(`  → Table _pages_v_blocks_features_features already exists`)
   }
 
@@ -164,7 +164,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       )
     `)
     console.log('  ✓ Created table _pages_v_blocks_features')
-  } catch (error) {
+  } catch (_error) {
     console.log(`  → Table _pages_v_blocks_features already exists`)
   }
 
@@ -187,7 +187,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       )
     `)
     console.log('  ✓ Created table not_found')
-  } catch (error) {
+  } catch (_error) {
     console.log(`  → Table not_found already exists`)
   }
 
@@ -203,7 +203,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       )
     `)
     console.log('  ✓ Created table not_found_rels')
-  } catch (error) {
+  } catch (_error) {
     console.log(`  → Table not_found_rels already exists`)
   }
 
@@ -233,7 +233,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
     try {
       await db.execute(sql.raw(stmt))
       console.log(`  ✓ ${stmt.substring(0, 80)}...`)
-    } catch (error) {
+    } catch (_error) {
       console.log(`  → Column already exists (this is fine)`)
     }
   }
