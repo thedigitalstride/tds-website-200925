@@ -38,7 +38,7 @@ Add the environment variable in your Vercel project settings:
    - **Value**: `your-motion-api-token-here` (use the actual token)
    - **Environments**: Select all (Production, Preview, Development)
 
-The build process will automatically inject the token during installation.
+The build process will automatically inject the token during installation via the custom `installCommand` in `vercel.json`.
 
 ### 3. CI/CD Pipelines
 
@@ -83,6 +83,7 @@ Then immediately reverts to the placeholder after installation completes.
 
 - `scripts/manage-motion-token.js` - Token injection and restoration logic
 - `package.json` - Added preinstall/postinstall hooks, contains placeholder
+- `vercel.json` - Custom install command for Vercel deployment
 - `.husky/pre-commit` - Git hook to prevent committing real token
 - `.gitignore` - Ensures `.env.local` is not committed
 

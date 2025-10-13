@@ -48,10 +48,12 @@ The Motion API token has been successfully secured using environment variables w
 
 ### CI/CD Flow (Vercel)
 1. `MOTION_API_TOKEN` environment variable is set in Vercel
-2. Build runs `pnpm install`
-3. `preinstall` hook injects token from env var
-4. Dependencies install successfully
-5. Build continues normally
+2. Custom `installCommand` in `vercel.json` runs:
+   - Injects token into `package.json`
+   - Runs `pnpm install --no-frozen-lockfile`
+   - Restores placeholder
+3. Dependencies install successfully
+4. Build continues normally
 
 ### Git Protection
 - Pre-commit hook checks for placeholder
@@ -68,6 +70,7 @@ The Motion API token has been successfully secured using environment variables w
 
 ### Modified
 - `package.json` - Added hooks, placeholder token
+- `vercel.json` - Custom install command for CI/CD
 - `pnpm-lock.yaml` - Updated with real token URL
 - `.gitignore` - Ensures `.env.local` is ignored
 
@@ -94,10 +97,11 @@ The `pnpm-lock.yaml` contains the full URL with the real token. This is:
 
 ## Next Steps for Team
 
-1. **Add token to Vercel**:
+1. **Add token to Vercel** (REQUIRED):
    - Go to Vercel project settings
-   - Add `MOTION_API_TOKEN` environment variable
-   - Apply to all environments
+   - Add `MOTION_API_TOKEN` environment variable with the actual token
+   - Apply to all environments (Production, Preview, Development)
+   - **This is required for deployments to work**
 
 2. **Local setup**:
    - Create `.env.local` file
@@ -107,6 +111,17 @@ The `pnpm-lock.yaml` contains the full URL with the real token. This is:
 3. **Verify**:
    - Check `package.json` has placeholder after install
    - Try committing - pre-commit hook should verify
+
+## Vercel Configuration
+
+The `vercel.json` now includes a custom `installCommand`:
+```json
+{
+  "installCommand": "node scripts/manage-motion-token.js inject && pnpm install --no-frozen-lockfile && node scripts/manage-motion-token.js restore"
+}
+```
+
+This ensures the token is injected before installation in CI/CD environments.
 
 ## Testing Performed
 
