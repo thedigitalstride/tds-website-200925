@@ -61,26 +61,26 @@ h1, h2, h3, h4, h5, h6,
 /* Hero gradient background utilities - light and dark mode variants */
 @utility bg-gradient-hero-brand-radial {
     background: radial-gradient(ellipse at center, rgb(39 77 131) 0%, rgb(2 21 54) 50%, rgb(1 10 25) 100%);
-}
 
-.dark-mode @utility bg-gradient-hero-brand-radial {
-    background: radial-gradient(ellipse at center, rgb(195 211 235) 0%, rgb(75 127 195) 50%, rgb(2 18 45) 100%);
+    &:where(.dark-mode, .dark-mode *) {
+        background: radial-gradient(ellipse at center, rgb(195 211 235) 0%, rgb(75 127 195) 50%, rgb(2 18 45) 100%);
+    }
 }
 
 @utility bg-gradient-hero-accent {
     background: linear-gradient(-60deg, rgb(22 137 255) 0%, rgb(22 137 255) 20%, rgb(3 26 67) 90%, rgb(3 26 67) 100%);
-}
 
-.dark-mode @utility bg-gradient-hero-accent {
-    background: linear-gradient(-60deg, rgb(22 137 255) 0%, rgb(22 137 255) 20%, rgb(3 26 67) 90%, rgb(3 26 67) 100%);
+    &:where(.dark-mode, .dark-mode *) {
+        background: linear-gradient(-60deg, rgb(22 137 255) 0%, rgb(22 137 255) 20%, rgb(3 26 67) 90%, rgb(3 26 67) 100%);
+    }
 }
 
 @utility bg-gradient-hero-dark-light {
     background: linear-gradient(180deg, rgb(1 10 25) 0%, rgb(3 26 67) 100%);
-}
 
-.dark-mode @utility bg-gradient-hero-dark-light {
-    background: linear-gradient(180deg, rgb(1 10 25) 0%, rgb(3 26 67) 100%);
+    &:where(.dark-mode, .dark-mode *) {
+        background: linear-gradient(180deg, rgb(1 10 25) 0%, rgb(3 26 67) 100%);
+    }
 }
 
 /* Fixed brand header styles - always white text on brand blue */
