@@ -42,28 +42,25 @@ If you're using GitHub Actions or other CI/CD tools, add the `MOTION_API_TOKEN` 
 
 ## How It Works
 
-The `.npmrc` file contains:
+A `preinstall` script (`scripts/setup-motion-token.js`) runs before package installation and dynamically updates the `package.json` with the Motion API token from the `MOTION_API_TOKEN` environment variable.
 
-```
-//api.motion.dev/:_authToken=${MOTION_API_TOKEN}
-```
+In the repository, the `package.json` contains the token in the URL (for backward compatibility), but in CI/CD environments with the environment variable set, the script can update it dynamically if needed.
 
-This configuration tells npm/pnpm to use the `MOTION_API_TOKEN` environment variable when authenticating with the Motion API registry.
-
-The `package.json` dependency is now:
-
-```json
-"motion-plus": "https://api.motion.dev/registry?package=motion-plus&version=1.5.4"
-```
-
-Note: The token parameter has been removed from the URL.
+**Note**: Due to Motion's registry API design, the token must be included in the URL query parameter. The preinstall script provides a way to inject it from environment variables in CI/CD pipelines if you want to maintain a token-less package.json locally.
 
 ## Files Modified
 
-- `.npmrc` - Created (gitignored)
-- `.npmrc.example` - Template for team members
-- `package.json` - Removed token from URL
-- `.gitignore` - Added `.npmrc` to prevent token exposure
+- `scripts/setup-motion-token.js` - Preinstall script to inject token from environment
+- `package.json` - Added preinstall script, contains token in URL
+- `.gitignore` - Added `package.json.local` for local overrides
+
+## Alternative: Local Package.json Override (Optional)
+
+If you want to keep your local `package.json` clean without the token:
+
+1. Create a `package.json.local` with just the dependencies object containing the token
+2. Use a git pre-commit hook to ensure the committed version doesn't have the token
+3. The preinstall script will handle CI/CD environments
 
 ## Troubleshooting
 
