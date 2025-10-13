@@ -28,6 +28,7 @@ import * as migration_20251011_190000_add_accent_enum from './20251011_190000_ad
 import * as migration_20251012_074055 from './20251012_074055';
 import * as migration_20251012_162701 from './20251012_162701';
 import * as migration_20251012_181348 from './20251012_181348';
+import * as migration_20251013_102956 from './20251013_102956';
 
 export const migrations = [
   {
@@ -178,6 +179,11 @@ export const migrations = [
   {
     up: migration_20251012_181348.up,
     down: migration_20251012_181348.down,
-    name: '20251012_181348'
+    name: '20251012_181348',
+  },
+  {
+    up: migration_20251013_102956.up,
+    down: migration_20251013_102956.down,
+    name: '20251013_102956'
   },
 ];

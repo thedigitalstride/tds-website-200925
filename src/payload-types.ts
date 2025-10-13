@@ -151,46 +151,6 @@ export interface UserAuthOperations {
  */
 export interface Page {
   id: number;
-  /**
-   * Override the global header CTA button for this page. Leave disabled to use the global header CTA button.
-   */
-  ctaButton?: {
-    /**
-     * Enable to configure a custom CTA button for this page
-     */
-    enabled?: boolean | null;
-    link?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null);
-      url?: string | null;
-      label: string;
-      /**
-       * Button color variant from UntitledUI design system
-       */
-      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
-      /**
-       * Button size variant
-       */
-      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-      /**
-       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
-       */
-      buttonIcon?: string | null;
-      /**
-       * Position of the icon relative to the button text
-       */
-      iconPos?: ('leading' | 'trailing') | null;
-    };
-  };
   title: string;
   layout?:
     | (
@@ -232,85 +192,77 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "HeroHeadingBlock".
  */
-export interface Post {
-  id: number;
-  title: string;
+export interface HeroHeadingBlock {
   /**
-   * Lead paragraph that appears under the title
+   * Main headline text. Use line breaks to create multiple lines that will scale responsively.
+   */
+  headline: string;
+  /**
+   * Subtitle text displayed below the headline
    */
   subtitle?: string | null;
   /**
-   * Optional table of contents for the sidebar
+   * Enable typewriter animation effect for the headline
    */
-  tableOfContents?:
-    | {
-        title: string;
-        /**
-         * Link to section (e.g., #introduction)
-         */
-        href: string;
-        id?: string | null;
-      }[]
-    | null;
-  heroImage?: (number | null) | Media;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
+  enableTypewriter?: boolean | null;
   /**
-   * People who contributed to this post (separate from authors)
+   * Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.
    */
-  contributors?: (number | User)[] | null;
-  publishedAt?: string | null;
-  authors?: (number | User)[] | null;
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-        nickname?: string | null;
-        avatar?: (number | null) | Media;
-      }[]
-    | null;
-  populatedContributors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-        nickname?: string | null;
-        avatar?: (number | null) | Media;
-      }[]
-    | null;
+  headlineColor?: ('primary' | 'brand') | null;
   /**
-   * Optional blocks to display after the main post content
+   * Color scheme for the subheading. Default shows brand-500 in light mode and white in dark mode.
    */
-  afterContent?: (LatestPostsBlock | CallToActionBlock | MediaBlock)[] | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
+  subheadingColor?: ('default' | 'white') | null;
+  /**
+   * Text alignment for headline and subtitle
+   */
+  textAlignment?: ('left' | 'center') | null;
+  /**
+   * Vertical spacing around the hero section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  /**
+   * Size variant for the subtitle text - Small reduces to 75% of normal size
+   */
+  subtitleSize?: ('small' | 'normal') | null;
+  /**
+   * Add custom background with image, gradient, or custom styling
+   */
+  bg?: {
     /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     * Toggle to enable background customization
+     */
+    enabled?: boolean | null;
+    /**
+     * Choose how tall the hero section should be. Full Height creates a full-screen hero that extends behind the header.
+     */
+    heightVariant?: ('default' | 'fullHeight') | null;
+    /**
+     * Background type - choose gradient for CSS gradients, image for uploads, or custom for animation containers
+     */
+    type?: ('none' | 'gradient' | 'image' | 'custom') | null;
+    /**
+     * Pre-configured gradient styles using theme colors
+     */
+    gradient?: ('brand-radial' | 'accent-gradient' | 'dark-light') | null;
+    /**
+     * Upload background image - will be optimized automatically
      */
     image?: (number | null) | Media;
+    /**
+     * Overlay darkness (0-100) - helps ensure text readability over images
+     */
+    imageOpacity?: number | null;
+    /**
+     * Custom CSS class for animation containers or React-based effects
+     */
+    customClass?: string | null;
   };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroHeading';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -403,6 +355,165 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BreadcrumbBlock".
+ */
+export interface BreadcrumbBlock {
+  /**
+   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'breadcrumb';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock".
+ */
+export interface CallToActionBlock {
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+          /**
+           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+           */
+          buttonIcon?: string | null;
+          /**
+           * Position of the icon relative to the button text
+           */
+          iconPos?: ('leading' | 'trailing') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Vertical spacing around this section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  /**
+   * Lead paragraph that appears under the title
+   */
+  subtitle?: string | null;
+  /**
+   * Optional table of contents for the sidebar
+   */
+  tableOfContents?:
+    | {
+        title: string;
+        /**
+         * Link to section (e.g., #introduction)
+         */
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  heroImage?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  relatedPosts?: (number | Post)[] | null;
+  categories?: (number | Category)[] | null;
+  /**
+   * People who contributed to this post (separate from authors)
+   */
+  contributors?: (number | User)[] | null;
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+        nickname?: string | null;
+        avatar?: (number | null) | Media;
+      }[]
+    | null;
+  populatedContributors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+        nickname?: string | null;
+        avatar?: (number | null) | Media;
+      }[]
+    | null;
+  /**
+   * Optional blocks to display after the main post content
+   */
+  afterContent?: (LatestPostsBlock | CallToActionBlock | MediaBlock)[] | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -576,70 +687,6 @@ export interface LatestPostsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock".
- */
-export interface CallToActionBlock {
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  links?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Button color variant from UntitledUI design system
-           */
-          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
-          /**
-           * Button size variant
-           */
-          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-          /**
-           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
-           */
-          buttonIcon?: string | null;
-          /**
-           * Position of the icon relative to the button text
-           */
-          iconPos?: ('leading' | 'trailing') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Vertical spacing around this section
-   */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'cta';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
@@ -663,93 +710,6 @@ export interface MediaBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroHeadingBlock".
- */
-export interface HeroHeadingBlock {
-  /**
-   * Main headline text. Use line breaks to create multiple lines that will scale responsively.
-   */
-  headline: string;
-  /**
-   * Subtitle text displayed below the headline
-   */
-  subtitle?: string | null;
-  /**
-   * Enable typewriter animation effect for the headline
-   */
-  enableTypewriter?: boolean | null;
-  /**
-   * Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.
-   */
-  headlineColor?: ('primary' | 'brand') | null;
-  /**
-   * Color scheme for the subheading. Default shows brand-500 in light mode and white in dark mode.
-   */
-  subheadingColor?: ('default' | 'white') | null;
-  /**
-   * Text alignment for headline and subtitle
-   */
-  textAlignment?: ('left' | 'center') | null;
-  /**
-   * Vertical spacing around the hero section
-   */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
-  /**
-   * Size variant for the subtitle text - Small reduces to 75% of normal size
-   */
-  subtitleSize?: ('small' | 'normal') | null;
-  /**
-   * Add custom background with image, gradient, or custom styling
-   */
-  bg?: {
-    /**
-     * Toggle to enable background customization
-     */
-    enabled?: boolean | null;
-    /**
-     * Choose how tall the hero section should be. Full Height creates a full-screen hero that extends behind the header.
-     */
-    heightVariant?: ('default' | 'fullHeight') | null;
-    /**
-     * Background type - choose gradient for CSS gradients, image for uploads, or custom for animation containers
-     */
-    type?: ('none' | 'gradient' | 'image' | 'custom') | null;
-    /**
-     * Pre-configured gradient styles using theme colors
-     */
-    gradient?: ('brand-radial' | 'accent-gradient' | 'dark-light') | null;
-    /**
-     * Upload background image - will be optimized automatically
-     */
-    image?: (number | null) | Media;
-    /**
-     * Overlay darkness (0-100) - helps ensure text readability over images
-     */
-    imageOpacity?: number | null;
-    /**
-     * Custom CSS class for animation containers or React-based effects
-     */
-    customClass?: string | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'heroHeading';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BreadcrumbBlock".
- */
-export interface BreadcrumbBlock {
-  /**
-   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
-   */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'breadcrumb';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1472,24 +1432,6 @@ export interface PayloadMigration {
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
-  ctaButton?:
-    | T
-    | {
-        enabled?: T;
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              uuiColor?: T;
-              uuiSize?: T;
-              buttonIcon?: T;
-              iconPos?: T;
-            };
-      };
   title?: T;
   layout?:
     | T

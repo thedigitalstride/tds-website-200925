@@ -13,7 +13,6 @@ import { BreadcrumbBlock } from '../../blocks/BreadcrumbBlock/config'
 import { FeaturesBlock } from '../../blocks/FeaturesBlock/config'
 import { LatestPostsBlock } from '../../blocks/LatestPostsBlock/config'
 import { slugField } from '@/fields/slug'
-import { link } from '@/fields/link'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
@@ -84,38 +83,6 @@ export const Pages: CollectionConfig<'pages'> = {
         {
           label: 'Content',
           fields: [
-            {
-              name: 'ctaButton',
-              type: 'group',
-              label: 'CTA Button Override',
-              admin: {
-                description: 'Override the global header CTA button for this page. Leave disabled to use the global header CTA button.',
-              },
-              fields: [
-                {
-                  name: 'enabled',
-                  type: 'checkbox',
-                  label: 'Override Global CTA Button',
-                  defaultValue: false,
-                  admin: {
-                    description: 'Enable to configure a custom CTA button for this page',
-                  },
-                },
-                link({
-                  appearances: false,
-                  enableUUIButton: true,
-                  uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
-                  uuiSizes: ['sm', 'md', 'lg', 'xl'],
-                  defaultUUIColor: 'accent',
-                  defaultUUISize: 'md',
-                  overrides: {
-                    admin: {
-                      condition: (_, siblingData) => siblingData?.enabled === true,
-                    },
-                  },
-                }),
-              ],
-            },
             {
               name: 'title',
               type: 'text',
