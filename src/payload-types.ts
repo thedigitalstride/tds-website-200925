@@ -270,6 +270,9 @@ export interface HeroHeadingBlock {
  */
 export interface Media {
   id: number;
+  /**
+   * Alt text is required for accessibility. Describe the image for screen readers.
+   */
   alt?: string | null;
   caption?: {
     root: {

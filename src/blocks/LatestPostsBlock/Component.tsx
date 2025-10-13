@@ -13,6 +13,7 @@ import { PayloadBlogCard } from './BlogCard'
 import type { PayloadArticle } from './BlogCard'
 import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
+import { getGridImageSizes } from '@/utilities/getImageSizes'
 
 /**
  * Transform Payload Post to PayloadArticle interface
@@ -179,6 +180,13 @@ export const LatestPostsBlock: React.FC<
   // Transform posts to Article interface
   const articles = posts.map(transformPostToArticle)
 
+  // Calculate responsive image sizes based on grid columns
+  const imageSizes = getGridImageSizes({
+    mobile: mobileCols,
+    tablet: tabletCols,
+    desktop: desktopCols,
+  })
+
   // Build responsive grid classes
   const gridClasses = cn(
     'mt-12 grid gap-x-8 gap-y-12 md:mt-16 md:gap-y-16',
@@ -248,9 +256,13 @@ export const LatestPostsBlock: React.FC<
 
         {/* Grid */}
         <ul className={gridClasses}>
-          {articles.map((article) => (
+          {articles.map((article, index) => (
             <li key={article.id}>
-              <PayloadBlogCard article={article} />
+              <PayloadBlogCard
+                article={article}
+                sizes={imageSizes}
+                priority={index < 3}
+              />
             </li>
           ))}
         </ul>

@@ -87,6 +87,7 @@ export default buildConfig({
         media: true,
       },
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
+      // Enable client uploads to bypass Vercel's 4.5MB server upload limit
       clientUploads: true,
     }),
   ],

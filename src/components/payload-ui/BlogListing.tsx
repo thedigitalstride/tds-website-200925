@@ -52,6 +52,8 @@ const transformPost = (post: Post, index: number): Article => {
   // Safely extract data from Post type
   const heroImage = typeof post.heroImage === 'object' ? (post.heroImage as Media) : undefined
   const firstAuthor = post.populatedAuthors?.[0]
+  const firstAuthorAvatar = typeof firstAuthor?.avatar === 'object' ? (firstAuthor.avatar as Media) : undefined
+
   // Extract ALL categories, not just the first one
   const allCategories =
     Array.isArray(post.categories) && post.categories.length > 0
@@ -73,13 +75,14 @@ const transformPost = (post: Post, index: number): Article => {
     href: `/posts/${post.slug || 'undefined'}`,
     categories: allCategories,
     thumbnailUrl: heroImage?.url || '/placeholder.jpg',
+    thumbnailMedia: heroImage, // Pass full Media resource for optimization
     publishedAt: formatDateTime(post.publishedAt || ''),
     readingTime: calculateReadingTime(post.content),
     author: {
       name: firstAuthor?.nickname || firstAuthor?.name || 'Anonymous',
       href: '#',
-      avatarUrl:
-        typeof firstAuthor?.avatar === 'object' ? (firstAuthor.avatar as Media)?.url || '' : '',
+      avatarUrl: firstAuthorAvatar?.url || '',
+      avatarMedia: firstAuthorAvatar, // Pass full Media resource for avatar
     },
     tags: [],
     isFeatured: index === 0,

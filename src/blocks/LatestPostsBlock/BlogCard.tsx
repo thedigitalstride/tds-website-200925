@@ -29,10 +29,12 @@ export type PayloadArticle = {
   readingTime: string
 }
 
-export const PayloadBlogCard: React.FC<{ article: PayloadArticle; imageClassName?: string }> = ({
-  article,
-  imageClassName,
-}) => (
+export const PayloadBlogCard: React.FC<{
+  article: PayloadArticle
+  imageClassName?: string
+  priority?: boolean
+  sizes?: string
+}> = ({ article, imageClassName, priority = false, sizes }) => (
   <article className="flex flex-col gap-4">
     <Link href={article.href} className="overflow-hidden rounded-md" tabIndex={-1}>
       <OptimizedImage
@@ -41,6 +43,8 @@ export const PayloadBlogCard: React.FC<{ article: PayloadArticle; imageClassName
         alt={article.title}
         width={600}
         height={400}
+        priority={priority}
+        sizes={sizes || '(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 30vw'}
         className={cn(
           'aspect-[1.5] w-full object-cover transition duration-100 ease-linear hover:scale-105',
           imageClassName,
