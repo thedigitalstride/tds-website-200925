@@ -17,8 +17,8 @@ const baseClasses: Record<Theme, { root?: string; addon?: string; icon?: string 
         addon: "rounded-full ring-1 ring-inset",
     },
     modern: {
-        root: "rounded-[10px] bg-primary text-secondary shadow-xs ring-1 ring-inset ring-primary hover:bg-secondary",
-        addon: "flex items-center rounded-md bg-primary shadow-xs ring-1 ring-inset ring-primary",
+        root: "rounded-[10px] bg-primary text-secondary shadow-xs ring-1 ring-inset hover:bg-secondary",
+        addon: "flex items-center rounded-md bg-primary shadow-xs ring-1 ring-inset",
         icon: "text-utility-gray-500",
     },
 };
@@ -86,18 +86,33 @@ const colorClasses: Record<Theme, Record<Color, { root?: string; addon?: string;
     },
     modern: {
         brand: {
+            root: "ring-black/20 dark:ring-white/25 text-brand-secondary",
+            addon: "ring-black/20 dark:ring-white/25",
+            icon: "text-utility-brand-500",
             dot: "bg-utility-brand-500 outline-3 -outline-offset-1 outline-utility-brand-100",
         },
         gray: {
+            root: "ring-black/20 dark:ring-white/25 text-secondary",
+            addon: "ring-black/20 dark:ring-white/25",
+            icon: "text-utility-gray-500",
             dot: "bg-utility-gray-500 outline-3 -outline-offset-1 outline-utility-gray-100",
         },
         error: {
+            root: "ring-black/20 dark:ring-white/25 text-utility-error-700",
+            addon: "ring-black/20 dark:ring-white/25",
+            icon: "text-utility-error-500",
             dot: "bg-utility-error-500 outline-3 -outline-offset-1 outline-utility-error-100",
         },
         warning: {
+            root: "ring-black/20 dark:ring-white/25 text-utility-warning-700",
+            addon: "ring-black/20 dark:ring-white/25",
+            icon: "text-utility-warning-500",
             dot: "bg-utility-warning-500 outline-3 -outline-offset-1 outline-utility-warning-100",
         },
         success: {
+            root: "ring-black/20 dark:ring-white/25 text-utility-success-700",
+            addon: "ring-black/20 dark:ring-white/25",
+            icon: "text-utility-success-500",
             dot: "bg-utility-success-500 outline-3 -outline-offset-1 outline-utility-success-100",
         },
     },

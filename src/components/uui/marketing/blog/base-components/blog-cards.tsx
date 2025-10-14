@@ -56,7 +56,7 @@ export const Simple01Vertical = ({ article, imageClassName }: { article: Article
                             href={category.href}
                             className="text-sm font-semibold text-brand-secondary hover:text-brand-secondary_hover transition-colors"
                         >
-                            <Badge size="sm" color="brand" type="pill-color">
+                            <Badge size="sm" color="brand" type="modern">
                                 {category.name}
                             </Badge>
                         </a>

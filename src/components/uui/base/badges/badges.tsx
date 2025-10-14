@@ -76,6 +76,69 @@ const addonOnlyColors = Object.fromEntries(Object.entries(filledColors).map(([ke
     { root: string; addon: string }
 >;
 
+const modernColors: Record<BadgeColors, { root: string; addon: string; addonButton: string }> = {
+    gray: {
+        root: "bg-primary text-secondary ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-gray-500",
+        addonButton: "hover:bg-utility-gray-100 text-utility-gray-400 hover:text-utility-gray-500",
+    },
+    brand: {
+        root: "bg-primary text-brand-secondary ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-brand-500",
+        addonButton: "hover:bg-utility-brand-100 text-utility-brand-400 hover:text-utility-brand-500",
+    },
+    error: {
+        root: "bg-primary text-utility-error-700 ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-utility-error-500",
+        addonButton: "hover:bg-utility-error-100 text-utility-error-400 hover:text-utility-error-500",
+    },
+    warning: {
+        root: "bg-primary text-utility-warning-700 ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-utility-warning-500",
+        addonButton: "hover:bg-utility-warning-100 text-utility-warning-400 hover:text-utility-warning-500",
+    },
+    success: {
+        root: "bg-primary text-utility-success-700 ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-utility-success-500",
+        addonButton: "hover:bg-utility-success-100 text-utility-success-400 hover:text-utility-success-500",
+    },
+    "gray-blue": {
+        root: "bg-primary text-utility-gray-blue-700 ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-utility-gray-blue-500",
+        addonButton: "hover:bg-utility-gray-blue-100 text-utility-gray-blue-400 hover:text-utility-gray-blue-500",
+    },
+    "blue-light": {
+        root: "bg-primary text-utility-blue-light-700 ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-utility-blue-light-500",
+        addonButton: "hover:bg-utility-blue-light-100 text-utility-blue-light-400 hover:text-utility-blue-light-500",
+    },
+    blue: {
+        root: "bg-primary text-utility-blue-700 ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-utility-blue-500",
+        addonButton: "hover:bg-utility-blue-100 text-utility-blue-400 hover:text-utility-blue-500",
+    },
+    indigo: {
+        root: "bg-primary text-utility-indigo-700 ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-utility-indigo-500",
+        addonButton: "hover:bg-utility-indigo-100 text-utility-indigo-400 hover:text-utility-indigo-500",
+    },
+    purple: {
+        root: "bg-primary text-utility-purple-700 ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-utility-purple-500",
+        addonButton: "hover:bg-utility-purple-100 text-utility-purple-400 hover:text-utility-purple-500",
+    },
+    pink: {
+        root: "bg-primary text-utility-pink-700 ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-utility-pink-500",
+        addonButton: "hover:bg-utility-pink-100 text-utility-pink-400 hover:text-utility-pink-500",
+    },
+    orange: {
+        root: "bg-primary text-utility-orange-700 ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+        addon: "text-utility-orange-500",
+        addonButton: "hover:bg-utility-orange-100 text-utility-orange-400 hover:text-utility-orange-500",
+    },
+};
+
 const withPillTypes = {
     [badgeTypes.pillColor]: {
         common: "size-max flex items-center whitespace-nowrap rounded-full ring-1 ring-inset",
@@ -86,14 +149,8 @@ const withPillTypes = {
         styles: filledColors,
     },
     [badgeTypes.badgeModern]: {
-        common: "size-max flex items-center whitespace-nowrap rounded-md ring-1 ring-inset shadow-xs",
-        styles: {
-            gray: {
-                root: "bg-primary text-secondary ring-primary",
-                addon: "text-gray-500",
-                addonButton: "hover:bg-utility-gray-100 text-utility-gray-400 hover:text-utility-gray-500",
-            },
-        },
+        common: "size-max flex items-center whitespace-nowrap rounded-md shadow-xs",
+        styles: modernColors,
     },
 };
 
