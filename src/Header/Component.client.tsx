@@ -93,7 +93,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     <header className="fixed top-4 left-4 right-4 md:left-8 md:right-8 z-50">
       <div className="mx-auto max-w-container">
         {/* Use bg-brand-solid which automatically changes in dark mode */}
-        <div className="bg-brand-solid rounded-2xl overflow-hidden">
+        <div className="bg-brand-solid rounded-2xl overflow-visible">
           <UUIHeader
             items={navigationItems}
             ctaButton={effectiveCtaButton}

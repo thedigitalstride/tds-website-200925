@@ -54,38 +54,35 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
 
   return (
     <motion.nav
-      initial={{ height: 0, opacity: 0 }}
-      animate={{ height: "auto", opacity: 1 }}
+      initial={{ height: 0 }}
+      animate={{ height: "auto" }}
       exit={{
         height: 0,
-        opacity: 0,
         transition: {
-          height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
-          opacity: { duration: 0.2 }
+          height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
         }
       }}
       transition={{
-        height: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
-        opacity: { duration: 0.3 }
+        height: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
       }}
-      className="overflow-hidden shadow-lg rounded-b-2xl bg-brand-solid"
+      className="overflow-hidden"
     >
-        <div className="py-4 px-4 md:px-5">
+        <div className="pt-3 pb-3 px-4 md:px-5 md:pb-5">
           <motion.ul
-            className="flex flex-col gap-0.5"
+            className="flex flex-col gap-0.5 md:grid md:grid-cols-4 md:gap-3"
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={{
               visible: {
                 transition: {
-                  staggerChildren: 0.03,
-                  delayChildren: 0.1
+                  staggerChildren: 0.08,
+                  delayChildren: 0.15
                 }
               },
               hidden: {
                 transition: {
-                  staggerChildren: 0.02,
+                  staggerChildren: 0.04,
                   staggerDirection: -1
                 }
               }
@@ -100,12 +97,10 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
                   key={index}
                   variants={{
                     hidden: {
-                      opacity: 0,
-                      y: -10
+                      opacity: 0
                     },
                     visible: {
-                      opacity: 1,
-                      y: 0
+                      opacity: 1
                     }
                   }}
                   transition={{

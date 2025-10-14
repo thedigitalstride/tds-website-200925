@@ -44,7 +44,7 @@ export const MobileMenuButton = ({ isOpen = false, onToggle }: MobileMenuButtonP
         onPress={onToggle}
         className={({ isFocusVisible, isHovered }) =>
           cx(
-            'ml-auto cursor-pointer rounded-lg md:hidden',
+            'ml-auto -mr-2 cursor-pointer rounded-lg md:hidden',
             isHovered && 'bg-primary_hover',
             isFocusVisible && 'outline-2 outline-offset-2 outline-focus-ring',
           )

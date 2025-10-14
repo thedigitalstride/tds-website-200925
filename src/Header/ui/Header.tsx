@@ -4,12 +4,6 @@ import type { ReactNode } from 'react'
 import { useRef, useState, useEffect } from 'react'
 import { ChevronDown } from '@untitledui/icons'
 import { motion, AnimatePresence } from 'motion/react'
-import {
-  Button as AriaButton,
-  Dialog as AriaDialog,
-  DialogTrigger as AriaDialogTrigger,
-  Popover as AriaPopover,
-} from 'react-aria-components'
 import { Button } from '@/components/uui/button'
 import { TDSLogo } from '@/components/Logo/tds-logo'
 import { cx } from '@/utils/cx'
@@ -24,6 +18,31 @@ type HeaderNavItem = {
 
 // Default nav items (empty - will be populated from CMS)
 const defaultNavItems: HeaderNavItem[] = []
+
+const DesktopNavItem = (props: {
+  label: string
+  isOpen: boolean
+  onToggle: () => void
+}) => {
+  return (
+    <button
+      aria-expanded={props.isOpen}
+      aria-haspopup="true"
+      onClick={props.onToggle}
+      className={cx(
+        "flex cursor-pointer items-center gap-0.5 rounded-lg px-1.5 py-1 text-md font-semibold outline-focus-ring transition duration-100 ease-linear focus-visible:outline-2 focus-visible:outline-offset-2",
+        "text-white hover:text-gray-100 dark:text-brand-500 dark:hover:text-brand-600"
+      )}
+    >
+      <span className="px-0.5">{props.label}</span>
+      <ChevronDown className={cx(
+        "size-4 stroke-[2.625px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+        "text-white dark:text-brand-500",
+        props.isOpen ? 'rotate-0' : '-rotate-90'
+      )} />
+    </button>
+  )
+}
 
 
 const MobileNavItem = (props: {
@@ -44,42 +63,41 @@ const MobileNavItem = (props: {
 
   if (props.href) {
     return (
-      <li>
-        <a
-          href={props.href}
-          className={cx(
-            "flex items-center justify-between px-4 py-3 text-md font-semibold",
-            "text-white hover:bg-brand-600 dark:text-brand-500 dark:hover:bg-gray-100"
-          )}
-        >
-          {props.label}
-        </a>
-      </li>
+      <a
+        href={props.href}
+        className={cx(
+          "flex items-center justify-between px-4 py-2 text-md font-semibold",
+          "text-white hover:bg-brand-600 dark:text-brand-500 dark:hover:bg-gray-100"
+        )}
+      >
+        {props.label}
+      </a>
     )
   }
 
   return (
-    <li className="flex flex-col gap-0.5">
+    <div className="flex flex-col gap-0.5">
       <button
         aria-expanded={isOpen}
         onClick={() => setIsOpen(!isOpen)}
         className={cx(
-          "flex w-full items-center justify-between px-4 py-3 text-md font-semibold",
+          "flex w-full items-center justify-between px-4 py-2 text-md font-semibold",
           "text-white hover:bg-brand-600 dark:text-brand-500 dark:hover:bg-gray-100"
         )}
       >
         {props.label}{' '}
         <ChevronDown
           className={cx(
-            'size-4 stroke-[2.625px] transition duration-100 ease-linear',
+            'size-4 stroke-[2.625px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]',
             "text-white dark:text-brand-500",
-            isOpen ? '-rotate-180' : 'rotate-0',
+            isOpen ? 'rotate-0' : '-rotate-90',
           )}
         />
       </button>
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div
+            key="mobile-submenu"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -93,7 +111,7 @@ const MobileNavItem = (props: {
           </motion.div>
         )}
       </AnimatePresence>
-    </li>
+    </div>
   )
 }
 
@@ -125,7 +143,17 @@ const MobileFooter = ({ ctaButton }: { ctaButton?: HeaderProps['ctaButton'] }) =
       : 'secondary'
 
   return (
-    <div className="px-4 py-6">
+    <motion.div
+      className="px-4 pt-3"
+      variants={{
+        hidden: { opacity: 0, y: -10 },
+        visible: { opacity: 1, y: 0 }
+      }}
+      transition={{
+        duration: 0.2,
+        ease: [0.4, 0, 0.2, 1]
+      }}
+    >
       <div className="flex flex-col gap-3">
         <Button
           color={color}
@@ -136,7 +164,7 @@ const MobileFooter = ({ ctaButton }: { ctaButton?: HeaderProps['ctaButton'] }) =
           {linkData.label || 'ENQUIRE'}
         </Button>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -170,6 +198,21 @@ export const Header = ({
 }: HeaderProps) => {
   const headerRef = useRef<HTMLDivElement>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [openDesktopMenuLabel, setOpenDesktopMenuLabel] = useState<string | null>(null)
+
+  // Close desktop dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setOpenDesktopMenuLabel(null)
+      }
+    }
+
+    if (openDesktopMenuLabel) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [openDesktopMenuLabel])
 
   // Helper function to render CTA button
   const renderCtaButton = (sizeProp?: 'sm' | 'md' | 'lg' | 'xl') => {
@@ -226,7 +269,7 @@ export const Header = ({
       )}
     >
       {/* Header bar */}
-      <div className="flex h-16 w-full items-center px-4 py-2 md:h-17 md:px-5 md:py-2.5">
+      <div className="flex h-14 w-full items-center px-4 py-1 md:h-17 md:px-5 md:py-2">
         <div
           className={cx(
             'w-full flex items-center justify-between',
@@ -252,31 +295,15 @@ export const Header = ({
               {items.map((navItem) => (
                 <li key={navItem.label}>
                   {navItem.menu ? (
-                    <AriaDialogTrigger>
-                      <AriaButton className={cx(
-                        "flex cursor-pointer items-center gap-0.5 rounded-lg px-1.5 py-1 text-md font-semibold outline-focus-ring transition duration-100 ease-linear focus-visible:outline-2 focus-visible:outline-offset-2",
-                        "text-white hover:text-gray-100 dark:text-brand-500 dark:hover:text-brand-600"
-                      )}>
-                        <span className="px-0.5">{navItem.label}</span>
-
-                        <ChevronDown className={cx(
-                          "size-4 rotate-0 stroke-[2.625px] transition duration-100 ease-linear in-aria-expanded:-rotate-180",
-                          "text-white dark:text-brand-500"
-                        )} />
-                      </AriaButton>
-
-                      <AriaPopover
-                        className="hidden origin-top will-change-transform md:block"
-                        offset={0}
-                        containerPadding={32}
-                        placement="bottom"
-                        shouldFlip={false}
-                      >
-                        <AriaDialog className="origin-top outline-hidden w-full">
-                          {navItem.menu}
-                        </AriaDialog>
-                      </AriaPopover>
-                    </AriaDialogTrigger>
+                    <DesktopNavItem
+                      label={navItem.label}
+                      isOpen={openDesktopMenuLabel === navItem.label}
+                      onToggle={() =>
+                        setOpenDesktopMenuLabel(
+                          openDesktopMenuLabel === navItem.label ? null : navItem.label,
+                        )
+                      }
+                    />
                   ) : (
                     <a
                       href={navItem.href}
@@ -307,38 +334,114 @@ export const Header = ({
       </div>
 
       {/* Mobile menu content - renders inline below header bar */}
-      <div
-        className={cx(
-          "md:hidden w-full overflow-hidden transition-all duration-300 ease-in-out",
-          // Expand to full viewport height minus top position (4rem) and equal bottom margin (4rem)
-          isMobileMenuOpen ? "max-h-[calc(100vh-8rem)] opacity-100" : "max-h-0 opacity-0"
-        )}
-      >
-        <div className="py-5 overflow-y-auto scrollbar-hide max-h-[calc(100vh-10rem)]">
-          <ul className="flex flex-col gap-0.5">
-            {items.map((navItem) =>
-              navItem.menu ? (
-                <MobileNavItem
-                  key={navItem.label}
-                  label={navItem.label}
-                  isMenuOpen={isMobileMenuOpen}
-                >
-                  {navItem.menu}
-                </MobileNavItem>
-              ) : (
-                <MobileNavItem
-                  key={navItem.label}
-                  label={navItem.label}
-                  href={navItem.href}
-                  isMenuOpen={isMobileMenuOpen}
-                />
-              ),
-            )}
-          </ul>
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{
+              height: 0,
+              transition: {
+                height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
+              }
+            }}
+            transition={{
+              height: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+            }}
+            className="md:hidden w-full overflow-hidden"
+          >
+            <div className="py-3 overflow-y-auto scrollbar-hide max-h-[calc(100vh-10rem)]">
+              <motion.ul
+                className="flex flex-col gap-0.5"
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={{
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.1,
+                      delayChildren: 0.15
+                    }
+                  },
+                  hidden: {
+                    transition: {
+                      staggerChildren: 0.05,
+                      staggerDirection: -1
+                    }
+                  }
+                }}
+              >
+                {items.map((navItem) =>
+                  navItem.menu ? (
+                    <motion.li
+                      key={navItem.label}
+                      variants={{
+                        hidden: { opacity: 0, y: -10 },
+                        visible: { opacity: 1, y: 0 }
+                      }}
+                      transition={{
+                        duration: 0.2,
+                        ease: [0.4, 0, 0.2, 1]
+                      }}
+                    >
+                      <MobileNavItem
+                        label={navItem.label}
+                        isMenuOpen={isMobileMenuOpen}
+                      >
+                        {navItem.menu}
+                      </MobileNavItem>
+                    </motion.li>
+                  ) : (
+                    <motion.li
+                      key={navItem.label}
+                      variants={{
+                        hidden: { opacity: 0, y: -10 },
+                        visible: { opacity: 1, y: 0 }
+                      }}
+                      transition={{
+                        duration: 0.2,
+                        ease: [0.4, 0, 0.2, 1]
+                      }}
+                    >
+                      <MobileNavItem
+                        label={navItem.label}
+                        href={navItem.href}
+                        isMenuOpen={isMobileMenuOpen}
+                      />
+                    </motion.li>
+                  ),
+                )}
 
-          <MobileFooter ctaButton={ctaButton} />
-        </div>
-      </div>
+                {/* CTA Button - appears last in stagger sequence */}
+                <MobileFooter ctaButton={ctaButton} />
+              </motion.ul>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop dropdown content - renders inline below header bar */}
+      <AnimatePresence mode="wait">
+        {openDesktopMenuLabel && (
+          <motion.div
+            key={openDesktopMenuLabel}
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{
+              height: 0,
+              transition: {
+                height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
+              }
+            }}
+            transition={{
+              height: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+            }}
+            className="max-md:hidden w-full overflow-hidden"
+          >
+            {items.find((item) => item.label === openDesktopMenuLabel)?.menu}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
