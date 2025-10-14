@@ -24,8 +24,8 @@ import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
-import { DropdownRowLabel as DropdownRowLabel_7a1d7ad653c2360c32bb0f1ceb65cdd8 } from '@/Header/DropdownRowLabel'
-import { RowLabel as RowLabel_ec255a65fa6fa8d1faeb09cf35284224 } from '@/Header/RowLabel'
+import { DropdownRowLabel as DropdownRowLabel_853581b6f99819ad364c5a1ac052a7d1 } from '@/Header/admin/DropdownRowLabel'
+import { RowLabel as RowLabel_5847044a44bee7c8fc3a768eb84620b5 } from '@/Header/admin/RowLabel'
 import { NavItemRowLabel as NavItemRowLabel_005e2e2fceca6eee1443b898e8750032 } from '@/Footer/NavItemRowLabel'
 import { NavColumnRowLabel as NavColumnRowLabel_a0920fb3a8542da5ee95d2c2f2747f96 } from '@/Footer/NavColumnRowLabel'
 import { SocialLinkRowLabel as SocialLinkRowLabel_9697010365a26e30d4bc253bddcd7804 } from '@/Footer/SocialLinkRowLabel'
@@ -62,8 +62,8 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
-  "@/Header/DropdownRowLabel#DropdownRowLabel": DropdownRowLabel_7a1d7ad653c2360c32bb0f1ceb65cdd8,
-  "@/Header/RowLabel#RowLabel": RowLabel_ec255a65fa6fa8d1faeb09cf35284224,
+  "@/Header/admin/DropdownRowLabel#DropdownRowLabel": DropdownRowLabel_853581b6f99819ad364c5a1ac052a7d1,
+  "@/Header/admin/RowLabel#RowLabel": RowLabel_5847044a44bee7c8fc3a768eb84620b5,
   "@/Footer/NavItemRowLabel#NavItemRowLabel": NavItemRowLabel_005e2e2fceca6eee1443b898e8750032,
   "@/Footer/NavColumnRowLabel#NavColumnRowLabel": NavColumnRowLabel_a0920fb3a8542da5ee95d2c2f2747f96,
   "@/Footer/SocialLinkRowLabel#SocialLinkRowLabel": SocialLinkRowLabel_9697010365a26e30d4bc253bddcd7804,
