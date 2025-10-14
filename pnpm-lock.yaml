@@ -125,6 +125,9 @@ importers:
       payload:
         specifier: 3.59.1
         version: 3.59.1(bufferutil@4.0.9)(graphql@16.11.0)(typescript@5.7.3)(utf-8-validate@6.0.5)
+      pg:
+        specifier: ^8.16.3
+        version: 8.16.3
       postcss:
         specifier: ^8.5.6
         version: 8.5.6
