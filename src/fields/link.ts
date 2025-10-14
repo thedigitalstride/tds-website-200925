@@ -39,7 +39,7 @@ export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: st
     description: 'Subtle button with border and light background'
   },
   tertiary: {
-    label: 'Tertiary',
+    label: 'Tinted',
     value: 'tertiary',
     description: 'Minimal button with no background'
   },

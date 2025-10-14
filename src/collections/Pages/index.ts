@@ -11,6 +11,7 @@ import { ButtonBlock } from '../../blocks/ButtonBlock/config'
 import { HeroHeadingBlock } from '../../blocks/HeroHeadingBlock/config'
 import { BreadcrumbBlock } from '../../blocks/BreadcrumbBlock/config'
 import { FeaturesBlock } from '../../blocks/FeaturesBlock/config'
+import { LatestPostsBlock } from '../../blocks/LatestPostsBlock/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -77,26 +78,39 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'layout',
+              type: 'blocks',
+              blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock, FeaturesBlock, LatestPostsBlock],
+              admin: {
+                initCollapsed: true,
+              },
+            },
+          ],
+        },
+        {
+          label: 'Meta',
+          description: 'Page metadata and settings',
+          fields: [
+            {
+              name: 'publishedAt',
+              type: 'date',
+            },
+            ...slugField(),
+          ],
+        },
+      ],
     },
-    {
-      name: 'layout',
-      type: 'blocks',
-      blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock, FeaturesBlock],
-      admin: {
-        initCollapsed: true,
-      },
-    },
-    {
-      name: 'publishedAt',
-      type: 'date',
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    ...slugField(),
   ],
   hooks: {
     afterChange: [revalidatePage],

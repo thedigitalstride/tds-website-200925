@@ -1,4 +1,5 @@
 {
+  "installCommand": "node scripts/manage-motion-token.js inject && pnpm install --no-frozen-lockfile && node scripts/manage-motion-token.js restore",
   "crons": [
     {
       "path": "/api/payload-jobs/run",

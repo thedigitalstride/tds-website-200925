@@ -78,9 +78,9 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
 
         console.log(`    ✓ Added "${newValue}" to ${enumType}`)
         successCount++
-      } catch (error) {
+      } catch (_error) {
         // Silently skip errors (enum might not exist, value might be being added concurrently, etc.)
-        console.log(`    → Skipped ${enumType} (${error instanceof Error ? error.message : 'unknown error'})`)
+        console.log(`    → Skipped ${enumType} (${_error instanceof Error ? _error.message : 'unknown error'})`)
         skipCount++
       }
     }

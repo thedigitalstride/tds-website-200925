@@ -104,11 +104,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     notFound: NotFound;
+    postsSettings: PostsSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     notFound: NotFoundSelect<false> | NotFoundSelect<true>;
+    postsSettings: PostsSettingsSelect<false> | PostsSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -161,11 +163,20 @@ export interface Page {
         | FormBlock
         | ButtonBlock
         | FeaturesBlock
+        | LatestPostsBlock
       )[]
     | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   parent?: (number | null) | Page;
   breadcrumbs?:
     | {
@@ -175,14 +186,6 @@ export interface Page {
         id?: string | null;
       }[]
     | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -201,25 +204,160 @@ export interface HeroHeadingBlock {
    */
   subtitle?: string | null;
   /**
-   * Configure how the hero section is displayed
+   * Enable typewriter animation effect for the headline
    */
-  layoutOptions?: {
+  enableTypewriter?: boolean | null;
+  /**
+   * Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.
+   */
+  headlineColor?: ('primary' | 'brand') | null;
+  /**
+   * Color scheme for the subheading. Default shows brand-500 in light mode and white in dark mode.
+   */
+  subheadingColor?: ('default' | 'white') | null;
+  /**
+   * Text alignment for headline and subtitle
+   */
+  textAlignment?: ('left' | 'center') | null;
+  /**
+   * Vertical spacing around the hero section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  /**
+   * Size variant for the subtitle text - Small reduces to 75% of normal size
+   */
+  subtitleSize?: ('small' | 'normal') | null;
+  /**
+   * Add custom background with image, gradient, or custom styling
+   */
+  bg?: {
     /**
-     * Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.
+     * Toggle to enable background customization
      */
-    headlineColor?: ('primary' | 'brand') | null;
+    enabled?: boolean | null;
     /**
-     * Text alignment for headline and subtitle
+     * Choose how tall the hero section should be. Full Height creates a full-screen hero that extends behind the header.
      */
-    textAlignment?: ('left' | 'center') | null;
+    heightVariant?: ('default' | 'fullHeight') | null;
     /**
-     * Vertical spacing around the hero section
+     * Background type - choose gradient for CSS gradients, image for uploads, or custom for animation containers
      */
-    spacing?: ('compact' | 'normal' | 'spacious') | null;
+    type?: ('none' | 'gradient' | 'image' | 'custom') | null;
+    /**
+     * Pre-configured gradient styles using theme colors
+     */
+    gradient?: ('brand-radial' | 'accent-gradient' | 'dark-light') | null;
+    /**
+     * Upload background image - will be optimized automatically
+     */
+    image?: (number | null) | Media;
+    /**
+     * Overlay darkness (0-100) - helps ensure text readability over images
+     */
+    imageOpacity?: number | null;
+    /**
+     * Custom CSS class for animation containers or React-based effects
+     */
+    customClass?: string | null;
   };
   id?: string | null;
   blockName?: string | null;
   blockType: 'heroHeading';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Alt text is required for accessibility. Describe the image for screen readers.
+   */
+  alt?: string | null;
+  caption?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    square?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    large?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    xlarge?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    og?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -362,6 +500,10 @@ export interface Post {
         avatar?: (number | null) | Media;
       }[]
     | null;
+  /**
+   * Optional blocks to display after the main post content
+   */
+  afterContent?: (LatestPostsBlock | CallToActionBlock | MediaBlock)[] | null;
   slug?: string | null;
   slugLock?: boolean | null;
   meta?: {
@@ -375,98 +517,6 @@ export interface Post {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt?: string | null;
-  caption?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    square?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    small?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    large?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    xlarge?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    og?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -525,6 +575,144 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestPostsBlock".
+ */
+export interface LatestPostsBlock {
+  header?: {
+    /**
+     * Toggle to show/hide the header section
+     */
+    showHeader?: boolean | null;
+    /**
+     * Small text above heading (e.g., "Our blog")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for the blog section
+     */
+    heading?: string | null;
+    /**
+     * Description text that appears below the heading
+     */
+    description?: string | null;
+  };
+  /**
+   * Choose between automatically showing latest posts or manually selecting specific posts
+   */
+  contentSource?: ('latest' | 'manual') | null;
+  opts?: {
+    /**
+     * How many latest posts to display
+     */
+    numPosts?: ('3' | '6' | '9' | '12') | null;
+    /**
+     * Optional: Show only posts from a specific category
+     */
+    categoryFilter?: (number | null) | Category;
+  };
+  /**
+   * Manually select which posts to display
+   */
+  selectedPosts?: (number | Post)[] | null;
+  buttonConfig?: {
+    /**
+     * Toggle to show/hide the button that links to all posts
+     */
+    showButton?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+      /**
+       * Button color variant from UntitledUI design system
+       */
+      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      /**
+       * Button size variant
+       */
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+      /**
+       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+       */
+      buttonIcon?: string | null;
+      /**
+       * Position of the icon relative to the button text
+       */
+      iconPos?: ('leading' | 'trailing') | null;
+    };
+  };
+  /**
+   * Configure how the blog section is displayed
+   */
+  layoutOptions?: {
+    /**
+     * Use column settings from Posts Settings global. Uncheck to customize columns for this block.
+     */
+    usePostsSettings?: boolean | null;
+    /**
+     * Configure columns for different screen sizes
+     */
+    gridColumns?: {
+      /**
+       * Number of columns on large screens (1024px and above)
+       */
+      desktop?: ('2' | '3' | '4') | null;
+      /**
+       * Number of columns on medium screens (768px - 1023px)
+       */
+      tablet?: ('2' | '3' | '4') | null;
+      /**
+       * Number of columns on small screens (below 768px)
+       */
+      mobile?: ('1' | '2') | null;
+    };
+    /**
+     * Vertical spacing around this section
+     */
+    spacing?: ('compact' | 'normal' | 'spacious') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'latestPosts';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  caption?: {
+    /**
+     * Caption text
+     */
+    text?: string | null;
+    link?: {
+      /**
+       * Link URL (e.g., https://example.com)
+       */
+      url?: string | null;
+      /**
+       * Link text
+       */
+      text?: string | null;
+    };
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -591,32 +779,6 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
- */
-export interface MediaBlock {
-  media: number | Media;
-  caption?: {
-    /**
-     * Caption text
-     */
-    text?: string | null;
-    link?: {
-      /**
-       * Link URL (e.g., https://example.com)
-       */
-      url?: string | null;
-      /**
-       * Link text
-       */
-      text?: string | null;
-    };
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -928,6 +1090,10 @@ export interface FeaturesBlock {
      * Description text that appears below the heading
      */
     description?: string | null;
+    /**
+     * Alignment of the section header
+     */
+    headerAlignment?: ('left' | 'center') | null;
   };
   features: {
     /**
@@ -987,11 +1153,11 @@ export interface FeaturesBlock {
     /**
      * Visual style for feature cards (background and borders)
      */
-    cardBackground?: ('grey' | 'brand' | 'outline' | 'line') | null;
+    cardBackground?: ('brand' | 'accent' | 'outline' | 'line' | 'grey') | null;
     /**
-     * Number of columns in the grid. Automatically switches to full-width if only one feature exists.
+     * Number of columns in the grid (1-4). Automatically switches to full-width if only one feature exists.
      */
-    columns?: ('2' | '3' | '4') | null;
+    columns?: ('1' | '2' | '3' | '4') | null;
     /**
      * Color scheme for icons - matches button system
      */
@@ -1282,10 +1448,18 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         buttonBlock?: T | ButtonBlockSelect<T>;
         features?: T | FeaturesBlockSelect<T>;
+        latestPosts?: T | LatestPostsBlockSelect<T>;
       };
   publishedAt?: T;
   slug?: T;
   slugLock?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   parent?: T;
   breadcrumbs?:
     | T
@@ -1294,13 +1468,6 @@ export interface PagesSelect<T extends boolean = true> {
         url?: T;
         label?: T;
         id?: T;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1313,12 +1480,22 @@ export interface PagesSelect<T extends boolean = true> {
 export interface HeroHeadingBlockSelect<T extends boolean = true> {
   headline?: T;
   subtitle?: T;
-  layoutOptions?:
+  enableTypewriter?: T;
+  headlineColor?: T;
+  subheadingColor?: T;
+  textAlignment?: T;
+  spacing?: T;
+  subtitleSize?: T;
+  bg?:
     | T
     | {
-        headlineColor?: T;
-        textAlignment?: T;
-        spacing?: T;
+        enabled?: T;
+        heightVariant?: T;
+        type?: T;
+        gradient?: T;
+        image?: T;
+        imageOpacity?: T;
+        customClass?: T;
       };
   id?: T;
   blockName?: T;
@@ -1476,6 +1653,7 @@ export interface FeaturesBlockSelect<T extends boolean = true> {
         eyebrow?: T;
         heading?: T;
         description?: T;
+        headerAlignment?: T;
       };
   features?:
     | T
@@ -1507,6 +1685,61 @@ export interface FeaturesBlockSelect<T extends boolean = true> {
         columns?: T;
         iconColor?: T;
         iconTheme?: T;
+        spacing?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestPostsBlock_select".
+ */
+export interface LatestPostsBlockSelect<T extends boolean = true> {
+  header?:
+    | T
+    | {
+        showHeader?: T;
+        eyebrow?: T;
+        heading?: T;
+        description?: T;
+      };
+  contentSource?: T;
+  opts?:
+    | T
+    | {
+        numPosts?: T;
+        categoryFilter?: T;
+      };
+  selectedPosts?: T;
+  buttonConfig?:
+    | T
+    | {
+        showButton?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              uuiColor?: T;
+              uuiSize?: T;
+              buttonIcon?: T;
+              iconPos?: T;
+            };
+      };
+  layoutOptions?:
+    | T
+    | {
+        usePostsSettings?: T;
+        gridColumns?:
+          | T
+          | {
+              desktop?: T;
+              tablet?: T;
+              mobile?: T;
+            };
         spacing?: T;
       };
   id?: T;
@@ -1548,6 +1781,13 @@ export interface PostsSelect<T extends boolean = true> {
         name?: T;
         nickname?: T;
         avatar?: T;
+      };
+  afterContent?:
+    | T
+    | {
+        latestPosts?: T | LatestPostsBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
       };
   slug?: T;
   slugLock?: T;
@@ -2215,6 +2455,42 @@ export interface NotFound {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "postsSettings".
+ */
+export interface PostsSetting {
+  id: number;
+  pageHeader: {
+    /**
+     * Main heading displayed at the top of the posts page
+     */
+    heading: string;
+    /**
+     * Description text displayed below the main heading
+     */
+    description?: string | null;
+  };
+  /**
+   * Configure how many columns to display in the posts grid for different screen sizes
+   */
+  gridColumns?: {
+    /**
+     * Number of columns on large screens (1024px and above)
+     */
+    desktop?: ('2' | '3' | '4') | null;
+    /**
+     * Number of columns on medium screens (768px - 1023px)
+     */
+    tablet?: ('2' | '3' | '4') | null;
+    /**
+     * Number of columns on small screens (below 768px)
+     */
+    mobile?: ('1' | '2') | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2342,6 +2618,28 @@ export interface NotFoundSelect<T extends boolean = true> {
         uuiSize?: T;
         buttonIcon?: T;
         iconPos?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "postsSettings_select".
+ */
+export interface PostsSettingsSelect<T extends boolean = true> {
+  pageHeader?:
+    | T
+    | {
+        heading?: T;
+        description?: T;
+      };
+  gridColumns?:
+    | T
+    | {
+        desktop?: T;
+        tablet?: T;
+        mobile?: T;
       };
   updatedAt?: T;
   createdAt?: T;

@@ -11,8 +11,8 @@ import type { Post } from '@/payload-types'
 
 import { PostLayout } from '@/components/PostLayout'
 import { generateMeta } from '@/utilities/generateMeta'
-import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import RenderBlocks from '@/blocks/RenderBlocks'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -48,10 +48,14 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   if (!post) return <PayloadRedirects url={url} />
 
+  // Fetch posts settings for grid columns
+  const payload = await getPayload({ config: configPromise })
+  const postsSettings = await payload.findGlobal({
+    slug: 'postsSettings',
+  })
+
   return (
     <>
-      <PageClient />
-
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
@@ -67,9 +71,15 @@ export default async function Post({ params: paramsPromise }: Args) {
             <RelatedPosts
               className="max-w-[52rem] mx-auto lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
               docs={post.relatedPosts.filter((post) => typeof post === 'object')}
+              gridColumns={postsSettings?.gridColumns}
             />
           </div>
         </div>
+      )}
+
+      {/* After Content Blocks */}
+      {post.afterContent && post.afterContent.length > 0 && (
+        <RenderBlocks blocks={post.afterContent} />
       )}
     </>
   )
@@ -116,6 +126,7 @@ const queryPostBySlug = cache(async ({ slug, draft }: { slug: string; draft: boo
           description: true,
         },
       },
+      afterContent: true,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,
   })

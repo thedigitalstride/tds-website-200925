@@ -1,12 +1,10 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
-import { usePathname } from 'next/navigation'
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 import type { Header, Page } from '@/payload-types'
 
-// Import UUI Header and CMS dropdown component
-import { Header as UUIHeader } from './uui-components/header'
+// Import UUI Header, CMS dropdown
+import { Header as UUIHeader } from './ui/Header'
 import { CMSDropdown } from './components/CMSDropdown'
 import { getPageUrl } from '@/utilities/pageHelpers'
 
@@ -15,20 +13,6 @@ interface HeaderClientProps {
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  /* Storing the value in a useState to avoid hydration errors */
-  const [theme, setTheme] = useState<string | null>(null)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
-  const pathname = usePathname()
-
-  useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
-
-  useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
 
   // Build navigation items from CMS data
   const navigationItems = useMemo(() => {
@@ -83,23 +67,39 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     })
   }, [data?.navItems])
 
+  // Use global header CTA button
+  const effectiveCtaButton = useMemo(() => {
+    if (data?.ctaButton?.enabled === true) {
+      return {
+        enabled: data.ctaButton.enabled,
+        link: {
+          type: data.ctaButton.link.type as 'reference' | 'custom',
+          url: data.ctaButton.link.url ?? undefined,
+          label: data.ctaButton.link.label ?? undefined,
+          newTab: data.ctaButton.link.newTab ?? undefined,
+          reference: data.ctaButton.link.reference ?? undefined,
+          uuiColor: data.ctaButton.link.uuiColor ?? undefined,
+          uuiSize: data.ctaButton.link.uuiSize ?? undefined,
+          buttonIcon: data.ctaButton.link.buttonIcon ?? undefined,
+          iconPos: data.ctaButton.link.iconPos ?? undefined,
+        },
+      }
+    }
+
+    return undefined
+  }, [data?.ctaButton])
+
   return (
-    <div className="relative z-20" {...(theme ? { 'data-theme': theme } : {})}>
-      <UUIHeader
-        items={navigationItems}
-        ctaButton={data?.ctaButton?.enabled === true ? {
-          enabled: data.ctaButton.enabled,
-          link: {
-            type: data.ctaButton.link.type as 'reference' | 'custom',
-            url: data.ctaButton.link.url ?? undefined,
-            label: data.ctaButton.link.label ?? undefined,
-            newTab: data.ctaButton.link.newTab ?? undefined,
-            reference: data.ctaButton.link.reference ?? undefined,
-            uuiColor: data.ctaButton.link.uuiColor ?? undefined,
-            uuiSize: data.ctaButton.link.uuiSize ?? undefined,
-          }
-        } : undefined}
-      />
-    </div>
+    <header className="fixed top-4 left-4 right-4 md:left-8 md:right-8 z-50">
+      <div className="mx-auto max-w-container">
+        {/* Use bg-brand-solid which automatically changes in dark mode */}
+        <div className="bg-brand-solid rounded-2xl overflow-visible">
+          <UUIHeader
+            items={navigationItems}
+            ctaButton={effectiveCtaButton}
+          />
+        </div>
+      </div>
+    </header>
   )
 }

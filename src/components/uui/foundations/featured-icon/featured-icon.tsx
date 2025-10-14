@@ -14,16 +14,16 @@ const styles = sortCx({
     "rounded-square": {
         base: "",
         sizes: {
-            sm: "size-8 rounded-md",
-            md: "size-10 rounded-lg",
-            lg: "size-12 rounded-[10px]",
+            sm: "size-8 rounded-sm",
+            md: "size-10 rounded-md",
+            lg: "size-12 rounded-lg",
             xl: "size-14 rounded-xl",
         },
         colors: {
-            brand: "bg-brand-solid !text-white dark:!text-brand-500",
+            brand: "bg-brand-solid text-white dark:text-brand-solid",
             accent: "bg-accent-solid !text-white",
-            secondary: "bg-transparent !text-secondary ring-1 ring-black/20 dark:ring-white/20 ring-inset",
-            tertiary: "bg-black/20 dark:bg-white/20 !text-white dark:!text-black",
+            secondary: "bg-transparent !text-brand-500/80 dark:!text-white/80 ring-1 ring-black/20 dark:ring-white/25 ring-inset",
+            tertiary: "bg-brand-500/10 dark:bg-white/20 text-accent-500",
         },
     },
 
@@ -38,8 +38,8 @@ const styles = sortCx({
         colors: {
             brand: "bg-brand-solid !text-white dark:!text-brand-500",
             accent: "bg-accent-solid !text-white",
-            secondary: "bg-transparent !text-secondary ring-1 ring-black/20 dark:ring-white/20 ring-inset",
-            tertiary: "bg-black/20 dark:bg-white/20 !text-white dark:!text-black",
+            secondary: "bg-transparent !text-brand-solid dark:!text-white ring-1 ring-black/25 dark:ring-white/20 ring-inset",
+            tertiary: "bg-brand-500/10 dark:bg-white/20 text-accent-500",
         },
     },
 });

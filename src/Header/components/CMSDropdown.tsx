@@ -1,7 +1,8 @@
 "use client";
 
 import React from 'react'
-import { NavMenuItemLink } from '../uui-components/base-components/nav-menu-item'
+import { motion } from 'motion/react'
+import { NavMenuItemLink } from './NavMenuItem'
 import { getIcon } from '../utils/IconMap'
 import { getPageUrl } from '@/utilities/pageHelpers'
 import type { Header, Page } from '@/payload-types'
@@ -52,26 +53,72 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
   }
 
   return (
-    <div className="px-3 pb-2 md:max-w-84 md:p-0">
-      <nav className="overflow-hidden rounded-2xl bg-primary py-2 shadow-xs ring-1 ring-secondary_alt md:p-2 md:shadow-lg">
-        <ul className="flex flex-col gap-0.5">
-          {items.map((item, index) => {
-            const IconComponent = getIcon(item.icon ?? undefined)
-            const href = getDropdownLinkHref(item.link)
+    <motion.nav
+      initial={{ height: 0 }}
+      animate={{ height: "auto" }}
+      exit={{
+        height: 0,
+        transition: {
+          height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
+        }
+      }}
+      transition={{
+        height: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+      }}
+      className="overflow-hidden"
+    >
+        <div className="pt-3 pb-3 px-4 md:px-5 md:pb-5">
+          <motion.ul
+            className="flex flex-col gap-0.5 md:grid md:grid-cols-4 md:gap-3"
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.08,
+                  delayChildren: 0.15
+                }
+              },
+              hidden: {
+                transition: {
+                  staggerChildren: 0.04,
+                  staggerDirection: -1
+                }
+              }
+            }}
+          >
+            {items.map((item, index) => {
+              const IconComponent = getIcon(item.icon ?? undefined)
+              const href = getDropdownLinkHref(item.link)
 
-            return (
-              <li key={index}>
-                <NavMenuItemLink
-                  icon={IconComponent}
-                  title={item.link?.label || 'Untitled'}
-                  subtitle={item.description ?? undefined}
-                  href={href}
-                />
-              </li>
-            )
-          })}
-        </ul>
-      </nav>
-    </div>
+              return (
+                <motion.li
+                  key={index}
+                  variants={{
+                    hidden: {
+                      opacity: 0
+                    },
+                    visible: {
+                      opacity: 1
+                    }
+                  }}
+                  transition={{
+                    duration: 0.2,
+                    ease: [0.4, 0, 0.2, 1]
+                  }}
+                >
+                  <NavMenuItemLink
+                    icon={IconComponent}
+                    title={item.link?.label || 'Untitled'}
+                    subtitle={item.description ?? undefined}
+                    href={href}
+                  />
+                </motion.li>
+              )
+            })}
+          </motion.ul>
+        </div>
+      </motion.nav>
   )
 }

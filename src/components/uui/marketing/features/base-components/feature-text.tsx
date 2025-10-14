@@ -2,6 +2,7 @@
 
 import type { FC } from "react";
 import { type ReactNode } from "react";
+import Image from "next/image";
 import { FeaturedIcon } from "@/components/uui/foundations/featured-icon/featured-icon";
 
 interface TextCentered {
@@ -88,13 +89,15 @@ export const FeatureTextFeaturedIconTopCentered = ({
     color?: "brand" | "accent" | "secondary" | "tertiary";
     shape?: "rounded-square" | "round";
 }) => (
-    <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-        <FeaturedIcon icon={icon} size="lg" color={color} shape={shape} className="hidden md:inline-flex" />
-        <FeaturedIcon icon={icon} size="md" color={color} shape={shape} className="inline-flex md:hidden" />
+    <div className="flex max-w-sm flex-col justify-between items-center gap-4 text-center h-full">
+        <div className="flex flex-col items-center gap-4">
+            <FeaturedIcon icon={icon} size="lg" color={color} shape={shape} className="hidden md:inline-flex" />
+            <FeaturedIcon icon={icon} size="md" color={color} shape={shape} className="inline-flex md:hidden" />
 
-        <div>
-            <h3 className="text-lg font-semibold text-primary">{title}</h3>
-            <p className="mt-1 text-md text-tertiary">{subtitle}</p>
+            <div>
+                <h3 className="text-lg font-semibold text-primary">{title}</h3>
+                <p className="mt-1 text-md text-tertiary">{subtitle}</p>
+            </div>
         </div>
 
         {footer}
@@ -151,7 +154,7 @@ interface FeatureTextIntegrationIcon extends TextCentered {
 export const FeatureTextIntegrationIconTopCentered = ({ imgUrl, title, subtitle, footer }: FeatureTextIntegrationIcon) => (
     <div className="flex max-w-sm flex-col items-center gap-4 text-center">
         <span className="flex size-13 shrink-0 items-center justify-center rounded-lg bg-primary shadow-xs ring-1 ring-secondary ring-inset md:size-16 md:rounded-xl">
-            <img alt={title} src={imgUrl} className="size-12 md:size-14" />
+            <Image src={imgUrl} alt={title} width={56} height={56} className="size-12 md:size-14" unoptimized />
         </span>
 
         <div className="5 flex flex-col items-center gap-4">
@@ -168,7 +171,7 @@ export const FeatureTextIntegrationIconTopCentered = ({ imgUrl, title, subtitle,
 export const FeatureTextIntegrationIconTopLeft = ({ imgUrl, title, subtitle, footer }: FeatureTextIntegrationIcon) => (
     <div className="flex max-w-sm flex-col gap-4">
         <span className="flex size-13 shrink-0 items-center justify-center rounded-lg bg-primary shadow-xs ring-1 ring-secondary ring-inset md:size-16 md:rounded-xl">
-            <img alt={title} src={imgUrl} className="size-12 md:size-14" />
+            <Image src={imgUrl} alt={title} width={56} height={56} className="size-12 md:size-14" unoptimized />
         </span>
 
         <div className="flex flex-col gap-4">
@@ -185,7 +188,7 @@ export const FeatureTextIntegrationIconTopLeft = ({ imgUrl, title, subtitle, foo
 export const FeatureTextIntegrationIconLeft = ({ imgUrl, title, subtitle, footer }: FeatureTextIntegrationIcon) => (
     <div className="flex max-w-140 gap-4">
         <span className="flex size-13 shrink-0 items-center justify-center rounded-lg bg-primary shadow-xs ring-1 ring-secondary ring-inset md:size-16 md:rounded-xl">
-            <img alt={title} src={imgUrl} className="size-12 md:size-14" />
+            <Image src={imgUrl} alt={title} width={56} height={56} className="size-12 md:size-14" unoptimized />
         </span>
 
         <div className="flex flex-col gap-4">
@@ -202,7 +205,7 @@ export const FeatureTextIntegrationIconLeft = ({ imgUrl, title, subtitle, footer
 export const FeatureTextIntegrationIconBox = ({ imgUrl, title, subtitle, footer }: FeatureTextIntegrationIcon) => (
     <div className="mt-6 flex max-w-sm flex-col items-center gap-4 rounded-2xl bg-secondary px-6 pb-8 text-center">
         <span className="-mt-[26px] flex size-13 shrink-0 items-center justify-center rounded-lg bg-primary shadow-xs ring-1 ring-secondary ring-inset md:-mt-8 md:size-16 md:rounded-xl">
-            <img alt={title} src={imgUrl} className="size-12 md:size-14" />
+            <Image src={imgUrl} alt={title} width={56} height={56} className="size-12 md:size-14" unoptimized />
         </span>
 
         <div>

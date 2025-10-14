@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Check if package.json contains the Motion token placeholder
+if git diff --cached --name-only | grep -q "package.json"; then
+  if git diff --cached package.json | grep -q "motion-plus.*token=" | grep -qv "MOTION_TOKEN_PLACEHOLDER"; then
+    echo "❌ Error: package.json contains a real Motion API token"
+    echo "   Please ensure the placeholder is restored before committing"
+    echo "   Run: node scripts/manage-motion-token.js restore"
+    exit 1
+  fi
+fi
+

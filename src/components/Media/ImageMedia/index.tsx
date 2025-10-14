@@ -10,6 +10,7 @@ import type { Props as MediaProps } from '../types'
 
 import { cssVariables } from '@/cssVariables'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getOptimalPayloadImageUrl } from '@/utilities/getPayloadImageSize'
 
 const { breakpoints } = cssVariables
 
@@ -49,11 +50,20 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
-  // Check if this is a blob storage URL or proxy route to avoid Next.js optimization
+  // Check if this is a blob storage URL or proxy route
   const isBlobStorage = typeof src === 'string' && (
     src.includes('.blob.vercel-storage.com') ||
     src.includes('/api/media/file/')
   )
+
+  // When using blob storage with unoptimized images, manually select the optimal
+  // Payload-generated image size to serve smaller images for thumbnails and cards
+  if (isBlobStorage && resource && typeof resource === 'object' && resource.sizes) {
+    const optimalUrl = getOptimalPayloadImageUrl(resource, sizeFromProps)
+    if (optimalUrl) {
+      src = getMediaUrl(optimalUrl, resource.updatedAt)
+    }
+  }
 
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
   const sizes = sizeFromProps

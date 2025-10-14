@@ -2,14 +2,15 @@
 
 import * as React from 'react'
 import { useFormContext } from 'react-hook-form'
+import { HintText } from '@/components/uui/base/input/hint-text'
 
 export const Error = ({ name }: { name: string }) => {
   const {
     formState: { errors },
   } = useFormContext()
   return (
-    <div className="mt-2 text-red-500 text-sm">
+    <HintText isInvalid={true}>
       {(errors[name]?.message as string) || 'This field is required'}
-    </div>
+    </HintText>
   )
 }

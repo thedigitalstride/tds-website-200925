@@ -46,6 +46,20 @@ export const FeaturesBlock: Block = {
             condition: (_, siblingData) => siblingData?.showHeader === true,
           },
         },
+        {
+          name: 'headerAlignment',
+          type: 'select',
+          defaultValue: 'left',
+          label: 'Header Alignment',
+          options: [
+            { label: 'Left', value: 'left' },
+            { label: 'Center', value: 'center' },
+          ],
+          admin: {
+            description: 'Alignment of the section header',
+            condition: (_, siblingData) => siblingData?.showHeader === true,
+          },
+        },
       ],
     },
     {
@@ -151,13 +165,14 @@ export const FeaturesBlock: Block = {
         {
           name: 'cardBackground',
           type: 'select',
-          defaultValue: 'grey',
-          label: 'Card Style',
+          defaultValue: 'brand',
+          label: 'Card Background',
           options: [
-            { label: 'Grey Background', value: 'grey' },
-            { label: 'Brand Background', value: 'brand' },
-            { label: 'Outline Only', value: 'outline' },
+            { label: 'Brand', value: 'brand' },
+            { label: 'Accent', value: 'accent' },
+            { label: 'Outlined', value: 'outline' },
             { label: 'Top Line', value: 'line' },
+            { label: 'Tinted', value: 'grey' },
           ],
           admin: {
             description: 'Visual style for feature cards (background and borders)',
@@ -169,13 +184,14 @@ export const FeaturesBlock: Block = {
           defaultValue: '3',
           label: 'Grid Columns',
           options: [
+            { label: '1 Column', value: '1' },
             { label: '2 Columns', value: '2' },
             { label: '3 Columns', value: '3' },
             { label: '4 Columns', value: '4' },
           ],
           admin: {
             description:
-              'Number of columns in the grid. Automatically switches to full-width if only one feature exists.',
+              'Number of columns in the grid (1-4). Automatically switches to full-width if only one feature exists.',
           },
         },
         {
@@ -184,10 +200,10 @@ export const FeaturesBlock: Block = {
           defaultValue: 'brand',
           label: 'Icon Color',
           options: [
-            { label: 'Brand (Dark Blue)', value: 'brand' },
-            { label: 'Accent (Light Blue)', value: 'accent' },
-            { label: 'Secondary (Outlined)', value: 'secondary' },
-            { label: 'Tertiary (Tinted)', value: 'tertiary' },
+            { label: 'Brand', value: 'brand' },
+            { label: 'Accent', value: 'accent' },
+            { label: 'Outlined', value: 'secondary' },
+            { label: 'Tinted', value: 'tertiary' },
           ],
           admin: {
             description: 'Color scheme for icons - matches button system',
@@ -224,7 +240,7 @@ export const FeaturesBlock: Block = {
     },
   ],
   labels: {
-    singular: 'Features Section',
-    plural: 'Features Sections',
+    singular: 'Card Grid',
+    plural: 'Cards Grids',
   },
 }

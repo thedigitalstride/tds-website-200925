@@ -11,6 +11,7 @@ import { ButtonBlockComponent } from '@/blocks/ButtonBlock/Component'
 import { HeroHeadingBlock } from '@/blocks/HeroHeadingBlock/Component'
 import { BreadcrumbBlock } from '@/blocks/BreadcrumbBlock/Component'
 import { FeaturesBlock } from '@/blocks/FeaturesBlock/Component'
+import { LatestPostsBlock } from '@/blocks/LatestPostsBlock/Component'
 
 const blockComponents = {
   heroHeading: HeroHeadingBlock,
@@ -22,13 +23,15 @@ const blockComponents = {
   mediaBlock: MediaBlock,
   buttonBlock: ButtonBlockComponent,
   features: FeaturesBlock,
+  latestPosts: LatestPostsBlock,
 }
 
 type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]
 type LayoutBlock = NonNullable<Page['layout']>[number]
 
 export const RenderBlocks: React.FC<{
-  blocks: LayoutBlock[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  blocks: (LayoutBlock | any)[]
   breadcrumbs?: BreadcrumbItem[] | null
 }> = (props) => {
   const { blocks, breadcrumbs } = props
@@ -41,12 +44,11 @@ export const RenderBlocks: React.FC<{
         {blocks.map((block, index) => {
           const { blockType } = block
 
-          if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType]
+          if (blockType && typeof blockType === 'string' && blockType in blockComponents) {
+            const Block = blockComponents[blockType as keyof typeof blockComponents]
 
             if (Block) {
               return (
-                // @ts-expect-error there may be some mismatch between the expected types here
                 <Block key={index} {...block} breadcrumbs={breadcrumbs} disableInnerContainer />
               )
             }
@@ -59,3 +61,5 @@ export const RenderBlocks: React.FC<{
 
   return null
 }
+
+export default RenderBlocks

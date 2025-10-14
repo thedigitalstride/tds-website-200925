@@ -93,8 +93,9 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
           <Media
             resource={heroImage}
             className="order-first -ml-4 w-screen max-w-none md:order-1 md:ml-0 md:w-full md:max-w-full"
-            imgClassName="w-full md:rounded-lg"
+            imgClassName="w-full md:rounded-md"
             priority
+            size="100vw"
           />
         )}
       </div>
@@ -176,6 +177,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                                   resource={contributor.avatar}
                                   className="size-12 rounded-full object-cover"
                                   imgClassName="size-12 rounded-full object-cover"
+                                  size="48px"
                                 />
                               ) : (
                                 <div className="size-12 rounded-md bg-gray-200 flex items-center justify-center">
@@ -289,6 +291,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                                     resource={contributor.avatar}
                                     className="size-12 rounded-md object-cover"
                                     imgClassName="size-12 rounded-md object-cover"
+                                    size="48px"
                                   />
                                 ) : (
                                   <div className="size-12 rounded-md bg-gray-200 flex items-center justify-center">

@@ -14,6 +14,7 @@ import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { NotFound } from './NotFound/config'
+import { PostsSettings } from './PostsSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -24,9 +25,10 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   // Configure logger for production optimization
-  logger: process.env.NODE_ENV === 'production'
-    ? { options: { level: 'warn' } } // Only warnings and errors in production
-    : undefined, // Use default in development
+  logger:
+    process.env.NODE_ENV === 'production'
+      ? { options: { level: 'warn' } } // Only warnings and errors in production
+      : undefined, // Use default in development
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -77,7 +79,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, NotFound],
+  globals: [Header, Footer, NotFound, PostsSettings],
   plugins: [
     ...plugins,
     vercelBlobStorage({
@@ -85,6 +87,7 @@ export default buildConfig({
         media: true,
       },
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
+      // Enable client uploads to bypass Vercel's 4.5MB server upload limit
       clientUploads: true,
     }),
   ],

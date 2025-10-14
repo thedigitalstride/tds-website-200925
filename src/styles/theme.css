@@ -95,6 +95,7 @@
     /* ANIMATIONS */
     --animate-marquee: marquee 60s linear infinite;
     --animate-caret-blink: caret-blink 1s infinite;
+    --animate-spinner: spin 1s linear infinite;
 
     @keyframes marquee {
         0% {
@@ -113,6 +114,15 @@
         51%,
         100% {
             opacity: 0;
+        }
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
         }
     }
 
@@ -1212,7 +1222,7 @@
         --color-text-quaternary_on-accent: var(--color-gray-400);
 
         /* BORDER COLORS */
-        --color-border-secondary: var(--color-gray-800);
+        --color-border-secondary: var(--color-gray-500);
         --color-border-error_subtle: var(--color-error-500);
         --color-border-primary: var(--color-gray-700);
         --color-border-brand: var(--color-brand-400);
@@ -1264,7 +1274,7 @@
         --color-bg-success-primary: var(--color-success-950);
         --color-bg-success-secondary: var(--color-success-600);
         --color-bg-brand-solid: var(--color-white);
-        --color-bg-brand-solid_hover: var(--color-brand-200);
+        --color-bg-brand-solid_hover: var(--color-gray-50);
         --color-bg-secondary-solid: var(--color-gray-600);
         --color-bg-error-solid: var(--color-error-600);
         --color-bg-warning-solid: var(--color-warning-600);
@@ -1435,6 +1445,17 @@
         --outline-color-brand_alt: var(--color-border-brand_alt);
         --outline-color-error_subtle: var(--color-border-error_subtle);
     }
+}
+
+/* PAGE-SPECIFIC HEADER THEME OVERRIDES */
+/* These override the global theme-based colors for specific pages */
+/* Using body selector for higher specificity */
+
+
+/* Smooth transitions for header theme changes */
+.header-logo-svg path,
+.header-logo-svg polygon {
+    transition: fill 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* General rich text - remove top margin from first element */
