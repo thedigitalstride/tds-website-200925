@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion } from 'motion/react'
 import { NavMenuItemLink } from '../uui-components/base-components/nav-menu-item'
 import { getIcon } from '../utils/IconMap'
 import { getPageUrl } from '@/utilities/pageHelpers'
@@ -54,55 +54,76 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
 
   return (
     <motion.nav
-      initial={{ height: 0 }}
-      animate={{ height: "auto" }}
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: "auto", opacity: 1 }}
+      exit={{
+        height: 0,
+        opacity: 0,
+        transition: {
+          height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+          opacity: { duration: 0.2 }
+        }
+      }}
       transition={{
-        duration: 0.6,
-        ease: [0.4, 0, 0.2, 1]
+        height: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
+        opacity: { duration: 0.3 }
       }}
       className="overflow-hidden shadow-lg rounded-b-2xl bg-brand-solid"
     >
-      <div className="py-4 px-4 md:px-5">
-        <motion.ul
-          className="flex flex-col gap-0.5"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            visible: {
-              transition: {
-                staggerChildren: 0.05,
-                delayChildren: 0.3
+        <div className="py-4 px-4 md:px-5">
+          <motion.ul
+            className="flex flex-col gap-0.5"
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.03,
+                  delayChildren: 0.1
+                }
+              },
+              hidden: {
+                transition: {
+                  staggerChildren: 0.02,
+                  staggerDirection: -1
+                }
               }
-            }
-          }}
-        >
-          {items.map((item, index) => {
-            const IconComponent = getIcon(item.icon ?? undefined)
-            const href = getDropdownLinkHref(item.link)
+            }}
+          >
+            {items.map((item, index) => {
+              const IconComponent = getIcon(item.icon ?? undefined)
+              const href = getDropdownLinkHref(item.link)
 
-            return (
-              <motion.li
-                key={index}
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: { opacity: 1 }
-                }}
-                transition={{
-                  duration: 0.3,
-                  ease: [0.4, 0, 0.2, 1]
-                }}
-              >
-                <NavMenuItemLink
-                  icon={IconComponent}
-                  title={item.link?.label || 'Untitled'}
-                  subtitle={item.description ?? undefined}
-                  href={href}
-                />
-              </motion.li>
-            )
-          })}
-        </motion.ul>
-      </div>
-    </motion.nav>
+              return (
+                <motion.li
+                  key={index}
+                  variants={{
+                    hidden: {
+                      opacity: 0,
+                      y: -10
+                    },
+                    visible: {
+                      opacity: 1,
+                      y: 0
+                    }
+                  }}
+                  transition={{
+                    duration: 0.2,
+                    ease: [0.4, 0, 0.2, 1]
+                  }}
+                >
+                  <NavMenuItemLink
+                    icon={IconComponent}
+                    title={item.link?.label || 'Untitled'}
+                    subtitle={item.description ?? undefined}
+                    href={href}
+                  />
+                </motion.li>
+              )
+            })}
+          </motion.ul>
+        </div>
+      </motion.nav>
   )
 }

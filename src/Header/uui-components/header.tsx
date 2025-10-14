@@ -1,8 +1,9 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { ChevronDown } from '@untitledui/icons'
+import { motion, AnimatePresence } from 'motion/react'
 import {
   Button as AriaButton,
   Dialog as AriaDialog,
@@ -32,24 +33,22 @@ const headerNavItems: HeaderNavItem[] = [
   { label: 'About', href: '/about' },
 ]
 
-const footerNavItems = [
-  { label: 'About us', href: '/' },
-  { label: 'Press', href: '/products' },
-  { label: 'Careers', href: '/resources' },
-  { label: 'Legal', href: '/pricing' },
-  { label: 'Support', href: '/pricing' },
-  { label: 'Contact', href: '/pricing' },
-  { label: 'Sitemap', href: '/pricing' },
-  { label: 'Cookie settings', href: '/pricing' },
-]
 
 const MobileNavItem = (props: {
   className?: string
   label: string
   href?: string
   children?: ReactNode
+  isMenuOpen?: boolean
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+
+  // Close submenu when main menu closes
+  useEffect(() => {
+    if (!props.isMenuOpen) {
+      setIsOpen(false)
+    }
+  }, [props.isMenuOpen])
 
   if (props.href) {
     return (
@@ -74,7 +73,7 @@ const MobileNavItem = (props: {
         onClick={() => setIsOpen(!isOpen)}
         className={cx(
           "flex w-full items-center justify-between px-4 py-3 text-md font-semibold",
-          "text-white hover:bg-brand-600 dark-mode:text-brand-500 dark-mode:hover:bg-gray-100"
+          "text-white hover:bg-brand-600 dark:text-brand-500 dark:hover:bg-gray-100"
         )}
       >
         {props.label}{' '}
@@ -86,72 +85,65 @@ const MobileNavItem = (props: {
           )}
         />
       </button>
-      {isOpen && <div>{props.children}</div>}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{
+              height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+              opacity: { duration: 0.2 }
+            }}
+            className="overflow-hidden"
+          >
+            {props.children}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </li>
   )
 }
 
 const MobileFooter = ({ ctaButton }: { ctaButton?: HeaderProps['ctaButton'] }) => {
-  // Helper function to render CTA button - moved here to be in scope
-  const renderCtaButton = (sizeProp?: 'sm' | 'md' | 'lg' | 'xl') => {
-    const defaultSize = sizeProp || 'lg'
-
-    if (!ctaButton?.enabled || !ctaButton.link) {
-      // Default fallback
-      return (
-        <Button color="secondary" size={defaultSize}>
-          ENQUIRE
-        </Button>
-      )
-    }
-
-    const linkData = ctaButton.link
-    let href = '#'
-
-    if (linkData.type === 'reference' && linkData.reference) {
-      if (typeof linkData.reference === 'object' && 'slug' in linkData.reference) {
-        href = `/${linkData.reference.slug}`
-      }
-    } else if (linkData.type === 'custom' && linkData.url) {
-      href = linkData.url
-    }
-
-    const size =
-      linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize)
-        ? (linkData.uuiSize as 'sm' | 'md' | 'lg' | 'xl')
-        : defaultSize
-    const color =
-      linkData.uuiColor &&
-      ['primary', 'accent', 'secondary', 'tertiary', 'link'].includes(linkData.uuiColor)
-        ? (linkData.uuiColor as 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link')
-        : 'secondary'
-
-    return (
-      <Button
-        color={color}
-        size={size}
-        href={href}
-        {...(linkData.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      >
-        {linkData.label || 'ENQUIRE'}
-      </Button>
-    )
+  // Only show the footer if CTA button is enabled
+  if (!ctaButton?.enabled || !ctaButton.link) {
+    return null
   }
 
+  const linkData = ctaButton.link
+  let href = '#'
+
+  if (linkData.type === 'reference' && linkData.reference) {
+    if (typeof linkData.reference === 'object' && 'slug' in linkData.reference) {
+      href = `/${linkData.reference.slug}`
+    }
+  } else if (linkData.type === 'custom' && linkData.url) {
+    href = linkData.url
+  }
+
+  const size =
+    linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize)
+      ? (linkData.uuiSize as 'sm' | 'md' | 'lg' | 'xl')
+      : 'lg'
+  const color =
+    linkData.uuiColor &&
+    ['primary', 'accent', 'secondary', 'tertiary', 'link'].includes(linkData.uuiColor)
+      ? (linkData.uuiColor as 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link')
+      : 'secondary'
+
   return (
-    <div className="flex flex-col gap-8 border-t border-secondary px-4 py-6">
-      <div>
-        <ul className="grid grid-flow-col grid-cols-2 grid-rows-4 gap-x-6 gap-y-3">
-          {footerNavItems.map((navItem) => (
-            <li key={navItem.label}>
-              <Button color="link" size="lg" href={navItem.href}>
-                {navItem.label}
-              </Button>
-            </li>
-          ))}
-        </ul>
+    <div className="px-4 py-6">
+      <div className="flex flex-col gap-3">
+        <Button
+          color={color}
+          size={size}
+          href={href}
+          {...(linkData.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        >
+          {linkData.label || 'ENQUIRE'}
+        </Button>
       </div>
-      <div className="flex flex-col gap-3">{renderCtaButton('lg')}</div>
     </div>
   )
 }
@@ -178,7 +170,7 @@ interface HeaderProps {
 
 export const Header = ({
   items = headerNavItems,
-  isFullWidth,
+  isFullWidth: _isFullWidth,
   isFloating,
   className,
   logoVariant = 'auto',
@@ -326,14 +318,19 @@ export const Header = ({
       <div
         className={cx(
           "md:hidden w-full overflow-hidden transition-all duration-300 ease-in-out",
-          isMobileMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+          // Expand to full viewport height minus top position (4rem) and equal bottom margin (4rem)
+          isMobileMenuOpen ? "max-h-[calc(100vh-8rem)] opacity-100" : "max-h-0 opacity-0"
         )}
       >
-        <div className="py-5">
+        <div className="py-5 overflow-y-auto scrollbar-hide max-h-[calc(100vh-10rem)]">
           <ul className="flex flex-col gap-0.5">
             {items.map((navItem) =>
               navItem.menu ? (
-                <MobileNavItem key={navItem.label} label={navItem.label}>
+                <MobileNavItem
+                  key={navItem.label}
+                  label={navItem.label}
+                  isMenuOpen={isMobileMenuOpen}
+                >
                   {navItem.menu}
                 </MobileNavItem>
               ) : (
@@ -341,6 +338,7 @@ export const Header = ({
                   key={navItem.label}
                   label={navItem.label}
                   href={navItem.href}
+                  isMenuOpen={isMobileMenuOpen}
                 />
               ),
             )}
