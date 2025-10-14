@@ -18,11 +18,18 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
     return url
   }
 
+  // Handle Payload media proxy routes - these are relative paths designed to work on any domain
+  // Example: /api/media/file/media/filename.webp
+  // Do not prepend base URL as they resolve correctly relative to current domain
+  if (url.startsWith('/api/media/')) {
+    return cacheTag ? `${url}?${encodeURIComponent(cacheTag)}` : url
+  }
+
   if (cacheTag && cacheTag !== '') {
     cacheTag = encodeURIComponent(cacheTag)
   }
 
-  // Only prepend base URL for relative paths
+  // Only prepend base URL for other relative paths
   const baseUrl = getClientSideURL()
   return cacheTag ? `${baseUrl}${url}?${cacheTag}` : `${baseUrl}${url}`
 }
