@@ -34,6 +34,10 @@ export async function generateStaticParams() {
   return params
 }
 
+// Prevent dynamic generation of pages not in generateStaticParams
+// This ensures only posts that exist at build time are accessible
+export const dynamicParams = false
+
 type Args = {
   params: Promise<{
     slug?: string
