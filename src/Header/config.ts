@@ -134,7 +134,7 @@ export const Header: GlobalConfig = {
             description: 'Links that appear in the dropdown menu',
             initCollapsed: true,
             components: {
-              RowLabel: '@/Header/DropdownRowLabel#DropdownRowLabel',
+              RowLabel: '@/Header/admin/DropdownRowLabel#DropdownRowLabel',
             },
           },
         },
@@ -143,7 +143,7 @@ export const Header: GlobalConfig = {
       admin: {
         initCollapsed: true,
         components: {
-          RowLabel: '@/Header/RowLabel#RowLabel',
+          RowLabel: '@/Header/admin/RowLabel#RowLabel',
         },
       },
     },

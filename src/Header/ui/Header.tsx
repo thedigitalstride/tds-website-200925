@@ -14,9 +14,6 @@ import { Button } from '@/components/uui/button'
 import { TDSLogo } from '@/components/Logo/tds-logo'
 import { cx } from '@/utils/cx'
 import Link from 'next/link'
-import { DropdownMenuFeatureCard } from './dropdown-menu-feature-card'
-import { DropdownMenuSimpleWithFooter } from './dropdown-menu-simple-with-footer'
-import { DropdownMenuWithTwoColsAndLinksAndFooter } from './dropdown-menu-with-two-cols-and-links-and-footer'
 import { MobileMenuButton } from '../components/MobileMenuButton'
 
 type HeaderNavItem = {
@@ -25,13 +22,8 @@ type HeaderNavItem = {
   menu?: ReactNode
 }
 
-const headerNavItems: HeaderNavItem[] = [
-  { label: 'Products', href: '/products', menu: <DropdownMenuSimpleWithFooter /> },
-  { label: 'Services', href: '/Services', menu: <DropdownMenuFeatureCard /> },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'Resources', href: '/resources', menu: <DropdownMenuWithTwoColsAndLinksAndFooter /> },
-  { label: 'About', href: '/about' },
-]
+// Default nav items (empty - will be populated from CMS)
+const defaultNavItems: HeaderNavItem[] = []
 
 
 const MobileNavItem = (props: {
@@ -169,7 +161,7 @@ interface HeaderProps {
 }
 
 export const Header = ({
-  items = headerNavItems,
+  items = defaultNavItems,
   isFullWidth: _isFullWidth,
   isFloating,
   className,

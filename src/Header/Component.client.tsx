@@ -4,7 +4,7 @@ import React, { useMemo } from 'react'
 import type { Header, Page } from '@/payload-types'
 
 // Import UUI Header, CMS dropdown
-import { Header as UUIHeader } from './uui-components/header'
+import { Header as UUIHeader } from './ui/Header'
 import { CMSDropdown } from './components/CMSDropdown'
 import { getPageUrl } from '@/utilities/pageHelpers'
 

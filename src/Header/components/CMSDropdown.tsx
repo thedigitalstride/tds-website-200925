@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion } from 'motion/react'
-import { NavMenuItemLink } from '../uui-components/base-components/nav-menu-item'
+import { NavMenuItemLink } from './NavMenuItem'
 import { getIcon } from '../utils/IconMap'
 import { getPageUrl } from '@/utilities/pageHelpers'
 import type { Header, Page } from '@/payload-types'
