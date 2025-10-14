@@ -1,21 +1,18 @@
 'use client'
 import React, { useMemo } from 'react'
-import { motion } from 'motion/react'
 
 import type { Header, Page } from '@/payload-types'
 
-// Import UUI Header, CMS dropdown, and new hooks/components
+// Import UUI Header, CMS dropdown
 import { Header as UUIHeader } from './uui-components/header'
 import { CMSDropdown } from './components/CMSDropdown'
 import { getPageUrl } from '@/utilities/pageHelpers'
-import { useHeaderAutoHide } from './hooks/useHeaderAutoHide'
 
 interface HeaderClientProps {
   data: Header
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  const { isCollapsed } = useHeaderAutoHide()
 
   // Build navigation items from CMS data
   const navigationItems = useMemo(() => {
@@ -85,7 +82,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           uuiSize: data.ctaButton.link.uuiSize ?? undefined,
           buttonIcon: data.ctaButton.link.buttonIcon ?? undefined,
           iconPos: data.ctaButton.link.iconPos ?? undefined,
-        }
+        },
       }
     }
 
@@ -93,29 +90,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [data?.ctaButton])
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="mx-auto max-w-container md:px-8 flex justify-end">
-        {/* Brand blue header with rounded bottom corners - shrinks from left to right */}
-        <motion.div
-          className="bg-brand-solid text-white md:rounded-b-2xl shadow-lg overflow-hidden"
-          initial={false}
-          animate={{
-            width: isCollapsed ? "auto" : "100%"
-          }}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 30,
-            mass: 0.8
-          }}
-        >
+    <header className="fixed top-4 left-4 right-4 md:left-8 md:right-8 z-50">
+      <div className="mx-auto max-w-container">
+        {/* Use bg-brand-solid which automatically changes in dark mode */}
+        <div className="bg-brand-solid rounded-2xl overflow-hidden">
           <UUIHeader
             items={navigationItems}
-            logoVariant="light"
             ctaButton={effectiveCtaButton}
-            isCollapsed={isCollapsed}
           />
-        </motion.div>
+        </div>
       </div>
     </header>
   )

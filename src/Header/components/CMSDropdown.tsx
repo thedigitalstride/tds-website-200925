@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react'
+import { motion, AnimatePresence } from 'motion/react'
 import { NavMenuItemLink } from '../uui-components/base-components/nav-menu-item'
 import { getIcon } from '../utils/IconMap'
 import { getPageUrl } from '@/utilities/pageHelpers'
@@ -52,26 +53,56 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
   }
 
   return (
-    <div className="px-3 pb-2 md:max-w-84 md:p-0">
-      <nav className="overflow-hidden rounded-lg bg-primary py-2 shadow-xs ring-1 ring-primary dark:ring-secondary ring-inset md:p-2 md:shadow-lg">
-        <ul className="flex flex-col gap-0.5">
+    <motion.nav
+      initial={{ height: 0 }}
+      animate={{ height: "auto" }}
+      transition={{
+        duration: 0.6,
+        ease: [0.4, 0, 0.2, 1]
+      }}
+      className="overflow-hidden shadow-lg rounded-b-2xl bg-brand-solid"
+    >
+      <div className="py-4 px-4 md:px-5">
+        <motion.ul
+          className="flex flex-col gap-0.5"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.05,
+                delayChildren: 0.3
+              }
+            }
+          }}
+        >
           {items.map((item, index) => {
             const IconComponent = getIcon(item.icon ?? undefined)
             const href = getDropdownLinkHref(item.link)
 
             return (
-              <li key={index}>
+              <motion.li
+                key={index}
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1 }
+                }}
+                transition={{
+                  duration: 0.3,
+                  ease: [0.4, 0, 0.2, 1]
+                }}
+              >
                 <NavMenuItemLink
                   icon={IconComponent}
                   title={item.link?.label || 'Untitled'}
                   subtitle={item.description ?? undefined}
                   href={href}
                 />
-              </li>
+              </motion.li>
             )
           })}
-        </ul>
-      </nav>
-    </div>
+        </motion.ul>
+      </div>
+    </motion.nav>
   )
 }

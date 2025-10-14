@@ -1273,8 +1273,8 @@
         --color-bg-warning-secondary: var(--color-warning-600);
         --color-bg-success-primary: var(--color-success-950);
         --color-bg-success-secondary: var(--color-success-600);
-        --color-bg-brand-solid: var(--color-brand-500);
-        --color-bg-brand-solid_hover: var(--color-brand-200);
+        --color-bg-brand-solid: var(--color-white);
+        --color-bg-brand-solid_hover: var(--color-gray-50);
         --color-bg-secondary-solid: var(--color-gray-600);
         --color-bg-error-solid: var(--color-error-600);
         --color-bg-warning-solid: var(--color-warning-600);

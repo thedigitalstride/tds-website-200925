@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import { BookClosed, FileCode01, LifeBuoy01, PlayCircle, Stars02 } from "@untitledui/icons";
 import { Button } from "@/components/uui/button";
 import { NavMenuItemLink } from "./base-components/nav-menu-item";

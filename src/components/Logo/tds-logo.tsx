@@ -20,12 +20,14 @@ export const TDSLogo = ({ variant = "auto", size = "md", ...props }: TDSLogoProp
     // Determine text color based on variant
     let textColor: string;
     if (variant === "light") {
-        textColor = "#ffffff"; // White for dark backgrounds
+        textColor = "#031A43"; // Dark blue text for light backgrounds
     } else if (variant === "dark") {
-        textColor = "#031A43"; // Brand blue for light backgrounds
+        textColor = "#ffffff"; // White text for dark backgrounds
     } else {
-        // Auto: use CSS variable that responds to theme
-        textColor = "var(--color-text-primary)";
+        // Auto: use CSS variable that inverts with bg-brand-solid
+        // In light mode: white text on dark blue background
+        // In dark mode: dark blue text on white background
+        textColor = "currentColor";
     }
     const accentColor = "#1689ff";
     const sizeClass = sizeClasses[size];
