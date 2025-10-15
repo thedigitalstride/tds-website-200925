@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { NavMenuItemLink } from './NavMenuItem'
 import { getIcon } from '../utils/IconMap'
@@ -48,6 +48,18 @@ function getDropdownLinkHref(linkData: { type?: 'reference' | 'custom' | null; u
 }
 
 export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768) // md breakpoint
+    }
+
+    checkDesktop()
+    window.addEventListener('resize', checkDesktop)
+    return () => window.removeEventListener('resize', checkDesktop)
+  }, [])
+
   if (!items || items.length === 0) {
     return null
   }
@@ -67,22 +79,22 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
       }}
       className="overflow-hidden"
     >
-        <div className="pt-3 pb-3 px-4 md:px-5 md:pb-5">
+        <div className="pt-3 pb-3 md:px-5 md:pb-5">
           <motion.ul
-            className="flex flex-col gap-0.5 md:grid md:grid-cols-4 md:gap-3"
+            className="flex flex-col gap-0.5 md:grid md:grid-cols-4 md:gap-3 md:auto-rows-fr"
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={{
               visible: {
                 transition: {
-                  staggerChildren: 0.08,
-                  delayChildren: 0.15
+                  staggerChildren: 0.02,
+                  delayChildren: 0.05
                 }
               },
               hidden: {
                 transition: {
-                  staggerChildren: 0.04,
+                  staggerChildren: 0.02,
                   staggerDirection: -1
                 }
               }
@@ -95,12 +107,15 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
               return (
                 <motion.li
                   key={index}
+                  className="h-full"
                   variants={{
                     hidden: {
-                      opacity: 0
+                      opacity: 0,
+                      y: isDesktop ? -32 : 0
                     },
                     visible: {
-                      opacity: 1
+                      opacity: 1,
+                      y: 0
                     }
                   }}
                   transition={{

@@ -385,8 +385,8 @@ export const Header = ({
                 variants={{
                   visible: {
                     transition: {
-                      staggerChildren: 0.1,
-                      delayChildren: 0.15
+                      staggerChildren: 0.04,
+                      delayChildren: 0
                     }
                   },
                   hidden: {
@@ -402,7 +402,7 @@ export const Header = ({
                     <motion.li
                       key={navItem.label}
                       variants={{
-                        hidden: { opacity: 0, y: -10 },
+                        hidden: { opacity: 0, y: -32 },
                         visible: { opacity: 1, y: 0 }
                       }}
                       transition={{
@@ -421,7 +421,7 @@ export const Header = ({
                     <motion.li
                       key={navItem.label}
                       variants={{
-                        hidden: { opacity: 0, y: -10 },
+                        hidden: { opacity: 0, y: -32 },
                         visible: { opacity: 1, y: 0 }
                       }}
                       transition={{
