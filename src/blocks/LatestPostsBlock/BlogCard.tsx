@@ -61,7 +61,7 @@ export const PayloadBlogCard: React.FC<{
               href={category.href}
               className="text-sm font-semibold text-brand-secondary transition-colors hover:text-brand-secondary_hover"
             >
-              <Badge size="sm" color="brand" type="pill-color">
+              <Badge size="sm" color="brand" type="modern">
                 {category.name}
               </Badge>
             </Link>

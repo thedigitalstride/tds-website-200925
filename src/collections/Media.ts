@@ -32,7 +32,7 @@ export const Media: CollectionConfig = {
       admin: {
         description: 'Alt text is required for accessibility. Describe the image for screen readers.',
       },
-      validate: (value: string | null | undefined, options: any) => {
+      validate: (value: string | null | undefined, options: { operation?: string }) => {
         // Only require alt text for new uploads (create operation)
         // Allow existing media without alt text to remain valid
         if (options?.operation === 'create' && !value) {

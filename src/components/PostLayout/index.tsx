@@ -56,7 +56,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                       href={`/posts?category=${category.slug}`}
                       className="inline-block"
                     >
-                      <BadgeGroup size="md" addonText="Blog" color="brand" theme="light" className="pr-3 hover:bg-brand-50 transition-colors" iconTrailing={null}>
+                      <BadgeGroup size="md" addonText="Blog" color="brand" theme="modern" className="pr-3 hover:bg-secondary transition-colors" iconTrailing={null}>
                         {category.title}
                       </BadgeGroup>
                     </a>
@@ -65,7 +65,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                 // Handle non-populated categories (just IDs) - fallback
                 if (typeof category === 'string' || typeof category === 'number') {
                   return (
-                    <BadgeGroup key={index} size="md" addonText="Blog" color="brand" theme="light" className="pr-3" iconTrailing={null}>
+                    <BadgeGroup key={index} size="md" addonText="Blog" color="brand" theme="modern" className="pr-3" iconTrailing={null}>
                       Category {category}
                     </BadgeGroup>
                   );

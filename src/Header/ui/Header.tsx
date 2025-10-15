@@ -9,6 +9,7 @@ import { TDSLogo } from '@/components/Logo/tds-logo'
 import { cx } from '@/utils/cx'
 import Link from 'next/link'
 import { MobileMenuButton } from '../components/MobileMenuButton'
+import { getIcon } from '../utils/IconMap'
 
 type HeaderNavItem = {
   label: string
@@ -115,59 +116,6 @@ const MobileNavItem = (props: {
   )
 }
 
-const MobileFooter = ({ ctaButton }: { ctaButton?: HeaderProps['ctaButton'] }) => {
-  // Only show the footer if CTA button is enabled
-  if (!ctaButton?.enabled || !ctaButton.link) {
-    return null
-  }
-
-  const linkData = ctaButton.link
-  let href = '#'
-
-  if (linkData.type === 'reference' && linkData.reference) {
-    if (typeof linkData.reference === 'object' && 'slug' in linkData.reference) {
-      href = `/${linkData.reference.slug}`
-    }
-  } else if (linkData.type === 'custom' && linkData.url) {
-    href = linkData.url
-  }
-
-  const size =
-    linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize)
-      ? (linkData.uuiSize as 'sm' | 'md' | 'lg' | 'xl')
-      : 'lg'
-  const color =
-    linkData.uuiColor &&
-    ['primary', 'accent', 'secondary', 'tertiary', 'link'].includes(linkData.uuiColor)
-      ? (linkData.uuiColor as 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link')
-      : 'secondary'
-
-  return (
-    <motion.div
-      className="px-4 pt-3"
-      variants={{
-        hidden: { opacity: 0, y: -10 },
-        visible: { opacity: 1, y: 0 }
-      }}
-      transition={{
-        duration: 0.2,
-        ease: [0.4, 0, 0.2, 1]
-      }}
-    >
-      <div className="flex flex-col gap-3">
-        <Button
-          color={color}
-          size={size}
-          href={href}
-          {...(linkData.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-        >
-          {linkData.label || 'ENQUIRE'}
-        </Button>
-      </div>
-    </motion.div>
-  )
-}
-
 interface HeaderProps {
   items?: HeaderNavItem[]
   isFullWidth?: boolean
@@ -184,6 +132,22 @@ interface HeaderProps {
       newTab?: boolean
       uuiColor?: string
       uuiSize?: string
+      buttonIcon?: string
+      iconPos?: string
+    }
+  }
+  mobileCtaButton?: {
+    enabled: boolean
+    link: {
+      label?: string
+      type: 'reference' | 'custom'
+      reference?: { value: number | { slug?: string | null }; relationTo: string }
+      url?: string
+      newTab?: boolean
+      uuiColor?: string
+      uuiSize?: string
+      buttonIcon?: string
+      iconPos?: string
     }
   }
 }
@@ -195,6 +159,7 @@ export const Header = ({
   className,
   logoVariant = 'auto',
   ctaButton,
+  mobileCtaButton,
 }: HeaderProps) => {
   const headerRef = useRef<HTMLDivElement>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -248,11 +213,66 @@ export const Header = ({
         ? (linkData.uuiColor as 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link')
         : 'secondary'
 
+    // Get icon component if specified
+    const IconComponent = linkData.buttonIcon ? getIcon(linkData.buttonIcon) : null
+    const iconPosition = linkData.iconPos || 'trailing'
+
     return (
       <Button
         color={color}
         size={size}
         href={href}
+        iconLeading={iconPosition === 'leading' ? IconComponent : undefined}
+        iconTrailing={iconPosition === 'trailing' ? IconComponent : undefined}
+        {...(linkData.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      >
+        {linkData.label || 'ENQUIRE'}
+      </Button>
+    )
+  }
+
+  // Helper function to render mobile CTA button
+  const renderMobileCtaButton = () => {
+    // Determine which CTA config to use
+    const effectiveCta = mobileCtaButton?.enabled ? mobileCtaButton : ctaButton
+
+    // If no CTA is enabled, don't render anything
+    if (!effectiveCta?.enabled || !effectiveCta.link) {
+      return null
+    }
+
+    const linkData = effectiveCta.link
+    let href = '#'
+
+    if (linkData.type === 'reference' && linkData.reference) {
+      if (typeof linkData.reference === 'object' && 'slug' in linkData.reference) {
+        href = `/${linkData.reference.slug}`
+      }
+    } else if (linkData.type === 'custom' && linkData.url) {
+      href = linkData.url
+    }
+
+    const size =
+      linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize)
+        ? (linkData.uuiSize as 'sm' | 'md' | 'lg' | 'xl')
+        : 'sm' // Default to small for mobile
+    const color =
+      linkData.uuiColor &&
+      ['primary', 'accent', 'secondary', 'tertiary', 'link'].includes(linkData.uuiColor)
+        ? (linkData.uuiColor as 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link')
+        : 'secondary'
+
+    // Get icon component if specified
+    const IconComponent = linkData.buttonIcon ? getIcon(linkData.buttonIcon) : null
+    const iconPosition = linkData.iconPos || 'trailing'
+
+    return (
+      <Button
+        color={color}
+        size={size}
+        href={href}
+        iconLeading={iconPosition === 'leading' ? IconComponent : undefined}
+        iconTrailing={iconPosition === 'trailing' ? IconComponent : undefined}
         {...(linkData.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       >
         {linkData.label || 'ENQUIRE'}
@@ -289,7 +309,12 @@ export const Header = ({
             </Link>
           </div>
 
-          {/* Navigation */}
+          {/* Mobile CTA - centered in mobile header */}
+          <div className="flex flex-1 items-center justify-center md:hidden">
+            {renderMobileCtaButton()}
+          </div>
+
+          {/* Desktop Navigation */}
           <nav className="max-md:hidden flex-1 md:flex md:justify-center" suppressHydrationWarning>
             <ul className="flex items-center gap-0.5 whitespace-nowrap">
               {items.map((navItem) => (
@@ -320,16 +345,17 @@ export const Header = ({
             </ul>
           </nav>
 
-          {/* CTA Button - always visible */}
-          <div className="flex items-center max-md:gap-0 md:gap-3">
+          {/* Desktop CTA and Mobile Menu Button */}
+          <div className="flex items-center gap-3">
+            {/* Desktop CTA - shows on desktop only */}
             <div className="hidden items-center gap-3 md:flex">{renderCtaButton()}</div>
-          </div>
 
-          {/* Mobile menu button */}
-          <MobileMenuButton
-            isOpen={isMobileMenuOpen}
-            onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          />
+            {/* Mobile menu button */}
+            <MobileMenuButton
+              isOpen={isMobileMenuOpen}
+              onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            />
+          </div>
         </div>
       </div>
 
@@ -409,11 +435,8 @@ export const Header = ({
                         isMenuOpen={isMobileMenuOpen}
                       />
                     </motion.li>
-                  ),
+                  )
                 )}
-
-                {/* CTA Button - appears last in stagger sequence */}
-                <MobileFooter ctaButton={ctaButton} />
               </motion.ul>
             </div>
           </motion.div>
