@@ -69,7 +69,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
   // Use global header CTA button
   const effectiveCtaButton = useMemo(() => {
-    if (data?.ctaButton?.enabled === true) {
+    if (data?.ctaButton?.enabled === true && data.ctaButton.link) {
       return {
         enabled: data.ctaButton.enabled,
         link: {
@@ -89,6 +89,28 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     return undefined
   }, [data?.ctaButton])
 
+  // Use global header mobile CTA button (optional)
+  const effectiveMobileCtaButton = useMemo(() => {
+    if (data?.mobileCtaButton?.enabled === true && data.mobileCtaButton.link) {
+      return {
+        enabled: data.mobileCtaButton.enabled,
+        link: {
+          type: data.mobileCtaButton.link.type as 'reference' | 'custom',
+          url: data.mobileCtaButton.link.url ?? undefined,
+          label: data.mobileCtaButton.link.label ?? undefined,
+          newTab: data.mobileCtaButton.link.newTab ?? undefined,
+          reference: data.mobileCtaButton.link.reference ?? undefined,
+          uuiColor: data.mobileCtaButton.link.uuiColor ?? undefined,
+          uuiSize: data.mobileCtaButton.link.uuiSize ?? undefined,
+          buttonIcon: data.mobileCtaButton.link.buttonIcon ?? undefined,
+          iconPos: data.mobileCtaButton.link.iconPos ?? undefined,
+        },
+      }
+    }
+
+    return undefined
+  }, [data?.mobileCtaButton])
+
   return (
     <header className="fixed top-4 left-4 right-4 md:left-8 md:right-8 z-50">
       <div className="mx-auto max-w-container">
@@ -97,6 +119,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <UUIHeader
             items={navigationItems}
             ctaButton={effectiveCtaButton}
+            mobileCtaButton={effectiveMobileCtaButton}
           />
         </div>
       </div>

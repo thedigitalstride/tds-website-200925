@@ -2300,6 +2300,46 @@ export interface Header {
       iconPos?: ('leading' | 'trailing') | null;
     };
   };
+  /**
+   * Optional mobile-specific CTA button that appears in the mobile header bar (centered between logo and menu button). If not enabled, falls back to the desktop CTA button.
+   */
+  mobileCtaButton?: {
+    /**
+     * Enable to customize the mobile header button. If disabled, the desktop CTA button will be used on mobile.
+     */
+    enabled?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+      /**
+       * Button color variant from UntitledUI design system
+       */
+      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      /**
+       * Button size variant
+       */
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+      /**
+       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+       */
+      buttonIcon?: string | null;
+      /**
+       * Position of the icon relative to the button text
+       */
+      iconPos?: ('leading' | 'trailing') | null;
+    };
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2526,6 +2566,24 @@ export interface HeaderSelect<T extends boolean = true> {
         id?: T;
       };
   ctaButton?:
+    | T
+    | {
+        enabled?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              uuiColor?: T;
+              uuiSize?: T;
+              buttonIcon?: T;
+              iconPos?: T;
+            };
+      };
+  mobileCtaButton?:
     | T
     | {
         enabled?: T;

@@ -174,6 +174,38 @@ export const Header: GlobalConfig = {
         description: 'Call-to-action button that appears on the right side of the header',
       },
     },
+    {
+      name: 'mobileCtaButton',
+      type: 'group',
+      label: 'Mobile CTA Button (Optional)',
+      fields: [
+        {
+          name: 'enabled',
+          type: 'checkbox',
+          label: 'Use Custom Mobile CTA',
+          defaultValue: false,
+          admin: {
+            description: 'Enable to customize the mobile header button. If disabled, the desktop CTA button will be used on mobile.',
+          },
+        },
+        link({
+          appearances: false,
+          enableUUIButton: true,
+          uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+          uuiSizes: ['sm', 'md', 'lg', 'xl'],
+          defaultUUIColor: 'primary',
+          defaultUUISize: 'sm',
+          overrides: {
+            admin: {
+              condition: (_, siblingData) => siblingData?.enabled === true,
+            },
+          },
+        }),
+      ],
+      admin: {
+        description: 'Optional mobile-specific CTA button that appears in the mobile header bar (centered between logo and menu button). If not enabled, falls back to the desktop CTA button.',
+      },
+    },
   ],
   hooks: {
     afterChange: [revalidateHeader],
