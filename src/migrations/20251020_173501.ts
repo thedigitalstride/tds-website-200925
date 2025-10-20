@@ -36,10 +36,24 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   `)
 
   // Update features block enums - pages_blocks_features card_background
+  // Step 1: Convert column to text to allow data transformation
   await db.execute(sql`
     ALTER TABLE "pages_blocks_features" ALTER COLUMN "layout_options_card_background" SET DATA TYPE text;
   `)
 
+  // Step 2: Transform old enum values to new ones
+  await db.execute(sql`
+    UPDATE "pages_blocks_features"
+    SET "layout_options_card_background" = CASE
+      WHEN "layout_options_card_background" = 'brand' THEN 'primary'
+      WHEN "layout_options_card_background" = 'grey' THEN 'secondary'
+      WHEN "layout_options_card_background" = 'outline' THEN 'line'
+      ELSE "layout_options_card_background"
+    END
+    WHERE "layout_options_card_background" IN ('brand', 'grey', 'outline');
+  `)
+
+  // Step 3: Drop old enum type and create new one
   await db.execute(sql`
     DROP TYPE IF EXISTS "public"."enum_pages_blocks_features_layout_options_card_background" CASCADE;
   `)
@@ -48,6 +62,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     CREATE TYPE "public"."enum_pages_blocks_features_layout_options_card_background" AS ENUM('primary', 'secondary', 'accent', 'line');
   `)
 
+  // Step 4: Convert column back to enum with new type
   await db.execute(sql`
     ALTER TABLE "pages_blocks_features"
       ALTER COLUMN "layout_options_card_background" SET DATA TYPE "public"."enum_pages_blocks_features_layout_options_card_background"
@@ -56,10 +71,22 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   `)
 
   // Update features block enums - pages_blocks_features icon_color
+  // Step 1: Convert column to text to allow data transformation
   await db.execute(sql`
     ALTER TABLE "pages_blocks_features" ALTER COLUMN "layout_options_icon_color" SET DATA TYPE text;
   `)
 
+  // Step 2: Transform old enum values to new ones
+  await db.execute(sql`
+    UPDATE "pages_blocks_features"
+    SET "layout_options_icon_color" = CASE
+      WHEN "layout_options_icon_color" = 'brand' THEN 'primary'
+      ELSE "layout_options_icon_color"
+    END
+    WHERE "layout_options_icon_color" = 'brand';
+  `)
+
+  // Step 3: Drop old enum type and create new one
   await db.execute(sql`
     DROP TYPE IF EXISTS "public"."enum_pages_blocks_features_layout_options_icon_color" CASCADE;
   `)
@@ -68,6 +95,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     CREATE TYPE "public"."enum_pages_blocks_features_layout_options_icon_color" AS ENUM('primary', 'secondary', 'tertiary', 'accent');
   `)
 
+  // Step 4: Convert column back to enum with new type
   await db.execute(sql`
     ALTER TABLE "pages_blocks_features"
       ALTER COLUMN "layout_options_icon_color" SET DATA TYPE "public"."enum_pages_blocks_features_layout_options_icon_color"
@@ -76,10 +104,24 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   `)
 
   // Update features block enums - _pages_v_blocks_features card_background
+  // Step 1: Convert column to text to allow data transformation
   await db.execute(sql`
     ALTER TABLE "_pages_v_blocks_features" ALTER COLUMN "layout_options_card_background" SET DATA TYPE text;
   `)
 
+  // Step 2: Transform old enum values to new ones
+  await db.execute(sql`
+    UPDATE "_pages_v_blocks_features"
+    SET "layout_options_card_background" = CASE
+      WHEN "layout_options_card_background" = 'brand' THEN 'primary'
+      WHEN "layout_options_card_background" = 'grey' THEN 'secondary'
+      WHEN "layout_options_card_background" = 'outline' THEN 'line'
+      ELSE "layout_options_card_background"
+    END
+    WHERE "layout_options_card_background" IN ('brand', 'grey', 'outline');
+  `)
+
+  // Step 3: Drop old enum type and create new one
   await db.execute(sql`
     DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_features_layout_options_card_background" CASCADE;
   `)
@@ -88,6 +130,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     CREATE TYPE "public"."enum__pages_v_blocks_features_layout_options_card_background" AS ENUM('primary', 'secondary', 'accent', 'line');
   `)
 
+  // Step 4: Convert column back to enum with new type
   await db.execute(sql`
     ALTER TABLE "_pages_v_blocks_features"
       ALTER COLUMN "layout_options_card_background" SET DATA TYPE "public"."enum__pages_v_blocks_features_layout_options_card_background"
@@ -96,10 +139,22 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   `)
 
   // Update features block enums - _pages_v_blocks_features icon_color
+  // Step 1: Convert column to text to allow data transformation
   await db.execute(sql`
     ALTER TABLE "_pages_v_blocks_features" ALTER COLUMN "layout_options_icon_color" SET DATA TYPE text;
   `)
 
+  // Step 2: Transform old enum values to new ones
+  await db.execute(sql`
+    UPDATE "_pages_v_blocks_features"
+    SET "layout_options_icon_color" = CASE
+      WHEN "layout_options_icon_color" = 'brand' THEN 'primary'
+      ELSE "layout_options_icon_color"
+    END
+    WHERE "layout_options_icon_color" = 'brand';
+  `)
+
+  // Step 3: Drop old enum type and create new one
   await db.execute(sql`
     DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_features_layout_options_icon_color" CASCADE;
   `)
@@ -108,6 +163,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     CREATE TYPE "public"."enum__pages_v_blocks_features_layout_options_icon_color" AS ENUM('primary', 'secondary', 'tertiary', 'accent');
   `)
 
+  // Step 4: Convert column back to enum with new type
   await db.execute(sql`
     ALTER TABLE "_pages_v_blocks_features"
       ALTER COLUMN "layout_options_icon_color" SET DATA TYPE "public"."enum__pages_v_blocks_features_layout_options_icon_color"
