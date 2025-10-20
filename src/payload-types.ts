@@ -226,7 +226,7 @@ export interface HeroHeadingBlock {
   /**
    * Vertical spacing around the hero section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('spacious' | 'normal' | 'compact' | 'minimal') | null;
   /**
    * Size variant for the subtitle text - Small reduces to 75% of normal size
    */

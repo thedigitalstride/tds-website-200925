@@ -120,6 +120,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
 
   // Spacing for contained layouts (splitImage and standardContained)
   const containedSpacingClasses: Record<string, string> = {
+    minimal: 'py-6 lg:py-8',
     compact: 'py-12 lg:py-16',
     normal: 'py-16 lg:py-24',
     spacious: 'py-24 lg:py-32',
@@ -140,10 +141,10 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
             {hasSplitImage ? (
               <>
                 {/* SVG Mask - covers ENTIRE container, centered diagonal slashes */}
-                <HeroSplitImageMask className="absolute inset-0 z-10" backgroundVariant={bgVariant} />
+                <HeroSplitImageMask className="absolute inset-0 z-10 hidden lg:block" backgroundVariant={bgVariant} />
 
                 {/* Image - positioned to cover tinted areas, centered vertically, BEHIND mask */}
-                <div className="absolute top-1/2 left-[34%] right-0 z-0 hidden h-full w-auto -translate-y-1/2 lg:block">
+                <div className="absolute top-1/2 left-[34%] right-0 z-0 hidden h-full overflow-hidden -translate-y-1/2 lg:block">
                   <OptimizedImage
                     resource={splitImage as Media}
                     alt={(splitImage as Media)?.alt || ''}
@@ -151,12 +152,12 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                     priority
                     quality={90}
                     className="object-cover object-center"
-                    sizes="66vw"
+                    sizes="(max-width: 1023px) 0vw, 66vw"
                   />
                 </div>
 
                 {/* Content Grid - sits ABOVE mask */}
-                <div className="relative z-20 lg:grid lg:grid-cols-2 lg:items-start">
+                <div className="relative z-20 lg:grid lg:grid-cols-[3fr_1fr] lg:items-start">
                   {/* Content Column - aligned to top for more button space */}
                   <div className="flex flex-col justify-start py-8 px-6 lg:py-24 lg:px-12">
                   {/* Headline - further reduced max size for split layout */}
@@ -196,6 +197,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                           ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
                           : 'clamp(0.875rem, 1.75vw + 0.25rem, 1.25rem)', // Normal: max 1.25rem (20px)
                         lineHeight: '1.5',
+                        whiteSpace: 'pre-line',
                       }}
                     >
                       {subtitle}
@@ -250,6 +252,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                           ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
                           : 'clamp(0.875rem, 1.75vw + 0.25rem, 1.25rem)', // Normal: max 1.25rem (20px)
                         lineHeight: '1.5',
+                        whiteSpace: 'pre-line',
                       }}
                     >
                       {subtitle}
@@ -320,6 +323,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                         ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
                         : 'clamp(0.875rem, 1.75vw + 0.25rem, 1.25rem)', // Normal: max 1.25rem (20px)
                       lineHeight: '1.5',
+                      whiteSpace: 'pre-line',
                     }}
                   >
                     {subtitle}
@@ -353,22 +357,29 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   }
 
   // Spacing classes - when background enabled, always needs top padding for header
+  // MATHEMATICAL GUARANTEE: Top padding = Header height + Desired clearance
+  // Mobile header: 72px (h-18), Desktop header: 80px (h-20)
   const spacingClasses: Record<string, string> = bgEnabled
     ? (isFullHeight
         ? {
-            // Full height: large top padding + min-h-screen for full viewport coverage
-            compact: 'pt-32 pb-12 lg:pt-40 lg:pb-16',
-            normal: 'pt-32 pb-16 lg:pt-40 lg:pb-24',
-            spacious: 'pt-40 pb-24 lg:pt-48 lg:pb-32',
+            // Full height: Header clearance + extra visual breathing room
+            // Mobile: calc(72px + 24px) = 96px, Desktop: calc(80px + 80px) = 160px
+            minimal: 'pt-[calc(var(--header-height-mobile)+24px)] pb-6 lg:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-8',
+            compact: 'pt-[calc(var(--header-height-mobile)+56px)] pb-12 lg:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-16',
+            normal: 'pt-[calc(var(--header-height-mobile)+56px)] pb-16 lg:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-24',
+            spacious: 'pt-[calc(var(--header-height-mobile)+88px)] pb-24 lg:pt-[calc(var(--header-height-desktop)+112px)] lg:pb-32',
           }
         : {
-            // Default height: just enough top padding to clear header, normal bottom padding
-            compact: 'pt-24 pb-12 md:pt-28 lg:pb-16',
-            normal: 'pt-28 pb-16 md:pt-32 lg:pb-24',
-            spacious: 'pt-32 pb-24 md:pt-40 lg:pb-32',
+            // Default height: Minimum clearance from header bottom
+            // Mobile: calc(72px + 24px) = 96px, Desktop: calc(80px + 32px) = 112px
+            minimal: 'pt-[calc(var(--header-height-mobile)+24px)] pb-6 md:pt-[calc(var(--header-height-desktop)+32px)] lg:pb-8',
+            compact: 'pt-[calc(var(--header-height-mobile)+24px)] pb-12 md:pt-[calc(var(--header-height-desktop)+32px)] lg:pb-16',
+            normal: 'pt-[calc(var(--header-height-mobile)+40px)] pb-16 md:pt-[calc(var(--header-height-desktop)+32px)] lg:pb-24',
+            spacious: 'pt-[calc(var(--header-height-mobile)+56px)] pb-24 md:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-32',
           })
     : {
-        // No background: standard vertical padding
+        // No background: standard vertical padding (no header overlap)
+        minimal: 'py-6 lg:py-8',
         compact: 'py-12 lg:py-16',
         normal: 'py-16 lg:py-24',
         spacious: 'py-24 lg:py-32',

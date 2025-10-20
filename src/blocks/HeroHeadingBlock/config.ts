@@ -98,9 +98,10 @@ export const HeroHeadingBlock: Block = {
           type: 'select',
           defaultValue: 'normal',
           options: [
-            { label: 'Compact', value: 'compact' },
-            { label: 'Normal', value: 'normal' },
             { label: 'Spacious', value: 'spacious' },
+            { label: 'Normal', value: 'normal' },
+            { label: 'Compact', value: 'compact' },
+            { label: 'Minimal', value: 'minimal' },
           ],
           admin: {
             description: 'Vertical spacing around the hero section',

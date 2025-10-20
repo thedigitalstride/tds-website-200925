@@ -47,6 +47,10 @@
     --text-hero-fluid: clamp(2.1rem, 5vw + 1rem, 6.5rem);
     --text-hero-fluid--line-height: 1.2;
 
+    /* HEADER HEIGHTS - Single source of truth for header clearance calculations */
+    --header-height-mobile: 72px;     /* h-18 (56px actual header + 16px breathing room) */
+    --header-height-desktop: 80px;    /* h-20 (68px actual header + 12px breathing room) */
+
     /* MAX WIDTH */
     --max-width-container: 1280px;
 
