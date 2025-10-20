@@ -10,6 +10,7 @@ import {
 import { FeaturedIcon } from '@/components/uui/foundations/featured-icon/featured-icon'
 import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
+import { getBackgroundClasses, type BackgroundVariant } from '@/utilities/backgroundVariants'
 
 interface FeatureCardProps {
   icon: FC<{ className?: string }>
@@ -26,29 +27,17 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const spacing = layoutOptions?.spacing || 'normal'
   const cardLayout = layoutOptions?.cardStyle || 'card' // cardStyle field now controls layout
   const columns = layoutOptions?.columns || '3'
-  const iconColor = (layoutOptions?.iconColor || 'brand') as 'brand' | 'accent' | 'secondary' | 'tertiary'
+  const rawIconColor = layoutOptions?.iconColor || 'primary'
+  // Map 'primary' to 'brand' for FeaturedIcon compatibility
+  const iconColor = (rawIconColor === 'primary' ? 'brand' : rawIconColor) as 'brand' | 'accent' | 'secondary' | 'tertiary'
   const iconShape = (layoutOptions?.iconTheme || 'rounded-square') as 'rounded-square' | 'round'
-  const cardStyle = layoutOptions?.cardBackground || 'accent' // cardBackground field now controls visual style
+  const cardStyleValue = layoutOptions?.cardBackground || 'primary' // cardBackground field now controls visual style
 
-  // Dynamic background classes based on cardStyle variant
-  const getCardBackgroundClasses = (style: string) => {
-    switch (style) {
-      case 'brand':
-        default:
-        return 'bg-brand-50/30 dark:bg-brand-700'
-      case 'outline':
-        return 'bg-transparent border border-gray-300'
-      case 'line':
-        return 'border-t-2 border-gray-300'
-      case 'accent':
-        return 'bg-accent-500'
-      case 'grey':
-        return 'bg-black/5 dark:bg-black/25'
-    }
-  }
+  // Use shared background variant system
+  const cardBgClasses = getBackgroundClasses(cardStyleValue as BackgroundVariant)
 
   // Determine padding based on style variant
-  const isLineVariant = cardStyle === 'line'
+  const isLineVariant = cardStyleValue === 'line'
   const getCardPaddingClasses = () => {
     if (isLineVariant) {
       return 'py-5 md:py-6' // No horizontal padding for line variant
@@ -56,23 +45,13 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     return 'p-5 md:p-6' // Standard padding
   }
 
-  // Adjust text colors - white text for brand variant in light mode, brand text in dark mode
-  const getTextClasses = () => {
-    if (cardStyle === 'brand') {
-      return {
-        heading: 'text-primary dark:text-white',
-        description: 'text-primary/80 dark:text-white/80'
-      }
-    }
-    return {
-      heading: 'text-primary dark:text-white',
-      description: 'text-primary/80 dark:text-white/80'
-    }
+  // Text colors - consistent across all variants
+  const textClasses = {
+    heading: 'text-primary dark:text-white',
+    description: 'text-primary/80 dark:text-white/80'
   }
 
-  const textClasses = getTextClasses()
   const cardPaddingClasses = getCardPaddingClasses()
-  const cardBgClasses = getCardBackgroundClasses(cardStyle)
 
   // Increase row gap for centered-icon and elevated-box layouts
   const needsExtraRowGap = cardLayout === 'centered-icon' || cardLayout === 'elevated-box'

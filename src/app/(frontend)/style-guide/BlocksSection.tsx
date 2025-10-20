@@ -128,9 +128,9 @@ With Accent Blue"
               ]}
               layoutOptions={{
                 cardStyle: "card",
-                cardBackground: "brand",
+                cardBackground: "primary",
                 columns: "3",
-                iconColor: "brand",
+                iconColor: "primary",
                 iconTheme: "rounded-square",
                 spacing: "normal"
               }}
@@ -181,7 +181,7 @@ With Accent Blue"
               ]}
               layoutOptions={{
                 cardStyle: "centered-icon",
-                cardBackground: "outline",
+                cardBackground: "secondary",
                 columns: "3",
                 iconColor: "accent",
                 iconTheme: "round",

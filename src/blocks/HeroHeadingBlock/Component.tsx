@@ -7,6 +7,7 @@ import type { Media } from '@/payload-types'
 import { Typewriter } from 'motion-plus/react'
 import { UUIButton } from '@/components/payload-ui/UUIButton'
 import { HeroSplitImageMask } from '@/components/HeroSplitImageMask'
+import { getBackgroundClasses, type BackgroundVariant } from '@/utilities/backgroundVariants'
 
 export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   headline,
@@ -20,7 +21,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   enableTypewriter,
   heroLayout,
   splitImage,
-  splitImageAlt,
+  heroBackground,
   buttons,
 }) => {
   // Use defaults for any undefined values
@@ -117,24 +118,35 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
     return null
   }
 
+  // Spacing for contained layouts (splitImage and standardContained)
+  const containedSpacingClasses: Record<string, string> = {
+    compact: 'py-12 lg:py-16',
+    normal: 'py-16 lg:py-24',
+    spacious: 'py-24 lg:py-32',
+  }
+
   // Check if split image layout is selected
   if (heroLayout === 'splitImage') {
     const hasSplitImage = splitImage && typeof splitImage === 'object'
+    const bgVariant = (heroBackground || 'primary') as BackgroundVariant
 
     return (
-      <section className="py-16 lg:py-24">
+      <section className={containedSpacingClasses[finalSpacing]}>
         <div className="mx-auto max-w-container px-4 md:px-8">
-          <div className="relative overflow-hidden rounded-2xl bg-brand-50 dark:bg-brand-900">
+          <div className={cn(
+            'relative overflow-hidden rounded-2xl',
+            getBackgroundClasses(bgVariant)
+          )}>
             {hasSplitImage ? (
               <>
                 {/* SVG Mask - covers ENTIRE container, centered diagonal slashes */}
-                <HeroSplitImageMask className="absolute inset-0 z-10" />
+                <HeroSplitImageMask className="absolute inset-0 z-10" backgroundVariant={bgVariant} />
 
                 {/* Image - positioned to cover tinted areas, centered vertically, BEHIND mask */}
                 <div className="absolute top-1/2 left-[34%] right-0 z-0 hidden h-full w-auto -translate-y-1/2 lg:block">
                   <OptimizedImage
                     resource={splitImage as Media}
-                    alt={splitImageAlt || ''}
+                    alt={(splitImage as Media)?.alt || ''}
                     fill
                     priority
                     quality={90}
@@ -166,7 +178,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                     <div className="relative -mx-6 my-8 h-64 lg:hidden">
                       <OptimizedImage
                         resource={splitImage as Media}
-                        alt={splitImageAlt || ''}
+                        alt={(splitImage as Media)?.alt || ''}
                         fill
                         priority
                         className="object-cover"
@@ -262,6 +274,78 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  // Check if standard contained layout is selected
+  if (heroLayout === 'standardContained') {
+    const bgVariant = (heroBackground || 'primary') as BackgroundVariant
+
+    return (
+      <section className={containedSpacingClasses[finalSpacing]}>
+        <div className="mx-auto max-w-container px-4 md:px-8">
+          <div className={cn(
+            'relative overflow-hidden rounded-2xl',
+            getBackgroundClasses(bgVariant)
+          )}>
+            {/* Contained content - 75% width on desktop, alignment based on textAlignment setting */}
+            <div className="py-16 px-6 lg:py-24 lg:px-12">
+              <div className={cn(
+                'w-full lg:w-[75%]',
+                finalTextAlignment === 'center' ? 'mx-auto text-center' : 'text-left'
+              )}>
+                {/* Headline */}
+                <h1
+                  className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
+                  style={{
+                    whiteSpace: 'pre-line',
+                    fontFamily: 'var(--font-poppins, Poppins)',
+                    fontSize: 'clamp(1.75rem, 3.5vw + 0.5rem, 3rem)',
+                    lineHeight: '1.2',
+                    fontWeight: '700',
+                  }}
+                >
+                  {headline}
+                </h1>
+
+                {/* Subtitle */}
+                {subtitle && (
+                  <p
+                    className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                    style={{
+                      fontSize: finalSubtitleSize === 'small'
+                        ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
+                        : 'clamp(0.875rem, 1.75vw + 0.25rem, 1.25rem)', // Normal: max 1.25rem (20px)
+                      lineHeight: '1.5',
+                    }}
+                  >
+                    {subtitle}
+                  </p>
+                )}
+
+                {/* Buttons */}
+                {buttons && buttons.length > 0 && (
+                  <div className={cn(
+                    'mt-8 flex flex-row flex-wrap gap-3 md:mt-12',
+                    finalTextAlignment === 'center' ? 'justify-center' : 'justify-start'
+                  )}>
+                    {buttons.map((button, index) => {
+                      const { link } = button
+                      return (
+                        <UUIButton
+                          key={index}
+                          label={link?.label || `Button ${index + 1}`}
+                          link={link}
+                        />
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </section>

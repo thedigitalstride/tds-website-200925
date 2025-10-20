@@ -12,9 +12,10 @@ export const HeroHeadingBlock: Block = {
       options: [
         { label: 'Standard', value: 'standard' },
         { label: 'Split Image Contained', value: 'splitImage' },
+        { label: 'Standard Contained', value: 'standardContained' },
       ],
       admin: {
-        description: 'Choose the hero layout style. Split Image displays content on left with optional image on right.',
+        description: 'Choose the hero layout style. Split Image displays content on left with optional image on right. Standard Contained is a clean, boxed layout without backgrounds.',
       },
     },
     {
@@ -43,7 +44,8 @@ export const HeroHeadingBlock: Block = {
       type: 'checkbox',
       defaultValue: false,
       admin: {
-        description: 'Enable typewriter animation effect for the headline',
+        condition: (_, siblingData) => siblingData?.heroLayout === 'standard',
+        description: 'Enable typewriter animation effect for the headline (only available for Standard layout)',
       },
     },
     {
@@ -87,7 +89,8 @@ export const HeroHeadingBlock: Block = {
             { label: 'Centered', value: 'center' },
           ],
           admin: {
-            description: 'Text alignment for headline and subtitle',
+            condition: (_, siblingData) => siblingData?.heroLayout !== 'splitImage',
+            description: 'Text alignment for headline and subtitle (not available for Split Image layout)',
           },
         },
         {
@@ -115,6 +118,30 @@ export const HeroHeadingBlock: Block = {
             description: 'Size variant for the subtitle text - Small reduces to 75% of normal size',
           },
         },
+        {
+          name: 'heroBackground',
+          type: 'select',
+          label: 'Background Style',
+          defaultValue: 'primary',
+          options: [
+            {
+              label: 'Primary',
+              value: 'primary',
+            },
+            {
+              label: 'Secondary',
+              value: 'secondary',
+            },
+            {
+              label: 'Accent',
+              value: 'accent',
+            },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage' || siblingData?.heroLayout === 'standardContained',
+            description: 'Background style for the contained layout',
+          },
+        },
       ],
     },
     {
@@ -125,17 +152,7 @@ export const HeroHeadingBlock: Block = {
       required: false,
       admin: {
         condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage',
-        description: 'Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile).',
-      },
-    },
-    {
-      name: 'splitImageAlt',
-      type: 'text',
-      label: 'Image Alt Text',
-      admin: {
-        condition: (_, siblingData) =>
-          siblingData?.heroLayout === 'splitImage' && !!siblingData?.splitImage,
-        description: 'Accessibility description for the split image',
+        description: 'Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile). Alt text is automatically used from the media upload.',
       },
     },
     {
@@ -144,7 +161,7 @@ export const HeroHeadingBlock: Block = {
       label: 'Call-to-Action Buttons',
       maxRows: 2,
       admin: {
-        condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage',
+        condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage' || siblingData?.heroLayout === 'standardContained',
         description: 'Add up to 2 CTA buttons (e.g., "Get Started", "Learn More")',
       },
       fields: [
@@ -163,8 +180,8 @@ export const HeroHeadingBlock: Block = {
       type: 'group',
       label: 'Custom Background',
       admin: {
-        condition: (_, siblingData) => siblingData?.heroLayout !== 'splitImage',
-        description: 'Add custom background with image, gradient, or custom styling (not available for Split Image layout)',
+        condition: (_, siblingData) => siblingData?.heroLayout !== 'splitImage' && siblingData?.heroLayout !== 'standardContained',
+        description: 'Add custom background with image, gradient, or custom styling (only available for Standard layout)',
       },
       fields: [
         {

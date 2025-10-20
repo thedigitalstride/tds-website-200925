@@ -1,24 +1,50 @@
 'use client'
 
 import { cn } from '@/utilities/ui'
+import type { BackgroundVariant } from '@/utilities/backgroundVariants'
 
 /**
  * HeroSplitImageMask Component
  *
  * Creates a gradient overlay with 3 diagonal blocks matching the uploaded hero-mask.svg design.
  * Uses accent blue (#1689FF) with varying opacity (0.25, 0.5, 0.75) to create a tint effect.
- * Left side matches the background color:
- *   - Light mode: brand-50 rgb(225 233 245)
- *   - Dark mode: brand-900 rgb(1 10 25)
+ * Left side matches the background variant color dynamically.
  *
  * ViewBox: 3486 x 1897 (matches design file dimensions)
  * preserveAspectRatio: xMidYMid slice - keeps diagonal slashes centered, maintains aspect ratio
  */
 
-export const HeroSplitImageMask = ({ className }: { className?: string }) => {
+interface HeroSplitImageMaskProps {
+  className?: string
+  backgroundVariant?: BackgroundVariant | 'white'
+}
+
+export const HeroSplitImageMask = ({ className, backgroundVariant = 'white' }: HeroSplitImageMaskProps) => {
+  // Map background variants to their corresponding text color classes for the SVG fill
+  // IMPORTANT: SVG mask needs OPAQUE colors, not transparent ones, or the image shows through
+  // Uses custom --color-mask-* variables that match the visual appearance of transparent backgrounds
+  const getMaskColorClasses = (variant: BackgroundVariant | 'white'): string => {
+    switch (variant) {
+      case 'primary':
+        // 'primary' uses bg at 30% opacity, mask uses calculated opaque equivalent rgb(247 248 252)
+        return 'text-[rgb(247_248_252)] dark:text-brand-700'
+      case 'white':
+        return 'text-brand-50 dark:text-brand-900'
+      case 'accent':
+        return 'text-accent-500 dark:text-accent-600'
+      case 'secondary':
+        // 'secondary' uses transparent with border
+        return 'text-transparent'
+      case 'line':
+        return 'text-transparent'
+      default:
+        return 'text-brand-50 dark:text-brand-900'
+    }
+  }
+
   return (
     <svg
-      className={cn('pointer-events-none text-brand-50 dark:text-brand-900', className)}
+      className={cn('pointer-events-none', getMaskColorClasses(backgroundVariant), className)}
       viewBox="0 0 3486 1897"
       preserveAspectRatio="xMidYMid slice"
       aria-hidden="true"

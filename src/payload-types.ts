@@ -196,9 +196,9 @@ export interface Page {
  */
 export interface HeroHeadingBlock {
   /**
-   * Choose the hero layout style. Split Image displays content on left with optional image on right.
+   * Choose the hero layout style. Split Image displays content on left with optional image on right. Standard Contained is a clean, boxed layout without backgrounds.
    */
-  heroLayout?: ('standard' | 'splitImage') | null;
+  heroLayout?: ('standard' | 'splitImage' | 'standardContained') | null;
   /**
    * Main headline text. Use line breaks to create multiple lines that will scale responsively.
    */
@@ -208,7 +208,7 @@ export interface HeroHeadingBlock {
    */
   subtitle?: string | null;
   /**
-   * Enable typewriter animation effect for the headline
+   * Enable typewriter animation effect for the headline (only available for Standard layout)
    */
   enableTypewriter?: boolean | null;
   /**
@@ -220,7 +220,7 @@ export interface HeroHeadingBlock {
    */
   subheadingColor?: ('default' | 'white') | null;
   /**
-   * Text alignment for headline and subtitle
+   * Text alignment for headline and subtitle (not available for Split Image layout)
    */
   textAlignment?: ('left' | 'center') | null;
   /**
@@ -232,13 +232,13 @@ export interface HeroHeadingBlock {
    */
   subtitleSize?: ('small' | 'normal') | null;
   /**
-   * Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile).
+   * Background style for the contained layout
+   */
+  heroBackground?: ('primary' | 'secondary' | 'accent') | null;
+  /**
+   * Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile). Alt text is automatically used from the media upload.
    */
   splitImage?: (number | null) | Media;
-  /**
-   * Accessibility description for the split image
-   */
-  splitImageAlt?: string | null;
   /**
    * Add up to 2 CTA buttons (e.g., "Get Started", "Learn More")
    */
@@ -279,7 +279,7 @@ export interface HeroHeadingBlock {
       }[]
     | null;
   /**
-   * Add custom background with image, gradient, or custom styling (not available for Split Image layout)
+   * Add custom background with image, gradient, or custom styling (only available for Standard layout)
    */
   bg?: {
     /**
@@ -1204,15 +1204,15 @@ export interface FeaturesBlock {
     /**
      * Visual style for feature cards (background and borders)
      */
-    cardBackground?: ('brand' | 'accent' | 'outline' | 'line' | 'grey') | null;
+    cardBackground?: ('primary' | 'secondary' | 'accent' | 'line') | null;
     /**
      * Number of columns in the grid (1-4). Automatically switches to full-width if only one feature exists.
      */
     columns?: ('1' | '2' | '3' | '4') | null;
     /**
-     * Color scheme for icons - matches button system
+     * Icon color variant - matches button color system
      */
-    iconColor?: ('brand' | 'accent' | 'secondary' | 'tertiary') | null;
+    iconColor?: ('primary' | 'secondary' | 'tertiary' | 'accent') | null;
     /**
      * Shape of the icon container
      */
@@ -1538,8 +1538,8 @@ export interface HeroHeadingBlockSelect<T extends boolean = true> {
   textAlignment?: T;
   spacing?: T;
   subtitleSize?: T;
+  heroBackground?: T;
   splitImage?: T;
-  splitImageAlt?: T;
   buttons?:
     | T
     | {

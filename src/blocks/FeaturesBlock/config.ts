@@ -165,14 +165,25 @@ export const FeaturesBlock: Block = {
         {
           name: 'cardBackground',
           type: 'select',
-          defaultValue: 'brand',
           label: 'Card Background',
+          defaultValue: 'primary',
           options: [
-            { label: 'Brand', value: 'brand' },
-            { label: 'Accent', value: 'accent' },
-            { label: 'Outlined', value: 'outline' },
-            { label: 'Top Line', value: 'line' },
-            { label: 'Tinted', value: 'grey' },
+            {
+              label: 'Primary',
+              value: 'primary',
+            },
+            {
+              label: 'Secondary',
+              value: 'secondary',
+            },
+            {
+              label: 'Accent',
+              value: 'accent',
+            },
+            {
+              label: 'Line (Top Border)',
+              value: 'line',
+            },
           ],
           admin: {
             description: 'Visual style for feature cards (background and borders)',
@@ -197,16 +208,16 @@ export const FeaturesBlock: Block = {
         {
           name: 'iconColor',
           type: 'select',
-          defaultValue: 'brand',
+          defaultValue: 'primary',
           label: 'Icon Color',
           options: [
-            { label: 'Brand', value: 'brand' },
+            { label: 'Primary', value: 'primary' },
+            { label: 'Secondary', value: 'secondary' },
+            { label: 'Tertiary', value: 'tertiary' },
             { label: 'Accent', value: 'accent' },
-            { label: 'Outlined', value: 'secondary' },
-            { label: 'Tinted', value: 'tertiary' },
           ],
           admin: {
-            description: 'Color scheme for icons - matches button system',
+            description: 'Icon color variant - matches button color system',
           },
         },
         {
