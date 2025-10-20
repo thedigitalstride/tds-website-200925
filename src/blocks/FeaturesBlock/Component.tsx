@@ -47,8 +47,8 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
 
   // Text colors - consistent across all variants
   const textClasses = {
-    heading: 'text-primary dark:text-white',
-    description: 'text-primary/80 dark:text-white/80'
+    heading: 'text-primary',
+    description: 'text-secondary'
   }
 
   const cardPaddingClasses = getCardPaddingClasses()
@@ -82,7 +82,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const FeatureCardWithIcon = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>
@@ -105,7 +105,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const FeatureLeftIconWithColors = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>
@@ -136,7 +136,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const FeatureHorizontalIconWithColors = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex gap-4 h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>
@@ -167,7 +167,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const FeatureBoxWithIcon = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "mt-6 flex flex-col justify-between items-center gap-4 text-center h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       isLineVariant ? 'px-0 pb-8' : 'px-6 pb-8',
       cardBgClasses
     )}>
@@ -201,7 +201,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const FeatureTextCard = ({ title, subtitle, footer }: { title: string; subtitle: string; footer?: React.ReactNode }) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>
@@ -217,7 +217,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const FeatureTextCenteredWithCard = ({ title, subtitle, footer }: { title: string; subtitle: string; footer?: React.ReactNode }) => (
     <div className={cn(
       "flex flex-col justify-between items-center gap-4 text-center h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>
@@ -233,7 +233,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const FeatureTextLeftWithCard = ({ title, subtitle, footer }: { title: string; subtitle: string; footer?: React.ReactNode }) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>

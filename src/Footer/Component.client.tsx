@@ -61,7 +61,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
           <div className="flex flex-col gap-4 items-start lg:max-w-xs">
             <TDSLogo variant="auto" size="xl" className="h-12 w-min shrink-0" />
             {companyInfo?.description && (
-              <p className="text-md text-tertiary">{companyInfo.description}</p>
+              <p className="text-md text-secondary">{companyInfo.description}</p>
             )}
           </div>
 

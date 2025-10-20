@@ -236,7 +236,7 @@ export const LatestPostsBlock: React.FC<
                 </h2>
               )}
               {header.description && (
-                <p className="mt-4 text-lg text-tertiary md:mt-5 md:text-xl">
+                <p className="mt-4 text-lg text-secondary md:mt-5 md:text-xl">
                   {header.description}
                 </p>
               )}

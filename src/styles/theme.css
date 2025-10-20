@@ -706,7 +706,7 @@
     --color-utility-yellow-700: var(--color-yellow-700);
 
     /* TEXT COLORS */
-    --color-text-primary: var(--color-gray-900);
+    --color-text-primary: var(--color-brand-500);
     --color-text-tertiary: var(--color-gray-600);
     --color-text-error-primary: var(--color-error-600);
     --color-text-warning-primary: var(--color-warning-600);
@@ -1212,13 +1212,14 @@
 
         /* TEXT COLORS */
 
-        --color-text-primary: var(--color-gray-50);
+        --color-text-primary: var(--color-white);
+        --color-text-secondary: var(--color-gray-300);
         --color-text-tertiary: var(--color-gray-400);
+        --color-text-quaternary: var(--color-gray-500);
         --color-text-error-primary: var(--color-error-400);
         --color-text-warning-primary: var(--color-warning-400);
         --color-text-success-primary: var(--color-success-400);
         --color-text-white: var(--color-white);
-        --color-text-secondary: var(--color-gray-300);
         --color-text-disabled: var(--color-gray-500);
         --color-text-secondary_hover: var(--color-gray-200);
         --color-text-tertiary_hover: var(--color-gray-300);
@@ -1228,7 +1229,6 @@
         --color-text-brand-tertiary: var(--color-gray-400);
         --color-text-editor-icon-fg: var(--color-gray-400);
         --color-text-editor-icon-fg_active: var(--color-white);
-        --color-text-quaternary: var(--color-gray-400);
         --color-text-brand-primary: var(--color-gray-50);
         --color-text-primary_on-brand: var(--color-gray-50);
         --color-text-secondary_on-brand: var(--color-gray-300);

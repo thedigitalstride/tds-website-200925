@@ -453,7 +453,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
         <div className={cn('flex flex-col w-full', alignmentClasses[finalTextAlignment], enableTypewriter && 'relative')}>
           {/* Invisible placeholder layer in document flow to reserve full space */}
           {enableTypewriter && (
-            <div className="flex flex-col w-full lg:w-[70%]" aria-hidden="true">
+            <div className="flex flex-col w-full" aria-hidden="true">
               <h1
                 className={cn(
                   'mt-4 font-semibold invisible',
@@ -482,7 +482,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
 
           {/* Visible content layer positioned absolutely over placeholder */}
           <div className={cn(
-            'flex flex-col w-full lg:w-[70%]',
+            'flex flex-col w-full',
             enableTypewriter && 'absolute inset-0'
           )}>
             <h1

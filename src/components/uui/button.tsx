@@ -86,7 +86,7 @@ export const styles = sortCx({
             root: [
                 "justify-normal rounded p-0! text-brand-500/70 dark:text-white/70",
                 // Inner text underline
-                "*:data-text:underline *:data-text:decoration-transparent *:data-text:underline-offset-2 hover:*:data-text:decoration-current",
+                "*:data-text:underline *:data-text:decoration-transparent *:data-text:underline-offset-4 hover:*:data-text:decoration-current",
                 // Icon styles
                 "*:data-icon:text-brand-500/70 dark:*:data-icon:text-white/70",
             ].join(" "),
@@ -122,7 +122,7 @@ export const styles = sortCx({
             root: [
                 "justify-normal rounded p-0! text-error-primary outline-error hover:text-error-primary_hover",
                 // Inner text underline
-                "*:data-text:underline *:data-text:decoration-transparent *:data-text:underline-offset-2 hover:*:data-text:decoration-current",
+                "*:data-text:underline *:data-text:decoration-transparent *:data-text:underline-offset-4 hover:*:data-text:decoration-current",
                 // Icon styles
                 "*:data-icon:text-fg-error-secondary hover:*:data-icon:text-fg-error-primary",
             ].join(" "),

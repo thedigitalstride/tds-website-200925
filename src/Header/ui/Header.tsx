@@ -32,7 +32,7 @@ const DesktopNavItem = (props: {
       onClick={props.onToggle}
       className={cx(
         "flex cursor-pointer items-center gap-0.5 rounded-lg px-1.5 py-1 text-md font-semibold outline-focus-ring transition duration-100 ease-linear focus-visible:outline-2 focus-visible:outline-offset-2",
-        "dark:text-white text-brand-500 hover:underline"
+        "dark:text-white text-brand-500 hover:underline underline-offset-4"
       )}
     >
       <span className="px-0.5">{props.label}</span>
@@ -334,7 +334,7 @@ export const Header = ({
                       href={navItem.href}
                       className={cx(
                         "flex cursor-pointer items-center gap-0.5 rounded-lg px-1.5 py-1 text-md font-semibold outline-focus-ring transition duration-100 ease-linear focus:outline-offset-2 focus-visible:outline-2",
-                        "dark:text-white text-brand-500 hover:underline"
+                        "dark:text-white text-brand-500 hover:underline underline-offset-4"
                       )}
                     >
                       <span className="px-0.5">{navItem.label}</span>
