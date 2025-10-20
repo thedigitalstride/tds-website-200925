@@ -196,6 +196,10 @@ export interface Page {
  */
 export interface HeroHeadingBlock {
   /**
+   * Choose the hero layout style. Split Image displays content on left with optional image on right.
+   */
+  heroLayout?: ('standard' | 'splitImage') | null;
+  /**
    * Main headline text. Use line breaks to create multiple lines that will scale responsively.
    */
   headline: string;
@@ -228,7 +232,54 @@ export interface HeroHeadingBlock {
    */
   subtitleSize?: ('small' | 'normal') | null;
   /**
-   * Add custom background with image, gradient, or custom styling
+   * Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile).
+   */
+  splitImage?: (number | null) | Media;
+  /**
+   * Accessibility description for the split image
+   */
+  splitImageAlt?: string | null;
+  /**
+   * Add up to 2 CTA buttons (e.g., "Get Started", "Learn More")
+   */
+  buttons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary') | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('md' | 'lg' | 'xl') | null;
+          /**
+           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+           */
+          buttonIcon?: string | null;
+          /**
+           * Position of the icon relative to the button text
+           */
+          iconPos?: ('leading' | 'trailing') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add custom background with image, gradient, or custom styling (not available for Split Image layout)
    */
   bg?: {
     /**
@@ -358,83 +409,6 @@ export interface Media {
       filename?: string | null;
     };
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BreadcrumbBlock".
- */
-export interface BreadcrumbBlock {
-  /**
-   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
-   */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'breadcrumb';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock".
- */
-export interface CallToActionBlock {
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  links?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Button color variant from UntitledUI design system
-           */
-          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
-          /**
-           * Button size variant
-           */
-          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-          /**
-           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
-           */
-          buttonIcon?: string | null;
-          /**
-           * Position of the icon relative to the button text
-           */
-          iconPos?: ('leading' | 'trailing') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Vertical spacing around this section
-   */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'cta';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -690,6 +664,70 @@ export interface LatestPostsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock".
+ */
+export interface CallToActionBlock {
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+          /**
+           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+           */
+          buttonIcon?: string | null;
+          /**
+           * Position of the icon relative to the button text
+           */
+          iconPos?: ('leading' | 'trailing') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Vertical spacing around this section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
@@ -713,6 +751,19 @@ export interface MediaBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BreadcrumbBlock".
+ */
+export interface BreadcrumbBlock {
+  /**
+   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'breadcrumb';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1478,6 +1529,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "HeroHeadingBlock_select".
  */
 export interface HeroHeadingBlockSelect<T extends boolean = true> {
+  heroLayout?: T;
   headline?: T;
   subtitle?: T;
   enableTypewriter?: T;
@@ -1486,6 +1538,26 @@ export interface HeroHeadingBlockSelect<T extends boolean = true> {
   textAlignment?: T;
   spacing?: T;
   subtitleSize?: T;
+  splitImage?: T;
+  splitImageAlt?: T;
+  buttons?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              uuiColor?: T;
+              uuiSize?: T;
+              buttonIcon?: T;
+              iconPos?: T;
+            };
+        id?: T;
+      };
   bg?:
     | T
     | {

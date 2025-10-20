@@ -108,7 +108,7 @@ export default async function Page(props: Args) {
 export async function generateMetadata(props: Args): Promise<Metadata> {
   const { number } = await props.params
   return {
-    title: `The Digital Stride Posts - Page ${number}`,
+    title: `The Digital Stride | News & Articles - Page ${number}`,
   }
 }
 

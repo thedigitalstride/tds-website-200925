@@ -5,6 +5,8 @@ import { cn } from '@/utilities/ui'
 import { OptimizedImage } from '@/components/OptimizedImage'
 import type { Media } from '@/payload-types'
 import { Typewriter } from 'motion-plus/react'
+import { UUIButton } from '@/components/payload-ui/UUIButton'
+import { HeroSplitImageMask } from '@/components/HeroSplitImageMask'
 
 export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   headline,
@@ -16,6 +18,10 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   subtitleSize,
   bg,
   enableTypewriter,
+  heroLayout,
+  splitImage,
+  splitImageAlt,
+  buttons,
 }) => {
   // Use defaults for any undefined values
   const finalTextAlignment = textAlignment ?? 'left'
@@ -78,9 +84,188 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   const isFullHeight = bgEnabled && heightVariant === 'fullHeight'
   const backgroundType = bgEnabled ? (bg?.type || 'none') : 'none'
 
+  // Brand color uses text-brand-700 which is dark blue in light mode
+  // and automatically switches to lighter brand color in dark mode via theme
+  const headlineColorClasses: Record<string, string> = {
+    primary: 'text-primary',
+    brand: 'text-accent-500 dark:text-accent-500',
+  }
+
+  // Subheading color classes
+  const subheadingColorClasses: Record<string, string> = {
+    default: 'text-brand-500 dark:text-white',
+    white: 'text-white',
+  }
+
+  // Subtitle size variants
+  const subtitleSizeStyles: Record<string, React.CSSProperties> = {
+    normal: {
+      fontSize: 'clamp(1.26rem, 3vw + 0.6rem, 3.9rem)',
+      lineHeight: '1.3',
+      whiteSpace: 'pre-line',
+    },
+    small: {
+      // 75% of normal size (25% reduction)
+      fontSize: 'clamp(0.95rem, 2.25vw + 0.45rem, 2.925rem)',
+      lineHeight: '1.35',
+      whiteSpace: 'pre-line',
+    },
+  }
+
   // Don't render if no headline content
   if (!headline?.trim()) {
     return null
+  }
+
+  // Check if split image layout is selected
+  if (heroLayout === 'splitImage') {
+    const hasSplitImage = splitImage && typeof splitImage === 'object'
+
+    return (
+      <section className="py-16 lg:py-24">
+        <div className="mx-auto max-w-container px-4 md:px-8">
+          <div className="relative overflow-hidden rounded-2xl bg-brand-50 dark:bg-brand-900">
+            {hasSplitImage ? (
+              <>
+                {/* SVG Mask - covers ENTIRE container, centered diagonal slashes */}
+                <HeroSplitImageMask className="absolute inset-0 z-10" />
+
+                {/* Image - positioned to cover tinted areas, centered vertically, BEHIND mask */}
+                <div className="absolute top-1/2 left-[34%] right-0 z-0 hidden h-full w-auto -translate-y-1/2 lg:block">
+                  <OptimizedImage
+                    resource={splitImage as Media}
+                    alt={splitImageAlt || ''}
+                    fill
+                    priority
+                    quality={90}
+                    className="object-cover object-center"
+                    sizes="66vw"
+                  />
+                </div>
+
+                {/* Content Grid - sits ABOVE mask */}
+                <div className="relative z-20 lg:grid lg:grid-cols-2 lg:items-start">
+                  {/* Content Column - aligned to top for more button space */}
+                  <div className="flex flex-col justify-start py-8 px-6 lg:py-24 lg:px-12">
+                  {/* Headline - further reduced max size for split layout */}
+                  <h1
+                    className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
+                    style={{
+                      whiteSpace: 'pre-line',
+                      fontFamily: 'var(--font-poppins, Poppins)',
+                      fontSize: 'clamp(1.75rem, 3.5vw + 0.5rem, 3rem)',
+                      lineHeight: '1.2',
+                      fontWeight: '700',
+                    }}
+                  >
+                    {headline}
+                  </h1>
+
+                  {/* Mobile Image - appears between headline and subtitle */}
+                  {hasSplitImage && (
+                    <div className="relative -mx-6 my-8 h-64 lg:hidden">
+                      <OptimizedImage
+                        resource={splitImage as Media}
+                        alt={splitImageAlt || ''}
+                        fill
+                        priority
+                        className="object-cover"
+                        sizes="100vw"
+                      />
+                    </div>
+                  )}
+
+                  {/* Subtitle - much smaller for split layout */}
+                  {subtitle && (
+                    <p
+                      className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                      style={{
+                        fontSize: finalSubtitleSize === 'small'
+                          ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
+                          : 'clamp(0.875rem, 1.75vw + 0.25rem, 1.25rem)', // Normal: max 1.25rem (20px)
+                        lineHeight: '1.5',
+                      }}
+                    >
+                      {subtitle}
+                    </p>
+                  )}
+
+                  {/* Buttons */}
+                  {buttons && buttons.length > 0 && (
+                    <div className="mt-8 flex flex-row flex-wrap justify-start gap-3 md:mt-12">
+                      {buttons.map((button, index) => {
+                        const { link } = button
+                        return (
+                          <UUIButton
+                            key={index}
+                            label={link?.label || `Button ${index + 1}`}
+                            link={link}
+                          />
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                  {/* Empty right column for spacing */}
+                  <div className="hidden lg:block lg:min-h-96" />
+                </div>
+              </>
+            ) : (
+              // Full-width content (no image)
+              <div className="py-16 px-6 lg:py-24 lg:px-12">
+                <div className="max-w-3xl">
+                  {/* Headline - further reduced max size for split layout */}
+                  <h1
+                    className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
+                    style={{
+                      whiteSpace: 'pre-line',
+                      fontFamily: 'var(--font-poppins, Poppins)',
+                      fontSize: 'clamp(1.75rem, 3.5vw + 0.5rem, 3rem)',
+                      lineHeight: '1.2',
+                      fontWeight: '700',
+                    }}
+                  >
+                    {headline}
+                  </h1>
+
+                  {/* Subtitle - much smaller for split layout */}
+                  {subtitle && (
+                    <p
+                      className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                      style={{
+                        fontSize: finalSubtitleSize === 'small'
+                          ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
+                          : 'clamp(0.875rem, 1.75vw + 0.25rem, 1.25rem)', // Normal: max 1.25rem (20px)
+                        lineHeight: '1.5',
+                      }}
+                    >
+                      {subtitle}
+                    </p>
+                  )}
+
+                  {/* Buttons */}
+                  {buttons && buttons.length > 0 && (
+                    <div className="mt-8 flex flex-row flex-wrap justify-start gap-3 md:mt-12">
+                      {buttons.map((button, index) => {
+                        const { link } = button
+                        return (
+                          <UUIButton
+                            key={index}
+                            label={link?.label || `Button ${index + 1}`}
+                            link={link}
+                          />
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )
   }
 
   // Spacing classes - when background enabled, always needs top padding for header
@@ -108,32 +293,6 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   const alignmentClasses: Record<string, string> = {
     left: 'items-start text-left',
     center: 'items-center text-center',
-  }
-
-  // Brand color uses text-brand-700 which is dark blue in light mode
-  // and automatically switches to lighter brand color in dark mode via theme
-  const headlineColorClasses: Record<string, string> = {
-    primary: 'text-primary',
-    brand: 'text-accent-500 dark:text-accent-500',
-  }
-
-  // Subheading color classes
-  const subheadingColorClasses: Record<string, string> = {
-    default: 'text-brand-500 dark:text-white',
-    white: 'text-white',
-  }
-
-  // Subtitle size variants
-  const subtitleSizeStyles: Record<string, React.CSSProperties> = {
-    normal: {
-      fontSize: 'clamp(1.26rem, 3vw + 0.6rem, 3.9rem)',
-      lineHeight: '1.3',
-    },
-    small: {
-      // 75% of normal size (25% reduction)
-      fontSize: 'clamp(0.95rem, 2.25vw + 0.45rem, 2.925rem)',
-      lineHeight: '1.35',
-    },
   }
 
   // Gradient preset class mapping
@@ -210,7 +369,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
         <div className={cn('flex flex-col w-full', alignmentClasses[finalTextAlignment], enableTypewriter && 'relative')}>
           {/* Invisible placeholder layer in document flow to reserve full space */}
           {enableTypewriter && (
-            <div className="flex flex-col w-full" aria-hidden="true">
+            <div className="flex flex-col w-full lg:w-[70%]" aria-hidden="true">
               <h1
                 className={cn(
                   'mt-4 font-semibold invisible',
@@ -239,7 +398,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
 
           {/* Visible content layer positioned absolutely over placeholder */}
           <div className={cn(
-            'flex flex-col w-full',
+            'flex flex-col w-full lg:w-[70%]',
             enableTypewriter && 'absolute inset-0'
           )}>
             <h1

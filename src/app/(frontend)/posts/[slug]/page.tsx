@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+  import type { Metadata } from 'next'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'

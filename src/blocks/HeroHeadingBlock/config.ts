@@ -1,9 +1,22 @@
 import type { Block } from 'payload'
+import { link } from '@/fields/link'
 
 export const HeroHeadingBlock: Block = {
   slug: 'heroHeading',
   interfaceName: 'HeroHeadingBlock',
   fields: [
+    {
+      name: 'heroLayout',
+      type: 'select',
+      defaultValue: 'standard',
+      options: [
+        { label: 'Standard', value: 'standard' },
+        { label: 'Split Image Contained', value: 'splitImage' },
+      ],
+      admin: {
+        description: 'Choose the hero layout style. Split Image displays content on left with optional image on right.',
+      },
+    },
     {
       name: 'headline',
       type: 'textarea',
@@ -17,11 +30,12 @@ export const HeroHeadingBlock: Block = {
     },
     {
       name: 'subtitle',
-      type: 'text',
+      type: 'textarea',
       required: false,
       admin: {
         description: 'Subtitle text displayed below the headline',
         placeholder: 'Take it all in your Stride',
+        rows: 3,
       },
     },
     {
@@ -104,11 +118,53 @@ export const HeroHeadingBlock: Block = {
       ],
     },
     {
+      name: 'splitImage',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Split Image',
+      required: false,
+      admin: {
+        condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage',
+        description: 'Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile).',
+      },
+    },
+    {
+      name: 'splitImageAlt',
+      type: 'text',
+      label: 'Image Alt Text',
+      admin: {
+        condition: (_, siblingData) =>
+          siblingData?.heroLayout === 'splitImage' && !!siblingData?.splitImage,
+        description: 'Accessibility description for the split image',
+      },
+    },
+    {
+      name: 'buttons',
+      type: 'array',
+      label: 'Call-to-Action Buttons',
+      maxRows: 2,
+      admin: {
+        condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage',
+        description: 'Add up to 2 CTA buttons (e.g., "Get Started", "Learn More")',
+      },
+      fields: [
+        link({
+          enableUUIButton: true,
+          uuiColors: ['primary', 'accent', 'secondary', 'tertiary'],
+          uuiSizes: ['md', 'lg', 'xl'],
+          defaultUUIColor: 'primary',
+          defaultUUISize: 'xl',
+          appearances: false,
+        }),
+      ],
+    },
+    {
       name: 'bg',
       type: 'group',
       label: 'Custom Background',
       admin: {
-        description: 'Add custom background with image, gradient, or custom styling',
+        condition: (_, siblingData) => siblingData?.heroLayout !== 'splitImage',
+        description: 'Add custom background with image, gradient, or custom styling (not available for Split Image layout)',
       },
       fields: [
         {

@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { ArrowUpRight } from '@untitledui/icons'
+import { ArrowRight } from '@untitledui/icons'
 import { Badge } from '@/components/uui/base/badges/badges'
 import { OptimizedImage } from '@/components/OptimizedImage'
 import type { Media } from '@/payload-types'
@@ -72,9 +72,11 @@ export const PayloadBlogCard: React.FC<{
             href={article.href}
             className="group/title flex justify-between gap-x-4 rounded-md text-lg font-semibold text-primary outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
           >
-            {article.title}
-            <ArrowUpRight
-              className="mt-0.5 size-6 shrink-0 text-fg-quaternary transition duration-100 ease-linear group-hover/title:text-fg-quaternary_hover"
+            <span className="underline-offset-4 transition-all duration-100 ease-linear group-hover/title:underline">
+              {article.title}
+            </span>
+            <ArrowRight
+              className="mt-0.5 size-6 shrink-0 text-fg-primary transition duration-100 ease-linear group-hover/title:text-fg-primary_hover"
               aria-hidden="true"
             />
           </Link>
@@ -82,8 +84,7 @@ export const PayloadBlogCard: React.FC<{
           <p className="line-clamp-2 text-md text-tertiary">{article.summary}</p>
         </div>
       </div>
-
-      <time className="block text-sm text-tertiary">{article.publishedAt}</time>
+      {/*<time className="block text-sm text-tertiary">{article.publishedAt}</time>*/}
     </div>
   </article>
 )
