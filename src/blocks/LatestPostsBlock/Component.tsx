@@ -11,14 +11,15 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { PayloadBlogCard } from './BlogCard'
 import type { PayloadArticle } from './BlogCard'
+import { PostsCarousel } from './PostsCarousel'
 import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
 import { getGridImageSizes } from '@/utilities/getImageSizes'
 
 /**
- * Transform Payload Post to PayloadArticle interface
+ * Transform Payload Post to base article (without display properties)
  */
-const transformPostToArticle = (post: Post): PayloadArticle => {
+const transformPostToArticle = (post: Post): Omit<PayloadArticle, 'displayExcerpt' | 'displayCategories' | 'displayAuthor' | 'displayDate' | 'displayReadingTime'> => {
   // Extract and type-guard heroImage
   const heroImage = typeof post.heroImage === 'object' ? (post.heroImage as Media) : undefined
 
@@ -98,9 +99,10 @@ export const LatestPostsBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const { id, header, contentSource, opts, selectedPosts, buttonConfig, layoutOptions } = props
+  const { id, header, contentSource, opts, selectedPosts, buttonConfig, layoutOptions, cardDisplay } = props
 
   const spacing = layoutOptions?.spacing || 'normal'
+  const displayMode = layoutOptions?.displayMode || 'auto'
 
   // Fetch Posts Settings for fallback
   const payload = await getPayload({ config: configPromise })
@@ -127,19 +129,53 @@ export const LatestPostsBlock: React.FC<
 
   // Fetch posts based on content source
   if (contentSource === 'latest') {
-    const numberOfPosts = parseInt(opts?.numPosts || '3')
-    const categoryFilter = opts?.categoryFilter
+    const numberOfPosts = parseInt(opts?.numPosts || '4')
+    const categoryFilters = opts?.categoryFilter
+    const excludePosts = opts?.excludePosts
+    const sortBy = opts?.sortBy || 'date-desc'
+    const showFeaturedFirst = opts?.showFeaturedFirst || false
 
     // Build where clause
     const whereClause: Record<string, unknown> = {
       _status: { equals: 'published' },
     }
 
-    // Add category filter if specified
-    if (categoryFilter) {
-      whereClause.categories = {
-        in: [typeof categoryFilter === 'object' ? categoryFilter.id : categoryFilter],
+    // Add category filter if specified (multiple categories with OR logic)
+    if (categoryFilters && Array.isArray(categoryFilters) && categoryFilters.length > 0) {
+      const categoryIds = categoryFilters
+        .map((cat) => (typeof cat === 'object' ? cat.id : cat))
+        .filter((id): id is number => typeof id === 'number')
+
+      if (categoryIds.length > 0) {
+        whereClause.categories = { in: categoryIds }
       }
+    }
+
+    // Exclude specific posts
+    if (excludePosts && Array.isArray(excludePosts) && excludePosts.length > 0) {
+      const excludeIds = excludePosts
+        .map((post) => (typeof post === 'object' ? post.id : post))
+        .filter((id): id is number => typeof id === 'number')
+
+      if (excludeIds.length > 0) {
+        whereClause.id = { not_in: excludeIds }
+      }
+    }
+
+    // Determine sort order
+    let sortField = '-publishedAt' // Default: newest first
+    switch (sortBy) {
+      case 'date-asc':
+        sortField = 'publishedAt'
+        break
+      case 'title-asc':
+        sortField = 'title'
+        break
+      case 'title-desc':
+        sortField = '-title'
+        break
+      default:
+        sortField = '-publishedAt'
     }
 
     const fetchedPosts = await payload.find({
@@ -147,10 +183,22 @@ export const LatestPostsBlock: React.FC<
       depth: 1, // Populate relationships (heroImage, authors, categories)
       limit: numberOfPosts,
       where: whereClause as never, // Type assertion for Payload where clause
-      sort: '-publishedAt', // Most recent first
+      sort: sortField,
     })
 
     posts = fetchedPosts.docs
+
+    // Handle featured-first sorting (post-fetch sort)
+    if (showFeaturedFirst) {
+      posts = posts.sort((a, b) => {
+        // Assuming posts have a 'featured' boolean field
+        const aFeatured = (a as Post & { featured?: boolean }).featured || false
+        const bFeatured = (b as Post & { featured?: boolean }).featured || false
+        if (aFeatured && !bFeatured) return -1
+        if (!aFeatured && bFeatured) return 1
+        return 0
+      })
+    }
   } else {
     // Manual selection - need to fetch full posts with relationships
     if (selectedPosts?.length) {
@@ -177,8 +225,37 @@ export const LatestPostsBlock: React.FC<
     }
   }
 
-  // Transform posts to Article interface
-  const articles = posts.map(transformPostToArticle)
+  // Transform posts to Article interface and pre-calculate all display values
+  const excerptLengths = {
+    short: 50,
+    medium: 100,
+    long: 150,
+  }
+
+  const excerptLength = (cardDisplay?.excerptLength as 'short' | 'medium' | 'long') || 'medium'
+  const maxExcerptLength = excerptLengths[excerptLength]
+
+  const articles = posts.map((post) => {
+    const article = transformPostToArticle(post)
+
+    // Pre-calculate excerpt based on settings
+    const shouldShowExcerpt = cardDisplay?.showExcerpt !== false
+    const excerpt =
+      shouldShowExcerpt && article.summary
+        ? article.summary.length > maxExcerptLength
+          ? article.summary.substring(0, maxExcerptLength) + '...'
+          : article.summary
+        : null
+
+    return {
+      ...article,
+      displayExcerpt: excerpt,
+      displayCategories: cardDisplay?.showCategories !== false, // Default true
+      displayAuthor: cardDisplay?.showAuthor || false,
+      displayDate: cardDisplay?.showDate || false,
+      displayReadingTime: cardDisplay?.showReadingTime || false,
+    }
+  })
 
   // Calculate responsive image sizes based on grid columns
   const imageSizes = getGridImageSizes({
@@ -187,7 +264,13 @@ export const LatestPostsBlock: React.FC<
     desktop: desktopCols,
   })
 
-  // Build responsive grid classes
+  // Determine if we should use carousel
+  const maxColsDesktop = parseInt(desktopCols)
+  const shouldUseCarousel =
+    displayMode === 'carousel' ||
+    (displayMode === 'auto' && articles.length > maxColsDesktop)
+
+  // Build responsive grid classes (for grid mode)
   const gridClasses = cn(
     'mt-12 grid gap-x-8 gap-y-12 md:mt-16 md:gap-y-16',
     // Mobile columns
@@ -217,6 +300,15 @@ export const LatestPostsBlock: React.FC<
     normal: 'py-16 lg:py-24',
     spacious: 'py-24 lg:py-32',
   }
+
+  // Extract carousel options
+  const carouselOptions = layoutOptions?.carouselOptions || {}
+  const enableDrag = carouselOptions.enableDrag !== false // Default true
+  const showArrows = carouselOptions.showArrows !== false // Default true
+  const showProgress = carouselOptions.showProgress || false
+  const peekAmount = (carouselOptions.peekAmount as 'none' | 'small' | 'medium' | 'large') || 'medium'
+  const autoPlay = carouselOptions.autoPlay || false
+  const autoPlayInterval = carouselOptions.autoPlayInterval || 5000
 
   return (
     <section className={cn('bg-primary', spacingClasses[spacing])} id={`block-${id}`}>
@@ -254,18 +346,38 @@ export const LatestPostsBlock: React.FC<
           </div>
         )}
 
-        {/* Grid */}
-        <ul className={gridClasses}>
-          {articles.map((article, index) => (
-            <li key={article.id}>
-              <PayloadBlogCard
-                article={article}
-                sizes={imageSizes}
-                priority={index < 3}
-              />
-            </li>
-          ))}
-        </ul>
+        {/* Conditional rendering: Carousel vs Grid */}
+        {shouldUseCarousel ? (
+          <div className={cn('mt-12 md:mt-16', !header?.showHeader && 'mt-0')}>
+            <PostsCarousel
+              articles={articles}
+              imageSizes={imageSizes}
+              peekAmount={peekAmount}
+              enableDrag={enableDrag}
+              showArrows={showArrows}
+              showProgress={showProgress}
+              autoPlay={autoPlay}
+              autoPlayInterval={autoPlayInterval}
+              columns={{
+                mobile: mobileCols,
+                tablet: tabletCols,
+                desktop: desktopCols,
+              }}
+            />
+          </div>
+        ) : (
+          <ul className={gridClasses}>
+            {articles.map((article, index) => (
+              <li key={article.id}>
+                <PayloadBlogCard
+                  article={article}
+                  sizes={imageSizes}
+                  priority={index < 3}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
 
         {/* Mobile button */}
         {buttonConfig?.showButton && buttonConfig.link && (

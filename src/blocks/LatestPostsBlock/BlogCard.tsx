@@ -27,9 +27,15 @@ export type PayloadArticle = {
   }
   publishedAt: string
   readingTime: string
+  // Pre-calculated display values (computed on server)
+  displayExcerpt: string | null
+  displayCategories: boolean
+  displayAuthor: boolean
+  displayDate: boolean
+  displayReadingTime: boolean
 }
 
-export const PayloadBlogCard: React.FC<{
+const BlogCardComponent: React.FC<{
   article: PayloadArticle
   imageClassName?: string
   priority?: boolean
@@ -46,7 +52,7 @@ export const PayloadBlogCard: React.FC<{
         priority={priority}
         sizes={sizes || '(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 30vw'}
         className={cn(
-          'aspect-[1.5] w-full object-cover transition duration-100 ease-linear hover:scale-105',
+          'aspect-[1.5] w-full object-cover transition-transform duration-300 ease-linear hover:scale-105',
           imageClassName,
         )}
       />
@@ -54,19 +60,23 @@ export const PayloadBlogCard: React.FC<{
 
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
-        <div className="flex flex-wrap gap-2">
-          {article.categories.map((category, index) => (
-            <Link
-              key={index}
-              href={category.href}
-              className="text-sm font-semibold text-brand-secondary transition-colors hover:text-brand-secondary_hover"
-            >
-              <Badge size="sm" color="brand" type="modern">
-                {category.name}
-              </Badge>
-            </Link>
-          ))}
-        </div>
+        {/* Categories */}
+        {article.displayCategories && article.categories.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {article.categories.map((category, index) => (
+              <Link
+                key={index}
+                href={category.href}
+                className="text-sm font-semibold text-brand-secondary transition-colors hover:text-brand-secondary_hover"
+              >
+                <Badge size="sm" color="brand" type="modern">
+                  {category.name}
+                </Badge>
+              </Link>
+            ))}
+          </div>
+        )}
+
         <div className="flex flex-col gap-1">
           <Link
             href={article.href}
@@ -81,10 +91,38 @@ export const PayloadBlogCard: React.FC<{
             />
           </Link>
 
-          <p className="line-clamp-2 text-md text-tertiary">{article.summary}</p>
+          {/* Excerpt */}
+          {article.displayExcerpt && (
+            <p className="line-clamp-2 text-md text-tertiary">{article.displayExcerpt}</p>
+          )}
         </div>
       </div>
-      {/*<time className="block text-sm text-tertiary">{article.publishedAt}</time>*/}
+
+      {/* Author / Meta Info */}
+      {(article.displayAuthor || article.displayDate || article.displayReadingTime) && (
+        <div className="flex items-center gap-3 text-sm text-tertiary">
+          {article.displayAuthor && (
+            <span>{article.author.name}</span>
+          )}
+
+          {article.displayDate && (
+            <>
+              {article.displayAuthor && <span aria-hidden="true">·</span>}
+              <time>{article.publishedAt}</time>
+            </>
+          )}
+
+          {article.displayReadingTime && (
+            <>
+              {(article.displayAuthor || article.displayDate) && <span aria-hidden="true">·</span>}
+              <span>{article.readingTime}</span>
+            </>
+          )}
+        </div>
+      )}
     </div>
   </article>
 )
+
+// Memoize to prevent any re-renders from parent state changes
+export const PayloadBlogCard = React.memo(BlogCardComponent)

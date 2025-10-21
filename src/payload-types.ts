@@ -450,6 +450,10 @@ export interface Post {
     };
     [k: string]: unknown;
   };
+  /**
+   * Optional blocks to display after the main post content
+   */
+  afterContent?: (LatestPostsBlock | CallToActionBlock | MediaBlock)[] | null;
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
   /**
@@ -458,6 +462,16 @@ export interface Post {
   contributors?: (number | User)[] | null;
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   populatedAuthors?:
     | {
         id?: string | null;
@@ -474,81 +488,9 @@ export interface Post {
         avatar?: (number | null) | Media;
       }[]
     | null;
-  /**
-   * Optional blocks to display after the main post content
-   */
-  afterContent?: (LatestPostsBlock | CallToActionBlock | MediaBlock)[] | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  parent?: (number | null) | Category;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  name?: string | null;
-  /**
-   * Display name for public content (e.g., blog posts)
-   */
-  nickname?: string | null;
-  /**
-   * Job title or role (e.g., "Product Manager", "Frontend Engineer")
-   */
-  role?: string | null;
-  /**
-   * Profile picture for contributor listings
-   */
-  avatar?: (number | null) | Media;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -583,9 +525,21 @@ export interface LatestPostsBlock {
      */
     numPosts?: ('3' | '6' | '9' | '12') | null;
     /**
-     * Optional: Show only posts from a specific category
+     * Optional: Show only posts from these categories (OR logic - matches any)
      */
-    categoryFilter?: (number | null) | Category;
+    categoryFilter?: (number | Category)[] | null;
+    /**
+     * Optional: Hide these posts even if they match other filters
+     */
+    excludePosts?: (number | Post)[] | null;
+    /**
+     * How to sort the posts
+     */
+    sortBy?: ('date-desc' | 'date-asc' | 'title-asc' | 'title-desc') | null;
+    /**
+     * Show featured posts at the beginning, regardless of sort order
+     */
+    showFeaturedFirst?: boolean | null;
   };
   /**
    * Manually select which posts to display
@@ -629,9 +583,42 @@ export interface LatestPostsBlock {
     };
   };
   /**
+   * Customize what content is shown on each blog card
+   */
+  cardDisplay?: {
+    /**
+     * Display category badges on cards
+     */
+    showCategories?: boolean | null;
+    /**
+     * Display author name and avatar
+     */
+    showAuthor?: boolean | null;
+    /**
+     * Display the published date
+     */
+    showDate?: boolean | null;
+    /**
+     * Display estimated reading time
+     */
+    showReadingTime?: boolean | null;
+    /**
+     * Display post summary/excerpt
+     */
+    showExcerpt?: boolean | null;
+    /**
+     * Maximum length for post excerpts
+     */
+    excerptLength?: ('short' | 'medium' | 'long') | null;
+  };
+  /**
    * Configure how the blog section is displayed
    */
   layoutOptions?: {
+    /**
+     * How posts are displayed. Auto automatically switches to carousel when posts exceed columns.
+     */
+    displayMode?: ('auto' | 'grid' | 'carousel') | null;
     /**
      * Use column settings from Posts Settings global. Uncheck to customize columns for this block.
      */
@@ -654,6 +641,35 @@ export interface LatestPostsBlock {
       mobile?: ('1' | '2') | null;
     };
     /**
+     * Configure carousel behavior (only applies in carousel or auto mode)
+     */
+    carouselOptions?: {
+      /**
+       * Allow users to drag/swipe the carousel (recommended)
+       */
+      enableDrag?: boolean | null;
+      /**
+       * Display prev/next arrows on carousel
+       */
+      showArrows?: boolean | null;
+      /**
+       * Display a progress indicator below carousel
+       */
+      showProgress?: boolean | null;
+      /**
+       * How much of adjacent cards to show. Peek improves discoverability by showing users there is more content.
+       */
+      peekAmount?: ('none' | 'small' | 'medium' | 'large') | null;
+      /**
+       * Automatically advance to next card (pauses on hover/interaction)
+       */
+      autoPlay?: boolean | null;
+      /**
+       * Milliseconds between auto-advance (2000-10000)
+       */
+      autoPlayInterval?: number | null;
+    };
+    /**
      * Vertical spacing around this section
      */
     spacing?: ('compact' | 'normal' | 'spacious') | null;
@@ -661,6 +677,27 @@ export interface LatestPostsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'latestPosts';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  parent?: (number | null) | Category;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Category;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -751,6 +788,43 @@ export interface MediaBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name?: string | null;
+  /**
+   * Display name for public content (e.g., blog posts)
+   */
+  nickname?: string | null;
+  /**
+   * Job title or role (e.g., "Product Manager", "Frontend Engineer")
+   */
+  role?: string | null;
+  /**
+   * Profile picture for contributor listings
+   */
+  avatar?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1781,6 +1855,9 @@ export interface LatestPostsBlockSelect<T extends boolean = true> {
     | {
         numPosts?: T;
         categoryFilter?: T;
+        excludePosts?: T;
+        sortBy?: T;
+        showFeaturedFirst?: T;
       };
   selectedPosts?: T;
   buttonConfig?:
@@ -1801,9 +1878,20 @@ export interface LatestPostsBlockSelect<T extends boolean = true> {
               iconPos?: T;
             };
       };
+  cardDisplay?:
+    | T
+    | {
+        showCategories?: T;
+        showAuthor?: T;
+        showDate?: T;
+        showReadingTime?: T;
+        showExcerpt?: T;
+        excerptLength?: T;
+      };
   layoutOptions?:
     | T
     | {
+        displayMode?: T;
         usePostsSettings?: T;
         gridColumns?:
           | T
@@ -1811,6 +1899,16 @@ export interface LatestPostsBlockSelect<T extends boolean = true> {
               desktop?: T;
               tablet?: T;
               mobile?: T;
+            };
+        carouselOptions?:
+          | T
+          | {
+              enableDrag?: T;
+              showArrows?: T;
+              showProgress?: T;
+              peekAmount?: T;
+              autoPlay?: T;
+              autoPlayInterval?: T;
             };
         spacing?: T;
       };
@@ -1833,11 +1931,27 @@ export interface PostsSelect<T extends boolean = true> {
       };
   heroImage?: T;
   content?: T;
+  afterContent?:
+    | T
+    | {
+        latestPosts?: T | LatestPostsBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+      };
   relatedPosts?: T;
   categories?: T;
   contributors?: T;
   publishedAt?: T;
   authors?: T;
+  slug?: T;
+  slugLock?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   populatedAuthors?:
     | T
     | {
@@ -1853,22 +1967,6 @@ export interface PostsSelect<T extends boolean = true> {
         name?: T;
         nickname?: T;
         avatar?: T;
-      };
-  afterContent?:
-    | T
-    | {
-        latestPosts?: T | LatestPostsBlockSelect<T>;
-        cta?: T | CallToActionBlockSelect<T>;
-        mediaBlock?: T | MediaBlockSelect<T>;
-      };
-  slug?: T;
-  slugLock?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
       };
   updatedAt?: T;
   createdAt?: T;
