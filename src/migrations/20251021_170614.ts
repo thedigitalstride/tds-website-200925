@@ -1,6 +1,7 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+  // Update link_uui_color enum
   // Step 1: Convert column to text to allow data transformation
   await db.execute(sql`
     ALTER TABLE "footer_nav_columns_items" ALTER COLUMN "link_uui_color" SET DATA TYPE text;
@@ -22,14 +23,44 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     CREATE TYPE "public"."enum_footer_nav_columns_items_link_uui_color" AS ENUM('link');
   `)
 
-  // Step 4: Convert column back to enum with new type and update defaults
+  // Step 4: Convert column back to enum with new type
   await db.execute(sql`
     ALTER TABLE "footer_nav_columns_items"
       ALTER COLUMN "link_uui_color"
         SET DATA TYPE "public"."enum_footer_nav_columns_items_link_uui_color"
         USING "link_uui_color"::"public"."enum_footer_nav_columns_items_link_uui_color",
-      ALTER COLUMN "link_uui_color" SET DEFAULT 'link',
-      ALTER COLUMN "link_uui_size" SET DEFAULT 'md';
+      ALTER COLUMN "link_uui_color" SET DEFAULT 'link';
+  `)
+
+  // Update link_uui_size enum to add sm, md, xl options
+  // Add new size values if they don't exist
+  await db.execute(sql`
+    DO $$ BEGIN
+      ALTER TYPE "public"."enum_footer_nav_columns_items_link_uui_size" ADD VALUE IF NOT EXISTS 'sm';
+    EXCEPTION
+      WHEN others THEN null;
+    END $$;
+  `)
+
+  await db.execute(sql`
+    DO $$ BEGIN
+      ALTER TYPE "public"."enum_footer_nav_columns_items_link_uui_size" ADD VALUE IF NOT EXISTS 'md';
+    EXCEPTION
+      WHEN others THEN null;
+    END $$;
+  `)
+
+  await db.execute(sql`
+    DO $$ BEGIN
+      ALTER TYPE "public"."enum_footer_nav_columns_items_link_uui_size" ADD VALUE IF NOT EXISTS 'xl';
+    EXCEPTION
+      WHEN others THEN null;
+    END $$;
+  `)
+
+  // Now we can safely change the default to 'md'
+  await db.execute(sql`
+    ALTER TABLE "footer_nav_columns_items" ALTER COLUMN "link_uui_size" SET DEFAULT 'md';
   `)
 }
 
