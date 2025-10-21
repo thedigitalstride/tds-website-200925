@@ -2556,7 +2556,7 @@ export interface Footer {
                 /**
                  * Button color variant from UntitledUI design system
                  */
-                uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+                uuiColor?: 'link' | null;
                 /**
                  * Button size variant
                  */
