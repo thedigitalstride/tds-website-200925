@@ -63,7 +63,7 @@ const transformPost = (post: Post, index: number): Article => {
             const category = cat as Category
             return {
               name: category.title || 'Uncategorized',
-              href: category.slug ? `/posts?category=${category.slug}` : '#',
+              href: category.slug ? `/news-insights?category=${category.slug}` : '#',
             }
           })
       : [{ name: 'Uncategorized', href: '#' }]
@@ -72,7 +72,7 @@ const transformPost = (post: Post, index: number): Article => {
     id: post.id.toString(),
     title: post.title,
     summary: post.subtitle || '',
-    href: `/posts/${post.slug || 'undefined'}`,
+    href: `/news-insights/${post.slug || 'undefined'}`,
     categories: allCategories,
     thumbnailUrl: heroImage?.url || '/placeholder.jpg',
     thumbnailMedia: heroImage, // Pass full Media resource for optimization
@@ -107,18 +107,18 @@ export const BlogListing: React.FC<BlogListingProps> = ({
   const handlePageChange = (page: number) => {
     const categoryParam = selectedCategory !== 'all' ? `?category=${selectedCategory}` : ''
     if (page === 1) {
-      router.push(`/posts${categoryParam}`)
+      router.push(`/news-insights${categoryParam}`)
     } else {
-      router.push(`/posts/page/${page}${categoryParam}`)
+      router.push(`/news-insights/page/${page}${categoryParam}`)
     }
   }
 
   // Handle category change
   const handleCategoryChange = (key: string) => {
     if (key === 'all') {
-      router.push('/posts')
+      router.push('/news-insights')
     } else {
-      router.push(`/posts?category=${key}`)
+      router.push(`/news-insights?category=${key}`)
     }
   }
 

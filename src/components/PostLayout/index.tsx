@@ -53,7 +53,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                   return (
                     <a
                       key={category.id || index}
-                      href={`/posts?category=${category.slug}`}
+                      href={`/news-insights?category=${category.slug}`}
                       className="inline-block"
                     >
                       <Badge size="sm" color="brand" type="modern" className="hover:bg-secondary transition-colors">

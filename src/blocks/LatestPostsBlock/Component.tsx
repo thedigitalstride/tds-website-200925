@@ -37,7 +37,7 @@ const transformPostToArticle = (post: Post): Omit<PayloadArticle, 'displayExcerp
           .filter((cat): cat is Category => typeof cat === 'object')
           .map((category) => ({
             name: category.title || 'Uncategorized',
-            href: category.slug ? `/posts?category=${category.slug}` : '#',
+            href: category.slug ? `/news-insights?category=${category.slug}` : '#',
           }))
       : [{ name: 'Uncategorized', href: '#' }]
 
@@ -45,7 +45,7 @@ const transformPostToArticle = (post: Post): Omit<PayloadArticle, 'displayExcerp
     id: post.id.toString(),
     title: post.title,
     summary: post.subtitle || '',
-    href: `/posts/${post.slug}`,
+    href: `/news-insights/${post.slug}`,
     categories, // Array, not singular
     thumbnailUrl: heroImage?.url || '/placeholder.jpg',
     thumbnailMedia: heroImage, // Pass the full Media object
