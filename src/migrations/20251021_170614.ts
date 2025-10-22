@@ -33,28 +33,54 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   `)
 
   // Update link_uui_size enum to add sm, md, xl options
-  // Add new size values if they don't exist
+  // Note: In PostgreSQL, ALTER TYPE ADD VALUE cannot be executed inside a transaction block
+  // with other statements that reference the enum. We need to add values first, then use them.
+
+  // Check if 'sm' value exists, add if not
   await db.execute(sql`
-    DO $$ BEGIN
-      ALTER TYPE "public"."enum_footer_nav_columns_items_link_uui_size" ADD VALUE IF NOT EXISTS 'sm';
-    EXCEPTION
-      WHEN others THEN null;
+    DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_enum
+        WHERE enumlabel = 'sm'
+        AND enumtypid = (
+          SELECT oid FROM pg_type WHERE typname = 'enum_footer_nav_columns_items_link_uui_size'
+        )
+      ) THEN
+        ALTER TYPE "public"."enum_footer_nav_columns_items_link_uui_size" ADD VALUE 'sm';
+      END IF;
     END $$;
   `)
 
+  // Check if 'md' value exists, add if not
   await db.execute(sql`
-    DO $$ BEGIN
-      ALTER TYPE "public"."enum_footer_nav_columns_items_link_uui_size" ADD VALUE IF NOT EXISTS 'md';
-    EXCEPTION
-      WHEN others THEN null;
+    DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_enum
+        WHERE enumlabel = 'md'
+        AND enumtypid = (
+          SELECT oid FROM pg_type WHERE typname = 'enum_footer_nav_columns_items_link_uui_size'
+        )
+      ) THEN
+        ALTER TYPE "public"."enum_footer_nav_columns_items_link_uui_size" ADD VALUE 'md';
+      END IF;
     END $$;
   `)
 
+  // Check if 'xl' value exists, add if not
   await db.execute(sql`
-    DO $$ BEGIN
-      ALTER TYPE "public"."enum_footer_nav_columns_items_link_uui_size" ADD VALUE IF NOT EXISTS 'xl';
-    EXCEPTION
-      WHEN others THEN null;
+    DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_enum
+        WHERE enumlabel = 'xl'
+        AND enumtypid = (
+          SELECT oid FROM pg_type WHERE typname = 'enum_footer_nav_columns_items_link_uui_size'
+        )
+      ) THEN
+        ALTER TYPE "public"."enum_footer_nav_columns_items_link_uui_size" ADD VALUE 'xl';
+      END IF;
     END $$;
   `)
 
