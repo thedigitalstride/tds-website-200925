@@ -1230,9 +1230,23 @@ export interface FeaturesBlock {
     icon?: string | null;
     title: string;
     /**
-     * Brief description of this feature
+     * Rich description with formatting, lists, and links
      */
-    description: string;
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
     /**
      * Add an optional call-to-action link or button
      */

@@ -110,22 +110,22 @@ With Accent Blue"
                 {
                   icon: "Zap",
                   title: "Lightning Fast",
-                  description: "Optimized performance for the best user experience",
+                  description: "Optimized performance for the best user experience" as any,
                   enableLink: false
                 },
                 {
                   icon: "Shield03",
                   title: "Secure by Default",
-                  description: "Built-in security features to protect your data",
+                  description: "Built-in security features to protect your data" as any,
                   enableLink: false
                 },
                 {
                   icon: "TrendUp01",
                   title: "Scalable Growth",
-                  description: "Grows with your business from startup to enterprise",
+                  description: "Grows with your business from startup to enterprise" as any,
                   enableLink: false
                 }
-              ]}
+              ] as any}
               layoutOptions={{
                 cardStyle: "card",
                 cardBackground: "primary",
@@ -163,22 +163,22 @@ With Accent Blue"
                 {
                   icon: "Users01",
                   title: "Team Collaboration",
-                  description: "Work together seamlessly with your entire team",
+                  description: "Work together seamlessly with your entire team" as any,
                   enableLink: false
                 },
                 {
                   icon: "MessageChatCircle",
                   title: "Real-time Chat",
-                  description: "Communicate instantly with integrated messaging",
+                  description: "Communicate instantly with integrated messaging" as any,
                   enableLink: false
                 },
                 {
                   icon: "ChartBreakoutSquare",
                   title: "Analytics Dashboard",
-                  description: "Track performance with detailed insights",
+                  description: "Track performance with detailed insights" as any,
                   enableLink: false
                 }
-              ]}
+              ] as any}
               layoutOptions={{
                 cardStyle: "centered-icon",
                 cardBackground: "secondary",

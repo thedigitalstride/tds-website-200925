@@ -1,5 +1,6 @@
 import type { Block } from 'payload'
 import { link } from '@/fields/link'
+import { richTextEditorSimple } from '@/fields/richTextWithButtons'
 
 export const FeaturesBlock: Block = {
   slug: 'features',
@@ -88,11 +89,12 @@ export const FeaturesBlock: Block = {
         },
         {
           name: 'description',
-          type: 'textarea',
-          required: true,
+          type: 'richText',
+          required: false,
           label: 'Feature Description',
+          editor: richTextEditorSimple(),
           admin: {
-            description: 'Brief description of this feature',
+            description: 'Rich description with formatting, lists, and links',
           },
         },
         {
