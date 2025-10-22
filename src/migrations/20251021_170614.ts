@@ -33,8 +33,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   `)
 
   // Update link_uui_size enum to add sm, md, xl options
-  // Note: In PostgreSQL, ALTER TYPE ADD VALUE cannot be executed inside a transaction block
-  // with other statements that reference the enum. We need to add values first, then use them.
+  // Note: PostgreSQL restriction - newly added enum values cannot be used in the same
+  // transaction. Since Payload runs migrations in a transaction, we can only ADD the
+  // values here. The default will remain 'lg' for now (can be changed in a future migration).
 
   // Check if 'sm' value exists, add if not
   await db.execute(sql`
@@ -84,10 +85,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     END $$;
   `)
 
-  // Now we can safely change the default to 'md'
-  await db.execute(sql`
-    ALTER TABLE "footer_nav_columns_items" ALTER COLUMN "link_uui_size" SET DEFAULT 'md';
-  `)
+  // Note: Default remains 'lg' - cannot change to 'md' in same transaction due to PostgreSQL
+  // restriction on newly added enum values. Will update in next migration if needed.
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {

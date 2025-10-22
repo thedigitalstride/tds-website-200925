@@ -47,7 +47,7 @@ export const Footer: GlobalConfig = {
               uuiColors: ['link'], // Link style only for footer navigation
               uuiSizes: ['sm', 'md', 'lg', 'xl'],
               defaultUUIColor: 'link',
-              defaultUUISize: 'md',
+              defaultUUISize: 'lg', // Keep lg as default to match production DB
               appearances: false,
             }),
             {
