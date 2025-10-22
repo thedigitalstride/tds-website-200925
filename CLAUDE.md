@@ -93,6 +93,8 @@ src/
 ### 📖 Implementation Guides
 
 - **[BLOG_IMPLEMENTATION.md](/docs/BLOG_IMPLEMENTATION.md)** - Posts system with UUI components and category filtering
+- **[ACCORDION_SYSTEM.md](/docs/ACCORDION_SYSTEM.md)** - Complete FAQ/Accordion block system with accessibility and performance features
+- **[FAQ_SCHEMA_IMPLEMENTATION.md](/docs/FAQ_SCHEMA_IMPLEMENTATION.md)** - Google FAQPage structured data implementation plan
 - **[UUI_COMPONENTS_REFERENCE.md](/docs/UUI_COMPONENTS_REFERENCE.md)** - UntitledUI usage patterns and types
 
 ## 🚨 Critical Rules (Quick Reference)
