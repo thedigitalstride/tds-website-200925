@@ -113,7 +113,8 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
       <motion.section
         initial={false}
         animate={isOpen ? 'open' : 'closed'}
-        className={cardClasses}
+        className={cn(cardClasses, 'cursor-pointer transition-colors hover:bg-secondary')}
+        onClick={onToggle}
         aria-labelledby={`accordion-header-${id}`}
         aria-describedby={
           showCategories && faq.categories?.length ? `accordion-categories-${id}` : undefined
@@ -124,12 +125,16 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
             id={`accordion-header-${id}`}
             aria-expanded={isOpen}
             aria-controls={`accordion-content-${id}`}
-            onClick={onToggle}
+            onClick={(e) => {
+              e.stopPropagation()
+              onToggle()
+            }}
             onFocus={onlyKeyboardFocus(() => setHasFocus(true))}
             onBlur={() => setHasFocus(false)}
             className={cn(
               'group flex w-full items-start gap-4 text-left transition-colors',
               'hover:text-brand-secondary focus-visible:outline-none',
+              'cursor-pointer',
               iconPosition === 'left' && 'flex-row',
               iconPosition === 'right' && 'flex-row',
               iconPosition === 'none' && 'flex-row',

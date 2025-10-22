@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { AccordionBlock } from '../../blocks/AccordionBlock/config'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
@@ -91,7 +92,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock, FeaturesBlock, LatestPostsBlock],
+              blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock, FeaturesBlock, LatestPostsBlock, AccordionBlock],
               admin: {
                 initCollapsed: true,
               },

@@ -834,6 +834,19 @@
     --color-bg-accent-section: var(--color-accent-800);
     --color-bg-accent-section_subtle: var(--color-accent-700);
 
+    /* ACCORDION VARIABLES */
+    --accordion-border-color: var(--color-border-primary);
+    --accordion-bg-primary: var(--color-bg-primary);
+    --accordion-bg-secondary: var(--color-bg-secondary);
+    --accordion-bg-accent: var(--color-bg-accent-subtle);
+    --accordion-header-hover: var(--color-bg-secondary-hover);
+    --accordion-focus-ring: var(--color-brand-primary);
+
+    /* Animation speeds */
+    --accordion-duration-fast: 0.2s;
+    --accordion-duration-normal: 0.3s;
+    --accordion-duration-slow: 0.4s;
+
     /* CARD/CONTAINER BACKGROUND VARIANTS */
     --color-bg-card-brand-subtle: color-mix(in srgb, var(--color-brand-50) 30%, transparent);
     --color-bg-card-brand-solid: var(--color-brand-50);
@@ -1339,6 +1352,10 @@
         --color-bg-accent-secondary_alt: var(--color-bg-primary);
         --color-bg-accent-section: var(--color-bg-secondary);
         --color-bg-accent-section_subtle: var(--color-bg-primary);
+
+        /* ACCORDION VARIABLES - Dark mode */
+        --accordion-border-color: var(--color-border-secondary);
+        --accordion-header-hover: var(--color-bg-tertiary-hover);
 
         /* CARD/CONTAINER BACKGROUND VARIANTS - Dark mode */
         --color-bg-card-brand-subtle: var(--color-brand-700);

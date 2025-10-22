@@ -71,6 +71,7 @@ export interface Config {
     posts: Post;
     media: Media;
     categories: Category;
+    faqs: Faq;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -87,6 +88,7 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -164,6 +166,7 @@ export interface Page {
         | ButtonBlock
         | FeaturesBlock
         | LatestPostsBlock
+        | AccordionBlock
       )[]
     | null;
   publishedAt?: string | null;
@@ -1302,6 +1305,194 @@ export interface FeaturesBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock".
+ */
+export interface AccordionBlock {
+  header?: {
+    /**
+     * Toggle to show/hide the header section
+     */
+    showHeader?: boolean | null;
+    /**
+     * Small text above heading (e.g., "FAQs", "Common Questions")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for the accordion section
+     */
+    heading?: string | null;
+    /**
+     * Description text that appears below the heading
+     */
+    description?: string | null;
+    /**
+     * Alignment of the section header
+     */
+    headerAlignment?: ('left' | 'center') | null;
+  };
+  /**
+   * Choose between automatically showing FAQs based on filters or manually selecting specific FAQs
+   */
+  contentSource?: ('dynamic' | 'manual') | null;
+  opts?: {
+    /**
+     * Optional: Show only FAQs from these categories (OR logic - matches any)
+     */
+    categoryFilter?: (number | Category)[] | null;
+    /**
+     * Maximum number of FAQs to display
+     */
+    limit?: ('3' | '6' | '9' | '12' | 'all') | null;
+    /**
+     * How to sort the FAQs. Featured FAQs always appear first.
+     */
+    sortBy?: ('order' | 'date' | 'question-asc' | 'question-desc') | null;
+    /**
+     * Optional: Hide these FAQs even if they match other filters
+     */
+    excludeFAQs?: (number | Faq)[] | null;
+  };
+  /**
+   * Manually select which FAQs to display
+   */
+  selectedFAQs?: (number | Faq)[] | null;
+  /**
+   * Configure how accordions are displayed
+   */
+  displayOptions?: {
+    /**
+     * Display category badges on each FAQ item
+     */
+    showCategories?: boolean | null;
+    /**
+     * Initial state when the page loads
+     */
+    defaultState?: ('all-collapsed' | 'first-open' | 'all-open') | null;
+    /**
+     * Allow multiple accordion items to be open simultaneously
+     */
+    allowMultipleOpen?: boolean | null;
+    /**
+     * Add a search box to filter FAQs client-side (recommended for 6+ items)
+     */
+    enableSearch?: boolean | null;
+    /**
+     * Position of the toggle icon
+     */
+    iconPosition?: ('right' | 'left' | 'none') | null;
+    /**
+     * Style of the toggle icon
+     */
+    iconStyle?: ('chevron' | 'plus-minus') | null;
+  };
+  /**
+   * Configure the visual appearance
+   */
+  layoutOptions?: {
+    /**
+     * Vertical spacing around this section
+     */
+    spacing?: ('compact' | 'normal' | 'spacious') | null;
+    /**
+     * Background color for accordion items
+     */
+    cardBackground?: ('primary' | 'secondary' | 'accent') | null;
+    /**
+     * How to separate accordion items
+     */
+    dividerStyle?: ('line' | 'card' | 'none') | null;
+    /**
+     * Speed of expand/collapse animations
+     */
+    animationSpeed?: ('fast' | 'normal' | 'slow') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accordion';
+}
+/**
+ * Frequently Asked Questions that can be displayed in AccordionBlocks or inline in rich text
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: number;
+  /**
+   * The question text (e.g., "How do I get started?")
+   */
+  question: string;
+  /**
+   * Rich answer with images, code blocks, videos, and links to related content
+   */
+  answer: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Link to blog posts or pages that provide more detail on this topic
+   */
+  relatedContent?:
+    | (
+        | {
+            relationTo: 'posts';
+            value: number | Post;
+          }
+        | {
+            relationTo: 'pages';
+            value: number | Page;
+          }
+      )[]
+    | null;
+  /**
+   * PDFs, guides, templates that supplement this FAQ
+   */
+  resources?:
+    | {
+        title: string;
+        file: number | Media;
+        /**
+         * Brief description of what this resource contains
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Tag FAQs with categories for filtering in AccordionBlocks
+   */
+  categories?: (number | Category)[] | null;
+  /**
+   * Pin this FAQ to the top of filtered lists
+   */
+  featured?: boolean | null;
+  /**
+   * Manual ordering (lower numbers appear first). Featured FAQs always appear before non-featured.
+   */
+  order?: number | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  /**
+   * SEO description for standalone FAQ pages (if using)
+   */
+  metaDescription?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1490,6 +1681,10 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
+        relationTo: 'faqs';
+        value: number | Faq;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -1574,6 +1769,7 @@ export interface PagesSelect<T extends boolean = true> {
         buttonBlock?: T | ButtonBlockSelect<T>;
         features?: T | FeaturesBlockSelect<T>;
         latestPosts?: T | LatestPostsBlockSelect<T>;
+        accordion?: T | AccordionBlockSelect<T>;
       };
   publishedAt?: T;
   slug?: T;
@@ -1917,6 +2113,51 @@ export interface LatestPostsBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock_select".
+ */
+export interface AccordionBlockSelect<T extends boolean = true> {
+  header?:
+    | T
+    | {
+        showHeader?: T;
+        eyebrow?: T;
+        heading?: T;
+        description?: T;
+        headerAlignment?: T;
+      };
+  contentSource?: T;
+  opts?:
+    | T
+    | {
+        categoryFilter?: T;
+        limit?: T;
+        sortBy?: T;
+        excludeFAQs?: T;
+      };
+  selectedFAQs?: T;
+  displayOptions?:
+    | T
+    | {
+        showCategories?: T;
+        defaultState?: T;
+        allowMultipleOpen?: T;
+        enableSearch?: T;
+        iconPosition?: T;
+        iconStyle?: T;
+      };
+  layoutOptions?:
+    | T
+    | {
+        spacing?: T;
+        cardBackground?: T;
+        dividerStyle?: T;
+        animationSpeed?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -2084,6 +2325,32 @@ export interface CategoriesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
+  relatedContent?: T;
+  resources?:
+    | T
+    | {
+        title?: T;
+        file?: T;
+        description?: T;
+        id?: T;
+      };
+  categories?: T;
+  featured?: T;
+  order?: T;
+  slug?: T;
+  slugLock?: T;
+  metaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
