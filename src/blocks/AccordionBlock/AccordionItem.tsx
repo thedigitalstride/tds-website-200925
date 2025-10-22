@@ -113,7 +113,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
       <motion.section
         initial={false}
         animate={isOpen ? 'open' : 'closed'}
-        className={cn(cardClasses, 'cursor-pointer transition-colors hover:bg-secondary')}
+        className={cn(cardClasses, 'cursor-pointer transition-colors duration-300 hover:bg-secondary dark:hover:bg-black/10')}
         onClick={onToggle}
         aria-labelledby={`accordion-header-${id}`}
         aria-describedby={
@@ -133,7 +133,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
             onBlur={() => setHasFocus(false)}
             className={cn(
               'group flex w-full items-start gap-4 text-left transition-colors',
-              'hover:text-brand-secondary focus-visible:outline-none',
+              'focus-visible:outline-none',
               'cursor-pointer',
               iconPosition === 'left' && 'flex-row',
               iconPosition === 'right' && 'flex-row',
@@ -147,7 +147,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
                   open: { rotate: iconStyle === 'chevron' ? 0 : 0 },
                   closed: { rotate: iconStyle === 'chevron' ? -90 : 0 },
                 }}
-                className="flex-shrink-0 text-secondary group-hover:text-brand-secondary"
+                className="flex-shrink-0 text-secondary"
                 aria-hidden="true"
               >
                 <ToggleIcon className="h-6 w-6" />
@@ -157,7 +157,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
             {/* Question Text */}
             <span className="flex-1">
               <span className="sr-only">{isOpen ? 'Collapse' : 'Expand'} question: </span>
-              <span className="text-lg font-semibold text-primary group-hover:text-brand-secondary md:text-xl">
+              <span className="text-lg font-semibold text-primary md:text-xl">
                 {faq.question}
               </span>
 
@@ -183,7 +183,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
                   open: { rotate: iconStyle === 'chevron' ? 0 : 0 },
                   closed: { rotate: iconStyle === 'chevron' ? -90 : 0 },
                 }}
-                className="flex-shrink-0 text-secondary group-hover:text-brand-secondary"
+                className="flex-shrink-0 text-secondary"
                 aria-hidden="true"
               >
                 <ToggleIcon className="h-6 w-6" />
