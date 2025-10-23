@@ -164,6 +164,7 @@ export interface Page {
         | ArchiveBlock
         | FormBlock
         | ButtonBlock
+        | CardGridBlock
         | FeaturesBlock
         | LatestPostsBlock
         | AccordionBlock
@@ -1118,6 +1119,129 @@ export interface ButtonBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CardGridBlock".
+ */
+export interface CardGridBlock {
+  header?: {
+    /**
+     * Toggle to show/hide the header section
+     */
+    showHeader?: boolean | null;
+    /**
+     * Small text above heading (e.g., "Our Services", "What We Offer")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for the card grid section
+     */
+    heading?: string | null;
+    /**
+     * Description text that appears below the heading
+     */
+    description?: string | null;
+    /**
+     * Alignment of the section header
+     */
+    headerAlignment?: ('left' | 'center') | null;
+  };
+  cards: {
+    /**
+     * Small text above card title (e.g., "New", "Featured", "Step 01")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for this card (e.g., "Fast Delivery", "Expert Support")
+     */
+    title: string;
+    /**
+     * Rich description with headings, formatting, lists, and links
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+     */
+    icon?: string | null;
+    /**
+     * Add an optional call-to-action link or button
+     */
+    enableLink?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+      /**
+       * Button color variant from UntitledUI design system
+       */
+      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      /**
+       * Button size variant
+       */
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+      /**
+       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+       */
+      buttonIcon?: string | null;
+      /**
+       * Position of the icon relative to the button text
+       */
+      iconPos?: ('leading' | 'trailing') | null;
+    };
+    id?: string | null;
+  }[];
+  /**
+   * Layout arrangement for cards (icon position and alignment)
+   */
+  cardStyle?: ('card' | 'centered-icon' | 'left-icon' | 'horizontal-icon' | 'elevated-box') | null;
+  /**
+   * Visual style for cards (background and borders)
+   */
+  cardBackground?: ('primary' | 'secondary' | 'accent' | 'line') | null;
+  /**
+   * Number of columns in the grid (1-4). Single column layout allows natural card heights; multi-column layouts use equal heights.
+   */
+  columns?: ('1' | '2' | '3' | '4') | null;
+  /**
+   * Icon color variant - matches button color system
+   */
+  iconColor?: ('primary' | 'secondary' | 'tertiary' | 'accent') | null;
+  /**
+   * Shape of the icon container
+   */
+  iconTheme?: ('rounded-square' | 'round') | null;
+  /**
+   * Vertical spacing around this section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cardGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FeaturesBlock".
  */
 export interface FeaturesBlock {
@@ -1701,6 +1825,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         buttonBlock?: T | ButtonBlockSelect<T>;
+        cardGrid?: T | CardGridBlockSelect<T>;
         features?: T | FeaturesBlockSelect<T>;
         latestPosts?: T | LatestPostsBlockSelect<T>;
         accordion?: T | AccordionBlockSelect<T>;
@@ -1914,6 +2039,52 @@ export interface ButtonBlockSelect<T extends boolean = true> {
       };
   layout?: T;
   alignment?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CardGridBlock_select".
+ */
+export interface CardGridBlockSelect<T extends boolean = true> {
+  header?:
+    | T
+    | {
+        showHeader?: T;
+        eyebrow?: T;
+        heading?: T;
+        description?: T;
+        headerAlignment?: T;
+      };
+  cards?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        icon?: T;
+        enableLink?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              uuiColor?: T;
+              uuiSize?: T;
+              buttonIcon?: T;
+              iconPos?: T;
+            };
+        id?: T;
+      };
+  cardStyle?: T;
+  cardBackground?: T;
+  columns?: T;
+  iconColor?: T;
+  iconTheme?: T;
+  spacing?: T;
   id?: T;
   blockName?: T;
 }

@@ -11,6 +11,7 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { ButtonBlockComponent } from '@/blocks/ButtonBlock/Component'
 import { HeroHeadingBlock } from '@/blocks/HeroHeadingBlock/Component'
 import { BreadcrumbBlock } from '@/blocks/BreadcrumbBlock/Component'
+import { CardGridBlock } from '@/blocks/CardGridBlock/Component'
 import { FeaturesBlock } from '@/blocks/FeaturesBlock/Component'
 import { LatestPostsBlock } from '@/blocks/LatestPostsBlock/Component'
 
@@ -24,6 +25,7 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   buttonBlock: ButtonBlockComponent,
+  cardGrid: CardGridBlock,
   features: FeaturesBlock,
   latestPosts: LatestPostsBlock,
 }

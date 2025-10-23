@@ -1,10 +1,33 @@
 import type { Block } from 'payload'
 import { link } from '@/fields/link'
-import { richTextEditorSimple } from '@/fields/richTextWithButtons'
+import { lexicalEditor, HeadingFeature, UnorderedListFeature, OrderedListFeature, ChecklistFeature, BlocksFeature, FixedToolbarFeature, InlineToolbarFeature } from '@payloadcms/richtext-lexical'
+import { ButtonBlock } from '@/blocks/ButtonBlock/config'
 
-export const FeaturesBlock: Block = {
-  slug: 'features',
-  interfaceName: 'FeaturesBlock',
+/**
+ * Rich text editor for card descriptions with headings support
+ * Includes: headings (h3, h4), lists, checkboxes, and buttons
+ */
+const richTextEditorWithHeadings = () => lexicalEditor({
+  features: ({ rootFeatures }) => {
+    return [
+      ...rootFeatures,
+      HeadingFeature({
+        enabledHeadingSizes: ['h3', 'h4'], // Smaller headings appropriate for cards
+      }),
+      UnorderedListFeature(),
+      OrderedListFeature(),
+      ChecklistFeature(),
+      BlocksFeature({ blocks: [ButtonBlock] }),
+      // Add toolbar features last so they can detect all content features
+      FixedToolbarFeature(),
+      InlineToolbarFeature(),
+    ]
+  },
+})
+
+export const CardGridBlock: Block = {
+  slug: 'cardGrid',
+  interfaceName: 'CardGridBlock',
   fields: [
     {
       name: 'header',
@@ -25,7 +48,7 @@ export const FeaturesBlock: Block = {
           type: 'text',
           label: 'Eyebrow Text',
           admin: {
-            description: 'Small text above heading (e.g., "Features")',
+            description: 'Small text above heading (e.g., "Our Services", "What We Offer")',
             condition: (_, siblingData) => siblingData?.showHeader === true,
           },
         },
@@ -34,7 +57,7 @@ export const FeaturesBlock: Block = {
           type: 'text',
           label: 'Section Heading',
           admin: {
-            description: 'Main heading for the features section',
+            description: 'Main heading for the card grid section',
             condition: (_, siblingData) => siblingData?.showHeader === true,
           },
         },
@@ -64,13 +87,41 @@ export const FeaturesBlock: Block = {
       ],
     },
     {
-      name: 'features',
+      name: 'cards',
       type: 'array',
       required: true,
       minRows: 1,
       maxRows: 12,
-      label: 'Features',
+      label: 'Cards',
       fields: [
+        {
+          name: 'eyebrow',
+          type: 'text',
+          label: 'Card Eyebrow',
+          admin: {
+            description: 'Small text above card title (e.g., "New", "Featured", "Step 01")',
+            placeholder: 'Featured',
+          },
+        },
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          label: 'Card Title',
+          admin: {
+            description: 'Main heading for this card (e.g., "Fast Delivery", "Expert Support")',
+          },
+        },
+        {
+          name: 'description',
+          type: 'richText',
+          required: false,
+          label: 'Card Description',
+          editor: richTextEditorWithHeadings(),
+          admin: {
+            description: 'Rich description with headings, formatting, lists, and links',
+          },
+        },
         {
           name: 'icon',
           type: 'text',
@@ -79,22 +130,6 @@ export const FeaturesBlock: Block = {
             description:
               'Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com',
             placeholder: 'Zap',
-          },
-        },
-        {
-          name: 'title',
-          type: 'text',
-          required: true,
-          label: 'Feature Title',
-        },
-        {
-          name: 'description',
-          type: 'richText',
-          required: false,
-          label: 'Feature Description',
-          editor: richTextEditorSimple(),
-          admin: {
-            description: 'Rich description with formatting, lists, and links',
           },
         },
         {
@@ -121,16 +156,16 @@ export const FeaturesBlock: Block = {
       admin: {
         initCollapsed: true,
         components: {
-          RowLabel: '@/blocks/FeaturesBlock/FeatureRowLabel#FeatureRowLabel',
+          RowLabel: '@/blocks/CardGridBlock/CardRowLabel#CardRowLabel',
         },
       },
     },
     {
-      name: 'layoutOptions',
-      type: 'group',
       label: 'Layout & Styling',
+      type: 'collapsible',
       admin: {
-        description: 'Configure how the features section is displayed',
+        initCollapsed: true,
+        description: 'Configure grid layout, card style, colors, and spacing',
       },
       fields: [
         {
@@ -161,7 +196,7 @@ export const FeaturesBlock: Block = {
             },
           ],
           admin: {
-            description: 'Layout arrangement for feature cards (icon position and alignment)',
+            description: 'Layout arrangement for cards (icon position and alignment)',
           },
         },
         {
@@ -188,7 +223,7 @@ export const FeaturesBlock: Block = {
             },
           ],
           admin: {
-            description: 'Visual style for feature cards (background and borders)',
+            description: 'Visual style for cards (background and borders)',
           },
         },
         {
@@ -204,7 +239,7 @@ export const FeaturesBlock: Block = {
           ],
           admin: {
             description:
-              'Number of columns in the grid (1-4). Automatically switches to full-width if only one feature exists.',
+              'Number of columns in the grid (1-4). Single column layout allows natural card heights; multi-column layouts use equal heights.',
           },
         },
         {
@@ -253,7 +288,7 @@ export const FeaturesBlock: Block = {
     },
   ],
   labels: {
-    singular: 'Card Grid (Deprecated - Use CardGrid block)',
-    plural: 'Cards Grids (Deprecated)',
+    singular: 'Card Grid',
+    plural: 'Card Grids',
   },
 }
