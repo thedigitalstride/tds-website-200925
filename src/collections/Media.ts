@@ -74,6 +74,16 @@ export const Media: CollectionConfig = {
         },
       },
       {
+        name: 'card-mobile',
+        width: 400,
+        // Optimized for mobile carousel cards (typically ~160px displayed width at 2x DPR)
+        position: 'centre',
+        admin: {
+          disableGroupBy: true,
+          disableListFilter: true,
+        },
+      },
+      {
         name: 'small',
         width: 600,
         // Preserve aspect ratio

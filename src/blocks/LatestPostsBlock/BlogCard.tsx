@@ -50,7 +50,7 @@ const BlogCardComponent: React.FC<{
         width={600}
         height={400}
         priority={priority}
-        sizes={sizes || '(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 30vw'}
+        sizes={sizes}
         className={cn(
           'aspect-[1.5] w-full object-cover transition-transform duration-300 ease-linear hover:scale-105',
           imageClassName,

@@ -36,7 +36,7 @@ export const TDSLogo = ({ variant = "auto", size = "md", ...props }: TDSLogoProp
     if (variant === "minimal" || variant === "minimal-white") {
         const triangleColor = variant === "minimal-white" ? "#ffffff" : accentColor;
         return (
-            <svg viewBox="0 0 377 475" fill="none" {...props} className={cx(sizeClass, props.className)}>
+            <svg viewBox="0 0 377 475" fill="none" role="img" aria-label="The Digital Stride - Digital Marketing Experts" {...props} className={cx(sizeClass, props.className)}>
                 <polygon fill={triangleColor} points="324.76 252.39 196.6 474.36 248.63 474.36 376.78 252.39 324.76 252.39"/>
                 <polygon fill={triangleColor} points="239.29 252.39 111.14 474.36 163.16 474.36 291.32 252.39 239.29 252.39"/>
                 <polygon fill={triangleColor} points="153.83 252.39 25.67 474.36 77.7 474.36 205.86 252.39 153.83 252.39"/>
@@ -49,7 +49,7 @@ export const TDSLogo = ({ variant = "auto", size = "md", ...props }: TDSLogoProp
     
     // Full logo with text
     return (
-        <svg viewBox="0 0 1250.47 476.91" fill="none" {...props} className={cx("header-logo-svg", sizeClass, props.className)}>
+        <svg viewBox="0 0 1250.47 476.91" fill="none" role="img" aria-label="The Digital Stride - Digital Marketing Experts" {...props} className={cx("header-logo-svg", sizeClass, props.className)}>
             {/* THE text */}
             <path fill={textColor} d="M481.95,12.61h-30.5V0h74.49v12.61h-30.5v88.57h-13.49V12.61Z"/>
             <path fill={textColor} d="M547.92,0h13.49v43.99h56.31V0h13.49v101.18h-13.49v-44.58h-56.31v44.58h-13.49V0Z"/>

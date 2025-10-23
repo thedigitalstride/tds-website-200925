@@ -10,7 +10,7 @@ import { isReactComponent } from "@/utilities/is-react-component";
 export const styles = sortCx({
     common: {
         root: [
-            "group relative inline-flex w-fit h-max cursor-pointer items-center justify-center whitespace-nowrap outline-brand transition-all duration-200 ease-out before:absolute focus-visible:outline-2 focus-visible:outline-offset-2",
+            "group relative inline-flex w-fit h-max cursor-pointer items-center justify-center whitespace-nowrap outline-none transition-all duration-200 ease-out before:absolute focus-visible:outline-2 focus-visible:outline-offset-2",
             // When button is used within `InputGroup`
             "in-data-input-wrapper:shadow-xs in-data-input-wrapper:focus:!z-50 in-data-input-wrapper:in-data-leading:-mr-px in-data-input-wrapper:in-data-leading:rounded-r-none in-data-input-wrapper:in-data-leading:before:rounded-r-none in-data-input-wrapper:in-data-trailing:-ml-px in-data-input-wrapper:in-data-trailing:rounded-l-none in-data-input-wrapper:in-data-trailing:before:rounded-l-none",
             // Disabled styles
@@ -68,7 +68,7 @@ export const styles = sortCx({
         },
         secondary: {
             root: [
-                "bg-transparent text-brand-500 dark:text-white ring-1 ring-black/20 dark:ring-white/25 ring-inset hover:scale-105",
+                "bg-transparent text-brand-500 dark:text-white ring-1 ring-brand-500 dark:ring-white ring-inset hover:scale-105",
                 // Disabled styles
                 "disabled:ring-disabled_subtle",
                 // Icon styles
@@ -77,9 +77,9 @@ export const styles = sortCx({
         },
         tertiary: {
             root: [
-                "bg-brand-500/10 dark:bg-white/20 text-brand-500/70 dark:text-white/70 hover:scale-105",
+                "bg-gray-200 dark:bg-gray-700 text-brand-500 dark:text-white hover:scale-105",
                 // Icon styles
-                "*:data-icon:text-brand-500/70 dark:*:data-icon:text-white/70",
+                "*:data-icon:text-brand-500 dark:*:data-icon:text-white",
             ].join(" "),
         },
         "link": {

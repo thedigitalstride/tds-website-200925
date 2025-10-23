@@ -245,14 +245,13 @@ export const PostsCarousel: React.FC<PostsCarouselProps> = ({
           {showProgress && (
             <div className="flex items-center justify-center gap-2">
               {Array.from({ length: Math.max(1, totalCards - viewportCols + 1) }).map((_, index) => (
-                <button
+                <div
                   key={index}
                   className={cn(
                     'h-2 rounded-full transition-all duration-300',
                     index === currentPage ? 'w-8 bg-secondary-solid' : 'w-2 bg-secondary-solid',
                   )}
-                  onClick={() => scrollTo(index)}
-                  aria-label={`Go to slide ${index + 1}`}
+                  aria-hidden="true"
                 />
               ))}
             </div>

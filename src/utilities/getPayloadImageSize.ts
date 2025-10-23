@@ -3,7 +3,7 @@ import type { Media } from '@/payload-types'
 /**
  * Payload image size names that match the Media collection configuration
  */
-export type PayloadImageSize = 'thumbnail' | 'square' | 'small' | 'medium' | 'large' | 'xlarge' | 'og'
+export type PayloadImageSize = 'thumbnail' | 'square' | 'card-mobile' | 'small' | 'medium' | 'large' | 'xlarge' | 'og'
 
 /**
  * Get the optimal Payload-generated image size based on the sizes attribute
@@ -57,18 +57,20 @@ function parseOptimalSize(sizesAttribute: string): PayloadImageSize {
   // Extract viewport width percentages
   const vwMatches = sizesAttribute.match(/(\d+)vw/g)
   if (vwMatches && vwMatches.length > 0) {
-    // Get the largest vw value (most conservative for quality)
+    // Get the smallest vw value (mobile-first optimization)
     const vwValues = vwMatches.map(match => parseInt(match))
-    const maxVw = Math.max(...vwValues)
+    const minVw = Math.min(...vwValues)
 
     // Map viewport width to Payload sizes
     // These thresholds are based on common viewport sizes:
     // - Mobile: ~375px, Tablet: ~768px, Desktop: ~1440px
-    if (maxVw >= 90) return 'large'    // Full width or nearly full
-    if (maxVw >= 66) return 'medium'   // 2/3 width
-    if (maxVw >= 45) return 'small'    // 1/2 width
-    if (maxVw >= 30) return 'small'    // 1/3 width (grid of 3)
-    return 'thumbnail'                  // Smaller thumbnails
+    // Using minimum vw ensures we don't over-serve images on mobile
+    if (minVw >= 90) return 'large'      // Full width or nearly full
+    if (minVw >= 66) return 'medium'     // 2/3 width
+    if (minVw >= 45) return 'small'      // 1/2 width
+    if (minVw >= 30) return 'small'      // 1/3 width (grid of 3)
+    if (minVw >= 20) return 'card-mobile' // Small cards (mobile carousel)
+    return 'thumbnail'                    // Smaller thumbnails
   }
 
   // Fallback to medium for unparseable sizes
@@ -95,7 +97,7 @@ export function getAvailablePayloadSizes(resource: Media): PayloadImageSize[] {
   if (!resource.sizes) return []
 
   const sizes: PayloadImageSize[] = []
-  const sizeKeys: PayloadImageSize[] = ['thumbnail', 'square', 'small', 'medium', 'large', 'xlarge', 'og']
+  const sizeKeys: PayloadImageSize[] = ['thumbnail', 'square', 'card-mobile', 'small', 'medium', 'large', 'xlarge', 'og']
 
   for (const key of sizeKeys) {
     if (resource.sizes[key] && typeof resource.sizes[key] === 'object') {
