@@ -594,97 +594,9 @@ export interface LatestPostsBlock {
     };
   };
   /**
-   * Customize what content is shown on each blog card
+   * Vertical spacing around this section
    */
-  cardDisplay?: {
-    /**
-     * Display category badges on cards
-     */
-    showCategories?: boolean | null;
-    /**
-     * Display author name and avatar
-     */
-    showAuthor?: boolean | null;
-    /**
-     * Display the published date
-     */
-    showDate?: boolean | null;
-    /**
-     * Display estimated reading time
-     */
-    showReadingTime?: boolean | null;
-    /**
-     * Display post summary/excerpt
-     */
-    showExcerpt?: boolean | null;
-    /**
-     * Maximum length for post excerpts
-     */
-    excerptLength?: ('short' | 'medium' | 'long') | null;
-  };
-  /**
-   * Configure how the blog section is displayed
-   */
-  layoutOptions?: {
-    /**
-     * How posts are displayed. Auto automatically switches to carousel when posts exceed columns.
-     */
-    displayMode?: ('auto' | 'grid' | 'carousel') | null;
-    /**
-     * Use column settings from Posts Settings global. Uncheck to customize columns for this block.
-     */
-    usePostsSettings?: boolean | null;
-    /**
-     * Configure columns for different screen sizes
-     */
-    gridColumns?: {
-      /**
-       * Number of columns on large screens (1024px and above)
-       */
-      desktop?: ('2' | '3' | '4') | null;
-      /**
-       * Number of columns on medium screens (768px - 1023px)
-       */
-      tablet?: ('2' | '3' | '4') | null;
-      /**
-       * Number of columns on small screens (below 768px)
-       */
-      mobile?: ('1' | '2') | null;
-    };
-    /**
-     * Configure carousel behavior (only applies in carousel or auto mode)
-     */
-    carouselOptions?: {
-      /**
-       * Allow users to drag/swipe the carousel (recommended)
-       */
-      enableDrag?: boolean | null;
-      /**
-       * Display prev/next arrows on carousel
-       */
-      showArrows?: boolean | null;
-      /**
-       * Display a progress indicator below carousel
-       */
-      showProgress?: boolean | null;
-      /**
-       * How much of adjacent cards to show. Peek improves discoverability by showing users there is more content.
-       */
-      peekAmount?: ('none' | 'small' | 'medium' | 'large') | null;
-      /**
-       * Automatically advance to next card (pauses on hover/interaction)
-       */
-      autoPlay?: boolean | null;
-      /**
-       * Milliseconds between auto-advance (2000-10000)
-       */
-      autoPlayInterval?: number | null;
-    };
-    /**
-     * Vertical spacing around this section
-     */
-    spacing?: ('compact' | 'normal' | 'spacious') | null;
-  };
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'latestPosts';
@@ -2096,40 +2008,7 @@ export interface LatestPostsBlockSelect<T extends boolean = true> {
               iconPos?: T;
             };
       };
-  cardDisplay?:
-    | T
-    | {
-        showCategories?: T;
-        showAuthor?: T;
-        showDate?: T;
-        showReadingTime?: T;
-        showExcerpt?: T;
-        excerptLength?: T;
-      };
-  layoutOptions?:
-    | T
-    | {
-        displayMode?: T;
-        usePostsSettings?: T;
-        gridColumns?:
-          | T
-          | {
-              desktop?: T;
-              tablet?: T;
-              mobile?: T;
-            };
-        carouselOptions?:
-          | T
-          | {
-              enableDrag?: T;
-              showArrows?: T;
-              showProgress?: T;
-              peekAmount?: T;
-              autoPlay?: T;
-              autoPlayInterval?: T;
-            };
-        spacing?: T;
-      };
+  spacing?: T;
   id?: T;
   blockName?: T;
 }
@@ -2968,16 +2847,16 @@ export interface NotFound {
  */
 export interface PostsSetting {
   id: number;
-  pageHeader: {
-    /**
-     * Main heading displayed at the top of the posts page
-     */
-    heading: string;
-    /**
-     * Description text displayed below the main heading
-     */
-    description?: string | null;
-  };
+  /**
+   * Blocks to display before the posts grid on /news-insights (use HeroHeadingBlock for page header)
+   */
+  beforeBlocks?:
+    | (HeroHeadingBlock | BreadcrumbBlock | CallToActionBlock | ContentBlock | MediaBlock | FormBlock | ButtonBlock)[]
+    | null;
+  /**
+   * Optional blocks to display after the posts grid on /news-insights
+   */
+  afterBlocks?: (CallToActionBlock | ContentBlock | MediaBlock | FormBlock | ButtonBlock)[] | null;
   /**
    * Configure how many columns to display in the posts grid for different screen sizes
    */
@@ -2994,6 +2873,68 @@ export interface PostsSetting {
      * Number of columns on small screens (below 768px)
      */
     mobile?: ('1' | '2') | null;
+  };
+  /**
+   * How posts are displayed site-wide. Auto automatically switches to carousel when posts exceed columns.
+   */
+  displayMode?: ('auto' | 'grid' | 'carousel') | null;
+  /**
+   * Configure carousel behavior (only applies in carousel or auto mode)
+   */
+  carouselSettings?: {
+    /**
+     * Allow users to drag/swipe the carousel (recommended)
+     */
+    enableDrag?: boolean | null;
+    /**
+     * Display prev/next arrows on carousel
+     */
+    showArrows?: boolean | null;
+    /**
+     * Display a progress indicator below carousel
+     */
+    showProgress?: boolean | null;
+    /**
+     * How much of adjacent cards to show. Peek improves discoverability by showing users there is more content.
+     */
+    peekAmount?: ('none' | 'small' | 'medium' | 'large') | null;
+    /**
+     * Automatically advance to next card (pauses on hover/interaction)
+     */
+    autoPlay?: boolean | null;
+    /**
+     * Milliseconds between auto-advance (2000-10000)
+     */
+    autoPlayInterval?: number | null;
+  };
+  /**
+   * Customize what content is shown on each blog card site-wide
+   */
+  cardDisplay?: {
+    /**
+     * Display category badges on cards
+     */
+    showCategories?: boolean | null;
+    /**
+     * Display author name and avatar
+     */
+    showAuthor?: boolean | null;
+    /**
+     * Display the published date
+     */
+    showDate?: boolean | null;
+    /**
+     * Display estimated reading time
+     */
+    showReadingTime?: boolean | null;
+    /**
+     * Display post summary/excerpt
+     */
+    showExcerpt?: boolean | null;
+    /**
+     * Maximum length for post excerpts
+     */
+    excerptLength?: ('short' | 'medium' | 'long') | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -3155,11 +3096,25 @@ export interface NotFoundSelect<T extends boolean = true> {
  * via the `definition` "postsSettings_select".
  */
 export interface PostsSettingsSelect<T extends boolean = true> {
-  pageHeader?:
+  beforeBlocks?:
     | T
     | {
-        heading?: T;
-        description?: T;
+        heroHeading?: T | HeroHeadingBlockSelect<T>;
+        breadcrumb?: T | BreadcrumbBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+        content?: T | ContentBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+        formBlock?: T | FormBlockSelect<T>;
+        buttonBlock?: T | ButtonBlockSelect<T>;
+      };
+  afterBlocks?:
+    | T
+    | {
+        cta?: T | CallToActionBlockSelect<T>;
+        content?: T | ContentBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+        formBlock?: T | FormBlockSelect<T>;
+        buttonBlock?: T | ButtonBlockSelect<T>;
       };
   gridColumns?:
     | T
@@ -3167,6 +3122,27 @@ export interface PostsSettingsSelect<T extends boolean = true> {
         desktop?: T;
         tablet?: T;
         mobile?: T;
+      };
+  displayMode?: T;
+  carouselSettings?:
+    | T
+    | {
+        enableDrag?: T;
+        showArrows?: T;
+        showProgress?: T;
+        peekAmount?: T;
+        autoPlay?: T;
+        autoPlayInterval?: T;
+      };
+  cardDisplay?:
+    | T
+    | {
+        showCategories?: T;
+        showAuthor?: T;
+        showDate?: T;
+        showReadingTime?: T;
+        showExcerpt?: T;
+        excerptLength?: T;
       };
   updatedAt?: T;
   createdAt?: T;

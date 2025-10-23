@@ -24,10 +24,6 @@ interface BlogListingProps {
   totalPages?: number
   selectedCategory?: string
   settings?: {
-    pageHeader?: {
-      heading?: string | null
-      description?: string | null
-    } | null
     gridColumns?: {
       desktop?: string | null
       tablet?: string | null
@@ -181,21 +177,7 @@ export const BlogListing: React.FC<BlogListingProps> = ({
 
   return (
     <div className="bg-primary">
-      <section className="bg-primary py-16 md:py-24">
-        <div className="mx-auto max-w-container px-4 md:px-8">
-          <div className="flex w-full max-w-3xl flex-col">
-            <h2 className="mt-3 text-display-md font-semibold text-primary md:text-display-lg">
-              {settings?.pageHeader?.heading || 'News & insights'}
-            </h2>
-            <p className="mt-4 text-lg text-tertiary md:mt-6 md:text-xl">
-              {settings?.pageHeader?.description ||
-                'The latest industry news, interviews, technologies, and resources.'}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <main className="mx-auto flex w-full max-w-container flex-col gap-12 px-4 pb-16 md:gap-16 md:px-8 md:pb-24">
+      <main className="mx-auto flex w-full max-w-container flex-col gap-12 px-4 py-16 md:gap-16 md:px-8 md:py-24">
         {/* Mobile Featured Post */}
         {sortedArticles.length > 0 && (
           <div className="md:hidden">

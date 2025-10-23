@@ -6,6 +6,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 import type { Category } from '@/payload-types'
 import type { Where } from 'payload'
+import { RenderBlocks } from '@/blocks/RenderBlocks'
 
 export const revalidate = 600
 
@@ -71,21 +72,35 @@ export default async function Page(props: Args) {
     sort: '-publishedAt',
   })
 
-  // Fetch posts settings
+  // Fetch posts settings with depth 2 to populate block relationships
   const postsSettings = await payload.findGlobal({
     slug: 'postsSettings',
+    depth: 2,
   })
 
   return (
-    <BlogListing
-      posts={posts.docs}
-      allPosts={allPostsForCounting.docs}
-      categories={categories.docs}
-      currentPage={1} // Page 1
-      totalPages={posts.totalPages}
-      selectedCategory={categorySlug || undefined}
-      settings={postsSettings}
-    />
+    <>
+      {/* Before Posts Blocks */}
+      {postsSettings.beforeBlocks && postsSettings.beforeBlocks.length > 0 && (
+        <RenderBlocks blocks={postsSettings.beforeBlocks} />
+      )}
+
+      {/* Posts Listing */}
+      <BlogListing
+        posts={posts.docs}
+        allPosts={allPostsForCounting.docs}
+        categories={categories.docs}
+        currentPage={1} // Page 1
+        totalPages={posts.totalPages}
+        selectedCategory={categorySlug || undefined}
+        settings={postsSettings}
+      />
+
+      {/* After Posts Blocks */}
+      {postsSettings.afterBlocks && postsSettings.afterBlocks.length > 0 && (
+        <RenderBlocks blocks={postsSettings.afterBlocks} />
+      )}
+    </>
   )
 }
 

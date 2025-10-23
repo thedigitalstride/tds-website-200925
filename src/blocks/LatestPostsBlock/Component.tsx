@@ -99,31 +99,31 @@ export const LatestPostsBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const { id, header, contentSource, opts, selectedPosts, buttonConfig, layoutOptions, cardDisplay } = props
+  const { id, header, contentSource, opts, selectedPosts, buttonConfig, spacing } = props
 
-  const spacing = layoutOptions?.spacing || 'normal'
-  const displayMode = layoutOptions?.displayMode || 'auto'
-
-  // Fetch Posts Settings for fallback
+  // Fetch Posts Settings global for ALL display settings
   const payload = await getPayload({ config: configPromise })
   const postsSettings = await payload.findGlobal({
     slug: 'postsSettings',
   })
 
-  // Determine which column settings to use
-  const usePostsSettings = layoutOptions?.usePostsSettings !== false // Default to true
+  // Extract all display settings from global (single source of truth)
+  const displayMode = postsSettings?.displayMode || 'auto'
+  const desktopCols = postsSettings?.gridColumns?.desktop || '3'
+  const tabletCols = postsSettings?.gridColumns?.tablet || '2'
+  const mobileCols = postsSettings?.gridColumns?.mobile || '1'
 
-  const desktopCols = usePostsSettings
-    ? postsSettings?.gridColumns?.desktop || '3'
-    : layoutOptions?.gridColumns?.desktop || '3'
+  // Extract carousel settings from global
+  const carouselSettings = postsSettings?.carouselSettings || {}
+  const enableDrag = carouselSettings.enableDrag !== false // Default true
+  const showArrows = carouselSettings.showArrows !== false // Default true
+  const showProgress = carouselSettings.showProgress || false
+  const peekAmount = (carouselSettings.peekAmount as 'none' | 'small' | 'medium' | 'large') || 'medium'
+  const autoPlay = carouselSettings.autoPlay || false
+  const autoPlayInterval = carouselSettings.autoPlayInterval || 5000
 
-  const tabletCols = usePostsSettings
-    ? postsSettings?.gridColumns?.tablet || '2'
-    : layoutOptions?.gridColumns?.tablet || '2'
-
-  const mobileCols = usePostsSettings
-    ? postsSettings?.gridColumns?.mobile || '1'
-    : layoutOptions?.gridColumns?.mobile || '1'
+  // Extract card display settings from global
+  const cardDisplay = postsSettings?.cardDisplay || {}
 
   let posts: Post[] = []
 
@@ -301,17 +301,8 @@ export const LatestPostsBlock: React.FC<
     spacious: 'py-24 lg:py-32',
   }
 
-  // Extract carousel options
-  const carouselOptions = layoutOptions?.carouselOptions || {}
-  const enableDrag = carouselOptions.enableDrag !== false // Default true
-  const showArrows = carouselOptions.showArrows !== false // Default true
-  const showProgress = carouselOptions.showProgress || false
-  const peekAmount = (carouselOptions.peekAmount as 'none' | 'small' | 'medium' | 'large') || 'medium'
-  const autoPlay = carouselOptions.autoPlay || false
-  const autoPlayInterval = carouselOptions.autoPlayInterval || 5000
-
   return (
-    <section className={cn('bg-primary', spacingClasses[spacing])} id={`block-${id}`}>
+    <section className={cn('bg-primary', spacingClasses[spacing || 'normal'])} id={`block-${id}`}>
       <div className="mx-auto max-w-container px-4 md:px-8">
         {/* Header with button */}
         {header?.showHeader && (
