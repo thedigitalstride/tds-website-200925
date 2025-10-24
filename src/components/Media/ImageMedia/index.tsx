@@ -4,7 +4,8 @@ import type { StaticImageData } from 'next/image'
 
 import { cn } from '@/utilities/ui'
 import NextImage from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
+import { motion } from 'motion/react'
 
 import type { Props as MediaProps } from '../types'
 
@@ -12,6 +13,12 @@ import { cssVariables } from '@/cssVariables'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { getOptimalPayloadImageUrl } from '@/utilities/getPayloadImageSize'
 import { PLACEHOLDER_BLUR } from '@/constants/imagePlaceholder'
+
+// Motion configuration for fade-in effect - smoother transition
+const motionConfig = {
+  duration: 0.5, // Longer for smoother fade
+  ease: [0.25, 0.1, 0.25, 1] as const, // Smoother ease curve
+}
 
 const { breakpoints } = cssVariables
 
@@ -28,6 +35,8 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     src: srcFromProps,
     loading: loadingFromProps,
   } = props
+
+  const [isLoaded, setIsLoaded] = useState(false)
 
   let width: number | undefined
   let height: number | undefined
@@ -70,23 +79,41 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
         .join(', ')
 
+  const imageElement = (
+    <NextImage
+      alt={alt || ''}
+      className={cn(imgClassName)}
+      fill={fill}
+      height={!fill ? height : undefined}
+      placeholder="blur"
+      blurDataURL={PLACEHOLDER_BLUR}
+      priority={priority}
+      quality={85}
+      loading={loading}
+      sizes={sizes}
+      src={src}
+      width={!fill ? width : undefined}
+      unoptimized={isBlobStorage}
+      onLoad={() => setIsLoaded(true)}
+    />
+  )
+
+  // Priority images (hero, above-fold): Skip animation for PageSpeed optimization
+  if (priority) {
+    return <picture className={cn(pictureClassName)}>{imageElement}</picture>
+  }
+
+  // Lazy-loaded images (below-fold): Apply smooth fade-in
   return (
     <picture className={cn(pictureClassName)}>
-      <NextImage
-        alt={alt || ''}
-        className={cn(imgClassName)}
-        fill={fill}
-        height={!fill ? height : undefined}
-        placeholder="blur"
-        blurDataURL={PLACEHOLDER_BLUR}
-        priority={priority}
-        quality={85}
-        loading={loading}
-        sizes={sizes}
-        src={src}
-        width={!fill ? width : undefined}
-        unoptimized={isBlobStorage}
-      />
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoaded ? 1 : 0 }}
+        transition={motionConfig}
+        style={{ display: 'contents' }}
+      >
+        {imageElement}
+      </motion.span>
     </picture>
   )
 }

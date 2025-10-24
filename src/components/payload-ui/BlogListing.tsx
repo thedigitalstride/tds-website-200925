@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { motion } from 'motion/react'
 import { PaginationPageDefault } from '@/components/uui/application/pagination/pagination'
 import { TabList, Tabs } from '@/components/uui/application/tabs/tabs'
 import { Select } from '@/components/uui/base/select/select'
@@ -15,6 +16,29 @@ import { formatDateTime } from '@/utilities/formatDateTime'
 import { calculateReadingTime } from '@/utilities/calculateReadingTime'
 
 import type { Post, Category, Media } from '@/payload-types'
+
+// Stagger animation configuration - smoother, more gentle
+const containerVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08, // 80ms delay between each item (faster sequence)
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 12 }, // Reduced vertical movement for subtlety
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6, // Longer duration for smoother fade
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number], // Smoother ease curve (closer to ease-in-out)
+    },
+  },
+}
 
 interface BlogListingProps {
   posts: Post[]
@@ -209,7 +233,11 @@ export const BlogListing: React.FC<BlogListingProps> = ({
         </div>
 
         {/* Posts Grid */}
-        <ul
+        <motion.ul
+          key={`${selectedCategory}-${sortBy}`} // Replay animation when filters change
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
           className={cx(
             'grid gap-x-8 gap-y-12 md:gap-y-12',
             // Mobile columns
@@ -233,11 +261,15 @@ export const BlogListing: React.FC<BlogListingProps> = ({
           )}
         >
           {sortedArticles.map((article) => (
-            <li key={article.id} className={cx(!isDesktop && '[&:nth-child(n+7)]:hidden')}>
+            <motion.li
+              key={article.id}
+              variants={itemVariants}
+              className={cx(!isDesktop && '[&:nth-child(n+7)]:hidden')}
+            >
               <Simple01Vertical article={article} />
-            </li>
+            </motion.li>
           ))}
-        </ul>
+        </motion.ul>
 
         {/* Pagination */}
         {totalPages > 1 && (

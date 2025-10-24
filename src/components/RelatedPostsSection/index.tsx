@@ -6,6 +6,7 @@ import { getPayload } from 'payload'
 import { PayloadBlogCard } from '@/blocks/LatestPostsBlock/BlogCard'
 import type { PayloadArticle } from '@/blocks/LatestPostsBlock/BlogCard'
 import { PostsCarousel } from '@/blocks/LatestPostsBlock/PostsCarousel'
+import { StaggeredGrid, StaggeredGridItem } from '@/components/StaggeredGrid'
 import { cn } from '@/utilities/ui'
 import { getGridImageSizes } from '@/utilities/getImageSizes'
 
@@ -296,13 +297,13 @@ export const RelatedPostsSection: React.FC<RelatedPostsSectionProps> = async ({
             />
           </div>
         ) : (
-          <ul className={cn(gridClasses, 'mt-12 md:mt-16')}>
+          <StaggeredGrid className={cn(gridClasses, 'mt-12 md:mt-16')}>
             {articles.map((article, index) => (
-              <li key={article.id}>
+              <StaggeredGridItem key={article.id}>
                 <PayloadBlogCard article={article} sizes={imageSizes} priority={index < 3} />
-              </li>
+              </StaggeredGridItem>
             ))}
-          </ul>
+          </StaggeredGrid>
         )}
       </div>
     </section>
