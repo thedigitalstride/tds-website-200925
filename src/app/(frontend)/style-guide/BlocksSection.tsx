@@ -3,6 +3,7 @@
 import React from 'react';
 import { HeroHeadingBlock } from '@/blocks/HeroHeadingBlock/Component';
 import { FeaturesBlock } from '@/blocks/FeaturesBlock/Component';
+import type { FeaturesBlock as FeaturesBlockType } from '@/payload-types';
 
 export function BlocksSection() {
   return (
@@ -110,22 +111,23 @@ With Accent Blue"
                 {
                   icon: "Zap",
                   title: "Lightning Fast",
-                  description: "Optimized performance for the best user experience" as any,
+                  description: "Optimized performance for the best user experience",
                   enableLink: false
                 },
                 {
                   icon: "Shield03",
                   title: "Secure by Default",
-                  description: "Built-in security features to protect your data" as any,
+                  description: "Built-in security features to protect your data",
                   enableLink: false
                 },
                 {
                   icon: "TrendUp01",
                   title: "Scalable Growth",
-                  description: "Grows with your business from startup to enterprise" as any,
+                  description: "Grows with your business from startup to enterprise",
                   enableLink: false
                 }
-              ] as any}
+                // Style guide demo data - using plain strings instead of rich text
+              ] as unknown as FeaturesBlockType['features']}
               layoutOptions={{
                 cardStyle: "card",
                 cardBackground: "primary",
@@ -163,22 +165,23 @@ With Accent Blue"
                 {
                   icon: "Users01",
                   title: "Team Collaboration",
-                  description: "Work together seamlessly with your entire team" as any,
+                  description: "Work together seamlessly with your entire team",
                   enableLink: false
                 },
                 {
                   icon: "MessageChatCircle",
                   title: "Real-time Chat",
-                  description: "Communicate instantly with integrated messaging" as any,
+                  description: "Communicate instantly with integrated messaging",
                   enableLink: false
                 },
                 {
                   icon: "ChartBreakoutSquare",
                   title: "Analytics Dashboard",
-                  description: "Track performance with detailed insights" as any,
+                  description: "Track performance with detailed insights",
                   enableLink: false
                 }
-              ] as any}
+                // Style guide demo data - using plain strings instead of rich text
+              ] as unknown as FeaturesBlockType['features']}
               layoutOptions={{
                 cardStyle: "centered-icon",
                 cardBackground: "secondary",

@@ -65,7 +65,7 @@ export default async function Post({ params: paramsPromise }: Args) {
     {
       label: post.title,
       url: `/news-insights/${post.slug}`,
-      id: post.id as string,
+      id: String(post.id),
     },
   ]
 
