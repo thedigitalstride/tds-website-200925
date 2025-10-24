@@ -12,6 +12,7 @@ import { getPayload } from 'payload'
 import { PayloadBlogCard } from './BlogCard'
 import type { PayloadArticle } from './BlogCard'
 import { PostsCarousel } from './PostsCarousel'
+import { StaggeredGrid, StaggeredGridItem } from '@/components/StaggeredGrid'
 import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
 import { getGridImageSizes } from '@/utilities/getImageSizes'
@@ -357,17 +358,17 @@ export const LatestPostsBlock: React.FC<
             />
           </div>
         ) : (
-          <ul className={gridClasses}>
+          <StaggeredGrid className={gridClasses}>
             {articles.map((article, index) => (
-              <li key={article.id}>
+              <StaggeredGridItem key={article.id}>
                 <PayloadBlogCard
                   article={article}
                   sizes={imageSizes}
                   priority={index < 3}
                 />
-              </li>
+              </StaggeredGridItem>
             ))}
-          </ul>
+          </StaggeredGrid>
         )}
 
         {/* Mobile button */}

@@ -86,6 +86,8 @@ src/
 - **[NEXTJS_PREVIEW_FIX.md](/docs/NEXTJS_PREVIEW_FIX.md)** - draftMode() fix for Next.js 15+ (recurring issue)
 - **[NEXT_JS_15_FILTERING_FIX.md](/docs/NEXT_JS_15_FILTERING_FIX.md)** - Server-side URL parameter extraction
 - **[TYPESCRIPT_PATTERNS.md](/docs/TYPESCRIPT_PATTERNS.md)** - TypeScript best practices for Payload/Next.js
+- **[WEBP_TESTING_GUIDE.md](/docs/WEBP_TESTING_GUIDE.md)** - **START HERE** if images aren't converting to WebP. Testing and troubleshooting guide.
+- **[IMAGE_OPTIMIZATION.md](/docs/IMAGE_OPTIMIZATION.md)** - Complete image optimization reference (configuration, performance, best practices)
 - **[IMAGES.md](/docs/IMAGES.md)** - OptimizedImage component usage and image handling
 - **[ROW_LABELS.md](/docs/ROW_LABELS.md)** - Admin UX improvements for array fields
 - **[COLLAPSIBLE_FIELDS.md](/docs/COLLAPSIBLE_FIELDS.md)** - Collapsible sections for reducing admin panel clutter

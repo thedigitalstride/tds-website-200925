@@ -2,12 +2,19 @@
 
 import type { StaticImageData } from 'next/image'
 import NextImage from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
+import { motion } from 'motion/react'
 
 import type { Media } from '@/payload-types'
 import { ImageMedia } from '@/components/Media/ImageMedia'
 import { cn } from '@/utilities/ui'
 import { PLACEHOLDER_BLUR } from '@/constants/imagePlaceholder'
+
+// Motion configuration for fade-in effect - smoother transition
+const motionConfig = {
+  duration: 0.5, // Longer for smoother fade
+  ease: [0.25, 0.1, 0.25, 1] as const, // Smoother ease curve
+}
 
 
 export interface OptimizedImageProps {
@@ -54,6 +61,8 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = (props) => {
     blurDataURL = PLACEHOLDER_BLUR,
   } = props
 
+  const [isLoaded, setIsLoaded] = useState(false)
+
   // If we have a Payload Media resource, use the existing ImageMedia component
   if (resource && typeof resource === 'object') {
     return (
@@ -72,22 +81,40 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = (props) => {
 
   // For external URLs or static imports, use Next.js Image directly
   if (src) {
+    const imageElement = (
+      <NextImage
+        src={src}
+        alt={alt}
+        className={cn(className)}
+        width={!fill ? width : undefined}
+        height={!fill ? height : undefined}
+        fill={fill}
+        priority={priority}
+        loading={loading || (!priority ? 'lazy' : undefined)}
+        sizes={sizes}
+        quality={quality}
+        placeholder={placeholder}
+        blurDataURL={blurDataURL}
+        onLoad={() => setIsLoaded(true)}
+      />
+    )
+
+    // Priority images (hero, above-fold): Skip animation for PageSpeed optimization
+    if (priority) {
+      return <picture className={cn(pictureClassName)}>{imageElement}</picture>
+    }
+
+    // Lazy-loaded images (below-fold): Apply smooth fade-in
     return (
       <picture className={cn(pictureClassName)}>
-        <NextImage
-          src={src}
-          alt={alt}
-          className={cn(className)}
-          width={!fill ? width : undefined}
-          height={!fill ? height : undefined}
-          fill={fill}
-          priority={priority}
-          loading={loading || (!priority ? 'lazy' : undefined)}
-          sizes={sizes}
-          quality={quality}
-          placeholder={placeholder}
-          blurDataURL={blurDataURL}
-        />
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isLoaded ? 1 : 0 }}
+          transition={motionConfig}
+          style={{ display: 'contents' }}
+        >
+          {imageElement}
+        </motion.span>
       </picture>
     )
   }
