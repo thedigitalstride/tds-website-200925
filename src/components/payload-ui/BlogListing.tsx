@@ -70,7 +70,7 @@ const transformPost = (post: Post, index: number): Article => {
     summary: post.subtitle || '',
     href: `/news-insights/${post.slug || 'undefined'}`,
     categories: allCategories,
-    thumbnailUrl: heroImage?.url || '/placeholder.jpg',
+    thumbnailUrl: heroImage?.url || '',
     thumbnailMedia: heroImage, // Pass full Media resource for optimization
     publishedAt: formatDateTime(post.publishedAt || ''),
     readingTime: calculateReadingTime(post.content),
@@ -233,7 +233,7 @@ export const BlogListing: React.FC<BlogListingProps> = ({
           )}
         >
           {sortedArticles.map((article) => (
-            <li key={article.id} className={cx(!isDesktop && 'nth-[n+7]:hidden')}>
+            <li key={article.id} className={cx(!isDesktop && '[&:nth-child(n+7)]:hidden')}>
               <Simple01Vertical article={article} />
             </li>
           ))}
