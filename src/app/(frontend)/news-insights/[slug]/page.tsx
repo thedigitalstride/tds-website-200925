@@ -1,7 +1,7 @@
   import type { Metadata } from 'next'
 
-import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
+import { RelatedPostsSection } from '@/components/RelatedPostsSection'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
@@ -69,12 +69,6 @@ export default async function Post({ params: paramsPromise }: Args) {
     },
   ]
 
-  // Fetch posts settings for grid columns
-  const payload = await getPayload({ config: configPromise })
-  const postsSettings = await payload.findGlobal({
-    slug: 'postsSettings',
-  })
-
   return (
     <>
       {/* Allows redirects for valid pages too */}
@@ -90,18 +84,8 @@ export default async function Post({ params: paramsPromise }: Args) {
       {/* New PostLayout with UUI styling */}
       <PostLayout post={post} />
 
-      {/* Related Posts Section */}
-      {post.relatedPosts && post.relatedPosts.length > 0 && (
-        <div className="bg-primary py-16">
-          <div className="container">
-            <RelatedPosts
-              className="max-w-[52rem] mx-auto lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-              gridColumns={postsSettings?.gridColumns}
-            />
-          </div>
-        </div>
-      )}
+      {/* Related Posts Section - Smart selection with fallback to category-based recommendations */}
+      <RelatedPostsSection currentPost={post} limit={3} />
 
       {/* After Content Blocks */}
       {post.afterContent && post.afterContent.length > 0 && (
