@@ -88,14 +88,21 @@ export default buildConfig({
         media: true,
       },
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
-      // Enable client uploads to bypass Vercel's 4.5MB server upload limit
-      clientUploads: true,
+      // IMPORTANT: clientUploads disabled to enable Sharp image processing
+      // This means formatOptions (WebP conversion) and resizeOptions will work
+      // Trade-off: Server uploads limited to 4.5MB on Vercel (educate users to compress large images before upload)
+      clientUploads: false,
     }),
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
+  },
+  upload: {
+    limits: {
+      fileSize: 4500000, // 4.5MB limit to stay within Vercel serverless limits
+    },
   },
   jobs: {
     access: {
