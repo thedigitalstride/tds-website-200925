@@ -55,6 +55,20 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   if (!post) return <PayloadRedirects url={url} />
 
+  // Generate breadcrumbs for posts (Posts don't have nestedDocsPlugin)
+  const breadcrumbs = [
+    {
+      label: 'News & Insights',
+      url: '/news-insights',
+      id: 'news-insights',
+    },
+    {
+      label: post.title,
+      url: `/news-insights/${post.slug}`,
+      id: post.id as string,
+    },
+  ]
+
   // Fetch posts settings for grid columns
   const payload = await getPayload({ config: configPromise })
   const postsSettings = await payload.findGlobal({
@@ -67,6 +81,11 @@ export default async function Post({ params: paramsPromise }: Args) {
       <PayloadRedirects disableNotFound url={url} />
 
       {draft && <LivePreviewListener />}
+
+      {/* Before Content Blocks (e.g., Breadcrumbs) */}
+      {post.beforeContent && post.beforeContent.length > 0 && (
+        <RenderBlocks blocks={post.beforeContent} breadcrumbs={breadcrumbs} />
+      )}
 
       {/* New PostLayout with UUI styling */}
       <PostLayout post={post} />
@@ -133,6 +152,7 @@ const queryPostBySlug = cache(async ({ slug, draft }: { slug: string; draft: boo
           description: true,
         },
       },
+      beforeContent: true,
       afterContent: true,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,

@@ -433,6 +433,10 @@ export interface Post {
    */
   subtitle?: string | null;
   /**
+   * Blocks displayed before the post content (breadcrumbs always included by default)
+   */
+  beforeContent?: BreadcrumbBlock[] | null;
+  /**
    * Optional table of contents for the sidebar
    */
   tableOfContents?:
@@ -502,6 +506,19 @@ export interface Post {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BreadcrumbBlock".
+ */
+export interface BreadcrumbBlock {
+  /**
+   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'breadcrumb';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -748,19 +765,6 @@ export interface User {
       }[]
     | null;
   password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BreadcrumbBlock".
- */
-export interface BreadcrumbBlock {
-  /**
-   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
-   */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'breadcrumb';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2155,6 +2159,11 @@ export interface AccordionBlockSelect<T extends boolean = true> {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
+  beforeContent?:
+    | T
+    | {
+        breadcrumb?: T | BreadcrumbBlockSelect<T>;
+      };
   tableOfContents?:
     | T
     | {

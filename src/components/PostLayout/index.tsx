@@ -105,7 +105,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
         <div className="mx-auto flex justify-center gap-16">
 
           {/* Sidebar - Desktop Only */}
-          <div className="hidden w-70 flex-col gap-8 lg:flex">
+          <div className="hidden w-70 flex-col gap-8 lg:flex lg:sticky lg:top-24 lg:self-start">
 
             {/* Author and Date */}
             {((populatedAuthors && populatedAuthors.length > 0) || publishedAt) && (
@@ -113,17 +113,17 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                 <div className="w-full border-t border-secondary" />
                 <div className="flex flex-col gap-4">
                   {publishedAt && (
-                    <div className="flex flex-col gap-2">
-                      <p className="text-md font-semibold text-brand-secondary">Published</p>
+                    <div className="flex gap-2">
+                      <p className="text-md font-semibold text-brand-secondary">Published:</p>
                       <p className="text-md text-tertiary">{formatDateTime(publishedAt)}</p>
                     </div>
                   )}
                   {populatedAuthors && populatedAuthors.length > 0 && (
-                    <div className="flex flex-col gap-2">
+                    <div className="flex gap-2">
                       <p className="text-md font-semibold text-brand-secondary">
-                        {populatedAuthors.length > 1 ? 'Authors' : 'Author'}
+                        {populatedAuthors.length > 1 ? 'Authors:' : 'Author:'}
                       </p>
-                      <ul className="flex flex-col gap-2">
+                      <ul className="flex flex-col gap-1">
                         {populatedAuthors.map((author, index) => {
                           if (author) {
                             return (
@@ -246,17 +246,17 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                   <div className="w-full border-t border-secondary" />
                   <div className="flex flex-col gap-4">
                     {publishedAt && (
-                      <div className="flex flex-col gap-2">
-                        <p className="text-md font-semibold text-brand-secondary">Published</p>
+                      <div className="flex gap-2">
+                        <p className="text-md font-semibold text-brand-secondary">Published:</p>
                         <p className="text-md text-tertiary">{formatDateTime(publishedAt)}</p>
                       </div>
                     )}
                     {populatedAuthors && populatedAuthors.length > 0 && (
-                      <div className="flex flex-col gap-2">
+                      <div className="flex gap-2">
                         <p className="text-md font-semibold text-brand-secondary">
-                          {populatedAuthors.length > 1 ? 'Authors' : 'Author'}
+                          {populatedAuthors.length > 1 ? 'Authors:' : 'Author:'}
                         </p>
-                        <ul className="flex flex-col gap-2">
+                        <ul className="flex flex-col gap-1">
                           {populatedAuthors.map((author, index) => {
                             if (author) {
                               return (

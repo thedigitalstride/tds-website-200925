@@ -9,6 +9,7 @@ import { Quote } from '../../blocks/Quote/config'
 import { Conclusion } from '../../blocks/Conclusion/config'
 import { LatestPostsBlock } from '../../blocks/LatestPostsBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
+import { BreadcrumbBlock } from '../../blocks/BreadcrumbBlock/config'
 import { richTextEditorFull } from '@/fields/richTextWithButtons'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
@@ -74,6 +75,22 @@ export const Posts: CollectionConfig<'posts'> = {
               type: 'text',
               admin: {
                 description: 'Lead paragraph that appears under the title',
+              },
+            },
+            {
+              name: 'beforeContent',
+              type: 'blocks',
+              label: 'Before Content Blocks',
+              blocks: [BreadcrumbBlock],
+              defaultValue: [
+                {
+                  blockType: 'breadcrumb',
+                  spacing: 'compact',
+                },
+              ],
+              admin: {
+                description: 'Blocks displayed before the post content (breadcrumbs always included by default)',
+                initCollapsed: true,
               },
             },
             {
