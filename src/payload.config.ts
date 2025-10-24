@@ -6,6 +6,7 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
+import { AiLogs } from './collections/AiLogs'
 import { Categories } from './collections/Categories'
 import { FAQs } from './collections/FAQs'
 import { Media } from './collections/Media'
@@ -16,6 +17,7 @@ import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { NotFound } from './NotFound/config'
 import { PostsSettings } from './PostsSettings/config'
+import { AiSettings } from './AiSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -78,9 +80,9 @@ export default buildConfig({
       connectionString: process.env.POSTGRES_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, FAQs, Users],
+  collections: [Pages, Posts, Media, Categories, FAQs, Users, AiLogs],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, NotFound, PostsSettings],
+  globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
   plugins: [
     ...plugins,
     vercelBlobStorage({

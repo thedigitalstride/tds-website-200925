@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { richTextEditorMinimal } from '@/fields/richTextWithButtons'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { generateAltTagAfterChange } from './Media/hooks/generateAltTag'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -27,18 +28,14 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      // Note: Not using required: true to allow existing media without alt text
-      // Validation handled in admin field validation instead
       admin: {
-        description: 'Alt text is required for accessibility. Describe the image for screen readers.',
-      },
-      validate: (value: string | null | undefined, options: { operation?: string }) => {
-        // Only require alt text for new uploads (create operation)
-        // Allow existing media without alt text to remain valid
-        if (options?.operation === 'create' && !value) {
-          return 'Alt text is required for accessibility'
-        }
-        return true
+        description:
+          'Alt text for accessibility. Leave empty to auto-generate with AI, or click "Generate ALT Tag" button.',
+        components: {
+          Field: {
+            path: '@/components/Media/AltTextField#AltTextField',
+          },
+        },
       },
     },
     {
@@ -187,7 +184,7 @@ export const Media: CollectionConfig = {
       withoutEnlargement: true, // Don't upscale smaller images
     },
   },
-  // Sanitize filenames
+  // Sanitize filenames and generate ALT tags
   hooks: {
     beforeOperation: [
       ({ req, operation }) => {
@@ -204,5 +201,6 @@ export const Media: CollectionConfig = {
         }
       },
     ],
+    afterChange: [generateAltTagAfterChange],
   },
 }
