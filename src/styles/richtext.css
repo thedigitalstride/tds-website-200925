@@ -19,8 +19,8 @@
   --tw-prose-headings: var(--color-text-primary);
 
   /* Body text */
-  --tw-prose-body: var(--color-text-secondary);
-  --tw-prose-lead: var(--color-text-secondary);
+  --tw-prose-body: var(--color-text-tertiary);
+  --tw-prose-lead: var(--color-text-tertiary);
 
   /* Links */
   --tw-prose-links: var(--color-text-secondary);
@@ -64,8 +64,8 @@
   --tw-prose-headings: var(--color-text-primary);
 
   /* Body text - lighter gray */
-  --tw-prose-body: var(--color-text-secondary);
-  --tw-prose-lead: var(--color-text-secondary);
+  --tw-prose-body: var(--color-text-tertiary);
+  --tw-prose-lead: var(--color-text-tertiary);
 
   /* Links - match body text color */
   --tw-prose-links: var(--color-text-secondary);
@@ -328,7 +328,7 @@
 .prose-centered-quote p:first-of-type {
   font-size: var(--text-xl);
   line-height: var(--text-xl--line-height);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   margin-bottom: 2em;
 }
 

@@ -13,11 +13,6 @@ export const BreadcrumbBlock: React.FC<BreadcrumbBlockComponentProps> = ({
   spacing,
   breadcrumbs
 }) => {
-  // Don't render if there are no breadcrumbs to show
-  if (!breadcrumbs || breadcrumbs.length <= 1) {
-    return null
-  }
-
   const spacingClasses: Record<string, string> = {
     compact: 'py-6 lg:py-8',      // Smaller spacing for breadcrumbs
     normal: 'py-12 lg:py-16',     // Medium spacing

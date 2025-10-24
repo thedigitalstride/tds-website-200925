@@ -78,11 +78,20 @@ export default async function Page(props: Args) {
     depth: 2,
   })
 
+  // Generate breadcrumbs for the news-insights archive page
+  const breadcrumbs = [
+    {
+      label: 'News & Insights',
+      url: '/news-insights',
+      id: 'news-insights',
+    },
+  ]
+
   return (
     <>
       {/* Before Posts Blocks */}
       {postsSettings.beforeBlocks && postsSettings.beforeBlocks.length > 0 && (
-        <RenderBlocks blocks={postsSettings.beforeBlocks} />
+        <RenderBlocks blocks={postsSettings.beforeBlocks} breadcrumbs={breadcrumbs} />
       )}
 
       {/* Posts Listing */}

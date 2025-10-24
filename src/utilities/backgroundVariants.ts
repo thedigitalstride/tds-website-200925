@@ -86,7 +86,7 @@ export function createBackgroundVariantField(config?: {
   label?: string
   defaultValue?: BackgroundVariant
   description?: string
-  condition?: (data: any, siblingData: any) => boolean
+  condition?: (data: Record<string, unknown>, siblingData: Record<string, unknown>) => boolean
 }) {
   return {
     name: config?.name || 'backgroundVariant',
