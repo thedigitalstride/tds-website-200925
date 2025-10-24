@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+  import type { Metadata } from 'next'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
@@ -27,9 +27,12 @@ export async function generateStaticParams() {
     },
   })
 
-  const params = posts.docs.map(({ slug }) => {
-    return { slug }
-  })
+  const params = posts.docs
+    .map(({ slug }) => {
+      // Ensure slug is a string
+      return typeof slug === 'string' ? { slug } : null
+    })
+    .filter((param): param is { slug: string } => param !== null)
 
   return params
 }
@@ -47,7 +50,7 @@ type Args = {
 export default async function Post({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = '' } = await paramsPromise
-  const url = '/posts/' + slug
+  const url = '/news-insights/' + slug
   const post = await queryPostBySlug({ slug, draft })
 
   if (!post) return <PayloadRedirects url={url} />

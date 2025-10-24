@@ -24,14 +24,9 @@ export type LinkAppearances = 'default' | 'outline'
 // UntitledUI Color Options
 export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: string; description?: string }> = {
   primary: {
-    label: 'Brand',
+    label: 'Primary',
     value: 'primary',
     description: 'Dark blue brand button for primary CTAs'
-  },
-  accent: {
-    label: 'Accent',
-    value: 'accent',
-    description: 'Light blue accent button for secondary actions'
   },
   secondary: {
     label: 'Secondary',
@@ -39,9 +34,14 @@ export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: st
     description: 'Subtle button with border and light background'
   },
   tertiary: {
-    label: 'Tinted',
+    label: 'Tertiary',
     value: 'tertiary',
-    description: 'Minimal button with no background'
+    description: 'Minimal button with subtle styling'
+  },
+  accent: {
+    label: 'Accent',
+    value: 'accent',
+    description: 'Light blue accent button for secondary actions'
   },
   link: {
     label: 'Link',

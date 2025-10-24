@@ -32,13 +32,13 @@ const DesktopNavItem = (props: {
       onClick={props.onToggle}
       className={cx(
         "flex cursor-pointer items-center gap-0.5 rounded-lg px-1.5 py-1 text-md font-semibold outline-focus-ring transition duration-100 ease-linear focus-visible:outline-2 focus-visible:outline-offset-2",
-        "text-white hover:text-gray-100 dark:text-brand-500 dark:hover:text-brand-600"
+        "dark:text-white text-brand-500 hover:underline underline-offset-4"
       )}
     >
       <span className="px-0.5">{props.label}</span>
       <ChevronDown className={cx(
-        "size-4 stroke-[2.625px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
-        "text-white dark:text-brand-500",
+        "size-5 stroke-[2.625px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+        "dark:text-white text-brand-500",
         props.isOpen ? 'rotate-0' : '-rotate-90'
       )} />
     </button>
@@ -68,7 +68,7 @@ const MobileNavItem = (props: {
         href={props.href}
         className={cx(
           "flex items-center justify-between px-4 py-2 text-md font-semibold",
-          "text-white hover:bg-brand-600 dark:text-brand-500 dark:hover:bg-gray-100"
+          "dark:text-white text-brand-500"
         )}
       >
         {props.label}
@@ -83,14 +83,14 @@ const MobileNavItem = (props: {
         onClick={() => setIsOpen(!isOpen)}
         className={cx(
           "flex w-full items-center justify-between px-4 py-2 text-md font-semibold",
-          "text-white hover:bg-brand-600 dark:text-brand-500 dark:hover:bg-gray-100"
+          "dark:text-white text-brand-500"
         )}
       >
         {props.label}{' '}
         <ChevronDown
           className={cx(
-            'size-4 stroke-[2.625px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]',
-            "text-white dark:text-brand-500",
+            'size-5 stroke-[2.625px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]',
+            "dark:text-white text-brand-500",
             isOpen ? 'rotate-0' : '-rotate-90',
           )}
         />
@@ -298,7 +298,7 @@ export const Header = ({
         >
           {/* Logo Section */}
           <div className="flex items-center whitespace-nowrap" suppressHydrationWarning>
-            <Link href="/" className="flex items-center text-white dark:text-brand-500">
+            <Link href="/" className="flex items-center dark:text-white text-brand-500">
               <TDSLogo variant={logoVariant} size="xl" className="hidden h-11 lg:inline-block" />
               <TDSLogo
                 variant={logoVariant}
@@ -334,7 +334,7 @@ export const Header = ({
                       href={navItem.href}
                       className={cx(
                         "flex cursor-pointer items-center gap-0.5 rounded-lg px-1.5 py-1 text-md font-semibold outline-focus-ring transition duration-100 ease-linear focus:outline-offset-2 focus-visible:outline-2",
-                        "text-white hover:text-gray-100 dark:text-brand-500 dark:hover:text-brand-600"
+                        "dark:text-white text-brand-500 hover:underline underline-offset-4"
                       )}
                     >
                       <span className="px-0.5">{navItem.label}</span>
@@ -385,8 +385,8 @@ export const Header = ({
                 variants={{
                   visible: {
                     transition: {
-                      staggerChildren: 0.1,
-                      delayChildren: 0.15
+                      staggerChildren: 0.04,
+                      delayChildren: 0
                     }
                   },
                   hidden: {
@@ -402,7 +402,7 @@ export const Header = ({
                     <motion.li
                       key={navItem.label}
                       variants={{
-                        hidden: { opacity: 0, y: -10 },
+                        hidden: { opacity: 0, y: -32 },
                         visible: { opacity: 1, y: 0 }
                       }}
                       transition={{
@@ -421,7 +421,7 @@ export const Header = ({
                     <motion.li
                       key={navItem.label}
                       variants={{
-                        hidden: { opacity: 0, y: -10 },
+                        hidden: { opacity: 0, y: -32 },
                         visible: { opacity: 1, y: 0 }
                       }}
                       transition={{

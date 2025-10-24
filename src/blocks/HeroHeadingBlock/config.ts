@@ -1,9 +1,23 @@
 import type { Block } from 'payload'
+import { link } from '@/fields/link'
 
 export const HeroHeadingBlock: Block = {
   slug: 'heroHeading',
   interfaceName: 'HeroHeadingBlock',
   fields: [
+    {
+      name: 'heroLayout',
+      type: 'select',
+      defaultValue: 'standard',
+      options: [
+        { label: 'Standard', value: 'standard' },
+        { label: 'Split Image Contained', value: 'splitImage' },
+        { label: 'Standard Contained', value: 'standardContained' },
+      ],
+      admin: {
+        description: 'Choose the hero layout style. Split Image displays content on left with optional image on right. Standard Contained is a clean, boxed layout without backgrounds.',
+      },
+    },
     {
       name: 'headline',
       type: 'textarea',
@@ -17,11 +31,12 @@ export const HeroHeadingBlock: Block = {
     },
     {
       name: 'subtitle',
-      type: 'text',
+      type: 'textarea',
       required: false,
       admin: {
         description: 'Subtitle text displayed below the headline',
         placeholder: 'Take it all in your Stride',
+        rows: 3,
       },
     },
     {
@@ -29,7 +44,8 @@ export const HeroHeadingBlock: Block = {
       type: 'checkbox',
       defaultValue: false,
       admin: {
-        description: 'Enable typewriter animation effect for the headline',
+        condition: (_, siblingData) => siblingData?.heroLayout === 'standard',
+        description: 'Enable typewriter animation effect for the headline (only available for Standard layout)',
       },
     },
     {
@@ -73,7 +89,8 @@ export const HeroHeadingBlock: Block = {
             { label: 'Centered', value: 'center' },
           ],
           admin: {
-            description: 'Text alignment for headline and subtitle',
+            condition: (_, siblingData) => siblingData?.heroLayout !== 'splitImage',
+            description: 'Text alignment for headline and subtitle (not available for Split Image layout)',
           },
         },
         {
@@ -81,9 +98,10 @@ export const HeroHeadingBlock: Block = {
           type: 'select',
           defaultValue: 'normal',
           options: [
-            { label: 'Compact', value: 'compact' },
-            { label: 'Normal', value: 'normal' },
             { label: 'Spacious', value: 'spacious' },
+            { label: 'Normal', value: 'normal' },
+            { label: 'Compact', value: 'compact' },
+            { label: 'Minimal', value: 'minimal' },
           ],
           admin: {
             description: 'Vertical spacing around the hero section',
@@ -101,6 +119,61 @@ export const HeroHeadingBlock: Block = {
             description: 'Size variant for the subtitle text - Small reduces to 75% of normal size',
           },
         },
+        {
+          name: 'heroBackground',
+          type: 'select',
+          label: 'Background Style',
+          defaultValue: 'primary',
+          options: [
+            {
+              label: 'Primary',
+              value: 'primary',
+            },
+            {
+              label: 'Secondary',
+              value: 'secondary',
+            },
+            {
+              label: 'Accent',
+              value: 'accent',
+            },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage' || siblingData?.heroLayout === 'standardContained',
+            description: 'Background style for the contained layout',
+          },
+        },
+      ],
+    },
+    {
+      name: 'splitImage',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Split Image',
+      required: false,
+      admin: {
+        condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage',
+        description: 'Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile). Alt text is automatically used from the media upload.',
+      },
+    },
+    {
+      name: 'buttons',
+      type: 'array',
+      label: 'Call-to-Action Buttons',
+      maxRows: 2,
+      admin: {
+        condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage' || siblingData?.heroLayout === 'standardContained',
+        description: 'Add up to 2 CTA buttons (e.g., "Get Started", "Learn More")',
+      },
+      fields: [
+        link({
+          enableUUIButton: true,
+          uuiColors: ['primary', 'accent', 'secondary', 'tertiary'],
+          uuiSizes: ['md', 'lg', 'xl'],
+          defaultUUIColor: 'primary',
+          defaultUUISize: 'xl',
+          appearances: false,
+        }),
       ],
     },
     {
@@ -108,7 +181,8 @@ export const HeroHeadingBlock: Block = {
       type: 'group',
       label: 'Custom Background',
       admin: {
-        description: 'Add custom background with image, gradient, or custom styling',
+        condition: (_, siblingData) => siblingData?.heroLayout !== 'splitImage' && siblingData?.heroLayout !== 'standardContained',
+        description: 'Add custom background with image, gradient, or custom styling (only available for Standard layout)',
       },
       fields: [
         {

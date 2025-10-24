@@ -2,14 +2,15 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { AccordionBlock } from '../../blocks/AccordionBlock/config'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { ButtonBlock } from '../../blocks/ButtonBlock/config'
 import { HeroHeadingBlock } from '../../blocks/HeroHeadingBlock/config'
 import { BreadcrumbBlock } from '../../blocks/BreadcrumbBlock/config'
+import { CardGridBlock } from '../../blocks/CardGridBlock/config'
 import { FeaturesBlock } from '../../blocks/FeaturesBlock/config'
 import { LatestPostsBlock } from '../../blocks/LatestPostsBlock/config'
 import { slugField } from '@/fields/slug'
@@ -91,7 +92,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, ButtonBlock, FeaturesBlock, LatestPostsBlock],
+              blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, CardGridBlock, FeaturesBlock, LatestPostsBlock, AccordionBlock],
               admin: {
                 initCollapsed: true,
               },

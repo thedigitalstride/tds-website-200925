@@ -97,9 +97,44 @@ export const LatestPostsBlock: Block = {
           name: 'categoryFilter',
           type: 'relationship',
           relationTo: 'categories',
-          label: 'Filter by Category',
+          hasMany: true,
+          label: 'Filter by Categories',
           admin: {
-            description: 'Optional: Show only posts from a specific category',
+            description: 'Optional: Show only posts from these categories (OR logic - matches any)',
+          },
+        },
+        {
+          name: 'excludePosts',
+          type: 'relationship',
+          relationTo: 'posts',
+          hasMany: true,
+          label: 'Exclude Specific Posts',
+          admin: {
+            description: 'Optional: Hide these posts even if they match other filters',
+          },
+        },
+        {
+          name: 'sortBy',
+          type: 'select',
+          label: 'Sort By',
+          defaultValue: 'date-desc',
+          options: [
+            { label: 'Newest First', value: 'date-desc' },
+            { label: 'Oldest First', value: 'date-asc' },
+            { label: 'Title (A-Z)', value: 'title-asc' },
+            { label: 'Title (Z-A)', value: 'title-desc' },
+          ],
+          admin: {
+            description: 'How to sort the posts',
+          },
+        },
+        {
+          name: 'showFeaturedFirst',
+          type: 'checkbox',
+          label: 'Pin Featured Posts First',
+          defaultValue: false,
+          admin: {
+            description: 'Show featured posts at the beginning, regardless of sort order',
           },
         },
       ],
@@ -146,93 +181,18 @@ export const LatestPostsBlock: Block = {
       ],
     },
     {
-      name: 'layoutOptions',
-      type: 'group',
-      label: 'Layout Options',
-      admin: {
-        description: 'Configure how the blog section is displayed',
-      },
-      fields: [
-        {
-          name: 'usePostsSettings',
-          type: 'checkbox',
-          label: 'Use Global Posts Settings',
-          defaultValue: true,
-          admin: {
-            description:
-              'Use column settings from Posts Settings global. Uncheck to customize columns for this block.',
-          },
-        },
-        {
-          name: 'gridColumns',
-          type: 'group',
-          label: 'Custom Grid Columns',
-          admin: {
-            description: 'Configure columns for different screen sizes',
-            condition: (_, siblingData) => siblingData?.usePostsSettings !== true,
-          },
-          fields: [
-            {
-              name: 'desktop',
-              type: 'select',
-              label: 'Desktop Columns',
-              defaultValue: '3',
-              dbName: 'cols_desktop',
-              options: [
-                { label: '2 Columns', value: '2' },
-                { label: '3 Columns', value: '3' },
-                { label: '4 Columns', value: '4' },
-              ],
-              admin: {
-                description: 'Number of columns on large screens (1024px and above)',
-              },
-            },
-            {
-              name: 'tablet',
-              type: 'select',
-              label: 'Tablet Columns',
-              defaultValue: '2',
-              dbName: 'cols_tablet',
-              options: [
-                { label: '2 Columns', value: '2' },
-                { label: '3 Columns', value: '3' },
-                { label: '4 Columns', value: '4' },
-              ],
-              admin: {
-                description: 'Number of columns on medium screens (768px - 1023px)',
-              },
-            },
-            {
-              name: 'mobile',
-              type: 'select',
-              label: 'Mobile Columns',
-              defaultValue: '1',
-              dbName: 'cols_mobile',
-              options: [
-                { label: '1 Column', value: '1' },
-                { label: '2 Columns', value: '2' },
-              ],
-              admin: {
-                description: 'Number of columns on small screens (below 768px)',
-              },
-            },
-          ],
-        },
-        {
-          name: 'spacing',
-          type: 'select',
-          defaultValue: 'normal',
-          label: 'Section Spacing',
-          options: [
-            { label: 'Compact', value: 'compact' },
-            { label: 'Normal', value: 'normal' },
-            { label: 'Spacious', value: 'spacious' },
-          ],
-          admin: {
-            description: 'Vertical spacing around this section',
-          },
-        },
+      name: 'spacing',
+      type: 'select',
+      defaultValue: 'normal',
+      label: 'Section Spacing',
+      options: [
+        { label: 'Compact', value: 'compact' },
+        { label: 'Normal', value: 'normal' },
+        { label: 'Spacious', value: 'spacious' },
       ],
+      admin: {
+        description: 'Vertical spacing around this section',
+      },
     },
   ],
   labels: {

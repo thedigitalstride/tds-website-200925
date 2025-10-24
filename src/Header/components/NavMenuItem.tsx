@@ -25,8 +25,8 @@ export const NavMenuItemLink = ({ href, icon: Icon, iconClassName, title, badge,
     <a
         href={href}
         className={cx(
-            "inline-flex w-full gap-3 px-4 py-3 outline-focus-ring transition duration-200 ease-linear focus-visible:outline-2 sm:max-w-80 sm:p-3 rounded-md",
-            "hover:bg-brand-900 dark:hover:bg-gray-100",
+            "flex w-full gap-3 px-4 py-3 outline-focus-ring transition duration-200 ease-linear focus-visible:outline-2 sm:max-w-80 md:p-3 md:h-full rounded-lg",
+            "hover:bg-card-tinted dark:hover:bg-card-tinted",
             className,
         )}
     >
@@ -35,7 +35,7 @@ export const NavMenuItemLink = ({ href, icon: Icon, iconClassName, title, badge,
             transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
         >
             {isValidElement(Icon) && Icon}
-            {isReactComponent(Icon) && <Icon className={cx("mt-0.5 size-4 shrink-0 stroke-[2.3px]", "text-white dark:text-brand-500", iconClassName)} />}
+            {isReactComponent(Icon) && <Icon className={cx("mt-0.5 size-5 shrink-0 stroke-[2.3px]", "dark:text-white text-brand-500", iconClassName)} />}
         </motion.div>
 
         <motion.div
@@ -56,13 +56,13 @@ export const NavMenuItemLink = ({ href, icon: Icon, iconClassName, title, badge,
                     variants={childVariants}
                     transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                 >
-                    <span className={cx("text-md font-semibold", "text-white dark:text-brand-500")}>{title}</span>
+                    <span className={cx("text-md font-semibold transition hover:underline underline-offset-4", "dark:text-white text-brand-500")}>{title}</span>
                     {badge}
                 </motion.div>
 
                 {subtitle && (
                     <motion.span
-                        className={cx("line-clamp-2 text-sm", "text-white/80 dark:text-brand-400")}
+                        className={cx("line-clamp-2 text-sm", "text-primary")}
                         variants={childVariants}
                         transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                     >

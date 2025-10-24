@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { ArrowUpRight } from '@untitledui/icons'
+import { ArrowRight } from '@untitledui/icons'
 import { Badge } from '@/components/uui/base/badges/badges'
 import { OptimizedImage } from '@/components/OptimizedImage'
 import type { Media } from '@/payload-types'
@@ -27,9 +27,15 @@ export type PayloadArticle = {
   }
   publishedAt: string
   readingTime: string
+  // Pre-calculated display values (computed on server)
+  displayExcerpt: string | null
+  displayCategories: boolean
+  displayAuthor: boolean
+  displayDate: boolean
+  displayReadingTime: boolean
 }
 
-export const PayloadBlogCard: React.FC<{
+const BlogCardComponent: React.FC<{
   article: PayloadArticle
   imageClassName?: string
   priority?: boolean
@@ -44,9 +50,9 @@ export const PayloadBlogCard: React.FC<{
         width={600}
         height={400}
         priority={priority}
-        sizes={sizes || '(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 30vw'}
+        sizes={sizes}
         className={cn(
-          'aspect-[1.5] w-full object-cover transition duration-100 ease-linear hover:scale-105',
+          'aspect-[1.5] w-full object-cover transition-transform duration-300 ease-linear hover:scale-105',
           imageClassName,
         )}
       />
@@ -54,36 +60,69 @@ export const PayloadBlogCard: React.FC<{
 
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
-        <div className="flex flex-wrap gap-2">
-          {article.categories.map((category, index) => (
-            <Link
-              key={index}
-              href={category.href}
-              className="text-sm font-semibold text-brand-secondary transition-colors hover:text-brand-secondary_hover"
-            >
-              <Badge size="sm" color="brand" type="modern">
-                {category.name}
-              </Badge>
-            </Link>
-          ))}
-        </div>
+        {/* Categories */}
+        {article.displayCategories && article.categories.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {article.categories.map((category, index) => (
+              <Link
+                key={index}
+                href={category.href}
+                className="text-sm font-semibold text-brand-secondary transition-colors hover:text-brand-secondary_hover"
+              >
+                <Badge size="sm" color="brand" type="modern">
+                  {category.name}
+                </Badge>
+              </Link>
+            ))}
+          </div>
+        )}
+
         <div className="flex flex-col gap-1">
           <Link
             href={article.href}
             className="group/title flex justify-between gap-x-4 rounded-md text-lg font-semibold text-primary outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2"
           >
-            {article.title}
-            <ArrowUpRight
-              className="mt-0.5 size-6 shrink-0 text-fg-quaternary transition duration-100 ease-linear group-hover/title:text-fg-quaternary_hover"
+            <span className="underline-offset-4 transition-all duration-100 ease-linear group-hover/title:underline">
+              {article.title}
+            </span>
+            <ArrowRight
+              className="mt-0.5 size-6 shrink-0 text-fg-primary transition duration-100 ease-linear group-hover/title:text-fg-primary_hover"
               aria-hidden="true"
             />
           </Link>
 
-          <p className="line-clamp-2 text-md text-tertiary">{article.summary}</p>
+          {/* Excerpt */}
+          {article.displayExcerpt && (
+            <p className="line-clamp-2 text-md text-tertiary">{article.displayExcerpt}</p>
+          )}
         </div>
       </div>
 
-      <time className="block text-sm text-tertiary">{article.publishedAt}</time>
+      {/* Author / Meta Info */}
+      {(article.displayAuthor || article.displayDate || article.displayReadingTime) && (
+        <div className="flex items-center gap-3 text-sm text-tertiary">
+          {article.displayAuthor && (
+            <span>{article.author.name}</span>
+          )}
+
+          {article.displayDate && (
+            <>
+              {article.displayAuthor && <span aria-hidden="true">·</span>}
+              <time>{article.publishedAt}</time>
+            </>
+          )}
+
+          {article.displayReadingTime && (
+            <>
+              {(article.displayAuthor || article.displayDate) && <span aria-hidden="true">·</span>}
+              <span>{article.readingTime}</span>
+            </>
+          )}
+        </div>
+      )}
     </div>
   </article>
 )
+
+// Memoize to prevent any re-renders from parent state changes
+export const PayloadBlogCard = React.memo(BlogCardComponent)

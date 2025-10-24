@@ -25,7 +25,7 @@ Blog Architecture:
 ```
 src/
 ├── app/(frontend)/
-│   └── posts/
+│   └── news-insights/
 │       ├── page.tsx                    # Main posts listing page
 │       ├── page/[number]/page.tsx      # Pagination pages
 │       └── [slug]/page.tsx             # Individual post pages
@@ -94,7 +94,7 @@ const transformPost = (post: Post, index: number): Article => {
           const category = cat as Category;
           return {
             name: category.title || 'Uncategorized',
-            href: category.slug ? `/posts?category=${category.slug}` : '#'
+            href: category.slug ? `/news-insights?category=${category.slug}` : '#'
           };
         })
     : [{ name: 'Uncategorized', href: '#' }];
@@ -103,7 +103,7 @@ const transformPost = (post: Post, index: number): Article => {
     id: post.id.toString(),
     title: post.title,
     summary: post.subtitle || '',
-    href: `/posts/${post.slug || 'undefined'}`,
+    href: `/news-insights/${post.slug || 'undefined'}`,
     categories: allCategories,  // Always use categories array
     // ... rest of transformation
   };
@@ -112,7 +112,7 @@ const transformPost = (post: Post, index: number): Article => {
 
 ## Server-Side Implementation
 
-### Posts Page (`/src/app/(frontend)/posts/page.tsx`)
+### Posts Page (`/src/app/(frontend)/news-insights/page.tsx`)
 
 **Critical Next.js 15 Pattern:**
 
@@ -158,11 +158,11 @@ if (selectedCategory) {
 ### Pagination Implementation
 
 The pagination system uses a two-route approach:
-- `/posts` - Page 1 (handled by main page.tsx)
-- `/posts/page/[number]` - Pages 2+ (handled by pagination route)
+- `/news-insights` - Page 1 (handled by main page.tsx)
+- `/news-insights/page/[number]` - Pages 2+ (handled by pagination route)
 
 ```typescript
-// In pagination page (/src/app/(frontend)/posts/page/[number]/page.tsx)
+// In pagination page (/src/app/(frontend)/news-insights/page/[number]/page.tsx)
 export default async function Page(props: Args) {
   const { number } = await props.params
   const searchParams = await props.searchParams
@@ -212,18 +212,18 @@ const tabs = [
 ```typescript
 const handleCategoryChange = (key: string) => {
   if (key === "all") {
-    router.push('/posts');
+    router.push('/news-insights');
   } else {
-    router.push(`/posts?category=${key}`);
+    router.push(`/news-insights?category=${key}`);
   }
 };
 
 const handlePageChange = (page: number) => {
   const categoryParam = selectedCategory !== "all" ? `?category=${selectedCategory}` : '';
   if (page === 1) {
-    router.push(`/posts${categoryParam}`);
+    router.push(`/news-insights${categoryParam}`);
   } else {
-    router.push(`/posts/page/${page}${categoryParam}`);
+    router.push(`/news-insights/page/${page}${categoryParam}`);
   }
 };
 ```
@@ -387,9 +387,9 @@ pnpm build  # Must complete without type errors
 ```
 
 2. **Filtering Tests:**
-- `/posts` - Shows all posts, "View all" tab selected
-- `/posts?category=team` - Shows only team posts, "Team" tab selected
-- `/posts/page/2?category=marketing` - Page 2 of marketing posts
+- `/news-insights` - Shows all posts, "View all" tab selected
+- `/news-insights?category=team` - Shows only team posts, "Team" tab selected
+- `/news-insights/page/2?category=marketing` - Page 2 of marketing posts
 
 3. **Navigation Tests:**
 - Tab clicks update URL

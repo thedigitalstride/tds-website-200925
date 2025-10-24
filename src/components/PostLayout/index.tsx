@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Check, Copy01 } from "@untitledui/icons";
-import { BadgeGroup } from "@/components/uui/base/badges/badge-groups";
+import { Badge } from "@/components/uui/base/badges/badges";
 import { Button } from "@/components/uui/button";
 import { Facebook, LinkedIn, X } from "@/components/uui/foundations/social-icons";
 import { useClipboard } from "@/hooks/use-clipboard";
@@ -53,21 +53,21 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                   return (
                     <a
                       key={category.id || index}
-                      href={`/posts?category=${category.slug}`}
+                      href={`/news-insights?category=${category.slug}`}
                       className="inline-block"
                     >
-                      <BadgeGroup size="md" addonText="Blog" color="brand" theme="modern" className="pr-3 hover:bg-secondary transition-colors" iconTrailing={null}>
+                      <Badge size="sm" color="brand" type="modern" className="hover:bg-secondary transition-colors">
                         {category.title}
-                      </BadgeGroup>
+                      </Badge>
                     </a>
                   );
                 }
                 // Handle non-populated categories (just IDs) - fallback
                 if (typeof category === 'string' || typeof category === 'number') {
                   return (
-                    <BadgeGroup key={index} size="md" addonText="Blog" color="brand" theme="modern" className="pr-3" iconTrailing={null}>
+                    <Badge key={index} size="sm" color="brand" type="modern">
                       Category {category}
-                    </BadgeGroup>
+                    </Badge>
                   );
                 }
                 return null;

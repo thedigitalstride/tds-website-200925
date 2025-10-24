@@ -112,10 +112,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [data?.mobileCtaButton])
 
   return (
-    <header className="fixed top-4 left-4 right-4 md:left-8 md:right-8 z-50">
-      <div className="mx-auto max-w-container">
-        {/* Use bg-brand-solid which automatically changes in dark mode */}
-        <div className="bg-brand-solid rounded-2xl overflow-visible">
+    <header className="fixed top-4 left-0 right-0 z-50">
+      <div className="mx-auto max-w-container px-4 md:px-8">
+        <div className="bg-brand-50/30 dark:bg-brand-900/50 rounded-xl overflow-hidden backdrop-blur-lg">
           <UUIHeader
             items={navigationItems}
             ctaButton={effectiveCtaButton}

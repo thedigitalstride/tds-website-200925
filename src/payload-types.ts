@@ -71,6 +71,7 @@ export interface Config {
     posts: Post;
     media: Media;
     categories: Category;
+    faqs: Faq;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -87,6 +88,7 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -161,9 +163,10 @@ export interface Page {
         | MediaBlock
         | ArchiveBlock
         | FormBlock
-        | ButtonBlock
+        | CardGridBlock
         | FeaturesBlock
         | LatestPostsBlock
+        | AccordionBlock
       )[]
     | null;
   publishedAt?: string | null;
@@ -196,6 +199,10 @@ export interface Page {
  */
 export interface HeroHeadingBlock {
   /**
+   * Choose the hero layout style. Split Image displays content on left with optional image on right. Standard Contained is a clean, boxed layout without backgrounds.
+   */
+  heroLayout?: ('standard' | 'splitImage' | 'standardContained') | null;
+  /**
    * Main headline text. Use line breaks to create multiple lines that will scale responsively.
    */
   headline: string;
@@ -204,7 +211,7 @@ export interface HeroHeadingBlock {
    */
   subtitle?: string | null;
   /**
-   * Enable typewriter animation effect for the headline
+   * Enable typewriter animation effect for the headline (only available for Standard layout)
    */
   enableTypewriter?: boolean | null;
   /**
@@ -216,19 +223,66 @@ export interface HeroHeadingBlock {
    */
   subheadingColor?: ('default' | 'white') | null;
   /**
-   * Text alignment for headline and subtitle
+   * Text alignment for headline and subtitle (not available for Split Image layout)
    */
   textAlignment?: ('left' | 'center') | null;
   /**
    * Vertical spacing around the hero section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('spacious' | 'normal' | 'compact' | 'minimal') | null;
   /**
    * Size variant for the subtitle text - Small reduces to 75% of normal size
    */
   subtitleSize?: ('small' | 'normal') | null;
   /**
-   * Add custom background with image, gradient, or custom styling
+   * Background style for the contained layout
+   */
+  heroBackground?: ('primary' | 'secondary' | 'accent') | null;
+  /**
+   * Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile). Alt text is automatically used from the media upload.
+   */
+  splitImage?: (number | null) | Media;
+  /**
+   * Add up to 2 CTA buttons (e.g., "Get Started", "Learn More")
+   */
+  buttons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary') | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('md' | 'lg' | 'xl') | null;
+          /**
+           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+           */
+          buttonIcon?: string | null;
+          /**
+           * Position of the icon relative to the button text
+           */
+          iconPos?: ('leading' | 'trailing') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add custom background with image, gradient, or custom styling (only available for Standard layout)
    */
   bg?: {
     /**
@@ -317,6 +371,14 @@ export interface Media {
       filesize?: number | null;
       filename?: string | null;
     };
+    'card-mobile'?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
     small?: {
       url?: string | null;
       width?: number | null;
@@ -361,16 +423,204 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BreadcrumbBlock".
+ * via the `definition` "posts".
  */
-export interface BreadcrumbBlock {
+export interface Post {
+  id: number;
+  title: string;
   /**
-   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
+   * Lead paragraph that appears under the title
+   */
+  subtitle?: string | null;
+  /**
+   * Optional table of contents for the sidebar
+   */
+  tableOfContents?:
+    | {
+        title: string;
+        /**
+         * Link to section (e.g., #introduction)
+         */
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  heroImage?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Optional blocks to display after the main post content
+   */
+  afterContent?: (LatestPostsBlock | CallToActionBlock | MediaBlock)[] | null;
+  relatedPosts?: (number | Post)[] | null;
+  categories?: (number | Category)[] | null;
+  /**
+   * People who contributed to this post (separate from authors)
+   */
+  contributors?: (number | User)[] | null;
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+        nickname?: string | null;
+        avatar?: (number | null) | Media;
+      }[]
+    | null;
+  populatedContributors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+        nickname?: string | null;
+        avatar?: (number | null) | Media;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestPostsBlock".
+ */
+export interface LatestPostsBlock {
+  header?: {
+    /**
+     * Toggle to show/hide the header section
+     */
+    showHeader?: boolean | null;
+    /**
+     * Small text above heading (e.g., "Our blog")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for the blog section
+     */
+    heading?: string | null;
+    /**
+     * Description text that appears below the heading
+     */
+    description?: string | null;
+  };
+  /**
+   * Choose between automatically showing latest posts or manually selecting specific posts
+   */
+  contentSource?: ('latest' | 'manual') | null;
+  opts?: {
+    /**
+     * How many latest posts to display
+     */
+    numPosts?: ('3' | '6' | '9' | '12') | null;
+    /**
+     * Optional: Show only posts from these categories (OR logic - matches any)
+     */
+    categoryFilter?: (number | Category)[] | null;
+    /**
+     * Optional: Hide these posts even if they match other filters
+     */
+    excludePosts?: (number | Post)[] | null;
+    /**
+     * How to sort the posts
+     */
+    sortBy?: ('date-desc' | 'date-asc' | 'title-asc' | 'title-desc') | null;
+    /**
+     * Show featured posts at the beginning, regardless of sort order
+     */
+    showFeaturedFirst?: boolean | null;
+  };
+  /**
+   * Manually select which posts to display
+   */
+  selectedPosts?: (number | Post)[] | null;
+  buttonConfig?: {
+    /**
+     * Toggle to show/hide the button that links to all posts
+     */
+    showButton?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+      /**
+       * Button color variant from UntitledUI design system
+       */
+      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      /**
+       * Button size variant
+       */
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+      /**
+       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+       */
+      buttonIcon?: string | null;
+      /**
+       * Position of the icon relative to the button text
+       */
+      iconPos?: ('leading' | 'trailing') | null;
+    };
+  };
+  /**
+   * Vertical spacing around this section
    */
   spacing?: ('compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'breadcrumb';
+  blockType: 'latestPosts';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  parent?: (number | null) | Category;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Category;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -438,106 +688,29 @@ export interface CallToActionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "MediaBlock".
  */
-export interface Post {
-  id: number;
-  title: string;
-  /**
-   * Lead paragraph that appears under the title
-   */
-  subtitle?: string | null;
-  /**
-   * Optional table of contents for the sidebar
-   */
-  tableOfContents?:
-    | {
-        title: string;
-        /**
-         * Link to section (e.g., #introduction)
-         */
-        href: string;
-        id?: string | null;
-      }[]
-    | null;
-  heroImage?: (number | null) | Media;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
-  /**
-   * People who contributed to this post (separate from authors)
-   */
-  contributors?: (number | User)[] | null;
-  publishedAt?: string | null;
-  authors?: (number | User)[] | null;
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-        nickname?: string | null;
-        avatar?: (number | null) | Media;
-      }[]
-    | null;
-  populatedContributors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-        nickname?: string | null;
-        avatar?: (number | null) | Media;
-      }[]
-    | null;
-  /**
-   * Optional blocks to display after the main post content
-   */
-  afterContent?: (LatestPostsBlock | CallToActionBlock | MediaBlock)[] | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
+export interface MediaBlock {
+  media: number | Media;
+  caption?: {
     /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     * Caption text
      */
-    image?: (number | null) | Media;
+    text?: string | null;
+    link?: {
+      /**
+       * Link URL (e.g., https://example.com)
+       */
+      url?: string | null;
+      /**
+       * Link text
+       */
+      text?: string | null;
+    };
   };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  parent?: (number | null) | Category;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -578,141 +751,16 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LatestPostsBlock".
+ * via the `definition` "BreadcrumbBlock".
  */
-export interface LatestPostsBlock {
-  header?: {
-    /**
-     * Toggle to show/hide the header section
-     */
-    showHeader?: boolean | null;
-    /**
-     * Small text above heading (e.g., "Our blog")
-     */
-    eyebrow?: string | null;
-    /**
-     * Main heading for the blog section
-     */
-    heading?: string | null;
-    /**
-     * Description text that appears below the heading
-     */
-    description?: string | null;
-  };
+export interface BreadcrumbBlock {
   /**
-   * Choose between automatically showing latest posts or manually selecting specific posts
+   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
    */
-  contentSource?: ('latest' | 'manual') | null;
-  opts?: {
-    /**
-     * How many latest posts to display
-     */
-    numPosts?: ('3' | '6' | '9' | '12') | null;
-    /**
-     * Optional: Show only posts from a specific category
-     */
-    categoryFilter?: (number | null) | Category;
-  };
-  /**
-   * Manually select which posts to display
-   */
-  selectedPosts?: (number | Post)[] | null;
-  buttonConfig?: {
-    /**
-     * Toggle to show/hide the button that links to all posts
-     */
-    showButton?: boolean | null;
-    link?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null);
-      url?: string | null;
-      label: string;
-      /**
-       * Button color variant from UntitledUI design system
-       */
-      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
-      /**
-       * Button size variant
-       */
-      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-      /**
-       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
-       */
-      buttonIcon?: string | null;
-      /**
-       * Position of the icon relative to the button text
-       */
-      iconPos?: ('leading' | 'trailing') | null;
-    };
-  };
-  /**
-   * Configure how the blog section is displayed
-   */
-  layoutOptions?: {
-    /**
-     * Use column settings from Posts Settings global. Uncheck to customize columns for this block.
-     */
-    usePostsSettings?: boolean | null;
-    /**
-     * Configure columns for different screen sizes
-     */
-    gridColumns?: {
-      /**
-       * Number of columns on large screens (1024px and above)
-       */
-      desktop?: ('2' | '3' | '4') | null;
-      /**
-       * Number of columns on medium screens (768px - 1023px)
-       */
-      tablet?: ('2' | '3' | '4') | null;
-      /**
-       * Number of columns on small screens (below 768px)
-       */
-      mobile?: ('1' | '2') | null;
-    };
-    /**
-     * Vertical spacing around this section
-     */
-    spacing?: ('compact' | 'normal' | 'spacious') | null;
-  };
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'latestPosts';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
- */
-export interface MediaBlock {
-  media: number | Media;
-  caption?: {
-    /**
-     * Caption text
-     */
-    text?: string | null;
-    link?: {
-      /**
-       * Link URL (e.g., https://example.com)
-       */
-      url?: string | null;
-      /**
-       * Link text
-       */
-      text?: string | null;
-    };
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaBlock';
+  blockType: 'breadcrumb';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1020,53 +1068,126 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ButtonBlock".
+ * via the `definition` "CardGridBlock".
  */
-export interface ButtonBlock {
+export interface CardGridBlock {
+  header?: {
+    /**
+     * Toggle to show/hide the header section
+     */
+    showHeader?: boolean | null;
+    /**
+     * Small text above heading (e.g., "Our Services", "What We Offer")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for the card grid section
+     */
+    heading?: string | null;
+    /**
+     * Description text that appears below the heading
+     */
+    description?: string | null;
+    /**
+     * Alignment of the section header
+     */
+    headerAlignment?: ('left' | 'center') | null;
+  };
+  cards: {
+    /**
+     * Small text above card title (e.g., "New", "Featured", "Step 01")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for this card (e.g., "Fast Delivery", "Expert Support")
+     */
+    title: string;
+    /**
+     * Rich description with headings, formatting, lists, and links
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+     */
+    icon?: string | null;
+    /**
+     * Add an optional call-to-action link or button
+     */
+    enableLink?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+      /**
+       * Button color variant from UntitledUI design system
+       */
+      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      /**
+       * Button size variant
+       */
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+      /**
+       * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+       */
+      buttonIcon?: string | null;
+      /**
+       * Position of the icon relative to the button text
+       */
+      iconPos?: ('leading' | 'trailing') | null;
+    };
+    id?: string | null;
+  }[];
   /**
-   * Add one or more buttons with different styles and links
+   * Layout arrangement for cards (icon position and alignment)
    */
-  buttons?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Button color variant from UntitledUI design system
-           */
-          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
-          /**
-           * Button size variant
-           */
-          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-          /**
-           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
-           */
-          buttonIcon?: string | null;
-          /**
-           * Position of the icon relative to the button text
-           */
-          iconPos?: ('leading' | 'trailing') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  layout?: ('horizontal' | 'vertical') | null;
-  alignment?: ('left' | 'center' | 'right') | null;
+  cardStyle?: ('card' | 'centered-icon' | 'left-icon' | 'horizontal-icon' | 'elevated-box') | null;
+  /**
+   * Visual style for cards (background and borders)
+   */
+  cardBackground?: ('primary' | 'secondary' | 'accent' | 'line') | null;
+  /**
+   * Number of columns in the grid (1-4). Single column layout allows natural card heights; multi-column layouts use equal heights.
+   */
+  columns?: ('1' | '2' | '3' | '4') | null;
+  /**
+   * Icon color variant - matches button color system
+   */
+  iconColor?: ('primary' | 'secondary' | 'tertiary' | 'accent') | null;
+  /**
+   * Shape of the icon container
+   */
+  iconTheme?: ('rounded-square' | 'round') | null;
+  /**
+   * Vertical spacing around this section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'buttonBlock';
+  blockType: 'cardGrid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1102,9 +1223,23 @@ export interface FeaturesBlock {
     icon?: string | null;
     title: string;
     /**
-     * Brief description of this feature
+     * Rich description with formatting, lists, and links
      */
-    description: string;
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
     /**
      * Add an optional call-to-action link or button
      */
@@ -1153,15 +1288,15 @@ export interface FeaturesBlock {
     /**
      * Visual style for feature cards (background and borders)
      */
-    cardBackground?: ('brand' | 'accent' | 'outline' | 'line' | 'grey') | null;
+    cardBackground?: ('primary' | 'secondary' | 'accent' | 'line') | null;
     /**
      * Number of columns in the grid (1-4). Automatically switches to full-width if only one feature exists.
      */
     columns?: ('1' | '2' | '3' | '4') | null;
     /**
-     * Color scheme for icons - matches button system
+     * Icon color variant - matches button color system
      */
-    iconColor?: ('brand' | 'accent' | 'secondary' | 'tertiary') | null;
+    iconColor?: ('primary' | 'secondary' | 'tertiary' | 'accent') | null;
     /**
      * Shape of the icon container
      */
@@ -1174,6 +1309,194 @@ export interface FeaturesBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'features';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock".
+ */
+export interface AccordionBlock {
+  header?: {
+    /**
+     * Toggle to show/hide the header section
+     */
+    showHeader?: boolean | null;
+    /**
+     * Small text above heading (e.g., "FAQs", "Common Questions")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for the accordion section
+     */
+    heading?: string | null;
+    /**
+     * Description text that appears below the heading
+     */
+    description?: string | null;
+    /**
+     * Alignment of the section header
+     */
+    headerAlignment?: ('left' | 'center') | null;
+  };
+  /**
+   * Choose between automatically showing FAQs based on filters or manually selecting specific FAQs
+   */
+  contentSource?: ('dynamic' | 'manual') | null;
+  opts?: {
+    /**
+     * Optional: Show only FAQs from these categories (OR logic - matches any)
+     */
+    categoryFilter?: (number | Category)[] | null;
+    /**
+     * Maximum number of FAQs to display
+     */
+    limit?: ('3' | '6' | '9' | '12' | 'all') | null;
+    /**
+     * How to sort the FAQs. Featured FAQs always appear first.
+     */
+    sortBy?: ('order' | 'date' | 'question-asc' | 'question-desc') | null;
+    /**
+     * Optional: Hide these FAQs even if they match other filters
+     */
+    excludeFAQs?: (number | Faq)[] | null;
+  };
+  /**
+   * Manually select which FAQs to display
+   */
+  selectedFAQs?: (number | Faq)[] | null;
+  /**
+   * Configure how accordions are displayed
+   */
+  displayOptions?: {
+    /**
+     * Display category badges on each FAQ item
+     */
+    showCategories?: boolean | null;
+    /**
+     * Initial state when the page loads
+     */
+    defaultState?: ('all-collapsed' | 'first-open' | 'all-open') | null;
+    /**
+     * Allow multiple accordion items to be open simultaneously
+     */
+    allowMultipleOpen?: boolean | null;
+    /**
+     * Add a search box to filter FAQs client-side (recommended for 6+ items)
+     */
+    enableSearch?: boolean | null;
+    /**
+     * Position of the toggle icon
+     */
+    iconPosition?: ('right' | 'left' | 'none') | null;
+    /**
+     * Style of the toggle icon
+     */
+    iconStyle?: ('chevron' | 'plus-minus') | null;
+  };
+  /**
+   * Configure the visual appearance
+   */
+  layoutOptions?: {
+    /**
+     * Vertical spacing around this section
+     */
+    spacing?: ('compact' | 'normal' | 'spacious') | null;
+    /**
+     * Background color for accordion items
+     */
+    cardBackground?: ('primary' | 'secondary' | 'accent') | null;
+    /**
+     * How to separate accordion items
+     */
+    dividerStyle?: ('line' | 'card' | 'none') | null;
+    /**
+     * Speed of expand/collapse animations
+     */
+    animationSpeed?: ('fast' | 'normal' | 'slow') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accordion';
+}
+/**
+ * Frequently Asked Questions that can be displayed in AccordionBlocks or inline in rich text
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: number;
+  /**
+   * The question text (e.g., "How do I get started?")
+   */
+  question: string;
+  /**
+   * Rich answer with images, code blocks, videos, and links to related content
+   */
+  answer: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Link to blog posts or pages that provide more detail on this topic
+   */
+  relatedContent?:
+    | (
+        | {
+            relationTo: 'posts';
+            value: number | Post;
+          }
+        | {
+            relationTo: 'pages';
+            value: number | Page;
+          }
+      )[]
+    | null;
+  /**
+   * PDFs, guides, templates that supplement this FAQ
+   */
+  resources?:
+    | {
+        title: string;
+        file: number | Media;
+        /**
+         * Brief description of what this resource contains
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Tag FAQs with categories for filtering in AccordionBlocks
+   */
+  categories?: (number | Category)[] | null;
+  /**
+   * Pin this FAQ to the top of filtered lists
+   */
+  featured?: boolean | null;
+  /**
+   * Manual ordering (lower numbers appear first). Featured FAQs always appear before non-featured.
+   */
+  order?: number | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  /**
+   * SEO description for standalone FAQ pages (if using)
+   */
+  metaDescription?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1365,6 +1688,10 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
+        relationTo: 'faqs';
+        value: number | Faq;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -1446,9 +1773,10 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-        buttonBlock?: T | ButtonBlockSelect<T>;
+        cardGrid?: T | CardGridBlockSelect<T>;
         features?: T | FeaturesBlockSelect<T>;
         latestPosts?: T | LatestPostsBlockSelect<T>;
+        accordion?: T | AccordionBlockSelect<T>;
       };
   publishedAt?: T;
   slug?: T;
@@ -1478,6 +1806,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "HeroHeadingBlock_select".
  */
 export interface HeroHeadingBlockSelect<T extends boolean = true> {
+  heroLayout?: T;
   headline?: T;
   subtitle?: T;
   enableTypewriter?: T;
@@ -1486,6 +1815,26 @@ export interface HeroHeadingBlockSelect<T extends boolean = true> {
   textAlignment?: T;
   spacing?: T;
   subtitleSize?: T;
+  heroBackground?: T;
+  splitImage?: T;
+  buttons?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              uuiColor?: T;
+              uuiSize?: T;
+              buttonIcon?: T;
+              iconPos?: T;
+            };
+        id?: T;
+      };
   bg?:
     | T
     | {
@@ -1615,12 +1964,26 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ButtonBlock_select".
+ * via the `definition` "CardGridBlock_select".
  */
-export interface ButtonBlockSelect<T extends boolean = true> {
-  buttons?:
+export interface CardGridBlockSelect<T extends boolean = true> {
+  header?:
     | T
     | {
+        showHeader?: T;
+        eyebrow?: T;
+        heading?: T;
+        description?: T;
+        headerAlignment?: T;
+      };
+  cards?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        icon?: T;
+        enableLink?: T;
         link?:
           | T
           | {
@@ -1636,8 +1999,12 @@ export interface ButtonBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
-  layout?: T;
-  alignment?: T;
+  cardStyle?: T;
+  cardBackground?: T;
+  columns?: T;
+  iconColor?: T;
+  iconTheme?: T;
+  spacing?: T;
   id?: T;
   blockName?: T;
 }
@@ -1709,6 +2076,9 @@ export interface LatestPostsBlockSelect<T extends boolean = true> {
     | {
         numPosts?: T;
         categoryFilter?: T;
+        excludePosts?: T;
+        sortBy?: T;
+        showFeaturedFirst?: T;
       };
   selectedPosts?: T;
   buttonConfig?:
@@ -1729,18 +2099,51 @@ export interface LatestPostsBlockSelect<T extends boolean = true> {
               iconPos?: T;
             };
       };
+  spacing?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock_select".
+ */
+export interface AccordionBlockSelect<T extends boolean = true> {
+  header?:
+    | T
+    | {
+        showHeader?: T;
+        eyebrow?: T;
+        heading?: T;
+        description?: T;
+        headerAlignment?: T;
+      };
+  contentSource?: T;
+  opts?:
+    | T
+    | {
+        categoryFilter?: T;
+        limit?: T;
+        sortBy?: T;
+        excludeFAQs?: T;
+      };
+  selectedFAQs?: T;
+  displayOptions?:
+    | T
+    | {
+        showCategories?: T;
+        defaultState?: T;
+        allowMultipleOpen?: T;
+        enableSearch?: T;
+        iconPosition?: T;
+        iconStyle?: T;
+      };
   layoutOptions?:
     | T
     | {
-        usePostsSettings?: T;
-        gridColumns?:
-          | T
-          | {
-              desktop?: T;
-              tablet?: T;
-              mobile?: T;
-            };
         spacing?: T;
+        cardBackground?: T;
+        dividerStyle?: T;
+        animationSpeed?: T;
       };
   id?: T;
   blockName?: T;
@@ -1761,11 +2164,27 @@ export interface PostsSelect<T extends boolean = true> {
       };
   heroImage?: T;
   content?: T;
+  afterContent?:
+    | T
+    | {
+        latestPosts?: T | LatestPostsBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+      };
   relatedPosts?: T;
   categories?: T;
   contributors?: T;
   publishedAt?: T;
   authors?: T;
+  slug?: T;
+  slugLock?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   populatedAuthors?:
     | T
     | {
@@ -1781,22 +2200,6 @@ export interface PostsSelect<T extends boolean = true> {
         name?: T;
         nickname?: T;
         avatar?: T;
-      };
-  afterContent?:
-    | T
-    | {
-        latestPosts?: T | LatestPostsBlockSelect<T>;
-        cta?: T | CallToActionBlockSelect<T>;
-        mediaBlock?: T | MediaBlockSelect<T>;
-      };
-  slug?: T;
-  slugLock?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1834,6 +2237,16 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
         square?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        'card-mobile'?:
           | T
           | {
               url?: T;
@@ -1914,6 +2327,32 @@ export interface CategoriesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
+  relatedContent?: T;
+  resources?:
+    | T
+    | {
+        title?: T;
+        file?: T;
+        description?: T;
+        id?: T;
+      };
+  categories?: T;
+  featured?: T;
+  order?: T;
+  slug?: T;
+  slugLock?: T;
+  metaDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2386,7 +2825,7 @@ export interface Footer {
                 /**
                  * Button color variant from UntitledUI design system
                  */
-                uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+                uuiColor?: 'link' | null;
                 /**
                  * Button size variant
                  */
@@ -2499,16 +2938,16 @@ export interface NotFound {
  */
 export interface PostsSetting {
   id: number;
-  pageHeader: {
-    /**
-     * Main heading displayed at the top of the posts page
-     */
-    heading: string;
-    /**
-     * Description text displayed below the main heading
-     */
-    description?: string | null;
-  };
+  /**
+   * Blocks to display before the posts grid on /news-insights (use HeroHeadingBlock for page header)
+   */
+  beforeBlocks?:
+    | (HeroHeadingBlock | BreadcrumbBlock | CallToActionBlock | ContentBlock | MediaBlock | FormBlock)[]
+    | null;
+  /**
+   * Optional blocks to display after the posts grid on /news-insights
+   */
+  afterBlocks?: (CallToActionBlock | ContentBlock | MediaBlock | FormBlock)[] | null;
   /**
    * Configure how many columns to display in the posts grid for different screen sizes
    */
@@ -2525,6 +2964,68 @@ export interface PostsSetting {
      * Number of columns on small screens (below 768px)
      */
     mobile?: ('1' | '2') | null;
+  };
+  /**
+   * How posts are displayed site-wide. Auto automatically switches to carousel when posts exceed columns.
+   */
+  displayMode?: ('auto' | 'grid' | 'carousel') | null;
+  /**
+   * Configure carousel behavior (only applies in carousel or auto mode)
+   */
+  carouselSettings?: {
+    /**
+     * Allow users to drag/swipe the carousel (recommended)
+     */
+    enableDrag?: boolean | null;
+    /**
+     * Display prev/next arrows on carousel
+     */
+    showArrows?: boolean | null;
+    /**
+     * Display a progress indicator below carousel
+     */
+    showProgress?: boolean | null;
+    /**
+     * How much of adjacent cards to show. Peek improves discoverability by showing users there is more content.
+     */
+    peekAmount?: ('none' | 'small' | 'medium' | 'large') | null;
+    /**
+     * Automatically advance to next card (pauses on hover/interaction)
+     */
+    autoPlay?: boolean | null;
+    /**
+     * Milliseconds between auto-advance (2000-10000)
+     */
+    autoPlayInterval?: number | null;
+  };
+  /**
+   * Customize what content is shown on each blog card site-wide
+   */
+  cardDisplay?: {
+    /**
+     * Display category badges on cards
+     */
+    showCategories?: boolean | null;
+    /**
+     * Display author name and avatar
+     */
+    showAuthor?: boolean | null;
+    /**
+     * Display the published date
+     */
+    showDate?: boolean | null;
+    /**
+     * Display estimated reading time
+     */
+    showReadingTime?: boolean | null;
+    /**
+     * Display post summary/excerpt
+     */
+    showExcerpt?: boolean | null;
+    /**
+     * Maximum length for post excerpts
+     */
+    excerptLength?: ('short' | 'medium' | 'long') | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -2686,11 +3187,23 @@ export interface NotFoundSelect<T extends boolean = true> {
  * via the `definition` "postsSettings_select".
  */
 export interface PostsSettingsSelect<T extends boolean = true> {
-  pageHeader?:
+  beforeBlocks?:
     | T
     | {
-        heading?: T;
-        description?: T;
+        heroHeading?: T | HeroHeadingBlockSelect<T>;
+        breadcrumb?: T | BreadcrumbBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+        content?: T | ContentBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+        formBlock?: T | FormBlockSelect<T>;
+      };
+  afterBlocks?:
+    | T
+    | {
+        cta?: T | CallToActionBlockSelect<T>;
+        content?: T | ContentBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+        formBlock?: T | FormBlockSelect<T>;
       };
   gridColumns?:
     | T
@@ -2698,6 +3211,27 @@ export interface PostsSettingsSelect<T extends boolean = true> {
         desktop?: T;
         tablet?: T;
         mobile?: T;
+      };
+  displayMode?: T;
+  carouselSettings?:
+    | T
+    | {
+        enableDrag?: T;
+        showArrows?: T;
+        showProgress?: T;
+        peekAmount?: T;
+        autoPlay?: T;
+        autoPlayInterval?: T;
+      };
+  cardDisplay?:
+    | T
+    | {
+        showCategories?: T;
+        showAuthor?: T;
+        showDate?: T;
+        showReadingTime?: T;
+        showExcerpt?: T;
+        excerptLength?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -2724,6 +3258,56 @@ export interface TaskSchedulePublish {
     user?: (number | null) | User;
   };
   output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ButtonBlock".
+ */
+export interface ButtonBlock {
+  /**
+   * Add one or more buttons with different styles and links
+   */
+  buttons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+          /**
+           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+           */
+          buttonIcon?: string | null;
+          /**
+           * Position of the icon relative to the button text
+           */
+          iconPos?: ('leading' | 'trailing') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  layout?: ('horizontal' | 'vertical') | null;
+  alignment?: ('left' | 'center' | 'right') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'buttonBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

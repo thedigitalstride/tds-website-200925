@@ -47,6 +47,10 @@
     --text-hero-fluid: clamp(2.1rem, 5vw + 1rem, 6.5rem);
     --text-hero-fluid--line-height: 1.2;
 
+    /* HEADER HEIGHTS - Single source of truth for header clearance calculations */
+    --header-height-mobile: 72px;     /* h-18 (56px actual header + 16px breathing room) */
+    --header-height-desktop: 80px;    /* h-20 (68px actual header + 12px breathing room) */
+
     /* MAX WIDTH */
     --max-width-container: 1280px;
 
@@ -706,7 +710,7 @@
     --color-utility-yellow-700: var(--color-yellow-700);
 
     /* TEXT COLORS */
-    --color-text-primary: var(--color-gray-900);
+    --color-text-primary: var(--color-brand-500);
     --color-text-tertiary: var(--color-gray-600);
     --color-text-error-primary: var(--color-error-600);
     --color-text-warning-primary: var(--color-warning-600);
@@ -740,6 +744,11 @@
     --color-text-secondary_on-accent: var(--color-accent-200);
     --color-text-tertiary_on-accent: var(--color-accent-200);
     --color-text-quaternary_on-accent: var(--color-accent-300);
+    --color-text-card-brand-subtle: var(--color-bg-card-brand-subtle);
+    --color-text-card-brand-solid: var(--color-bg-card-brand-solid);
+    --color-text-card-white: var(--color-bg-card-white);
+    --color-text-card-accent: var(--color-bg-card-accent);
+    --color-text-card-tinted: var(--color-bg-card-tinted);
 
     /* BORDER COLORS */
     --color-border-secondary: var(--color-gray-200);
@@ -795,7 +804,7 @@
     --color-bg-success-secondary: var(--color-success-100);
     --color-bg-brand-solid: var(--color-brand-500);
     --color-bg-brand-solid_hover: var(--color-brand-700);
-    --color-bg-secondary-solid: var(--color-gray-600);
+    --color-bg-secondary-solid: var(--color-gray-400);
     --color-bg-error-solid: var(--color-error-600);
     --color-bg-warning-solid: var(--color-warning-600);
     --color-bg-success-solid: var(--color-success-600);
@@ -824,6 +833,30 @@
     --color-bg-accent-secondary_alt: var(--color-accent-100);
     --color-bg-accent-section: var(--color-accent-800);
     --color-bg-accent-section_subtle: var(--color-accent-700);
+
+    /* ACCORDION VARIABLES */
+    --accordion-border-color: var(--color-border-primary);
+    --accordion-bg-primary: var(--color-bg-primary);
+    --accordion-bg-secondary: var(--color-bg-secondary);
+    --accordion-bg-accent: var(--color-bg-accent-subtle);
+    --accordion-header-hover: var(--color-bg-secondary-hover);
+    --accordion-focus-ring: var(--color-brand-primary);
+
+    /* Animation speeds */
+    --accordion-duration-fast: 0.2s;
+    --accordion-duration-normal: 0.3s;
+    --accordion-duration-slow: 0.4s;
+
+    /* CARD/CONTAINER BACKGROUND VARIANTS */
+    --color-bg-card-brand-subtle: color-mix(in srgb, var(--color-brand-50) 30%, transparent);
+    --color-bg-card-brand-solid: var(--color-brand-50);
+    --color-bg-card-white: var(--color-white);
+    --color-bg-card-accent: var(--color-accent-500);
+    --color-bg-card-tinted: color-mix(in srgb, var(--color-black) 5%, transparent);
+
+    /* MASK COLORS - Opaque equivalents for SVG masks (to prevent image bleed-through) */
+    --color-mask-brand-subtle: rgb(247 248 252);  /* brand-50 @ 30% over white */
+    --color-mask-tinted: rgb(242 242 242);        /* black @ 5% over white */
 
     /* COMPONENT COLORS */
     --color-app-store-badge-border: rgb(166 166 166);
@@ -883,6 +916,11 @@
     --background-color-brand-solid_hover: var(--color-bg-brand-solid_hover);
     --background-color-brand-section: var(--color-bg-brand-section);
     --background-color-brand-section_subtle: var(--color-bg-brand-section_subtle);
+    --background-color-card-brand-subtle: var(--color-bg-card-brand-subtle);
+    --background-color-card-brand-solid: var(--color-bg-card-brand-solid);
+    --background-color-card-white: var(--color-bg-card-white);
+    --background-color-card-accent: var(--color-bg-card-accent);
+    --background-color-card-tinted: var(--color-bg-card-tinted);
     --background-color-error-primary: var(--color-bg-error-primary);
     --background-color-error-secondary: var(--color-bg-error-secondary);
     --background-color-error-solid: var(--color-bg-error-solid);
@@ -920,6 +958,11 @@
     --text-color-warning-primary: var(--color-text-warning-primary);
     --text-color-success-primary: var(--color-text-success-primary);
     --text-color-tooltip-supporting-text: var(--color-tooltip-supporting-text);
+    --text-color-card-brand-subtle: var(--color-text-card-brand-subtle);
+    --text-color-card-brand-solid: var(--color-text-card-brand-solid);
+    --text-color-card-white: var(--color-text-card-white);
+    --text-color-card-accent: var(--color-text-card-accent);
+    --text-color-card-tinted: var(--color-text-card-tinted);
 
     /* BORDER PROPERTY COLORS */
     --border-color-primary: var(--color-border-primary);
@@ -1186,13 +1229,14 @@
 
         /* TEXT COLORS */
 
-        --color-text-primary: var(--color-gray-50);
+        --color-text-primary: var(--color-white);
+        --color-text-secondary: var(--color-gray-300);
         --color-text-tertiary: var(--color-gray-400);
+        --color-text-quaternary: var(--color-gray-500);
         --color-text-error-primary: var(--color-error-400);
         --color-text-warning-primary: var(--color-warning-400);
         --color-text-success-primary: var(--color-success-400);
         --color-text-white: var(--color-white);
-        --color-text-secondary: var(--color-gray-300);
         --color-text-disabled: var(--color-gray-500);
         --color-text-secondary_hover: var(--color-gray-200);
         --color-text-tertiary_hover: var(--color-gray-300);
@@ -1202,7 +1246,6 @@
         --color-text-brand-tertiary: var(--color-gray-400);
         --color-text-editor-icon-fg: var(--color-gray-400);
         --color-text-editor-icon-fg_active: var(--color-white);
-        --color-text-quaternary: var(--color-gray-400);
         --color-text-brand-primary: var(--color-gray-50);
         --color-text-primary_on-brand: var(--color-gray-50);
         --color-text-secondary_on-brand: var(--color-gray-300);
@@ -1220,6 +1263,11 @@
         --color-text-secondary_on-accent: var(--color-gray-300);
         --color-text-tertiary_on-accent: var(--color-gray-400);
         --color-text-quaternary_on-accent: var(--color-gray-400);
+        --color-text-card-brand-subtle: var(--color-bg-card-brand-subtle);
+        --color-text-card-brand-solid: var(--color-bg-card-brand-solid);
+        --color-text-card-white: var(--color-bg-card-white);
+        --color-text-card-accent: var(--color-bg-card-accent);
+        --color-text-card-tinted: var(--color-bg-card-tinted);
 
         /* BORDER COLORS */
         --color-border-secondary: var(--color-gray-500);
@@ -1304,6 +1352,21 @@
         --color-bg-accent-secondary_alt: var(--color-bg-primary);
         --color-bg-accent-section: var(--color-bg-secondary);
         --color-bg-accent-section_subtle: var(--color-bg-primary);
+
+        /* ACCORDION VARIABLES - Dark mode */
+        --accordion-border-color: var(--color-border-secondary);
+        --accordion-header-hover: var(--color-bg-tertiary-hover);
+
+        /* CARD/CONTAINER BACKGROUND VARIANTS - Dark mode */
+        --color-bg-card-brand-subtle: var(--color-brand-700);
+        --color-bg-card-brand-solid: var(--color-brand-900);
+        --color-bg-card-white: var(--color-brand-900);
+        --color-bg-card-accent: var(--color-accent-600);
+        --color-bg-card-tinted: color-mix(in srgb, var(--color-black) 25%, transparent);
+
+        /* MASK COLORS - Dark mode (solid colors, no transparency) */
+        --color-mask-brand-subtle: var(--color-brand-700);  /* Solid brand-700 */
+        --color-mask-tinted: rgb(20 20 20);                 /* Dark gray for tinted */
 
         /* COMPONENT COLORS */
         --color-app-store-badge-border: var(--color-white);
@@ -1400,6 +1463,11 @@
         --text-color-warning-primary: var(--color-text-warning-primary);
         --text-color-success-primary: var(--color-text-success-primary);
         --text-color-tooltip-supporting-text: var(--color-tooltip-supporting-text);
+        --text-color-card-brand-subtle: var(--color-text-card-brand-subtle);
+        --text-color-card-brand-solid: var(--color-text-card-brand-solid);
+        --text-color-card-white: var(--color-text-card-white);
+        --text-color-card-accent: var(--color-text-card-accent);
+        --text-color-card-tinted: var(--color-text-card-tinted);
 
         /* BORDER PROPERTY COLORS */
         --border-color-primary: var(--color-border-primary);

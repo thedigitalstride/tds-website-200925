@@ -30,6 +30,18 @@ import * as migration_20251012_162701 from './20251012_162701';
 import * as migration_20251012_181348 from './20251012_181348';
 import * as migration_20251013_102956 from './20251013_102956';
 import * as migration_20251015_081708 from './20251015_081708';
+import * as migration_20251020_114557 from './20251020_114557';
+import * as migration_20251020_173501 from './20251020_173501';
+import * as migration_20251020_211144 from './20251020_211144';
+import * as migration_20251021_155105 from './20251021_155105';
+import * as migration_20251021_170614 from './20251021_170614';
+import * as migration_20251022_133849 from './20251022_133849';
+import * as migration_20251022_163528 from './20251022_163528';
+import * as migration_20251022_183632 from './20251022_183632';
+import * as migration_20251023_104410 from './20251023_104410';
+import * as migration_20251023_114744 from './20251023_114744';
+import * as migration_20251023_191326 from './20251023_191326';
+import * as migration_20251024_142123 from './20251024_142123';
 
 export const migrations = [
   {
@@ -190,6 +202,66 @@ export const migrations = [
   {
     up: migration_20251015_081708.up,
     down: migration_20251015_081708.down,
-    name: '20251015_081708'
+    name: '20251015_081708',
+  },
+  {
+    up: migration_20251020_114557.up,
+    down: migration_20251020_114557.down,
+    name: '20251020_114557',
+  },
+  {
+    up: migration_20251020_173501.up,
+    down: migration_20251020_173501.down,
+    name: '20251020_173501',
+  },
+  {
+    up: migration_20251020_211144.up,
+    down: migration_20251020_211144.down,
+    name: '20251020_211144',
+  },
+  {
+    up: migration_20251021_155105.up,
+    down: migration_20251021_155105.down,
+    name: '20251021_155105',
+  },
+  {
+    up: migration_20251021_170614.up,
+    down: migration_20251021_170614.down,
+    name: '20251021_170614',
+  },
+  {
+    up: migration_20251022_133849.up,
+    down: migration_20251022_133849.down,
+    name: '20251022_133849',
+  },
+  {
+    up: migration_20251022_163528.up,
+    down: migration_20251022_163528.down,
+    name: '20251022_163528',
+  },
+  {
+    up: migration_20251022_183632.up,
+    down: migration_20251022_183632.down,
+    name: '20251022_183632',
+  },
+  {
+    up: migration_20251023_104410.up,
+    down: migration_20251023_104410.down,
+    name: '20251023_104410',
+  },
+  {
+    up: migration_20251023_114744.up,
+    down: migration_20251023_114744.down,
+    name: '20251023_114744',
+  },
+  {
+    up: migration_20251023_191326.up,
+    down: migration_20251023_191326.down,
+    name: '20251023_191326',
+  },
+  {
+    up: migration_20251024_142123.up,
+    down: migration_20251024_142123.down,
+    name: '20251024_142123'
   },
 ];

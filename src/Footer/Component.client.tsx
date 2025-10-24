@@ -61,7 +61,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
           <div className="flex flex-col gap-4 items-start lg:max-w-xs">
             <TDSLogo variant="auto" size="xl" className="h-12 w-min shrink-0" />
             {companyInfo?.description && (
-              <p className="text-md text-tertiary">{companyInfo.description}</p>
+              <p className="text-md text-secondary">{companyInfo.description}</p>
             )}
           </div>
 
@@ -106,7 +106,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
 
         {/* Footer Bottom */}
         <div className="mt-12 flex flex-col-reverse justify-between gap-6 border-t border-gray-200 dark:border-gray-500 pt-8 md:mt-16 md:flex-row">
-          <p className="text-md text-quaternary">{copyrightText}</p>
+          <p className="text-sm text-tertiary">{copyrightText}</p>
 
           <div className="flex items-center gap-6">
             {/* Social Links */}
@@ -124,7 +124,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex rounded-xs text-fg-quaternary outline-focus-ring transition duration-100 ease-linear hover:text-fg-quaternary_hover focus-visible:outline-2 focus-visible:outline-offset-2"
+                        className="flex rounded-xs text-fg-tertiary outline-focus-ring transition duration-100 ease-linear hover:text-fg-tertiary_hover focus-visible:outline-2 focus-visible:outline-offset-2"
                         aria-label={label || social.platform}
                       >
                         <IconComponent size={24} />

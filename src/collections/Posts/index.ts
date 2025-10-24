@@ -59,46 +59,47 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'subtitle',
-      type: 'text',
-      admin: {
-        description: 'Lead paragraph that appears under the title',
-      },
-    },
-    {
-      name: 'tableOfContents',
-      type: 'array',
-      label: 'Table of Contents',
-      fields: [
-        {
-          name: 'title',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'href',
-          type: 'text',
-          required: true,
-          admin: {
-            description: 'Link to section (e.g., #introduction)',
-          },
-        },
-      ],
-      admin: {
-        description: 'Optional table of contents for the sidebar',
-        initCollapsed: true,
-      },
-    },
-    {
       type: 'tabs',
       tabs: [
         {
+          label: 'Content',
           fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'subtitle',
+              type: 'text',
+              admin: {
+                description: 'Lead paragraph that appears under the title',
+              },
+            },
+            {
+              name: 'tableOfContents',
+              type: 'array',
+              label: 'Table of Contents',
+              fields: [
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'href',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    description: 'Link to section (e.g., #introduction)',
+                  },
+                },
+              ],
+              admin: {
+                description: 'Optional table of contents for the sidebar',
+                initCollapsed: true,
+              },
+            },
             {
               name: 'heroImage',
               type: 'upload',
@@ -111,10 +112,21 @@ export const Posts: CollectionConfig<'posts'> = {
               label: false,
               required: true,
             },
+            {
+              name: 'afterContent',
+              type: 'blocks',
+              label: 'After Content Blocks',
+              blocks: [LatestPostsBlock, CallToAction, MediaBlock],
+              admin: {
+                description: 'Optional blocks to display after the main post content',
+                initCollapsed: true,
+              },
+            },
           ],
-          label: 'Content',
         },
         {
+          label: 'Meta',
+          description: 'Post metadata and settings',
           fields: [
             {
               name: 'relatedPosts',
@@ -152,39 +164,39 @@ export const Posts: CollectionConfig<'posts'> = {
               hasMany: true,
               relationTo: 'users',
             },
+            {
+              name: 'publishedAt',
+              type: 'date',
+              admin: {
+                date: {
+                  pickerAppearance: 'dayAndTime',
+                },
+                position: 'sidebar',
+              },
+              hooks: {
+                beforeChange: [
+                  ({ siblingData, value }) => {
+                    if (siblingData._status === 'published' && !value) {
+                      return new Date()
+                    }
+                    return value
+                  },
+                ],
+              },
+            },
+            {
+              name: 'authors',
+              type: 'relationship',
+              admin: {
+                position: 'sidebar',
+              },
+              hasMany: true,
+              relationTo: 'users',
+            },
+            ...slugField(),
           ],
-          label: 'Meta',
         },
       ],
-    },
-    {
-      name: 'publishedAt',
-      type: 'date',
-      admin: {
-        date: {
-          pickerAppearance: 'dayAndTime',
-        },
-        position: 'sidebar',
-      },
-      hooks: {
-        beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
-              return new Date()
-            }
-            return value
-          },
-        ],
-      },
-    },
-    {
-      name: 'authors',
-      type: 'relationship',
-      admin: {
-        position: 'sidebar',
-      },
-      hasMany: true,
-      relationTo: 'users',
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy
@@ -250,17 +262,6 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
-    {
-      name: 'afterContent',
-      type: 'blocks',
-      label: 'After Content Blocks',
-      blocks: [LatestPostsBlock, CallToAction, MediaBlock],
-      admin: {
-        description: 'Optional blocks to display after the main post content',
-        initCollapsed: true,
-      },
-    },
-    ...slugField(),
   ],
   hooks: {
     afterChange: [revalidatePost],

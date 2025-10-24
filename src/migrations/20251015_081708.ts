@@ -1,6 +1,6 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_header_mobile_cta_button_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_header_mobile_cta_button_link_uui_color" AS ENUM('primary', 'accent', 'secondary', 'tertiary', 'link');
@@ -17,7 +17,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "header" ADD COLUMN "mobile_cta_button_link_icon_pos" "enum_header_mobile_cta_button_link_icon_pos" DEFAULT 'trailing';`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    ALTER TABLE "header" DROP COLUMN "mobile_cta_button_enabled";
   ALTER TABLE "header" DROP COLUMN "mobile_cta_button_link_type";

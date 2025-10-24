@@ -10,11 +10,14 @@ import {
 import { FeaturedIcon } from '@/components/uui/foundations/featured-icon/featured-icon'
 import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
+import { getBackgroundClasses, type BackgroundVariant } from '@/utilities/backgroundVariants'
+import RichText from '@/components/RichText'
+import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 interface FeatureCardProps {
   icon: FC<{ className?: string }>
   title: string
-  subtitle: string
+  subtitle: DefaultTypedEditorState | string | undefined
   footer?: ReactNode
 }
 
@@ -26,29 +29,17 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const spacing = layoutOptions?.spacing || 'normal'
   const cardLayout = layoutOptions?.cardStyle || 'card' // cardStyle field now controls layout
   const columns = layoutOptions?.columns || '3'
-  const iconColor = (layoutOptions?.iconColor || 'brand') as 'brand' | 'accent' | 'secondary' | 'tertiary'
+  const rawIconColor = layoutOptions?.iconColor || 'primary'
+  // Map 'primary' to 'brand' for FeaturedIcon compatibility
+  const iconColor = (rawIconColor === 'primary' ? 'brand' : rawIconColor) as 'brand' | 'accent' | 'secondary' | 'tertiary'
   const iconShape = (layoutOptions?.iconTheme || 'rounded-square') as 'rounded-square' | 'round'
-  const cardStyle = layoutOptions?.cardBackground || 'accent' // cardBackground field now controls visual style
+  const cardStyleValue = layoutOptions?.cardBackground || 'primary' // cardBackground field now controls visual style
 
-  // Dynamic background classes based on cardStyle variant
-  const getCardBackgroundClasses = (style: string) => {
-    switch (style) {
-      case 'brand':
-        default:
-        return 'bg-brand-50/30 dark:bg-brand-700'
-      case 'outline':
-        return 'bg-transparent border border-gray-300'
-      case 'line':
-        return 'border-t-2 border-gray-300'
-      case 'accent':
-        return 'bg-accent-500'
-      case 'grey':
-        return 'bg-black/5 dark:bg-black/25'
-    }
-  }
+  // Use shared background variant system
+  const cardBgClasses = getBackgroundClasses(cardStyleValue as BackgroundVariant)
 
   // Determine padding based on style variant
-  const isLineVariant = cardStyle === 'line'
+  const isLineVariant = cardStyleValue === 'line'
   const getCardPaddingClasses = () => {
     if (isLineVariant) {
       return 'py-5 md:py-6' // No horizontal padding for line variant
@@ -56,23 +47,13 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     return 'p-5 md:p-6' // Standard padding
   }
 
-  // Adjust text colors - white text for brand variant in light mode, brand text in dark mode
-  const getTextClasses = () => {
-    if (cardStyle === 'brand') {
-      return {
-        heading: 'text-primary dark:text-white',
-        description: 'text-primary/80 dark:text-white/80'
-      }
-    }
-    return {
-      heading: 'text-primary dark:text-white',
-      description: 'text-primary/80 dark:text-white/80'
-    }
+  // Text colors - consistent across all variants
+  const textClasses = {
+    heading: 'text-primary',
+    description: 'text-secondary'
   }
 
-  const textClasses = getTextClasses()
   const cardPaddingClasses = getCardPaddingClasses()
-  const cardBgClasses = getCardBackgroundClasses(cardStyle)
 
   // Increase row gap for centered-icon and elevated-box layouts
   const needsExtraRowGap = cardLayout === 'centered-icon' || cardLayout === 'elevated-box'
@@ -103,7 +84,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const FeatureCardWithIcon = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>
@@ -116,7 +97,20 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
         />
         <div>
           <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
-          <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
+          {subtitle && (
+            <div className={cn("mt-1 text-md", textClasses.description)}>
+              {typeof subtitle === 'object' && 'root' in subtitle ? (
+                <RichText
+                  data={subtitle}
+                  enableGutter={false}
+                  enableProse={true}
+                  className="prose-compact"
+                />
+              ) : (
+                <p>{subtitle}</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
       {footer}
@@ -126,7 +120,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const FeatureLeftIconWithColors = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>
@@ -147,7 +141,20 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
         />
         <div>
           <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
-          <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
+          {subtitle && (
+            <div className={cn("mt-1 text-md", textClasses.description)}>
+              {typeof subtitle === 'object' && 'root' in subtitle ? (
+                <RichText
+                  data={subtitle}
+                  enableGutter={false}
+                  enableProse={true}
+                  className="prose-compact"
+                />
+              ) : (
+                <p>{subtitle}</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
       {footer}
@@ -157,7 +164,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const FeatureHorizontalIconWithColors = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex gap-4 h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>
@@ -178,7 +185,20 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
       <div className="flex flex-col justify-between items-start gap-4 flex-1">
         <div>
           <h3 className={cn("mt-1.5 text-lg font-semibold md:mt-2.5", textClasses.heading)}>{title}</h3>
-          <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
+          {subtitle && (
+            <div className={cn("mt-1 text-md", textClasses.description)}>
+              {typeof subtitle === 'object' && 'root' in subtitle ? (
+                <RichText
+                  data={subtitle}
+                  enableGutter={false}
+                  enableProse={true}
+                  className="prose-compact"
+                />
+              ) : (
+                <p>{subtitle}</p>
+              )}
+            </div>
+          )}
         </div>
         {footer}
       </div>
@@ -188,7 +208,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const FeatureBoxWithIcon = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "mt-6 flex flex-col justify-between items-center gap-4 text-center h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       isLineVariant ? 'px-0 pb-8' : 'px-6 pb-8',
       cardBgClasses
     )}>
@@ -202,7 +222,20 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
         />
         <div>
           <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
-          <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
+          {subtitle && (
+            <div className={cn("mt-1 text-md", textClasses.description)}>
+              {typeof subtitle === 'object' && 'root' in subtitle ? (
+                <RichText
+                  data={subtitle}
+                  enableGutter={false}
+                  enableProse={true}
+                  className="prose-compact"
+                />
+              ) : (
+                <p>{subtitle}</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
       {footer}
@@ -219,48 +252,87 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   }
 
   // Wrapper components that maintain card styling without icons
-  const FeatureTextCard = ({ title, subtitle, footer }: { title: string; subtitle: string; footer?: React.ReactNode }) => (
+  const FeatureTextCard = ({ title, subtitle, footer }: { title: string; subtitle: DefaultTypedEditorState | string | undefined; footer?: React.ReactNode }) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>
       <div>
         <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
-        <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
+        {subtitle && (
+          <div className={cn("mt-1 text-md", textClasses.description)}>
+            {typeof subtitle === 'object' && 'root' in subtitle ? (
+              <RichText
+                data={subtitle}
+                enableGutter={false}
+                enableProse={true}
+                className="text-md"
+              />
+            ) : (
+              <p>{subtitle}</p>
+            )}
+          </div>
+        )}
       </div>
       {footer}
     </div>
   )
 
   // Custom wrapper for centered text layout with card styling
-  const FeatureTextCenteredWithCard = ({ title, subtitle, footer }: { title: string; subtitle: string; footer?: React.ReactNode }) => (
+  const FeatureTextCenteredWithCard = ({ title, subtitle, footer }: { title: string; subtitle: DefaultTypedEditorState | string | undefined; footer?: React.ReactNode }) => (
     <div className={cn(
       "flex flex-col justify-between items-center gap-4 text-center h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>
       <div>
         <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
-        <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
+        {subtitle && (
+          <div className={cn("mt-1 text-md", textClasses.description)}>
+            {typeof subtitle === 'object' && 'root' in subtitle ? (
+              <RichText
+                data={subtitle}
+                enableGutter={false}
+                enableProse={true}
+                className="text-md"
+              />
+            ) : (
+              <p>{subtitle}</p>
+            )}
+          </div>
+        )}
       </div>
       {footer}
     </div>
   )
 
   // Custom wrapper for left-aligned text layout with card styling
-  const FeatureTextLeftWithCard = ({ title, subtitle, footer }: { title: string; subtitle: string; footer?: React.ReactNode }) => (
+  const FeatureTextLeftWithCard = ({ title, subtitle, footer }: { title: string; subtitle: DefaultTypedEditorState | string | undefined; footer?: React.ReactNode }) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-md",
+      !isLineVariant && "rounded-xl",
       cardPaddingClasses,
       cardBgClasses
     )}>
       <div>
         <h3 className={cn("text-lg font-semibold", textClasses.heading)}>{title}</h3>
-        <p className={cn("mt-1 text-md", textClasses.description)}>{subtitle}</p>
+        {subtitle && (
+          <div className={cn("mt-1 text-md", textClasses.description)}>
+            {typeof subtitle === 'object' && 'root' in subtitle ? (
+              <RichText
+                data={subtitle}
+                enableGutter={false}
+                enableProse={true}
+                className="text-md"
+              />
+            ) : (
+              <p>{subtitle}</p>
+            )}
+          </div>
+        )}
       </div>
       {footer}
     </div>
@@ -349,7 +421,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     {...(iconProps as any)}
                     title={feature.title || ''}
-                    subtitle={feature.description || ''}
+                    subtitle={feature.description || undefined}
                     footer={footer}
                   />
                 </li>

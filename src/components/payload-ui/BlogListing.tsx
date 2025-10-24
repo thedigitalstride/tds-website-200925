@@ -24,10 +24,6 @@ interface BlogListingProps {
   totalPages?: number
   selectedCategory?: string
   settings?: {
-    pageHeader?: {
-      heading?: string | null
-      description?: string | null
-    } | null
     gridColumns?: {
       desktop?: string | null
       tablet?: string | null
@@ -63,7 +59,7 @@ const transformPost = (post: Post, index: number): Article => {
             const category = cat as Category
             return {
               name: category.title || 'Uncategorized',
-              href: category.slug ? `/posts?category=${category.slug}` : '#',
+              href: category.slug ? `/news-insights?category=${category.slug}` : '#',
             }
           })
       : [{ name: 'Uncategorized', href: '#' }]
@@ -72,9 +68,9 @@ const transformPost = (post: Post, index: number): Article => {
     id: post.id.toString(),
     title: post.title,
     summary: post.subtitle || '',
-    href: `/posts/${post.slug || 'undefined'}`,
+    href: `/news-insights/${post.slug || 'undefined'}`,
     categories: allCategories,
-    thumbnailUrl: heroImage?.url || '/placeholder.jpg',
+    thumbnailUrl: heroImage?.url || '',
     thumbnailMedia: heroImage, // Pass full Media resource for optimization
     publishedAt: formatDateTime(post.publishedAt || ''),
     readingTime: calculateReadingTime(post.content),
@@ -107,18 +103,18 @@ export const BlogListing: React.FC<BlogListingProps> = ({
   const handlePageChange = (page: number) => {
     const categoryParam = selectedCategory !== 'all' ? `?category=${selectedCategory}` : ''
     if (page === 1) {
-      router.push(`/posts${categoryParam}`)
+      router.push(`/news-insights${categoryParam}`)
     } else {
-      router.push(`/posts/page/${page}${categoryParam}`)
+      router.push(`/news-insights/page/${page}${categoryParam}`)
     }
   }
 
   // Handle category change
   const handleCategoryChange = (key: string) => {
     if (key === 'all') {
-      router.push('/posts')
+      router.push('/news-insights')
     } else {
-      router.push(`/posts?category=${key}`)
+      router.push(`/news-insights?category=${key}`)
     }
   }
 
@@ -181,21 +177,7 @@ export const BlogListing: React.FC<BlogListingProps> = ({
 
   return (
     <div className="bg-primary">
-      <section className="bg-primary py-16 md:py-24">
-        <div className="mx-auto max-w-container px-4 md:px-8">
-          <div className="flex w-full max-w-3xl flex-col">
-            <h2 className="mt-3 text-display-md font-semibold text-primary md:text-display-lg">
-              {settings?.pageHeader?.heading || 'News & insights'}
-            </h2>
-            <p className="mt-4 text-lg text-tertiary md:mt-6 md:text-xl">
-              {settings?.pageHeader?.description ||
-                'The latest industry news, interviews, technologies, and resources.'}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <main className="mx-auto flex w-full max-w-container flex-col gap-12 px-4 pb-16 md:gap-16 md:px-8 md:pb-24">
+      <main className="mx-auto flex w-full max-w-container flex-col gap-12 px-4 py-16 md:gap-16 md:px-8 md:py-24">
         {/* Mobile Featured Post */}
         {sortedArticles.length > 0 && (
           <div className="md:hidden">
@@ -251,7 +233,7 @@ export const BlogListing: React.FC<BlogListingProps> = ({
           )}
         >
           {sortedArticles.map((article) => (
-            <li key={article.id} className={cx(!isDesktop && 'nth-[n+7]:hidden')}>
+            <li key={article.id} className={cx(!isDesktop && '[&:nth-child(n+7)]:hidden')}>
               <Simple01Vertical article={article} />
             </li>
           ))}

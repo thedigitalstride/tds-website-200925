@@ -25,10 +25,13 @@ export function getGridImageSizes(columns: GridColumns = {}): string {
   const desktopVw = 100 / parseInt(desktop)
 
   // Account for grid gaps and padding
-  // Subtract ~10% for gaps and container padding
-  const mobileSize = Math.floor(mobileVw * 0.9)
-  const tabletSize = Math.floor(tabletVw * 0.9)
-  const desktopSize = Math.floor(desktopVw * 0.9)
+  // Mobile: More aggressive reduction for smaller screens and carousel peek
+  // Carousels with peek show ~80% of card width at most
+  const mobileSize = Math.floor(mobileVw * 0.75)
+  // Tablet: Standard reduction for gaps
+  const tabletSize = Math.floor(tabletVw * 0.85)
+  // Desktop: Standard reduction for gaps
+  const desktopSize = Math.floor(desktopVw * 0.85)
 
   return `(max-width: 768px) ${mobileSize}vw, (max-width: 1024px) ${tabletSize}vw, ${desktopSize}vw`
 }

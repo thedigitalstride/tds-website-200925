@@ -93,6 +93,8 @@ src/
 ### 📖 Implementation Guides
 
 - **[BLOG_IMPLEMENTATION.md](/docs/BLOG_IMPLEMENTATION.md)** - Posts system with UUI components and category filtering
+- **[ACCORDION_SYSTEM.md](/docs/ACCORDION_SYSTEM.md)** - Complete FAQ/Accordion block system with accessibility and performance features
+- **[FAQ_SCHEMA_IMPLEMENTATION.md](/docs/FAQ_SCHEMA_IMPLEMENTATION.md)** - Google FAQPage structured data implementation plan
 - **[UUI_COMPONENTS_REFERENCE.md](/docs/UUI_COMPONENTS_REFERENCE.md)** - UntitledUI usage patterns and types
 
 ## 🚨 Critical Rules (Quick Reference)
@@ -163,10 +165,10 @@ src/
 ## Collections Overview
 
 ### Pages (`/admin/collections/pages`)
-Layout builder with blocks, draft/publish workflow, SEO metadata, live preview
+Layout builder with blocks, draft/publish workflow, SEO metadata, live preview. Frontend URL: `/[slug]`
 
 ### Posts (`/admin/collections/posts`)
-Rich text editor (Lexical), author relationships, categories, hero images, scheduled publishing
+Rich text editor (Lexical), author relationships, categories, hero images, scheduled publishing. Frontend URL: `/news-insights/[slug]`
 
 ### Media (`/admin/collections/media`)
 Image uploads, automatic resizing, focal point selection, Vercel Blob Storage integration

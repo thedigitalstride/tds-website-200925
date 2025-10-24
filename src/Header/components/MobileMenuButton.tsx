@@ -12,7 +12,7 @@ interface MobileMenuButtonProps {
 }
 
 export const MobileMenuButton = ({ isOpen = false, onToggle }: MobileMenuButtonProps) => {
-  const [color, setColor] = useState('#ffffff') // Default white
+  const [color, setColor] = useState('#031A43') // Default white
   const colorProbeRef = useRef<HTMLSpanElement>(null)
   const { resolvedTheme } = useTheme()
 
@@ -22,7 +22,7 @@ export const MobileMenuButton = ({ isOpen = false, onToggle }: MobileMenuButtonP
     const updateColor = () => {
       // Light mode: white hamburger on brand blue
       // Dark mode: brand blue hamburger on white
-      setColor(resolvedTheme === 'dark' ? '#031A43' : '#ffffff')
+      setColor(resolvedTheme === 'dark' ? '#ffffff' : '#031A43')
     }
 
     updateColor()

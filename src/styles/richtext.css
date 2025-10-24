@@ -23,7 +23,7 @@
   --tw-prose-lead: var(--color-text-secondary);
 
   /* Links */
-  --tw-prose-links: var(--color-text-brand-secondary);
+  --tw-prose-links: var(--color-text-secondary);
 
   /* Bold text */
   --tw-prose-bold: var(--color-text-primary);
@@ -67,8 +67,8 @@
   --tw-prose-body: var(--color-text-secondary);
   --tw-prose-lead: var(--color-text-secondary);
 
-  /* Links - maintain brand color */
-  --tw-prose-links: var(--color-brand-400);
+  /* Links - match body text color */
+  --tw-prose-links: var(--color-text-secondary);
 
   /* Bold text */
   --tw-prose-bold: var(--color-text-primary);
@@ -161,16 +161,16 @@
 /* Links - add hover state */
 .prose a {
   font-weight: 500;
-  text-decoration: none;
+  text-decoration: underline;
   transition: color 0.2s ease;
 }
 
 .prose a:hover {
-  color: var(--color-text-brand-secondary-hover);
+  color: var(--color-text-primary);
 }
 
 .dark-mode .prose a:hover {
-  color: var(--color-brand-300);
+  color: var(--color-text-primary);
 }
 
 /* Blockquotes - centered variant for posts */
@@ -413,6 +413,43 @@
   .prose h3 {
     font-size: 1.5em;
   }
+}
+
+/* ============================================================================
+   COMPACT PROSE (for inline rich text in components)
+   ========================================================================= */
+
+/*
+ * Compact prose variant that matches text-md sizing exactly
+ * Use this for rich text inside feature cards, callouts, etc.
+ * where you want prose formatting but need to match component text sizes
+ */
+.prose.prose-compact {
+  font-size: var(--text-md) !important;
+  line-height: var(--text-md--line-height) !important;
+}
+
+/* Remove extra margins for compact prose */
+.prose.prose-compact p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.prose.prose-compact p + p {
+  margin-top: 0.75em;
+}
+
+/* Tighter list spacing */
+.prose.prose-compact ul,
+.prose.prose-compact ol {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/* Keep list items compact */
+.prose.prose-compact li {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
 }
 
 /* ============================================================================
