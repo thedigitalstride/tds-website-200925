@@ -163,7 +163,6 @@ export interface Page {
         | MediaBlock
         | ArchiveBlock
         | FormBlock
-        | ButtonBlock
         | CardGridBlock
         | FeaturesBlock
         | LatestPostsBlock
@@ -1069,56 +1068,6 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ButtonBlock".
- */
-export interface ButtonBlock {
-  /**
-   * Add one or more buttons with different styles and links
-   */
-  buttons?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Button color variant from UntitledUI design system
-           */
-          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
-          /**
-           * Button size variant
-           */
-          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-          /**
-           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
-           */
-          buttonIcon?: string | null;
-          /**
-           * Position of the icon relative to the button text
-           */
-          iconPos?: ('leading' | 'trailing') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  layout?: ('horizontal' | 'vertical') | null;
-  alignment?: ('left' | 'center' | 'right') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'buttonBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CardGridBlock".
  */
 export interface CardGridBlock {
@@ -1824,7 +1773,6 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-        buttonBlock?: T | ButtonBlockSelect<T>;
         cardGrid?: T | CardGridBlockSelect<T>;
         features?: T | FeaturesBlockSelect<T>;
         latestPosts?: T | LatestPostsBlockSelect<T>;
@@ -2011,34 +1959,6 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ButtonBlock_select".
- */
-export interface ButtonBlockSelect<T extends boolean = true> {
-  buttons?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              uuiColor?: T;
-              uuiSize?: T;
-              buttonIcon?: T;
-              iconPos?: T;
-            };
-        id?: T;
-      };
-  layout?: T;
-  alignment?: T;
   id?: T;
   blockName?: T;
 }
@@ -3022,12 +2942,12 @@ export interface PostsSetting {
    * Blocks to display before the posts grid on /news-insights (use HeroHeadingBlock for page header)
    */
   beforeBlocks?:
-    | (HeroHeadingBlock | BreadcrumbBlock | CallToActionBlock | ContentBlock | MediaBlock | FormBlock | ButtonBlock)[]
+    | (HeroHeadingBlock | BreadcrumbBlock | CallToActionBlock | ContentBlock | MediaBlock | FormBlock)[]
     | null;
   /**
    * Optional blocks to display after the posts grid on /news-insights
    */
-  afterBlocks?: (CallToActionBlock | ContentBlock | MediaBlock | FormBlock | ButtonBlock)[] | null;
+  afterBlocks?: (CallToActionBlock | ContentBlock | MediaBlock | FormBlock)[] | null;
   /**
    * Configure how many columns to display in the posts grid for different screen sizes
    */
@@ -3276,7 +3196,6 @@ export interface PostsSettingsSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-        buttonBlock?: T | ButtonBlockSelect<T>;
       };
   afterBlocks?:
     | T
@@ -3285,7 +3204,6 @@ export interface PostsSettingsSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-        buttonBlock?: T | ButtonBlockSelect<T>;
       };
   gridColumns?:
     | T
@@ -3340,6 +3258,56 @@ export interface TaskSchedulePublish {
     user?: (number | null) | User;
   };
   output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ButtonBlock".
+ */
+export interface ButtonBlock {
+  /**
+   * Add one or more buttons with different styles and links
+   */
+  buttons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+          /**
+           * Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+           */
+          buttonIcon?: string | null;
+          /**
+           * Position of the icon relative to the button text
+           */
+          iconPos?: ('leading' | 'trailing') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  layout?: ('horizontal' | 'vertical') | null;
+  alignment?: ('left' | 'center' | 'right') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'buttonBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

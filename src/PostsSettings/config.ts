@@ -4,7 +4,6 @@ import { CallToAction } from '../blocks/CallToAction/config'
 import { Content } from '../blocks/Content/config'
 import { MediaBlock } from '../blocks/MediaBlock/config'
 import { FormBlock } from '../blocks/Form/config'
-import { ButtonBlock } from '../blocks/ButtonBlock/config'
 import { HeroHeadingBlock } from '../blocks/HeroHeadingBlock/config'
 import { BreadcrumbBlock } from '../blocks/BreadcrumbBlock/config'
 // Note: FeaturesBlock and AccordionBlock excluded due to database identifier length limits (PostgreSQL 63 char limit)
@@ -37,7 +36,6 @@ export const PostsSettings: GlobalConfig = {
                 Content,
                 MediaBlock,
                 FormBlock,
-                ButtonBlock,
               ],
             },
             {
@@ -53,7 +51,6 @@ export const PostsSettings: GlobalConfig = {
                 Content,
                 MediaBlock,
                 FormBlock,
-                ButtonBlock,
               ],
             },
           ],
