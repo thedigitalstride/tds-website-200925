@@ -73,6 +73,7 @@ export interface Config {
     categories: Category;
     faqs: Faq;
     users: User;
+    'ai-logs': AiLog;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -90,6 +91,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'ai-logs': AiLogsSelect<false> | AiLogsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -107,12 +109,14 @@ export interface Config {
     footer: Footer;
     notFound: NotFound;
     postsSettings: PostsSetting;
+    aiSettings: AiSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     notFound: NotFoundSelect<false> | NotFoundSelect<true>;
     postsSettings: PostsSettingsSelect<false> | PostsSettingsSelect<true>;
+    aiSettings: AiSettingsSelect<false> | AiSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -325,7 +329,7 @@ export interface HeroHeadingBlock {
 export interface Media {
   id: number;
   /**
-   * Alt text is required for accessibility. Describe the image for screen readers.
+   * Alt text for accessibility. Leave empty to auto-generate with AI, or click "Generate ALT Tag" button.
    */
   alt?: string | null;
   caption?: {
@@ -1503,6 +1507,73 @@ export interface Faq {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Audit trail of AI API usage with cost tracking
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ai-logs".
+ */
+export interface AiLog {
+  id: number;
+  /**
+   * Type of AI operation performed
+   */
+  operation: 'alt-tag' | 'content' | 'other';
+  /**
+   * AI provider used (OpenAI, Anthropic, etc.)
+   */
+  provider: string;
+  /**
+   * Model used for generation
+   */
+  model: string;
+  /**
+   * Whether the operation succeeded
+   */
+  success: boolean;
+  /**
+   * Total tokens consumed
+   */
+  tokensUsed?: number | null;
+  /**
+   * Estimated cost in USD
+   */
+  cost: number;
+  /**
+   * Operation duration in milliseconds
+   */
+  duration?: number | null;
+  /**
+   * Image URL (for ALT tag operations)
+   */
+  imageUrl?: string | null;
+  /**
+   * Generated ALT text
+   */
+  altText?: string | null;
+  /**
+   * Error message if operation failed
+   */
+  error?: string | null;
+  /**
+   * Additional metadata from the AI response
+   */
+  metadata?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * User who triggered the operation (if applicable)
+   */
+  user?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -1698,6 +1769,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'ai-logs';
+        value: number | AiLog;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -2391,6 +2466,26 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ai-logs_select".
+ */
+export interface AiLogsSelect<T extends boolean = true> {
+  operation?: T;
+  provider?: T;
+  model?: T;
+  success?: T;
+  tokensUsed?: T;
+  cost?: T;
+  duration?: T;
+  imageUrl?: T;
+  altText?: T;
+  error?: T;
+  metadata?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -3040,6 +3135,97 @@ export interface PostsSetting {
   createdAt?: string | null;
 }
 /**
+ * Configure AI-powered content generation features
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aiSettings".
+ */
+export interface AiSetting {
+  id: number;
+  /**
+   * Select your preferred AI provider for content generation
+   */
+  provider: 'openai' | 'anthropic' | 'custom';
+  /**
+   * Your API key for the selected provider. This will be stored securely.
+   */
+  apiKey: string;
+  /**
+   * The specific model to use (e.g., gpt-4o, gpt-4o-mini, claude-3-5-sonnet)
+   */
+  model?: string | null;
+  /**
+   * Full URL to your custom API endpoint (for self-hosted or alternative providers)
+   */
+  customEndpoint?: string | null;
+  /**
+   * Controls randomness. Lower values (0.0-0.5) are more focused and deterministic, higher values (0.5-2.0) are more creative.
+   */
+  temperature?: number | null;
+  /**
+   * Maximum length of AI responses in tokens
+   */
+  maxTokens?: number | null;
+  /**
+   * How long to wait for AI responses before timing out
+   */
+  timeout?: number | null;
+  altTag?: {
+    /**
+     * Automatically generate ALT tags for images when uploaded without ALT text
+     */
+    enabled?: boolean | null;
+    /**
+     * The instruction prompt sent to the AI. Customize this to fine-tune ALT tag generation style and format.
+     */
+    systemPrimer?: string | null;
+    /**
+     * Maximum character length for generated ALT text. 125 is recommended for SEO and accessibility.
+     */
+    maxLength?: number | null;
+    /**
+     * When generating ALT tags, include context about where the image is used (page title, category, etc.)
+     */
+    includeContext?: boolean | null;
+    /**
+     * Mark AI-generated ALT tags for review before they are used in production
+     */
+    requireReview?: boolean | null;
+    /**
+     * Use cleaned filename as ALT text if AI generation fails
+     */
+    fallbackToFilename?: boolean | null;
+    /**
+     * Keep a record of all AI-generated ALT tags for auditing and quality control
+     */
+    logGenerations?: boolean | null;
+  };
+  /**
+   * AI-assisted blog post creation and content generation
+   */
+  blogPostGeneration?: {
+    enabled?: boolean | null;
+  };
+  /**
+   * Automatic SEO meta description generation
+   */
+  metaOptimization?: {
+    enabled?: boolean | null;
+  };
+  costTracking?: {
+    /**
+     * Track estimated costs of AI API calls
+     */
+    enabled?: boolean | null;
+    /**
+     * Send an alert when monthly AI costs exceed this amount
+     */
+    monthlyBudget?: number | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -3241,6 +3427,49 @@ export interface PostsSettingsSelect<T extends boolean = true> {
         showReadingTime?: T;
         showExcerpt?: T;
         excerptLength?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aiSettings_select".
+ */
+export interface AiSettingsSelect<T extends boolean = true> {
+  provider?: T;
+  apiKey?: T;
+  model?: T;
+  customEndpoint?: T;
+  temperature?: T;
+  maxTokens?: T;
+  timeout?: T;
+  altTag?:
+    | T
+    | {
+        enabled?: T;
+        systemPrimer?: T;
+        maxLength?: T;
+        includeContext?: T;
+        requireReview?: T;
+        fallbackToFilename?: T;
+        logGenerations?: T;
+      };
+  blogPostGeneration?:
+    | T
+    | {
+        enabled?: T;
+      };
+  metaOptimization?:
+    | T
+    | {
+        enabled?: T;
+      };
+  costTracking?:
+    | T
+    | {
+        enabled?: T;
+        monthlyBudget?: T;
       };
   updatedAt?: T;
   createdAt?: T;

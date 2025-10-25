@@ -23,7 +23,9 @@ import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c08
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { AltTextField as AltTextField_e216b989468be801f1a333a0bdacb002 } from '@/components/Media/AltTextField'
 import { ResourceRowLabel as ResourceRowLabel_f52403e563aa41e67f12df08370f134b } from '@/collections/FAQs/ResourceRowLabel'
+import { default as default_2e4e5fe9b35089c56189fb95d190f0df } from '@/components/AiLogs/CostField'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { DropdownRowLabel as DropdownRowLabel_853581b6f99819ad364c5a1ac052a7d1 } from '@/Header/admin/DropdownRowLabel'
@@ -31,6 +33,9 @@ import { RowLabel as RowLabel_5847044a44bee7c8fc3a768eb84620b5 } from '@/Header/
 import { NavItemRowLabel as NavItemRowLabel_005e2e2fceca6eee1443b898e8750032 } from '@/Footer/NavItemRowLabel'
 import { NavColumnRowLabel as NavColumnRowLabel_a0920fb3a8542da5ee95d2c2f2747f96 } from '@/Footer/NavColumnRowLabel'
 import { SocialLinkRowLabel as SocialLinkRowLabel_9697010365a26e30d4bc253bddcd7804 } from '@/Footer/SocialLinkRowLabel'
+import { default as default_948ebfc16dcb4399ce0006819d8f29c1 } from '@/components/AiSettings/EncryptedField'
+import { default as default_2b0d4d152ac7b5a99e7dc851b92aa661 } from '@/components/AiSettings/FutureFeaturesPlaceholder'
+import { default as default_b81660b0ef07fd3d41f821e3de1594be } from '@/components/AiSettings/UsageStats'
 import { default as default_41338b7dbf1d2a306f76f1e7c371b23c } from '@/components/payload-ui/Icon'
 import { default as default_e0321f007cbfdaa7c6c3b61463a7e666 } from '@/components/payload-ui/Logo'
 import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
@@ -63,7 +68,9 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@/components/Media/AltTextField#AltTextField": AltTextField_e216b989468be801f1a333a0bdacb002,
   "@/collections/FAQs/ResourceRowLabel#ResourceRowLabel": ResourceRowLabel_f52403e563aa41e67f12df08370f134b,
+  "@/components/AiLogs/CostField#default": default_2e4e5fe9b35089c56189fb95d190f0df,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/Header/admin/DropdownRowLabel#DropdownRowLabel": DropdownRowLabel_853581b6f99819ad364c5a1ac052a7d1,
@@ -71,6 +78,9 @@ export const importMap = {
   "@/Footer/NavItemRowLabel#NavItemRowLabel": NavItemRowLabel_005e2e2fceca6eee1443b898e8750032,
   "@/Footer/NavColumnRowLabel#NavColumnRowLabel": NavColumnRowLabel_a0920fb3a8542da5ee95d2c2f2747f96,
   "@/Footer/SocialLinkRowLabel#SocialLinkRowLabel": SocialLinkRowLabel_9697010365a26e30d4bc253bddcd7804,
+  "@/components/AiSettings/EncryptedField#default": default_948ebfc16dcb4399ce0006819d8f29c1,
+  "@/components/AiSettings/FutureFeaturesPlaceholder#default": default_2b0d4d152ac7b5a99e7dc851b92aa661,
+  "@/components/AiSettings/UsageStats#default": default_b81660b0ef07fd3d41f821e3de1594be,
   "@/components/payload-ui/Icon#default": default_41338b7dbf1d2a306f76f1e7c371b23c,
   "@/components/payload-ui/Logo#default": default_e0321f007cbfdaa7c6c3b61463a7e666,
   "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,
