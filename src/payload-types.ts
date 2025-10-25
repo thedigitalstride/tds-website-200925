@@ -190,7 +190,7 @@ export interface Page {
    */
   aiSeoDescription?: string | null;
   publishedAt?: string | null;
-  slug?: string | null;
+  slug: string;
   slugLock?: boolean | null;
   meta?: {
     title?: string | null;
@@ -513,7 +513,7 @@ export interface Post {
   contributors?: (number | User)[] | null;
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
-  slug?: string | null;
+  slug: string;
   slugLock?: boolean | null;
   meta?: {
     title?: string | null;

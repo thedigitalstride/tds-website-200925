@@ -189,7 +189,14 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'publishedAt',
               type: 'date',
             },
-            ...slugField(),
+            ...slugField('title', {
+              slugOverrides: {
+                required: true,
+              },
+              checkboxOverrides: {
+                defaultValue: false,
+              },
+            }),
           ],
         },
       ],

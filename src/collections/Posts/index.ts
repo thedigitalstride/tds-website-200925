@@ -292,7 +292,14 @@ export const Posts: CollectionConfig<'posts'> = {
               hasMany: true,
               relationTo: 'users',
             },
-            ...slugField(),
+            ...slugField('title', {
+              slugOverrides: {
+                required: true,
+              },
+              checkboxOverrides: {
+                defaultValue: false,
+              },
+            }),
           ],
         },
       ],
