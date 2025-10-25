@@ -1,0 +1,67 @@
+.seo-title-field-component {
+  .label-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(var(--base) / 2);
+  }
+
+  .title-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .char-count {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+
+    &--good {
+      color: var(--theme-success-500);
+      background-color: var(--theme-success-50);
+    }
+
+    &--warning {
+      color: var(--theme-warning-600);
+      background-color: var(--theme-warning-50);
+    }
+
+    &--error {
+      color: var(--theme-error-600);
+      background-color: var(--theme-error-50);
+    }
+  }
+
+  .generate-button {
+    margin: 0;
+    padding-bottom: 0.3125rem;
+
+    .button-content {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .ai-icon {
+        width: 1rem;
+        height: 1rem;
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  .field-description {
+    margin-top: calc(var(--base) / 2);
+    font-size: 0.875rem;
+    color: var(--theme-elevation-400);
+  }
+
+  .field-error {
+    margin-top: calc(var(--base) / 2);
+    font-size: 0.875rem;
+    color: var(--theme-error-600);
+    font-weight: 500;
+  }
+}

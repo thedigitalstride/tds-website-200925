@@ -57,12 +57,35 @@ export const AiSettings: GlobalConfig = {
             },
             {
               name: 'model',
-              type: 'text',
-              label: 'Model Name',
+              type: 'select',
+              label: 'Default Model',
               defaultValue: 'gpt-4o',
+              required: true,
+              options: [
+                {
+                  label: 'GPT-4o (Recommended - Vision + Text, Balanced) $$',
+                  value: 'gpt-4o',
+                },
+                {
+                  label: 'GPT-4o Mini (Cheapest - Vision + Text, Fast) $',
+                  value: 'gpt-4o-mini',
+                },
+                {
+                  label: 'GPT-4 Turbo (Text Only, Expensive) $$$',
+                  value: 'gpt-4-turbo',
+                },
+                {
+                  label: 'GPT-4 (Text Only, Premium) $$$',
+                  value: 'gpt-4',
+                },
+                {
+                  label: 'GPT-3.5 Turbo (Text Only, Fast & Cheap) $',
+                  value: 'gpt-3.5-turbo',
+                },
+              ],
               admin: {
                 description:
-                  'The specific model to use (e.g., gpt-4o, gpt-4o-mini, claude-3-5-sonnet)',
+                  'Default model for all AI operations. Can be overridden per task below. Vision models (gpt-4o, gpt-4o-mini) are required for image analysis.',
                 condition: (_, siblingData) => siblingData?.provider !== 'custom',
               },
             },
@@ -140,6 +163,30 @@ export const AiSettings: GlobalConfig = {
                   admin: {
                     description:
                       'Automatically generate ALT tags for images when uploaded without ALT text',
+                  },
+                },
+                {
+                  name: 'model',
+                  type: 'select',
+                  label: 'Model for ALT Tag Generation',
+                  options: [
+                    {
+                      label: 'Use Default Model (from Provider Configuration)',
+                      value: '',
+                    },
+                    {
+                      label: 'GPT-4o (Vision - Recommended) $$',
+                      value: 'gpt-4o',
+                    },
+                    {
+                      label: 'GPT-4o Mini (Vision - Cheapest, ~$0.001/image) $',
+                      value: 'gpt-4o-mini',
+                    },
+                  ],
+                  admin: {
+                    description:
+                      'Override the default model for ALT tag generation. Vision-capable models required. Estimated cost: gpt-4o-mini ~$0.001, gpt-4o ~$0.003 per image.',
+                    condition: (_, siblingData) => siblingData?.enabled === true,
                   },
                 },
                 {
@@ -225,6 +272,249 @@ export const AiSettings: GlobalConfig = {
           ],
         },
         {
+          label: 'SEO Meta Generation',
+          description: 'Configure AI-powered SEO meta title and description generation',
+          fields: [
+            {
+              name: 'seoMeta',
+              type: 'group',
+              label: 'SEO Meta Settings',
+              fields: [
+                {
+                  name: 'enabled',
+                  type: 'checkbox',
+                  label: 'Enable SEO Meta Generation',
+                  defaultValue: false,
+                  admin: {
+                    description:
+                      'Enable AI generation buttons for meta titles and descriptions in Pages and Posts',
+                  },
+                },
+                {
+                  type: 'collapsible',
+                  label: 'Meta Title Settings',
+                  admin: {
+                    initCollapsed: false,
+                    condition: (_, siblingData) => siblingData?.enabled === true,
+                  },
+                  fields: [
+                    {
+                      name: 'titleModel',
+                      type: 'select',
+                      label: 'Model for Title Generation',
+                      options: [
+                        {
+                          label: 'Use Default Model (from Provider Configuration)',
+                          value: '',
+                        },
+                        {
+                          label: 'GPT-4o (Recommended) $$',
+                          value: 'gpt-4o',
+                        },
+                        {
+                          label: 'GPT-4o Mini (Fast & Cheap) $',
+                          value: 'gpt-4o-mini',
+                        },
+                        {
+                          label: 'GPT-4 Turbo (Premium Quality) $$$',
+                          value: 'gpt-4-turbo',
+                        },
+                        {
+                          label: 'GPT-3.5 Turbo (Cheapest) $',
+                          value: 'gpt-3.5-turbo',
+                        },
+                      ],
+                      admin: {
+                        description:
+                          'Override the default model for title generation. Text-only models work fine for titles. Estimated cost: gpt-3.5-turbo ~$0.0001, gpt-4o-mini ~$0.0003 per generation.',
+                      },
+                    },
+                    {
+                      name: 'titleSystemPrimer',
+                      type: 'textarea',
+                      label: 'Title Generation Primer',
+                      defaultValue:
+                        'Generate an SEO-optimized page title under 60 characters that includes target keywords naturally near the beginning. Focus on user search intent, make it compelling for click-through, and ensure it accurately represents the page content. Use title case or sentence case consistently. Include brand name when appropriate (typically at the end after a separator). Avoid keyword stuffing and generic phrases.',
+                      required: true,
+                      admin: {
+                        description:
+                          'The instruction prompt for AI title generation. Customize to match your brand voice and SEO strategy.',
+                        rows: 6,
+                      },
+                    },
+                    {
+                      name: 'titleMaxLength',
+                      type: 'number',
+                      label: 'Maximum Title Length',
+                      defaultValue: 60,
+                      min: 50,
+                      max: 70,
+                      admin: {
+                        description:
+                          'Maximum character length for meta titles. Google typically displays 50-60 characters.',
+                      },
+                    },
+                    {
+                      name: 'includeBrandInTitle',
+                      type: 'checkbox',
+                      label: 'Auto-append Brand Name',
+                      defaultValue: true,
+                      admin: {
+                        description:
+                          'Automatically include " | The Digital Stride" at the end of generated titles',
+                      },
+                    },
+                  ],
+                },
+                {
+                  type: 'collapsible',
+                  label: 'Meta Description Settings',
+                  admin: {
+                    initCollapsed: false,
+                    condition: (_, siblingData) => siblingData?.enabled === true,
+                  },
+                  fields: [
+                    {
+                      name: 'descriptionModel',
+                      type: 'select',
+                      label: 'Model for Description Generation',
+                      options: [
+                        {
+                          label: 'Use Default Model (from Provider Configuration)',
+                          value: '',
+                        },
+                        {
+                          label: 'GPT-4o (Recommended) $$',
+                          value: 'gpt-4o',
+                        },
+                        {
+                          label: 'GPT-4o Mini (Fast & Cheap) $',
+                          value: 'gpt-4o-mini',
+                        },
+                        {
+                          label: 'GPT-4 Turbo (Premium Quality) $$$',
+                          value: 'gpt-4-turbo',
+                        },
+                        {
+                          label: 'GPT-3.5 Turbo (Cheapest) $',
+                          value: 'gpt-3.5-turbo',
+                        },
+                      ],
+                      admin: {
+                        description:
+                          'Override the default model for description generation. Text-only models work fine. Estimated cost: gpt-3.5-turbo ~$0.0002, gpt-4o-mini ~$0.0005 per generation.',
+                      },
+                    },
+                    {
+                      name: 'descriptionSystemPrimer',
+                      type: 'textarea',
+                      label: 'Description Generation Primer',
+                      defaultValue:
+                        'Generate an SEO-optimized meta description between 150-160 characters that includes target keywords naturally. Write compelling copy that encourages clicks and clearly communicates the page value. Include a call-to-action when appropriate. Focus on benefits and outcomes for the user. Be specific and accurate - avoid vague or generic descriptions. Make it readable and natural, not just a keyword list.',
+                      required: true,
+                      admin: {
+                        description:
+                          'The instruction prompt for AI description generation. Customize for your target audience and goals.',
+                        rows: 6,
+                      },
+                    },
+                    {
+                      name: 'descriptionMinLength',
+                      type: 'number',
+                      label: 'Minimum Description Length',
+                      defaultValue: 150,
+                      min: 120,
+                      max: 160,
+                      admin: {
+                        description:
+                          'Minimum character length for optimal SERP display. 150 is recommended.',
+                      },
+                    },
+                    {
+                      name: 'descriptionMaxLength',
+                      type: 'number',
+                      label: 'Maximum Description Length',
+                      defaultValue: 160,
+                      min: 155,
+                      max: 180,
+                      admin: {
+                        description:
+                          'Maximum character length. Google typically displays up to 160 characters.',
+                      },
+                    },
+                  ],
+                },
+                {
+                  type: 'collapsible',
+                  label: 'Content Analysis Settings',
+                  admin: {
+                    initCollapsed: true,
+                    condition: (_, siblingData) => siblingData?.enabled === true,
+                  },
+                  fields: [
+                    {
+                      name: 'analyzeFullContent',
+                      type: 'checkbox',
+                      label: 'Analyze Full Page Content',
+                      defaultValue: true,
+                      admin: {
+                        description:
+                          'Read and analyze all page blocks or post content to extract key themes and topics',
+                      },
+                    },
+                    {
+                      name: 'contentWeight',
+                      type: 'select',
+                      label: 'Content vs Keywords Priority',
+                      defaultValue: 'balanced',
+                      options: [
+                        {
+                          label: 'Prioritize Keywords',
+                          value: 'keywords',
+                        },
+                        {
+                          label: 'Balanced',
+                          value: 'balanced',
+                        },
+                        {
+                          label: 'Prioritize Content',
+                          value: 'content',
+                        },
+                      ],
+                      admin: {
+                        description:
+                          'How to balance user-provided keywords vs content-extracted themes',
+                      },
+                    },
+                    {
+                      name: 'extractKeyThemes',
+                      type: 'checkbox',
+                      label: 'Extract Key Themes Automatically',
+                      defaultValue: true,
+                      admin: {
+                        description:
+                          'Use AI to identify and extract main themes from content automatically',
+                      },
+                    },
+                    {
+                      name: 'maxContentTokens',
+                      type: 'number',
+                      label: 'Max Content Analysis Tokens',
+                      defaultValue: 2000,
+                      min: 500,
+                      max: 5000,
+                      admin: {
+                        description:
+                          'Maximum tokens to send to AI for content analysis (higher = more context but higher cost)',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
           label: 'Future AI Features',
           description: 'Placeholder for upcoming AI-powered content generation features',
           fields: [
@@ -245,25 +535,6 @@ export const AiSettings: GlobalConfig = {
               label: 'Blog Post Generation (Coming Soon)',
               admin: {
                 description: 'AI-assisted blog post creation and content generation',
-              },
-              fields: [
-                {
-                  name: 'enabled',
-                  type: 'checkbox',
-                  label: 'Enable (Coming Soon)',
-                  defaultValue: false,
-                  admin: {
-                    disabled: true,
-                  },
-                },
-              ],
-            },
-            {
-              name: 'metaOptimization',
-              type: 'group',
-              label: 'Meta Description Optimization (Coming Soon)',
-              admin: {
-                description: 'Automatic SEO meta description generation',
               },
               fields: [
                 {

@@ -57,10 +57,15 @@ export async function generateAltTag(
     logger.log('[AI Service] ✅ ALT tag generation is enabled')
 
     // Build provider configuration
+    // Use task-specific model if set, otherwise fall back to global model
+    const taskModel = aiSettings.altTag.model
+    const globalModel = aiSettings.model || 'gpt-4o'
+    const selectedModel = taskModel || globalModel
+
     const providerConfig: ProviderConfig = {
       provider: aiSettings.provider || 'openai',
       apiKey: aiSettings.apiKey || '',
-      model: aiSettings.model || 'gpt-4o',
+      model: selectedModel,
       customEndpoint: aiSettings.customEndpoint || undefined,
       temperature: aiSettings.temperature ?? 0.3,
       maxTokens: aiSettings.maxTokens || 150,
@@ -69,7 +74,11 @@ export async function generateAltTag(
 
     logger.log('[AI Service] ⚙️  Configuration:')
     logger.log('[AI Service]    Provider:', providerConfig.provider)
-    logger.log('[AI Service]    Model:', providerConfig.model)
+    logger.log(
+      '[AI Service]    Model:',
+      providerConfig.model,
+      taskModel ? '(task-specific override)' : '(global default)',
+    )
     logger.log(
       '[AI Service]    API Key:',
       providerConfig.apiKey

@@ -34,6 +34,14 @@ export const AiLogs: CollectionConfig = {
           value: 'alt-tag',
         },
         {
+          label: 'SEO Title Generation',
+          value: 'seo-title',
+        },
+        {
+          label: 'SEO Description Generation',
+          value: 'seo-description',
+        },
+        {
           label: 'Content Generation',
           value: 'content',
         },
@@ -111,6 +119,58 @@ export const AiLogs: CollectionConfig = {
       admin: {
         description: 'Generated ALT text',
         condition: (data) => data.operation === 'alt-tag',
+      },
+    },
+    {
+      name: 'seoTitle',
+      type: 'text',
+      admin: {
+        description: 'Generated SEO title',
+        condition: (data) => data.operation === 'seo-title',
+      },
+    },
+    {
+      name: 'seoDescription',
+      type: 'textarea',
+      admin: {
+        description: 'Generated SEO description',
+        condition: (data) => data.operation === 'seo-description',
+      },
+    },
+    {
+      name: 'keywords',
+      type: 'array',
+      admin: {
+        description: 'Keywords used for SEO generation',
+        condition: (data) => data.operation === 'seo-title' || data.operation === 'seo-description',
+      },
+      fields: [
+        {
+          name: 'keyword',
+          type: 'text',
+        },
+      ],
+    },
+    {
+      name: 'contentThemes',
+      type: 'array',
+      admin: {
+        description: 'Key themes extracted from content',
+        condition: (data) => data.operation === 'seo-title' || data.operation === 'seo-description',
+      },
+      fields: [
+        {
+          name: 'theme',
+          type: 'text',
+        },
+      ],
+    },
+    {
+      name: 'characterCount',
+      type: 'number',
+      admin: {
+        description: 'Character count of generated text',
+        condition: (data) => data.operation === 'seo-title' || data.operation === 'seo-description',
       },
     },
     {

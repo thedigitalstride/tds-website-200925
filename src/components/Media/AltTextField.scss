@@ -9,6 +9,18 @@
   .generate-button {
     margin: 0;
     padding-bottom: 0.3125rem;
+
+    .button-content {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .ai-icon {
+        width: 1rem;
+        height: 1rem;
+        flex-shrink: 0;
+      }
+    }
   }
 
   .field-description {
