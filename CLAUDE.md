@@ -43,6 +43,8 @@ docker-compose up -d       # Start local Postgres database
 ```
 src/
 ├── app/                   # Next.js App Router pages
+│   ├── sitemap.ts      # Dynamic XML sitemap generator
+│   ├── robots.ts       # Dynamic robots.txt generator
 ├── blocks/               # Reusable content blocks (CTA, Hero, etc.)
 ├── collections/          # Payload CMS collections
 │   ├── Pages/           # Page collection with layout builder
@@ -95,6 +97,7 @@ src/
 ### 📖 Implementation Guides
 
 - **[BLOG_IMPLEMENTATION.md](/docs/BLOG_IMPLEMENTATION.md)** - Posts system with UUI components and category filtering
+- **[DYNAMIC_SITEMAP.md](/docs/DYNAMIC_SITEMAP.md)** - Native Next.js 15 dynamic sitemap with automatic prioritization and Google protocol compliance
 - **[ACCORDION_SYSTEM.md](/docs/ACCORDION_SYSTEM.md)** - Complete FAQ/Accordion block system with accessibility and performance features
 - **[FAQ_SCHEMA_IMPLEMENTATION.md](/docs/FAQ_SCHEMA_IMPLEMENTATION.md)** - Google FAQPage structured data implementation plan
 - **[AI_ALT_TAG_GENERATION.md](/docs/AI_ALT_TAG_GENERATION.md)** - AI-powered ALT tag generation for images (setup, usage, troubleshooting)
@@ -188,6 +191,7 @@ Authentication, admin access, author profiles
 - **Layout Builder**: Drag-and-drop page construction with reusable blocks
 - **Live Preview**: Real-time content preview while editing
 - **Draft Workflow**: Publish/unpublish with scheduling
+- **Dynamic Sitemap**: Native Next.js 15 sitemap with automatic prioritization and per-page controls
 - **SEO Plugin**: Automated meta tags and Open Graph
 - **UntitledUI Integration**: Complete design system with brand color theming
 - **OptimizedImage Component**: Automatic Payload Media integration + Next.js optimization

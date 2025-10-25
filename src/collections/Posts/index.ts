@@ -300,6 +300,53 @@ export const Posts: CollectionConfig<'posts'> = {
                 defaultValue: false,
               },
             }),
+            {
+              type: 'collapsible',
+              label: 'Sitemap Settings',
+              admin: {
+                initCollapsed: true,
+                description: 'Configure how this post appears in the sitemap',
+              },
+              fields: [
+                {
+                  name: 'excludeFromSitemap',
+                  type: 'checkbox',
+                  label: 'Exclude from Sitemap',
+                  defaultValue: false,
+                  admin: {
+                    description: 'Check this to exclude this post from the sitemap',
+                  },
+                },
+                {
+                  name: 'sitemapPriority',
+                  type: 'number',
+                  label: 'Sitemap Priority',
+                  min: 0,
+                  max: 1,
+                  admin: {
+                    description: 'Priority of this post relative to other pages (0.0 to 1.0). Leave empty for automatic priority based on recency.',
+                    step: 0.1,
+                  },
+                },
+                {
+                  name: 'sitemapChangefreq',
+                  type: 'select',
+                  label: 'Change Frequency',
+                  options: [
+                    { label: 'Always', value: 'always' },
+                    { label: 'Hourly', value: 'hourly' },
+                    { label: 'Daily', value: 'daily' },
+                    { label: 'Weekly', value: 'weekly' },
+                    { label: 'Monthly', value: 'monthly' },
+                    { label: 'Yearly', value: 'yearly' },
+                    { label: 'Never', value: 'never' },
+                  ],
+                  admin: {
+                    description: 'How frequently the post is likely to change. Leave empty for automatic frequency based on age.',
+                  },
+                },
+              ],
+            },
           ],
         },
       ],
