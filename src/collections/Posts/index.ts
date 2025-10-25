@@ -143,14 +143,14 @@ export const Posts: CollectionConfig<'posts'> = {
           ],
         },
         {
-          label: 'Meta',
-          description: 'Post metadata and settings',
+          label: 'AI SEO',
+          description: 'AI-powered SEO meta generation',
           fields: [
             {
               type: 'collapsible',
               label: 'SEO Keywords & Guidance',
               admin: {
-                initCollapsed: true,
+                initCollapsed: false,
                 description: 'Provide keywords and guidance for AI-powered SEO meta generation',
               },
               fields: [
@@ -179,6 +179,54 @@ export const Posts: CollectionConfig<'posts'> = {
                 },
               ],
             },
+            {
+              type: 'collapsible',
+              label: 'AI-Generated Meta Fields',
+              admin: {
+                initCollapsed: false,
+                description:
+                  'Generate SEO-optimized titles and descriptions using AI. These will automatically sync to the SEO tab.',
+              },
+              fields: [
+                {
+                  name: 'aiSeoTitle',
+                  type: 'text',
+                  label: 'SEO Meta Title (AI-Generated)',
+                  hooks: {
+                    beforeChange: [syncAiSeoToMeta],
+                  },
+                  admin: {
+                    description:
+                      'Click "Generate Title" to create an SEO-optimized title using AI based on post content and keywords. This will automatically populate the SEO tab.',
+                    components: {
+                      Field: '@/components/SEO/SeoTitleField',
+                    },
+                  },
+                },
+                {
+                  name: 'aiSeoDescription',
+                  type: 'textarea',
+                  label: 'SEO Meta Description (AI-Generated)',
+                  hooks: {
+                    beforeChange: [syncAiSeoToMeta],
+                  },
+                  admin: {
+                    description:
+                      'Click "Generate Description" to create an SEO-optimized description using AI based on post content and keywords. This will automatically populate the SEO tab.',
+                    rows: 3,
+                    components: {
+                      Field: '@/components/SEO/SeoDescriptionField',
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Meta',
+          description: 'Post metadata and settings',
+          fields: [
             {
               name: 'relatedPosts',
               type: 'relationship',
@@ -234,48 +282,6 @@ export const Posts: CollectionConfig<'posts'> = {
                   },
                 ],
               },
-            },
-            {
-              type: 'collapsible',
-              label: 'AI-Powered SEO Meta',
-              admin: {
-                initCollapsed: false,
-                description:
-                  'Generate SEO-optimized titles and descriptions using AI. These will populate the SEO tab fields.',
-              },
-              fields: [
-                {
-                  name: 'aiSeoTitle',
-                  type: 'text',
-                  label: 'SEO Meta Title (AI-Generated)',
-                  hooks: {
-                    beforeChange: [syncAiSeoToMeta],
-                  },
-                  admin: {
-                    description:
-                      'Click "Generate Title" to create an SEO-optimized title using AI based on post content and keywords. This will automatically populate the SEO tab.',
-                    components: {
-                      Field: '@/components/SEO/SeoTitleField',
-                    },
-                  },
-                },
-                {
-                  name: 'aiSeoDescription',
-                  type: 'textarea',
-                  label: 'SEO Meta Description (AI-Generated)',
-                  hooks: {
-                    beforeChange: [syncAiSeoToMeta],
-                  },
-                  admin: {
-                    description:
-                      'Click "Generate Description" to create an SEO-optimized description using AI based on post content and keywords. This will automatically populate the SEO tab.',
-                    rows: 3,
-                    components: {
-                      Field: '@/components/SEO/SeoDescriptionField',
-                    },
-                  },
-                },
-              ],
             },
             {
               name: 'authors',

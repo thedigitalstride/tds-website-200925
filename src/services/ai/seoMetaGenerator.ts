@@ -53,10 +53,15 @@ export async function generateSeoTitle(
     logger.log('[SEO Generator] ✅ SEO meta generation is enabled')
 
     // Build provider configuration
+    // Use task-specific model for title if set, otherwise fall back to global model
+    const taskModel = aiSettings.seoMeta.titleModel
+    const globalModel = aiSettings.model || 'gpt-4o'
+    const selectedModel = taskModel || globalModel
+
     const providerConfig: ProviderConfig = {
       provider: aiSettings.provider || 'openai',
       apiKey: aiSettings.apiKey || '',
-      model: aiSettings.model || 'gpt-4o',
+      model: selectedModel,
       customEndpoint: aiSettings.customEndpoint || undefined,
       temperature: aiSettings.temperature ?? 0.3,
       maxTokens: aiSettings.maxTokens || 150,
@@ -64,7 +69,11 @@ export async function generateSeoTitle(
     }
 
     logger.log('[SEO Generator] ⚙️  Provider:', providerConfig.provider)
-    logger.log('[SEO Generator] ⚙️  Model:', providerConfig.model)
+    logger.log(
+      '[SEO Generator] ⚙️  Model:',
+      providerConfig.model,
+      taskModel ? '(title-specific override)' : '(global default)',
+    )
 
     // Create provider instance
     const provider = createProvider(providerConfig)
@@ -220,10 +229,15 @@ export async function generateSeoDescription(
     logger.log('[SEO Generator] ✅ SEO meta generation is enabled')
 
     // Build provider configuration
+    // Use task-specific model for description if set, otherwise fall back to global model
+    const taskModel = aiSettings.seoMeta.descriptionModel
+    const globalModel = aiSettings.model || 'gpt-4o'
+    const selectedModel = taskModel || globalModel
+
     const providerConfig: ProviderConfig = {
       provider: aiSettings.provider || 'openai',
       apiKey: aiSettings.apiKey || '',
-      model: aiSettings.model || 'gpt-4o',
+      model: selectedModel,
       customEndpoint: aiSettings.customEndpoint || undefined,
       temperature: aiSettings.temperature ?? 0.3,
       maxTokens: aiSettings.maxTokens || 150,
@@ -231,7 +245,11 @@ export async function generateSeoDescription(
     }
 
     logger.log('[SEO Generator] ⚙️  Provider:', providerConfig.provider)
-    logger.log('[SEO Generator] ⚙️  Model:', providerConfig.model)
+    logger.log(
+      '[SEO Generator] ⚙️  Model:',
+      providerConfig.model,
+      taskModel ? '(description-specific override)' : '(global default)',
+    )
 
     // Create provider instance
     const provider = createProvider(providerConfig)

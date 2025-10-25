@@ -497,13 +497,6 @@ export interface Post {
    * Optional: Provide specific guidance for AI generation (tone, focus areas, unique selling points, target audience, etc.)
    */
   seoGuidance?: string | null;
-  relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
-  /**
-   * People who contributed to this post (separate from authors)
-   */
-  contributors?: (number | User)[] | null;
-  publishedAt?: string | null;
   /**
    * Click "Generate Title" to create an SEO-optimized title using AI based on post content and keywords. This will automatically populate the SEO tab.
    */
@@ -512,6 +505,13 @@ export interface Post {
    * Click "Generate Description" to create an SEO-optimized description using AI based on post content and keywords. This will automatically populate the SEO tab.
    */
   aiSeoDescription?: string | null;
+  relatedPosts?: (number | Post)[] | null;
+  categories?: (number | Category)[] | null;
+  /**
+   * People who contributed to this post (separate from authors)
+   */
+  contributors?: (number | User)[] | null;
+  publishedAt?: string | null;
   authors?: (number | User)[] | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -2323,12 +2323,12 @@ export interface PostsSelect<T extends boolean = true> {
       };
   seoKeywords?: T;
   seoGuidance?: T;
+  aiSeoTitle?: T;
+  aiSeoDescription?: T;
   relatedPosts?: T;
   categories?: T;
   contributors?: T;
   publishedAt?: T;
-  aiSeoTitle?: T;
-  aiSeoDescription?: T;
   authors?: T;
   slug?: T;
   slugLock?: T;
@@ -3236,9 +3236,9 @@ export interface AiSetting {
    */
   apiKey: string;
   /**
-   * The specific model to use (e.g., gpt-4o, gpt-4o-mini, claude-3-5-sonnet)
+   * Default model for all AI operations. Can be overridden per task below. Vision models (gpt-4o, gpt-4o-mini) are required for image analysis.
    */
-  model?: string | null;
+  model?: ('gpt-4o' | 'gpt-4o-mini' | 'gpt-4-turbo' | 'gpt-4' | 'gpt-3.5-turbo') | null;
   /**
    * Full URL to your custom API endpoint (for self-hosted or alternative providers)
    */
@@ -3260,6 +3260,10 @@ export interface AiSetting {
      * Automatically generate ALT tags for images when uploaded without ALT text
      */
     enabled?: boolean | null;
+    /**
+     * Override the default model for ALT tag generation. Vision-capable models required. Estimated cost: gpt-4o-mini ~$0.001, gpt-4o ~$0.003 per image.
+     */
+    model?: ('' | 'gpt-4o' | 'gpt-4o-mini') | null;
     /**
      * The instruction prompt sent to the AI. Customize this to fine-tune ALT tag generation style and format.
      */
@@ -3291,6 +3295,10 @@ export interface AiSetting {
      */
     enabled?: boolean | null;
     /**
+     * Override the default model for title generation. Text-only models work fine for titles. Estimated cost: gpt-3.5-turbo ~$0.0001, gpt-4o-mini ~$0.0003 per generation.
+     */
+    titleModel?: ('' | 'gpt-4o' | 'gpt-4o-mini' | 'gpt-4-turbo' | 'gpt-3.5-turbo') | null;
+    /**
      * The instruction prompt for AI title generation. Customize to match your brand voice and SEO strategy.
      */
     titleSystemPrimer: string;
@@ -3302,6 +3310,10 @@ export interface AiSetting {
      * Automatically include " | The Digital Stride" at the end of generated titles
      */
     includeBrandInTitle?: boolean | null;
+    /**
+     * Override the default model for description generation. Text-only models work fine. Estimated cost: gpt-3.5-turbo ~$0.0002, gpt-4o-mini ~$0.0005 per generation.
+     */
+    descriptionModel?: ('' | 'gpt-4o' | 'gpt-4o-mini' | 'gpt-4-turbo' | 'gpt-3.5-turbo') | null;
     /**
      * The instruction prompt for AI description generation. Customize for your target audience and goals.
      */
@@ -3573,6 +3585,7 @@ export interface AiSettingsSelect<T extends boolean = true> {
     | T
     | {
         enabled?: T;
+        model?: T;
         systemPrimer?: T;
         maxLength?: T;
         includeContext?: T;
@@ -3584,9 +3597,11 @@ export interface AiSettingsSelect<T extends boolean = true> {
     | T
     | {
         enabled?: T;
+        titleModel?: T;
         titleSystemPrimer?: T;
         titleMaxLength?: T;
         includeBrandInTitle?: T;
+        descriptionModel?: T;
         descriptionSystemPrimer?: T;
         descriptionMinLength?: T;
         descriptionMaxLength?: T;

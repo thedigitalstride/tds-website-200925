@@ -57,12 +57,35 @@ export const AiSettings: GlobalConfig = {
             },
             {
               name: 'model',
-              type: 'text',
-              label: 'Model Name',
+              type: 'select',
+              label: 'Default Model',
               defaultValue: 'gpt-4o',
+              required: true,
+              options: [
+                {
+                  label: 'GPT-4o (Recommended - Vision + Text, Balanced) $$',
+                  value: 'gpt-4o',
+                },
+                {
+                  label: 'GPT-4o Mini (Cheapest - Vision + Text, Fast) $',
+                  value: 'gpt-4o-mini',
+                },
+                {
+                  label: 'GPT-4 Turbo (Text Only, Expensive) $$$',
+                  value: 'gpt-4-turbo',
+                },
+                {
+                  label: 'GPT-4 (Text Only, Premium) $$$',
+                  value: 'gpt-4',
+                },
+                {
+                  label: 'GPT-3.5 Turbo (Text Only, Fast & Cheap) $',
+                  value: 'gpt-3.5-turbo',
+                },
+              ],
               admin: {
                 description:
-                  'The specific model to use (e.g., gpt-4o, gpt-4o-mini, claude-3-5-sonnet)',
+                  'Default model for all AI operations. Can be overridden per task below. Vision models (gpt-4o, gpt-4o-mini) are required for image analysis.',
                 condition: (_, siblingData) => siblingData?.provider !== 'custom',
               },
             },
@@ -140,6 +163,30 @@ export const AiSettings: GlobalConfig = {
                   admin: {
                     description:
                       'Automatically generate ALT tags for images when uploaded without ALT text',
+                  },
+                },
+                {
+                  name: 'model',
+                  type: 'select',
+                  label: 'Model for ALT Tag Generation',
+                  options: [
+                    {
+                      label: 'Use Default Model (from Provider Configuration)',
+                      value: '',
+                    },
+                    {
+                      label: 'GPT-4o (Vision - Recommended) $$',
+                      value: 'gpt-4o',
+                    },
+                    {
+                      label: 'GPT-4o Mini (Vision - Cheapest, ~$0.001/image) $',
+                      value: 'gpt-4o-mini',
+                    },
+                  ],
+                  admin: {
+                    description:
+                      'Override the default model for ALT tag generation. Vision-capable models required. Estimated cost: gpt-4o-mini ~$0.001, gpt-4o ~$0.003 per image.',
+                    condition: (_, siblingData) => siblingData?.enabled === true,
                   },
                 },
                 {
@@ -252,6 +299,37 @@ export const AiSettings: GlobalConfig = {
                   },
                   fields: [
                     {
+                      name: 'titleModel',
+                      type: 'select',
+                      label: 'Model for Title Generation',
+                      options: [
+                        {
+                          label: 'Use Default Model (from Provider Configuration)',
+                          value: '',
+                        },
+                        {
+                          label: 'GPT-4o (Recommended) $$',
+                          value: 'gpt-4o',
+                        },
+                        {
+                          label: 'GPT-4o Mini (Fast & Cheap) $',
+                          value: 'gpt-4o-mini',
+                        },
+                        {
+                          label: 'GPT-4 Turbo (Premium Quality) $$$',
+                          value: 'gpt-4-turbo',
+                        },
+                        {
+                          label: 'GPT-3.5 Turbo (Cheapest) $',
+                          value: 'gpt-3.5-turbo',
+                        },
+                      ],
+                      admin: {
+                        description:
+                          'Override the default model for title generation. Text-only models work fine for titles. Estimated cost: gpt-3.5-turbo ~$0.0001, gpt-4o-mini ~$0.0003 per generation.',
+                      },
+                    },
+                    {
                       name: 'titleSystemPrimer',
                       type: 'textarea',
                       label: 'Title Generation Primer',
@@ -296,6 +374,37 @@ export const AiSettings: GlobalConfig = {
                     condition: (_, siblingData) => siblingData?.enabled === true,
                   },
                   fields: [
+                    {
+                      name: 'descriptionModel',
+                      type: 'select',
+                      label: 'Model for Description Generation',
+                      options: [
+                        {
+                          label: 'Use Default Model (from Provider Configuration)',
+                          value: '',
+                        },
+                        {
+                          label: 'GPT-4o (Recommended) $$',
+                          value: 'gpt-4o',
+                        },
+                        {
+                          label: 'GPT-4o Mini (Fast & Cheap) $',
+                          value: 'gpt-4o-mini',
+                        },
+                        {
+                          label: 'GPT-4 Turbo (Premium Quality) $$$',
+                          value: 'gpt-4-turbo',
+                        },
+                        {
+                          label: 'GPT-3.5 Turbo (Cheapest) $',
+                          value: 'gpt-3.5-turbo',
+                        },
+                      ],
+                      admin: {
+                        description:
+                          'Override the default model for description generation. Text-only models work fine. Estimated cost: gpt-3.5-turbo ~$0.0002, gpt-4o-mini ~$0.0005 per generation.',
+                      },
+                    },
                     {
                       name: 'descriptionSystemPrimer',
                       type: 'textarea',

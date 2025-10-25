@@ -101,14 +101,14 @@ export const Pages: CollectionConfig<'pages'> = {
           ],
         },
         {
-          label: 'Meta',
-          description: 'Page metadata and settings',
+          label: 'AI SEO',
+          description: 'AI-powered SEO meta generation',
           fields: [
             {
               type: 'collapsible',
               label: 'SEO Keywords & Guidance',
               admin: {
-                initCollapsed: true,
+                initCollapsed: false,
                 description: 'Provide keywords and guidance for AI-powered SEO meta generation',
               },
               fields: [
@@ -139,11 +139,11 @@ export const Pages: CollectionConfig<'pages'> = {
             },
             {
               type: 'collapsible',
-              label: 'AI-Powered SEO Meta',
+              label: 'AI-Generated Meta Fields',
               admin: {
                 initCollapsed: false,
                 description:
-                  'Generate SEO-optimized titles and descriptions using AI. These will populate the SEO tab fields.',
+                  'Generate SEO-optimized titles and descriptions using AI. These will automatically sync to the SEO tab.',
               },
               fields: [
                 {
@@ -179,6 +179,12 @@ export const Pages: CollectionConfig<'pages'> = {
                 },
               ],
             },
+          ],
+        },
+        {
+          label: 'Meta',
+          description: 'Page metadata and settings',
+          fields: [
             {
               name: 'publishedAt',
               type: 'date',
