@@ -88,11 +88,73 @@ export interface AiServiceOptions {
 }
 
 /**
+ * Configuration for SEO meta title generation
+ */
+export interface SeoTitleConfig {
+  systemPrimer: string
+  maxLength: number
+  includeBrand?: boolean
+  keywords?: string[]
+  guidance?: string
+  contentContext?: ContentContext
+}
+
+/**
+ * Configuration for SEO meta description generation
+ */
+export interface SeoDescriptionConfig {
+  systemPrimer: string
+  minLength: number
+  maxLength: number
+  keywords?: string[]
+  guidance?: string
+  contentContext?: ContentContext
+}
+
+/**
+ * Content context for SEO generation
+ */
+export interface ContentContext {
+  title?: string
+  subtitle?: string
+  contentBlocks?: any[] // eslint-disable-line @typescript-eslint/no-explicit-any -- Layout blocks for Pages
+  richText?: any // eslint-disable-line @typescript-eslint/no-explicit-any -- Lexical content for Posts
+  categories?: string[]
+  heroImage?: {
+    alt?: string
+    url?: string
+  }
+  tableOfContents?: Array<{ title: string; href: string }>
+  extractedThemes?: string[]
+  contentSummary?: string
+}
+
+/**
+ * Result from SEO meta generation
+ */
+export interface SeoMetaResult {
+  text: string
+  success: boolean
+  error?: string
+  metadata?: {
+    provider: string
+    model: string
+    tokensUsed?: number
+    cost?: number
+    characterCount: number
+    keywordsUsed?: string[]
+    contentThemes?: string[]
+    timestamp: string
+    duration?: number
+  }
+}
+
+/**
  * Log entry for AI operations
  */
 export interface AiOperationLog {
   id: string
-  operation: 'alt-tag' | 'blog-post' | 'meta-description'
+  operation: 'alt-tag' | 'blog-post' | 'seo-title' | 'seo-description'
   provider: string
   model: string
   input: string // URL or content snippet

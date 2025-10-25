@@ -9,6 +9,7 @@
 import React, { useCallback, useState } from 'react'
 import type { TextFieldClientProps } from 'payload'
 import { useField, Button, TextInput, FieldLabel, useForm, toast } from '@payloadcms/ui'
+import { Stars02 } from '@untitledui/icons'
 
 import './AltTextField.scss'
 
@@ -123,7 +124,10 @@ export const AltTextField: React.FC<AltTextFieldProps> = ({ field, path, readOnl
           onClick={handleGenerate}
           disabled={!canGenerate || Boolean(readOnly)}
         >
-          {isGenerating ? 'Generating...' : 'Generate ALT Tag'}
+          <span className="button-content">
+            <Stars02 className="ai-icon" />
+            <span>{isGenerating ? 'Generating...' : 'Generate ALT Tag'}</span>
+          </span>
         </Button>
       </div>
       <TextInput

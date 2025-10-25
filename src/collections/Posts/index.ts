@@ -14,6 +14,7 @@ import { richTextEditorFull } from '@/fields/richTextWithButtons'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
+import { syncAiSeoToMeta } from '../../hooks/syncAiSeoFields'
 
 import { slugField } from '@/fields/slug'
 
@@ -146,6 +147,39 @@ export const Posts: CollectionConfig<'posts'> = {
           description: 'Post metadata and settings',
           fields: [
             {
+              type: 'collapsible',
+              label: 'SEO Keywords & Guidance',
+              admin: {
+                initCollapsed: true,
+                description: 'Provide keywords and guidance for AI-powered SEO meta generation',
+              },
+              fields: [
+                {
+                  name: 'seoKeywords',
+                  type: 'textarea',
+                  label: 'SEO Target Keywords',
+                  admin: {
+                    description:
+                      'Enter target keywords for this post (one per line or comma-separated). AI will use these to optimize the meta title and description.',
+                    rows: 3,
+                    placeholder: 'digital marketing tips\nSEO best practices\ncontent marketing strategy',
+                  },
+                },
+                {
+                  name: 'seoGuidance',
+                  type: 'textarea',
+                  label: 'Post-Specific SEO Guidance',
+                  admin: {
+                    description:
+                      'Optional: Provide specific guidance for AI generation (tone, focus areas, unique selling points, target audience, etc.)',
+                    rows: 4,
+                    placeholder:
+                      'Target marketers and business owners, focus on actionable insights, emphasize ROI',
+                  },
+                },
+              ],
+            },
+            {
               name: 'relatedPosts',
               type: 'relationship',
               admin: {
@@ -200,6 +234,48 @@ export const Posts: CollectionConfig<'posts'> = {
                   },
                 ],
               },
+            },
+            {
+              type: 'collapsible',
+              label: 'AI-Powered SEO Meta',
+              admin: {
+                initCollapsed: false,
+                description:
+                  'Generate SEO-optimized titles and descriptions using AI. These will populate the SEO tab fields.',
+              },
+              fields: [
+                {
+                  name: 'aiSeoTitle',
+                  type: 'text',
+                  label: 'SEO Meta Title (AI-Generated)',
+                  hooks: {
+                    beforeChange: [syncAiSeoToMeta],
+                  },
+                  admin: {
+                    description:
+                      'Click "Generate Title" to create an SEO-optimized title using AI based on post content and keywords. This will automatically populate the SEO tab.',
+                    components: {
+                      Field: '@/components/SEO/SeoTitleField',
+                    },
+                  },
+                },
+                {
+                  name: 'aiSeoDescription',
+                  type: 'textarea',
+                  label: 'SEO Meta Description (AI-Generated)',
+                  hooks: {
+                    beforeChange: [syncAiSeoToMeta],
+                  },
+                  admin: {
+                    description:
+                      'Click "Generate Description" to create an SEO-optimized description using AI based on post content and keywords. This will automatically populate the SEO tab.',
+                    rows: 3,
+                    components: {
+                      Field: '@/components/SEO/SeoDescriptionField',
+                    },
+                  },
+                },
+              ],
             },
             {
               name: 'authors',

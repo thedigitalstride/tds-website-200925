@@ -173,6 +173,22 @@ export interface Page {
         | AccordionBlock
       )[]
     | null;
+  /**
+   * Enter target keywords for this page (one per line or comma-separated). AI will use these to optimize the meta title and description.
+   */
+  seoKeywords?: string | null;
+  /**
+   * Optional: Provide specific guidance for AI generation (tone, focus areas, unique selling points, target audience, etc.)
+   */
+  seoGuidance?: string | null;
+  /**
+   * Click "Generate Title" to create an SEO-optimized title using AI based on page content and keywords. This will automatically populate the SEO tab.
+   */
+  aiSeoTitle?: string | null;
+  /**
+   * Click "Generate Description" to create an SEO-optimized description using AI based on page content and keywords. This will automatically populate the SEO tab.
+   */
+  aiSeoDescription?: string | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -473,6 +489,14 @@ export interface Post {
    * Optional blocks to display after the main post content
    */
   afterContent?: (LatestPostsBlock | CallToActionBlock | MediaBlock)[] | null;
+  /**
+   * Enter target keywords for this post (one per line or comma-separated). AI will use these to optimize the meta title and description.
+   */
+  seoKeywords?: string | null;
+  /**
+   * Optional: Provide specific guidance for AI generation (tone, focus areas, unique selling points, target audience, etc.)
+   */
+  seoGuidance?: string | null;
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
   /**
@@ -480,6 +504,14 @@ export interface Post {
    */
   contributors?: (number | User)[] | null;
   publishedAt?: string | null;
+  /**
+   * Click "Generate Title" to create an SEO-optimized title using AI based on post content and keywords. This will automatically populate the SEO tab.
+   */
+  aiSeoTitle?: string | null;
+  /**
+   * Click "Generate Description" to create an SEO-optimized description using AI based on post content and keywords. This will automatically populate the SEO tab.
+   */
+  aiSeoDescription?: string | null;
   authors?: (number | User)[] | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -1517,7 +1549,7 @@ export interface AiLog {
   /**
    * Type of AI operation performed
    */
-  operation: 'alt-tag' | 'content' | 'other';
+  operation: 'alt-tag' | 'seo-title' | 'seo-description' | 'content' | 'other';
   /**
    * AI provider used (OpenAI, Anthropic, etc.)
    */
@@ -1550,6 +1582,36 @@ export interface AiLog {
    * Generated ALT text
    */
   altText?: string | null;
+  /**
+   * Generated SEO title
+   */
+  seoTitle?: string | null;
+  /**
+   * Generated SEO description
+   */
+  seoDescription?: string | null;
+  /**
+   * Keywords used for SEO generation
+   */
+  keywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Key themes extracted from content
+   */
+  contentThemes?:
+    | {
+        theme?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Character count of generated text
+   */
+  characterCount?: number | null;
   /**
    * Error message if operation failed
    */
@@ -1857,6 +1919,10 @@ export interface PagesSelect<T extends boolean = true> {
         latestPosts?: T | LatestPostsBlockSelect<T>;
         accordion?: T | AccordionBlockSelect<T>;
       };
+  seoKeywords?: T;
+  seoGuidance?: T;
+  aiSeoTitle?: T;
+  aiSeoDescription?: T;
   publishedAt?: T;
   slug?: T;
   slugLock?: T;
@@ -2255,10 +2321,14 @@ export interface PostsSelect<T extends boolean = true> {
         cta?: T | CallToActionBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
       };
+  seoKeywords?: T;
+  seoGuidance?: T;
   relatedPosts?: T;
   categories?: T;
   contributors?: T;
   publishedAt?: T;
+  aiSeoTitle?: T;
+  aiSeoDescription?: T;
   authors?: T;
   slug?: T;
   slugLock?: T;
@@ -2478,6 +2548,21 @@ export interface AiLogsSelect<T extends boolean = true> {
   duration?: T;
   imageUrl?: T;
   altText?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  keywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  contentThemes?:
+    | T
+    | {
+        theme?: T;
+        id?: T;
+      };
+  characterCount?: T;
   error?: T;
   metadata?: T;
   user?: T;
@@ -3200,16 +3285,56 @@ export interface AiSetting {
      */
     logGenerations?: boolean | null;
   };
+  seoMeta: {
+    /**
+     * Enable AI generation buttons for meta titles and descriptions in Pages and Posts
+     */
+    enabled?: boolean | null;
+    /**
+     * The instruction prompt for AI title generation. Customize to match your brand voice and SEO strategy.
+     */
+    titleSystemPrimer: string;
+    /**
+     * Maximum character length for meta titles. Google typically displays 50-60 characters.
+     */
+    titleMaxLength?: number | null;
+    /**
+     * Automatically include " | The Digital Stride" at the end of generated titles
+     */
+    includeBrandInTitle?: boolean | null;
+    /**
+     * The instruction prompt for AI description generation. Customize for your target audience and goals.
+     */
+    descriptionSystemPrimer: string;
+    /**
+     * Minimum character length for optimal SERP display. 150 is recommended.
+     */
+    descriptionMinLength?: number | null;
+    /**
+     * Maximum character length. Google typically displays up to 160 characters.
+     */
+    descriptionMaxLength?: number | null;
+    /**
+     * Read and analyze all page blocks or post content to extract key themes and topics
+     */
+    analyzeFullContent?: boolean | null;
+    /**
+     * How to balance user-provided keywords vs content-extracted themes
+     */
+    contentWeight?: ('keywords' | 'balanced' | 'content') | null;
+    /**
+     * Use AI to identify and extract main themes from content automatically
+     */
+    extractKeyThemes?: boolean | null;
+    /**
+     * Maximum tokens to send to AI for content analysis (higher = more context but higher cost)
+     */
+    maxContentTokens?: number | null;
+  };
   /**
    * AI-assisted blog post creation and content generation
    */
   blogPostGeneration?: {
-    enabled?: boolean | null;
-  };
-  /**
-   * Automatic SEO meta description generation
-   */
-  metaOptimization?: {
     enabled?: boolean | null;
   };
   costTracking?: {
@@ -3455,12 +3580,22 @@ export interface AiSettingsSelect<T extends boolean = true> {
         fallbackToFilename?: T;
         logGenerations?: T;
       };
-  blogPostGeneration?:
+  seoMeta?:
     | T
     | {
         enabled?: T;
+        titleSystemPrimer?: T;
+        titleMaxLength?: T;
+        includeBrandInTitle?: T;
+        descriptionSystemPrimer?: T;
+        descriptionMinLength?: T;
+        descriptionMaxLength?: T;
+        analyzeFullContent?: T;
+        contentWeight?: T;
+        extractKeyThemes?: T;
+        maxContentTokens?: T;
       };
-  metaOptimization?:
+  blogPostGeneration?:
     | T
     | {
         enabled?: T;
