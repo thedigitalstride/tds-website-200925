@@ -5,6 +5,7 @@ import deepMerge from '@/utilities/deepMerge'
 // UntitledUI Button Color Variants
 export type UUIButtonColors =
   | 'primary'
+  | 'primary-reversed'
   | 'accent'
   | 'secondary'
   | 'tertiary'
@@ -26,7 +27,12 @@ export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: st
   primary: {
     label: 'Primary',
     value: 'primary',
-    description: 'Dark blue brand button for primary CTAs'
+    description: 'White bg/dark text (light mode), Dark bg/white text (dark mode)'
+  },
+  'primary-reversed': {
+    label: 'Primary (Reversed)',
+    value: 'primary-reversed',
+    description: 'Dark bg/white text (light mode), White bg/dark text (dark mode)'
   },
   secondary: {
     label: 'Secondary',

@@ -34,8 +34,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
   const cardLayout = cardStyle || 'card'
   const columnsValue = columns || '3'
   const rawIconColor = iconColor || 'primary'
-  // Map 'primary' to 'brand' for FeaturedIcon compatibility
-  const mappedIconColor = (rawIconColor === 'primary' ? 'brand' : rawIconColor) as 'brand' | 'accent' | 'secondary' | 'tertiary'
+  // Map 'primary' to 'brand' and 'primary-reversed' to 'brand-reversed' for FeaturedIcon compatibility
+  const mappedIconColor = (
+    rawIconColor === 'primary' ? 'brand' :
+    rawIconColor === 'primary-reversed' ? 'brand-reversed' :
+    rawIconColor
+  ) as 'brand' | 'brand-reversed' | 'accent' | 'secondary' | 'tertiary'
   const iconShape = (iconTheme || 'rounded-square') as 'rounded-square' | 'round'
   const cardStyleValue = cardBackground || 'primary'
 
@@ -51,11 +55,41 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
     return 'p-5 md:p-6' // Standard padding
   }
 
-  // Text colors - consistent across all variants
-  const textClasses = {
-    heading: 'text-primary',
-    description: 'text-secondary'
+  // Text colors based on background variant
+  const getTextClasses = () => {
+    switch (cardStyleValue) {
+      case 'accent':
+        // White text on accent background
+        return {
+          eyebrow: 'text-white',
+          heading: 'text-white',
+          description: 'text-white'
+        }
+      case 'primary-reversed':
+        // White text on dark bg (light mode), dark text on white bg (dark mode)
+        return {
+          eyebrow: 'text-white dark:text-brand-500',
+          heading: 'text-white dark:text-brand-500',
+          description: 'text-white dark:text-brand-500'
+        }
+      case 'tertiary':
+        // Dark text on gray-solid background (both modes)
+        return {
+          eyebrow: 'text-brand-secondary dark:text-brand-900',
+          heading: 'text-primary dark:text-brand-900',
+          description: 'text-secondary dark:text-brand-900'
+        }
+      default:
+        // Default semantic colors for primary, secondary, line
+        return {
+          eyebrow: 'text-brand-secondary',
+          heading: 'text-primary',
+          description: 'text-secondary'
+        }
+    }
   }
+
+  const textClasses = getTextClasses()
 
   const cardPaddingClasses = getCardPaddingClasses()
 
@@ -104,7 +138,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">
+            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -159,7 +193,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">
+            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -214,7 +248,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
       <div className="flex flex-col justify-between items-start gap-4 flex-1">
         <div>
           {eyebrow && (
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">
+            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -262,7 +296,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">
+            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -318,7 +352,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">
+            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -368,7 +402,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
     )}>
       <div>
         {eyebrow && (
-          <span className="text-sm font-semibold text-brand-secondary md:text-md">
+          <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}
@@ -408,7 +442,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
     )}>
       <div>
         {eyebrow && (
-          <span className="text-sm font-semibold text-brand-secondary md:text-md">
+          <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}
@@ -448,7 +482,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
     )}>
       <div>
         {eyebrow && (
-          <span className="text-sm font-semibold text-brand-secondary md:text-md">
+          <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}

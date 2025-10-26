@@ -30,8 +30,12 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   const cardLayout = layoutOptions?.cardStyle || 'card' // cardStyle field now controls layout
   const columns = layoutOptions?.columns || '3'
   const rawIconColor = layoutOptions?.iconColor || 'primary'
-  // Map 'primary' to 'brand' for FeaturedIcon compatibility
-  const iconColor = (rawIconColor === 'primary' ? 'brand' : rawIconColor) as 'brand' | 'accent' | 'secondary' | 'tertiary'
+  // Map 'primary' to 'brand' and 'primary-reversed' to 'brand-reversed' for FeaturedIcon compatibility
+  const iconColor = (
+    rawIconColor === 'primary' ? 'brand' :
+    rawIconColor === 'primary-reversed' ? 'brand-reversed' :
+    rawIconColor
+  ) as 'brand' | 'brand-reversed' | 'accent' | 'secondary' | 'tertiary'
   const iconShape = (layoutOptions?.iconTheme || 'rounded-square') as 'rounded-square' | 'round'
   const cardStyleValue = layoutOptions?.cardBackground || 'primary' // cardBackground field now controls visual style
 
@@ -47,11 +51,37 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     return 'p-5 md:p-6' // Standard padding
   }
 
-  // Text colors - consistent across all variants
-  const textClasses = {
-    heading: 'text-primary',
-    description: 'text-secondary'
+  // Text colors based on background variant
+  const getTextClasses = () => {
+    switch (cardStyleValue) {
+      case 'accent':
+        // White text on accent background
+        return {
+          heading: 'text-white',
+          description: 'text-white'
+        }
+      case 'primary-reversed':
+        // White text on dark bg (light mode), dark text on white bg (dark mode)
+        return {
+          heading: 'text-white dark:text-brand-500',
+          description: 'text-white dark:text-brand-500'
+        }
+      case 'tertiary':
+        // Dark text on gray-solid background (both modes)
+        return {
+          heading: 'text-primary dark:text-brand-900',
+          description: 'text-secondary dark:text-brand-900'
+        }
+      default:
+        // Default semantic colors for primary, secondary, line
+        return {
+          heading: 'text-primary',
+          description: 'text-secondary'
+        }
+    }
   }
+
+  const textClasses = getTextClasses()
 
   const cardPaddingClasses = getCardPaddingClasses()
 

@@ -247,13 +247,9 @@ export interface HeroHeadingBlock {
    */
   enableTypewriter?: boolean | null;
   /**
-   * Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.
+   * Color scheme for the headline. Primary adapts to light/dark modes, White stays white in both modes, Accent Blue is always accent color.
    */
-  headlineColor?: ('primary' | 'brand') | null;
-  /**
-   * Color scheme for the subheading. Default shows brand-500 in light mode and white in dark mode.
-   */
-  subheadingColor?: ('default' | 'white') | null;
+  headlineColor?: ('primary' | 'white' | 'brand') | null;
   /**
    * Text alignment for headline and subtitle (not available for Split Image layout)
    */
@@ -269,7 +265,7 @@ export interface HeroHeadingBlock {
   /**
    * Background style for the contained layout
    */
-  heroBackground?: ('primary' | 'secondary' | 'accent') | null;
+  heroBackground?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent') | null;
   /**
    * Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile). Alt text is automatically used from the media upload.
    */
@@ -296,7 +292,7 @@ export interface HeroHeadingBlock {
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary') | null;
+          uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary') | null;
           /**
            * Button size variant
            */
@@ -655,7 +651,7 @@ export interface LatestPostsBlock {
       /**
        * Button color variant from UntitledUI design system
        */
-      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
       /**
        * Button size variant
        */
@@ -738,7 +734,7 @@ export interface CallToActionBlock {
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+          uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
           /**
            * Button size variant
            */
@@ -867,7 +863,7 @@ export interface ContentBlock {
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+          uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
           /**
            * Button size variant
            */
@@ -1159,6 +1155,10 @@ export interface CardGridBlock {
   };
   cards: {
     /**
+     * Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+     */
+    icon?: string | null;
+    /**
      * Small text above card title (e.g., "New", "Featured", "Step 01")
      */
     eyebrow?: string | null;
@@ -1185,10 +1185,6 @@ export interface CardGridBlock {
       [k: string]: unknown;
     } | null;
     /**
-     * Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
-     */
-    icon?: string | null;
-    /**
      * Add an optional call-to-action link or button
      */
     enableLink?: boolean | null;
@@ -1209,7 +1205,7 @@ export interface CardGridBlock {
       /**
        * Button color variant from UntitledUI design system
        */
-      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
       /**
        * Button size variant
        */
@@ -1232,7 +1228,7 @@ export interface CardGridBlock {
   /**
    * Visual style for cards (background and borders)
    */
-  cardBackground?: ('primary' | 'secondary' | 'accent' | 'line') | null;
+  cardBackground?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'line') | null;
   /**
    * Number of columns in the grid (1-4). Single column layout allows natural card heights; multi-column layouts use equal heights.
    */
@@ -1240,7 +1236,7 @@ export interface CardGridBlock {
   /**
    * Icon color variant - matches button color system
    */
-  iconColor?: ('primary' | 'secondary' | 'tertiary' | 'accent') | null;
+  iconColor?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent') | null;
   /**
    * Shape of the icon container
    */
@@ -1325,7 +1321,7 @@ export interface FeaturesBlock {
       /**
        * Button color variant from UntitledUI design system
        */
-      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
       /**
        * Button size variant
        */
@@ -1352,7 +1348,7 @@ export interface FeaturesBlock {
     /**
      * Visual style for feature cards (background and borders)
      */
-    cardBackground?: ('primary' | 'secondary' | 'accent' | 'line') | null;
+    cardBackground?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'line') | null;
     /**
      * Number of columns in the grid (1-4). Automatically switches to full-width if only one feature exists.
      */
@@ -1360,7 +1356,7 @@ export interface FeaturesBlock {
     /**
      * Icon color variant - matches button color system
      */
-    iconColor?: ('primary' | 'secondary' | 'tertiary' | 'accent') | null;
+    iconColor?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent') | null;
     /**
      * Shape of the icon container
      */
@@ -1983,7 +1979,6 @@ export interface HeroHeadingBlockSelect<T extends boolean = true> {
   subtitle?: T;
   enableTypewriter?: T;
   headlineColor?: T;
-  subheadingColor?: T;
   textAlignment?: T;
   spacing?: T;
   subtitleSize?: T;
@@ -2151,10 +2146,10 @@ export interface CardGridBlockSelect<T extends boolean = true> {
   cards?:
     | T
     | {
+        icon?: T;
         eyebrow?: T;
         title?: T;
         description?: T;
-        icon?: T;
         enableLink?: T;
         link?:
           | T
@@ -2943,7 +2938,7 @@ export interface Header {
       /**
        * Button color variant from UntitledUI design system
        */
-      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
       /**
        * Button size variant
        */
@@ -2983,7 +2978,7 @@ export interface Header {
       /**
        * Button color variant from UntitledUI design system
        */
-      uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
       /**
        * Button size variant
        */
@@ -3134,7 +3129,7 @@ export interface NotFound {
     /**
      * Button color variant from UntitledUI design system
      */
-    uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+    uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
     /**
      * Button size variant
      */
@@ -3704,7 +3699,7 @@ export interface ButtonBlock {
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?: ('primary' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+          uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
           /**
            * Button size variant
            */

@@ -31,7 +31,6 @@ Better Customers.
 Faster Growth."
               subtitle="Take it all in your Stride"
               headlineColor="primary"
-              subheadingColor="default"
               textAlignment="left"
               spacing="normal"
             />
@@ -58,7 +57,6 @@ Faster Growth."
 With Accent Blue"
               subtitle="Perfect for landing pages"
               headlineColor="brand"
-              subheadingColor="default"
               textAlignment="center"
               spacing="spacious"
             />

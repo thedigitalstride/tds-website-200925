@@ -164,7 +164,7 @@ export const Header: GlobalConfig = {
         link({
           appearances: false,
           enableUUIButton: true,
-          uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'link'],
           uuiSizes: ['sm', 'md', 'lg', 'xl'],
           defaultUUIColor: 'primary',
           defaultUUISize: 'sm',
@@ -191,7 +191,7 @@ export const Header: GlobalConfig = {
         link({
           appearances: false,
           enableUUIButton: true,
-          uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'link'],
           uuiSizes: ['sm', 'md', 'lg', 'xl'],
           defaultUUIColor: 'primary',
           defaultUUISize: 'sm',

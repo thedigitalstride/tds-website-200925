@@ -20,7 +20,7 @@ type CMSLinkType = {
   type?: 'custom' | 'reference' | null
   url?: string | null
   // UUI Button properties
-  uuiColor?: 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
+  uuiColor?: 'primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
   uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
   buttonIcon?: string | null
   iconPos?: 'leading' | 'trailing' | null
