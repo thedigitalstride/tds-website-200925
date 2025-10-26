@@ -75,9 +75,9 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
       case 'tertiary':
         // Dark text on gray-solid background (both modes)
         return {
-          eyebrow: 'text-brand-secondary dark:text-brand-900',
-          heading: 'text-primary dark:text-brand-900',
-          description: 'text-secondary dark:text-brand-900'
+          eyebrow: 'text-brand-700',
+          heading: 'text-brand-900',
+          description: 'text-brand-900'
         }
       default:
         // Default semantic colors for primary, secondary, line
@@ -156,7 +156,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
-                  className="prose-compact"
+                  className={cn(
+                    "prose-compact",
+                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  )}
                 />
               ) : (
                 <p>{subtitle}</p>
@@ -211,7 +216,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
-                  className="prose-compact"
+                  className={cn(
+                    "prose-compact",
+                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  )}
                 />
               ) : (
                 <p>{subtitle}</p>
@@ -266,7 +276,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
-                  className="prose-compact"
+                  className={cn(
+                    "prose-compact",
+                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  )}
                 />
               ) : (
                 <p>{subtitle}</p>
@@ -314,7 +329,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
-                  className="prose-compact"
+                  className={cn(
+                    "prose-compact",
+                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  )}
                 />
               ) : (
                 <p>{subtitle}</p>
@@ -370,7 +390,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
-                  className="prose-compact"
+                  className={cn(
+                    "prose-compact",
+                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  )}
                 />
               ) : (
                 <p>{subtitle}</p>
@@ -420,7 +445,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                 data={subtitle}
                 enableGutter={false}
                 enableProse={true}
-                className="text-md"
+                className={cn(
+                  "text-md",
+                  cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                  cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                  cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                )}
               />
             ) : (
               <p>{subtitle}</p>
@@ -460,7 +490,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                 data={subtitle}
                 enableGutter={false}
                 enableProse={true}
-                className="text-md"
+                className={cn(
+                  "text-md",
+                  cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                  cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                  cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                )}
               />
             ) : (
               <p>{subtitle}</p>
@@ -500,7 +535,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                 data={subtitle}
                 enableGutter={false}
                 enableProse={true}
-                className="text-md"
+                className={cn(
+                  "text-md",
+                  cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                  cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                  cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                )}
               />
             ) : (
               <p>{subtitle}</p>
@@ -569,6 +609,19 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   <UUIButton
                     label={card.link.label || 'Learn more'}
                     link={card.link}
+                    className={cn(
+                      // Override link variant colors for special backgrounds
+                      (cardStyleValue === 'tertiary' || cardStyleValue === 'primary-reversed' || cardStyleValue === 'accent') &&
+                      typeof card.link === 'object' &&
+                      card.link.uuiColor === 'link' && [
+                        // Tertiary: dark text on light gray background (both modes)
+                        cardStyleValue === 'tertiary' && "[&]:!text-brand-700 [&_*[data-text]]:!text-brand-700 [&_*[data-icon]]:!text-brand-700 hover:[&]:!text-brand-900 hover:[&_*[data-text]]:!text-brand-900 hover:[&_*[data-icon]]:!text-brand-900",
+                        // Primary-reversed: white text on dark bg (light mode), dark text on white bg (dark mode)
+                        cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-700 [&_*[data-text]]:!text-white dark:[&_*[data-text]]:!text-brand-700 [&_*[data-icon]]:!text-white dark:[&_*[data-icon]]:!text-brand-700 hover:[&]:!text-gray-200 dark:hover:[&]:!text-brand-900 hover:[&_*[data-text]]:!text-gray-200 dark:hover:[&_*[data-text]]:!text-brand-900 hover:[&_*[data-icon]]:!text-gray-200 dark:hover:[&_*[data-icon]]:!text-brand-900",
+                        // Accent: white text on blue background (both modes)
+                        cardStyleValue === 'accent' && "[&]:!text-white [&_*[data-text]]:!text-white [&_*[data-icon]]:!text-white hover:[&]:!text-gray-200 hover:[&_*[data-text]]:!text-gray-200 hover:[&_*[data-icon]]:!text-gray-200"
+                      ]
+                    )}
                   />
                 ) : undefined
 
