@@ -13,6 +13,7 @@ import {
   parseKeywords,
 } from '@/services/ai'
 import { logger } from '@/utilities/logger'
+import { applyRateLimit, withRateLimitHeaders } from '@/utilities/apiRateLimitHelper'
 import type { SeoDescriptionConfig } from '@/services/ai/types'
 
 export async function POST(request: NextRequest) {
@@ -49,6 +50,10 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
     }
+
+    // Apply rate limiting
+    const { rateLimitResult, errorResponse } = applyRateLimit(user.id)
+    if (errorResponse) return errorResponse
 
     logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     logger.log(`[API] 🎯 SEO description generation requested`)
@@ -140,11 +145,14 @@ export async function POST(request: NextRequest) {
 
     logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 
-    return NextResponse.json({
-      success: true,
-      text: result.text,
-      metadata: result.metadata,
-    })
+    return withRateLimitHeaders(
+      {
+        success: true,
+        text: result.text,
+        metadata: result.metadata,
+      },
+      rateLimitResult
+    )
   } catch (error) {
     logger.error('[API] Error generating SEO description:', error)
 
