@@ -34,8 +34,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
   const cardLayout = cardStyle || 'card'
   const columnsValue = columns || '3'
   const rawIconColor = iconColor || 'primary'
-  // Map 'primary' to 'brand' for FeaturedIcon compatibility
-  const mappedIconColor = (rawIconColor === 'primary' ? 'brand' : rawIconColor) as 'brand' | 'accent' | 'secondary' | 'tertiary'
+  // Map 'primary' to 'brand' and 'primary-reversed' to 'brand-reversed' for FeaturedIcon compatibility
+  const mappedIconColor = (
+    rawIconColor === 'primary' ? 'brand' :
+    rawIconColor === 'primary-reversed' ? 'brand-reversed' :
+    rawIconColor
+  ) as 'brand' | 'brand-reversed' | 'accent' | 'secondary' | 'tertiary'
   const iconShape = (iconTheme || 'rounded-square') as 'rounded-square' | 'round'
   const cardStyleValue = cardBackground || 'primary'
 
@@ -51,11 +55,41 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
     return 'p-5 md:p-6' // Standard padding
   }
 
-  // Text colors - consistent across all variants
-  const textClasses = {
-    heading: 'text-primary',
-    description: 'text-secondary'
+  // Text colors based on background variant
+  const getTextClasses = () => {
+    switch (cardStyleValue) {
+      case 'accent':
+        // White text on accent background
+        return {
+          eyebrow: 'text-white',
+          heading: 'text-white',
+          description: 'text-white'
+        }
+      case 'primary-reversed':
+        // White text on dark bg (light mode), dark text on white bg (dark mode)
+        return {
+          eyebrow: 'text-white dark:text-brand-500',
+          heading: 'text-white dark:text-brand-500',
+          description: 'text-white dark:text-brand-500'
+        }
+      case 'tertiary':
+        // Dark text on gray-solid background (both modes)
+        return {
+          eyebrow: 'text-brand-700',
+          heading: 'text-brand-900',
+          description: 'text-brand-900'
+        }
+      default:
+        // Default semantic colors for primary, secondary, line
+        return {
+          eyebrow: 'text-brand-secondary',
+          heading: 'text-primary',
+          description: 'text-secondary'
+        }
+    }
   }
+
+  const textClasses = getTextClasses()
 
   const cardPaddingClasses = getCardPaddingClasses()
 
@@ -104,7 +138,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">
+            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -122,7 +156,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
-                  className="prose-compact"
+                  className={cn(
+                    "prose-compact",
+                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  )}
                 />
               ) : (
                 <p>{subtitle}</p>
@@ -159,7 +198,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">
+            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -177,7 +216,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
-                  className="prose-compact"
+                  className={cn(
+                    "prose-compact",
+                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  )}
                 />
               ) : (
                 <p>{subtitle}</p>
@@ -214,7 +258,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
       <div className="flex flex-col justify-between items-start gap-4 flex-1">
         <div>
           {eyebrow && (
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">
+            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -232,7 +276,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
-                  className="prose-compact"
+                  className={cn(
+                    "prose-compact",
+                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  )}
                 />
               ) : (
                 <p>{subtitle}</p>
@@ -262,7 +311,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">
+            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -280,7 +329,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
-                  className="prose-compact"
+                  className={cn(
+                    "prose-compact",
+                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  )}
                 />
               ) : (
                 <p>{subtitle}</p>
@@ -318,7 +372,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">
+            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -336,7 +390,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
-                  className="prose-compact"
+                  className={cn(
+                    "prose-compact",
+                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  )}
                 />
               ) : (
                 <p>{subtitle}</p>
@@ -368,7 +427,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
     )}>
       <div>
         {eyebrow && (
-          <span className="text-sm font-semibold text-brand-secondary md:text-md">
+          <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}
@@ -386,7 +445,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                 data={subtitle}
                 enableGutter={false}
                 enableProse={true}
-                className="text-md"
+                className={cn(
+                  "text-md",
+                  cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                  cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                  cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                )}
               />
             ) : (
               <p>{subtitle}</p>
@@ -408,7 +472,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
     )}>
       <div>
         {eyebrow && (
-          <span className="text-sm font-semibold text-brand-secondary md:text-md">
+          <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}
@@ -426,7 +490,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                 data={subtitle}
                 enableGutter={false}
                 enableProse={true}
-                className="text-md"
+                className={cn(
+                  "text-md",
+                  cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                  cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                  cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                )}
               />
             ) : (
               <p>{subtitle}</p>
@@ -448,7 +517,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
     )}>
       <div>
         {eyebrow && (
-          <span className="text-sm font-semibold text-brand-secondary md:text-md">
+          <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}
@@ -466,7 +535,12 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                 data={subtitle}
                 enableGutter={false}
                 enableProse={true}
-                className="text-md"
+                className={cn(
+                  "text-md",
+                  cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
+                  cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
+                  cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                )}
               />
             ) : (
               <p>{subtitle}</p>
@@ -535,6 +609,19 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
                   <UUIButton
                     label={card.link.label || 'Learn more'}
                     link={card.link}
+                    className={cn(
+                      // Override link variant colors for special backgrounds
+                      (cardStyleValue === 'tertiary' || cardStyleValue === 'primary-reversed' || cardStyleValue === 'accent') &&
+                      typeof card.link === 'object' &&
+                      card.link.uuiColor === 'link' && [
+                        // Tertiary: dark text on light gray background (both modes)
+                        cardStyleValue === 'tertiary' && "[&]:!text-brand-700 [&_*[data-text]]:!text-brand-700 [&_*[data-icon]]:!text-brand-700 hover:[&]:!text-brand-900 hover:[&_*[data-text]]:!text-brand-900 hover:[&_*[data-icon]]:!text-brand-900",
+                        // Primary-reversed: white text on dark bg (light mode), dark text on white bg (dark mode)
+                        cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-700 [&_*[data-text]]:!text-white dark:[&_*[data-text]]:!text-brand-700 [&_*[data-icon]]:!text-white dark:[&_*[data-icon]]:!text-brand-700 hover:[&]:!text-gray-200 dark:hover:[&]:!text-brand-900 hover:[&_*[data-text]]:!text-gray-200 dark:hover:[&_*[data-text]]:!text-brand-900 hover:[&_*[data-icon]]:!text-gray-200 dark:hover:[&_*[data-icon]]:!text-brand-900",
+                        // Accent: white text on blue background (both modes)
+                        cardStyleValue === 'accent' && "[&]:!text-white [&_*[data-text]]:!text-white [&_*[data-icon]]:!text-white hover:[&]:!text-gray-200 hover:[&_*[data-text]]:!text-gray-200 hover:[&_*[data-icon]]:!text-gray-200"
+                      ]
+                    )}
                   />
                 ) : undefined
 

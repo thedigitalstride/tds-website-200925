@@ -50,7 +50,16 @@ export const styles = sortCx({
     colors: {
         primary: {
             root: [
-                "bg-brand-solid text-white dark:text-brand-500 ring-1 ring-transparent ring-inset hover:scale-105",
+                "bg-white text-brand-500 dark:bg-brand-500 dark:text-white ring-1 ring-transparent ring-inset hover:scale-105",
+                // Disabled styles
+                "disabled:bg-disabled disabled:text-fg-disabled",
+                // Icon styles
+                "*:data-icon:text-brand-500 dark:*:data-icon:text-white",
+            ].join(" "),
+        },
+        "primary-reversed": {
+            root: [
+                "bg-brand-500 text-white dark:bg-white dark:text-brand-500 ring-1 ring-transparent ring-inset hover:scale-105",
                 // Disabled styles
                 "disabled:bg-disabled disabled:text-fg-disabled",
                 // Icon styles
@@ -68,7 +77,7 @@ export const styles = sortCx({
         },
         secondary: {
             root: [
-                "bg-transparent text-brand-500 dark:text-white ring-1 ring-brand-500 dark:ring-white ring-inset hover:scale-105",
+                "bg-transparent text-brand-500 dark:text-white ring-1 ring-gray-solid ring-inset hover:scale-105",
                 // Disabled styles
                 "disabled:ring-disabled_subtle",
                 // Icon styles
@@ -77,9 +86,9 @@ export const styles = sortCx({
         },
         tertiary: {
             root: [
-                "bg-gray-200 dark:bg-gray-700 text-brand-500 dark:text-white hover:scale-105",
+                "bg-gray-solid text-brand-500 dark:text-brand-900 hover:scale-105",
                 // Icon styles
-                "*:data-icon:text-brand-500 dark:*:data-icon:text-white",
+                "*:data-icon:text-brand-500 dark:*:data-icon:text-brand-900",
             ].join(" "),
         },
         "link": {

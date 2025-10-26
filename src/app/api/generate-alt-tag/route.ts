@@ -8,6 +8,7 @@ import config from '@payload-config'
 import { NextRequest, NextResponse } from 'next/server'
 import { generateAltTag, generateAltTagWithFallback } from '@/services/ai'
 import { logger } from '@/utilities/logger'
+import { aiRateLimiter } from '@/utilities/rateLimiter'
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,6 +32,30 @@ export async function POST(request: NextRequest) {
 
     if (!user) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+    }
+
+    // Apply rate limiting
+    const rateLimitResult = aiRateLimiter.check(user.id.toString())
+
+    if (!rateLimitResult.success) {
+      const retryAfter = rateLimitResult.reset - Math.floor(Date.now() / 1000)
+      return NextResponse.json(
+        {
+          error: 'Rate limit exceeded',
+          message: `You've reached the limit of ${rateLimitResult.limit} AI generations per hour. Please try again later.`,
+          retryAfter,
+          resetAt: new Date(rateLimitResult.reset * 1000).toISOString()
+        },
+        {
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': rateLimitResult.limit.toString(),
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': rateLimitResult.reset.toString(),
+            'Retry-After': retryAfter.toString()
+          }
+        }
+      )
     }
 
     logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
@@ -91,11 +116,20 @@ export async function POST(request: NextRequest) {
       logger.log(`[API] ⏱️  Duration: ${result.metadata?.duration}ms`)
       logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 
-      return NextResponse.json({
-        success: true,
-        altText: result.altText,
-        metadata: result.metadata,
-      })
+      return NextResponse.json(
+        {
+          success: true,
+          altText: result.altText,
+          metadata: result.metadata,
+        },
+        {
+          headers: {
+            'X-RateLimit-Limit': rateLimitResult.limit.toString(),
+            'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+            'X-RateLimit-Reset': rateLimitResult.reset.toString(),
+          }
+        }
+      )
     }
 
     // AI generation failed, log the error and use fallback

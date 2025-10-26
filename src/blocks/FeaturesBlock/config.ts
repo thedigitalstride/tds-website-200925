@@ -107,7 +107,7 @@ export const FeaturesBlock: Block = {
         },
         link({
           enableUUIButton: true,
-          uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'link'],
           uuiSizes: ['sm', 'md', 'lg', 'xl'],
           defaultUUIColor: 'link',
           defaultUUISize: 'md',
@@ -175,8 +175,16 @@ export const FeaturesBlock: Block = {
               value: 'primary',
             },
             {
+              label: 'Primary (Reversed)',
+              value: 'primary-reversed',
+            },
+            {
               label: 'Secondary',
               value: 'secondary',
+            },
+            {
+              label: 'Tertiary',
+              value: 'tertiary',
             },
             {
               label: 'Accent',
@@ -214,6 +222,7 @@ export const FeaturesBlock: Block = {
           label: 'Icon Color',
           options: [
             { label: 'Primary', value: 'primary' },
+            { label: 'Primary (Reversed)', value: 'primary-reversed' },
             { label: 'Secondary', value: 'secondary' },
             { label: 'Tertiary', value: 'tertiary' },
             { label: 'Accent', value: 'accent' },

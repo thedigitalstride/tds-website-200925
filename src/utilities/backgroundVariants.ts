@@ -7,10 +7,12 @@
  */
 
 export type BackgroundVariant =
-  | 'primary'    // Primary brand background (light brand tint)
-  | 'secondary'  // Secondary/outlined style (transparent with border)
-  | 'accent'     // Accent blue solid color
-  | 'line'       // Top border only (cards only)
+  | 'primary'            // Primary: white bg in light, dark bg in dark
+  | 'primary-reversed'   // Primary reversed: dark bg in light, white bg in dark
+  | 'secondary'          // Secondary/outlined style (transparent with border)
+  | 'tertiary'           // Tertiary: gray-solid background
+  | 'accent'             // Accent blue solid color
+  | 'line'               // Top border only (cards only)
 
 /**
  * Returns Tailwind classes for background variants
@@ -22,15 +24,19 @@ export type BackgroundVariant =
 export function getBackgroundClasses(variant: BackgroundVariant): string {
   switch (variant) {
     case 'primary':
-      return 'bg-card-brand-subtle'  // Primary brand background
-    case 'accent':
-      return 'bg-card-accent'         // Accent blue background
+      return 'bg-primary'  // White in light, dark in dark
+    case 'primary-reversed':
+      return 'bg-brand-solid dark:!bg-white'  // Dark in light, white in dark (forced)
     case 'secondary':
-      return 'bg-transparent border border-gray-300 dark:border-gray-700'  // Secondary outlined style
+      return 'bg-transparent ring-1 ring-gray-solid ring-inset'  // Outlined style with gray-solid ring
+    case 'tertiary':
+      return 'bg-gray-solid'  // Gray-solid background
+    case 'accent':
+      return 'bg-accent-solid'  // Accent blue background
     case 'line':
-      return 'border-t-2 border-gray-300 dark:border-gray-700'  // Top border (cards only)
+      return 'border-t-2 border-gray-solid'  // Top border only
     default:
-      return 'bg-card-brand-subtle'
+      return 'bg-primary'
   }
 }
 
@@ -46,8 +52,16 @@ export const backgroundVariantFieldOptions = [
     value: 'primary' as const,
   },
   {
+    label: 'Primary (Reversed)',
+    value: 'primary-reversed' as const,
+  },
+  {
     label: 'Secondary',
     value: 'secondary' as const,
+  },
+  {
+    label: 'Tertiary',
+    value: 'tertiary' as const,
   },
   {
     label: 'Accent',
@@ -58,6 +72,13 @@ export const backgroundVariantFieldOptions = [
     value: 'line' as const,
   },
 ]
+
+/**
+ * Background variant options for Hero blocks (excludes line variant)
+ */
+export const heroBackgroundVariantFieldOptions = backgroundVariantFieldOptions.filter(
+  option => option.value !== 'line'
+)
 
 /**
  * Helper function to create a standardized background variant field for Payload CMS
@@ -94,6 +115,30 @@ export function createBackgroundVariantField(config?: {
     label: config?.label || 'Background Style',
     defaultValue: config?.defaultValue || 'primary',
     options: backgroundVariantFieldOptions,
+    admin: {
+      description: config?.description || 'Choose the background style',
+      ...(config?.condition && { condition: config.condition }),
+    },
+  }
+}
+
+/**
+ * Helper function to create a hero background variant field
+ * Same as createBackgroundVariantField but excludes 'line' option
+ */
+export function createHeroBackgroundVariantField(config?: {
+  name?: string
+  label?: string
+  defaultValue?: Exclude<BackgroundVariant, 'line'>
+  description?: string
+  condition?: (data: Record<string, unknown>, siblingData: Record<string, unknown>) => boolean
+}) {
+  return {
+    name: config?.name || 'backgroundVariant',
+    type: 'select' as const,
+    label: config?.label || 'Background Style',
+    defaultValue: config?.defaultValue || 'primary',
+    options: heroBackgroundVariantFieldOptions,
     admin: {
       description: config?.description || 'Choose the background style',
       ...(config?.condition && { condition: config.condition }),

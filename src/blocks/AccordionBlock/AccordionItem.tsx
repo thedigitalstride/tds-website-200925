@@ -84,12 +84,12 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
   // Divider classes
   const dividerClasses = {
     line: cn(
-      'border-t border-black/20 dark:border-white/25',
+      'border-t border-gray-solid',
       isLast && 'border-b'
     ),
     none: '',
     card: cn(
-      'border border-black/20 dark:border-white/25',
+      'border border-gray-solid',
       // Remove bottom border except on last item to avoid double borders when stacked
       !isLast && 'border-b-0',
       // Apply rounded corners based on position when in card mode
@@ -256,7 +256,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
 
             {/* Related Content */}
             {faq.relatedContent && faq.relatedContent.length > 0 && (
-              <div className="mt-6 border-t border-tertiary pt-6">
+              <div className="mt-6 border-t border-gray-solid pt-6">
                 <h4 className="text-sm font-semibold text-secondary">Related Articles</h4>
                 <ul className="mt-3 space-y-2">
                   {faq.relatedContent.map((item) => {
@@ -285,13 +285,13 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
 
             {/* Downloadable Resources */}
             {faq.resources && faq.resources.length > 0 && (
-              <div className="mt-6 border-t border-tertiary pt-6">
+              <div className="mt-6 border-t border-gray-solid pt-6">
                 <h4 className="text-sm font-semibold text-secondary">Downloads</h4>
                 <ul className="mt-3 space-y-3">
                   {faq.resources.map((resource) => (
                     <li
                       key={resource.id}
-                      className="flex items-start gap-3 rounded-lg border border-tertiary p-4 transition-colors hover:border-brand-secondary hover:bg-secondary"
+                      className="flex items-start gap-3 rounded-lg border border-gray-solid p-4 transition-colors hover:border-brand-secondary hover:bg-secondary"
                     >
                       <div className="flex-shrink-0">
                         {resource.file.mimeType?.startsWith('image/') && resource.file.url ? (

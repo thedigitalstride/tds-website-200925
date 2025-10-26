@@ -13,7 +13,6 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   headline,
   subtitle,
   headlineColor,
-  subheadingColor,
   textAlignment,
   spacing,
   subtitleSize,
@@ -29,7 +28,6 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   const finalSpacing = spacing ?? 'normal'
   const finalHeadlineColor = headlineColor ?? 'primary'
   const finalSubtitleSize = subtitleSize ?? 'normal'
-  const finalSubheadingColor = subheadingColor ?? 'default'
 
   // Track when headline typing completes to start subtitle
   const [headlineComplete, setHeadlineComplete] = useState(!enableTypewriter)
@@ -85,17 +83,26 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   const isFullHeight = bgEnabled && heightVariant === 'fullHeight'
   const backgroundType = bgEnabled ? (bg?.type || 'none') : 'none'
 
-  // Brand color uses text-brand-700 which is dark blue in light mode
-  // and automatically switches to lighter brand color in dark mode via theme
+  // Headline color options - all maintain same color in both modes
   const headlineColorClasses: Record<string, string> = {
-    primary: 'text-primary',
-    brand: 'text-accent-500 dark:text-accent-500',
+    primary: 'text-brand-500',   // Brand color (#031A43) in both modes
+    white: 'text-white',         // White in both modes
+    brand: 'text-accent-500',    // Accent blue in both modes
   }
 
-  // Subheading color classes
-  const subheadingColorClasses: Record<string, string> = {
-    default: 'text-brand-500 dark:text-white',
-    white: 'text-white',
+  // Subheading color adapts to background variant for contained layouts
+  const getSubheadingColorForBackground = (bgVariant: BackgroundVariant) => {
+    switch (bgVariant) {
+      case 'accent':
+        return 'text-white'  // White on blue
+      case 'primary-reversed':
+        return 'text-white dark:text-brand-500'  // White text in light mode (dark bg), dark text in dark mode (white bg)
+      case 'tertiary':
+        return 'text-brand-500 dark:text-brand-900'  // Dark text on gray
+      default:
+        // Primary, secondary - default subheading color
+        return 'text-brand-500 dark:text-white'
+    }
   }
 
   // Subtitle size variants
@@ -131,30 +138,62 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
     const hasSplitImage = splitImage && typeof splitImage === 'object'
     const bgVariant = (heroBackground || 'primary') as BackgroundVariant
 
+    // Hero-specific background overrides
+    let heroBgClasses = getBackgroundClasses(bgVariant)
+    if (bgVariant === 'primary') {
+      heroBgClasses = 'bg-gray-solid dark:bg-brand-700'  // Gray in light, dark in dark
+    } else if (bgVariant === 'primary-reversed') {
+      heroBgClasses = 'bg-brand-solid dark:bg-white'  // Dark blue in light, white in dark
+    }
+
     return (
       <section className={containedSpacingClasses[finalSpacing]}>
         <div className="mx-auto max-w-container px-4 md:px-8">
           <div className={cn(
             'relative overflow-hidden rounded-2xl',
-            getBackgroundClasses(bgVariant)
-          )}>
+            heroBgClasses
+          )} style={{ border: 'none' }}>
             {hasSplitImage ? (
               <>
-                {/* SVG Mask - covers ENTIRE container, centered diagonal slashes */}
-                <HeroSplitImageMask className="absolute inset-0 z-10 hidden lg:block" backgroundVariant={bgVariant} />
+                {/* SVG with mask definition and image inside foreignObject */}
+                <svg
+                  className="absolute inset-[-2px] z-0 hidden lg:block"
+                  viewBox="0 0 3486 1897"
+                  preserveAspectRatio="xMidYMid slice"
+                  aria-hidden="true"
+                >
+                  <defs>
+                    <mask id="heroImageMask">
+                      {/* White area on right - shows image (everything to the right of the diagonal) */}
+                      <path
+                        d="M1193.71 1897L2289 0H3486V1897H1193.71Z"
+                        fill="white"
+                      />
+                    </mask>
+                  </defs>
 
-                {/* Image - positioned to cover tinted areas, centered vertically, BEHIND mask */}
-                <div className="absolute top-1/2 left-[34%] right-0 z-0 hidden h-full overflow-hidden -translate-y-1/2 lg:block">
-                  <OptimizedImage
-                    resource={splitImage as Media}
-                    alt={(splitImage as Media)?.alt || ''}
-                    fill
-                    priority
-                    quality={90}
-                    className="object-cover object-center"
-                    sizes="(max-width: 1023px) 0vw, 66vw"
-                  />
-                </div>
+                  {/* Foreign object with image, mask applied */}
+                  <foreignObject
+                    width="3486"
+                    height="1897"
+                    mask="url(#heroImageMask)"
+                  >
+                    <div className="w-full h-full">
+                      <OptimizedImage
+                        resource={splitImage as Media}
+                        alt={(splitImage as Media)?.alt || ''}
+                        fill
+                        priority
+                        quality={90}
+                        className="object-cover object-center"
+                        sizes="(max-width: 1023px) 0vw, 66vw"
+                      />
+                    </div>
+                  </foreignObject>
+                </svg>
+
+                {/* SVG Gradient Overlay - blue diagonal blocks on top */}
+                <HeroSplitImageMask type="gradient" className="absolute inset-[-2px] z-10 hidden lg:block" />
 
                 {/* Content Grid - sits ABOVE mask */}
                 <div className="relative z-20 lg:grid lg:grid-cols-[3fr_1fr] lg:items-start">
@@ -190,8 +229,8 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
 
                   {/* Subtitle - much smaller for split layout */}
                   {subtitle && (
-                    <p
-                      className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                    <h2
+                      className={cn('mt-10 font-normal', getSubheadingColorForBackground(bgVariant))}
                       style={{
                         fontSize: finalSubtitleSize === 'small'
                           ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
@@ -201,7 +240,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                       }}
                     >
                       {subtitle}
-                    </p>
+                    </h2>
                   )}
 
                   {/* Buttons */}
@@ -245,8 +284,8 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
 
                   {/* Subtitle - much smaller for split layout */}
                   {subtitle && (
-                    <p
-                      className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                    <h2
+                      className={cn('mt-10 font-normal', getSubheadingColorForBackground(bgVariant))}
                       style={{
                         fontSize: finalSubtitleSize === 'small'
                           ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
@@ -256,7 +295,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                       }}
                     >
                       {subtitle}
-                    </p>
+                    </h2>
                   )}
 
                   {/* Buttons */}
@@ -287,12 +326,20 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   if (heroLayout === 'standardContained') {
     const bgVariant = (heroBackground || 'primary') as BackgroundVariant
 
+    // Hero-specific background overrides
+    let heroBgClasses = getBackgroundClasses(bgVariant)
+    if (bgVariant === 'primary') {
+      heroBgClasses = 'bg-gray-solid dark:bg-brand-700'  // Gray in light, dark in dark
+    } else if (bgVariant === 'primary-reversed') {
+      heroBgClasses = 'bg-brand-solid dark:bg-white'  // Dark blue in light, white in dark
+    }
+
     return (
       <section className={containedSpacingClasses[finalSpacing]}>
         <div className="mx-auto max-w-container px-4 md:px-8">
           <div className={cn(
             'relative overflow-hidden rounded-2xl',
-            getBackgroundClasses(bgVariant)
+            heroBgClasses
           )}>
             {/* Contained content - 75% width on desktop, alignment based on textAlignment setting */}
             <div className="py-16 px-6 lg:py-24 lg:px-12">
@@ -316,8 +363,8 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
 
                 {/* Subtitle */}
                 {subtitle && (
-                  <p
-                    className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                  <h2
+                    className={cn('mt-10 font-normal', getSubheadingColorForBackground(bgVariant))}
                     style={{
                       fontSize: finalSubtitleSize === 'small'
                         ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
@@ -327,7 +374,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                     }}
                   >
                     {subtitle}
-                  </p>
+                  </h2>
                 )}
 
                 {/* Buttons */}
@@ -482,7 +529,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
               </h1>
               {subtitle && (
                 <h2
-                  className={cn("mt-10 font-normal invisible", subheadingColorClasses[finalSubheadingColor])}
+                  className="mt-10 font-normal invisible text-brand-500 dark:text-white"
                   style={subtitleSizeStyles[finalSubtitleSize]}
                 >
                   {subtitle}
@@ -537,10 +584,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
             </h1>
             {subtitle && (
               <h2
-                className={cn(
-                  "mt-10 font-normal",
-                  subheadingColorClasses[finalSubheadingColor],
-                )}
+                className="mt-10 font-normal text-brand-500 dark:text-white"
                 style={subtitleSizeStyles[finalSubtitleSize]}
               >
                 {enableTypewriter ? (

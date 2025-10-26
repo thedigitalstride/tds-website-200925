@@ -95,6 +95,16 @@ export const CardGridBlock: Block = {
       label: 'Cards',
       fields: [
         {
+          name: 'icon',
+          type: 'text',
+          label: 'Icon Name',
+          admin: {
+            description:
+              'Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com',
+            placeholder: 'Zap',
+          },
+        },
+        {
           name: 'eyebrow',
           type: 'text',
           label: 'Card Eyebrow',
@@ -123,16 +133,6 @@ export const CardGridBlock: Block = {
           },
         },
         {
-          name: 'icon',
-          type: 'text',
-          label: 'Icon Name',
-          admin: {
-            description:
-              'Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com',
-            placeholder: 'Zap',
-          },
-        },
-        {
           name: 'enableLink',
           type: 'checkbox',
           label: 'Enable Link/Button',
@@ -142,7 +142,7 @@ export const CardGridBlock: Block = {
         },
         link({
           enableUUIButton: true,
-          uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'link'],
           uuiSizes: ['sm', 'md', 'lg', 'xl'],
           defaultUUIColor: 'link',
           defaultUUISize: 'md',
@@ -210,8 +210,16 @@ export const CardGridBlock: Block = {
               value: 'primary',
             },
             {
+              label: 'Primary (Reversed)',
+              value: 'primary-reversed',
+            },
+            {
               label: 'Secondary',
               value: 'secondary',
+            },
+            {
+              label: 'Tertiary',
+              value: 'tertiary',
             },
             {
               label: 'Accent',
@@ -249,6 +257,7 @@ export const CardGridBlock: Block = {
           label: 'Icon Color',
           options: [
             { label: 'Primary', value: 'primary' },
+            { label: 'Primary (Reversed)', value: 'primary-reversed' },
             { label: 'Secondary', value: 'secondary' },
             { label: 'Tertiary', value: 'tertiary' },
             { label: 'Accent', value: 'accent' },

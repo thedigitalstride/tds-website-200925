@@ -15,7 +15,7 @@ export const CallToAction: Block = {
     },
     linkGroup({
       enableUUIButton: true,
-      uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+      uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'link'],
       uuiSizes: ['sm', 'md', 'lg', 'xl'],
       defaultUUIColor: 'primary',
       defaultUUISize: 'lg',

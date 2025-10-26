@@ -26,7 +26,7 @@ export interface PayloadLinkObject {
     | ({ relationTo: 'pages'; value: number | Page } | null)
     | ({ relationTo: 'posts'; value: number | Post } | null)
   // UUI Button styling properties
-  uuiColor?: 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
+  uuiColor?: 'primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
   uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
   // UUI Button icon properties
   buttonIcon?: string | null

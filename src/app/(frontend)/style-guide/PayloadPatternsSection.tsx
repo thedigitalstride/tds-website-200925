@@ -117,7 +117,7 @@ export const FeatureRowLabel: RowLabelComponent = ({ data, index }) => {
 // In block config
 link({
   enableUUIButton: true,
-  uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+  uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'link'],
   uuiSizes: ['sm', 'md', 'lg', 'xl'],
   defaultUUIColor: 'primary',
   defaultUUISize: 'md',
@@ -149,7 +149,7 @@ link({
 
 linkGroup({
   enableUUIButton: true,
-  uuiColors: ['primary', 'accent', 'secondary', 'tertiary', 'link'],
+  uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'link'],
   uuiSizes: ['sm', 'md', 'lg', 'xl'],
   defaultUUIColor: 'primary',
   defaultUUISize: 'lg',

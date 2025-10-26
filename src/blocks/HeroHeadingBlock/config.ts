@@ -1,5 +1,6 @@
 import type { Block } from 'payload'
 import { link } from '@/fields/link'
+import { createHeroBackgroundVariantField } from '@/utilities/backgroundVariants'
 
 export const HeroHeadingBlock: Block = {
   slug: 'heroHeading',
@@ -61,23 +62,12 @@ export const HeroHeadingBlock: Block = {
           type: 'select',
           defaultValue: 'primary',
           options: [
-            { label: 'Primary (Dark/Light Gray)', value: 'primary' },
+            { label: 'Primary', value: 'primary' },
+            { label: 'White', value: 'white' },
             { label: 'Accent Blue', value: 'brand' },
           ],
           admin: {
-            description: 'Color scheme for the headline. Brand Blue shows accent blue in dark mode and dark blue in light mode.',
-          },
-        },
-        {
-          name: 'subheadingColor',
-          type: 'select',
-          defaultValue: 'default',
-          options: [
-            { label: 'Default (Brand/White)', value: 'default' },
-            { label: 'White (White/White)', value: 'white' },
-          ],
-          admin: {
-            description: 'Color scheme for the subheading. Default shows brand-500 in light mode and white in dark mode.',
+            description: 'Color scheme for the headline. Primary adapts to light/dark modes, White stays white in both modes, Accent Blue is always accent color.',
           },
         },
         {
@@ -119,30 +109,13 @@ export const HeroHeadingBlock: Block = {
             description: 'Size variant for the subtitle text - Small reduces to 75% of normal size',
           },
         },
-        {
+        createHeroBackgroundVariantField({
           name: 'heroBackground',
-          type: 'select',
           label: 'Background Style',
           defaultValue: 'primary',
-          options: [
-            {
-              label: 'Primary',
-              value: 'primary',
-            },
-            {
-              label: 'Secondary',
-              value: 'secondary',
-            },
-            {
-              label: 'Accent',
-              value: 'accent',
-            },
-          ],
-          admin: {
-            condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage' || siblingData?.heroLayout === 'standardContained',
-            description: 'Background style for the contained layout',
-          },
-        },
+          description: 'Background style for the contained layout',
+          condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage' || siblingData?.heroLayout === 'standardContained',
+        }),
       ],
     },
     {
@@ -168,7 +141,7 @@ export const HeroHeadingBlock: Block = {
       fields: [
         link({
           enableUUIButton: true,
-          uuiColors: ['primary', 'accent', 'secondary', 'tertiary'],
+          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary'],
           uuiSizes: ['md', 'lg', 'xl'],
           defaultUUIColor: 'primary',
           defaultUUISize: 'xl',
