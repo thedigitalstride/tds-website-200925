@@ -177,7 +177,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           sitemap.push({
             url: `${baseUrl}/${page.slug}`,
             lastModified: new Date(lastModified),
-            changeFrequency: page.sitemapChangefreq as any || getChangeFrequency(lastModified, 'page'),
+            changeFrequency: (page.sitemapChangefreq as 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never') || getChangeFrequency(lastModified, 'page'),
             priority: page.sitemapPriority ?? getPriority('page', lastModified),
           })
         }
@@ -193,7 +193,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           sitemap.push({
             url: `${baseUrl}/news-insights/${post.slug}`,
             lastModified: new Date(lastModified),
-            changeFrequency: post.sitemapChangefreq as any || getChangeFrequency(lastModified, 'post'),
+            changeFrequency: (post.sitemapChangefreq as 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never') || getChangeFrequency(lastModified, 'post'),
             priority: post.sitemapPriority ?? getPriority('post', lastModified),
           })
         }
