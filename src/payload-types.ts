@@ -192,6 +192,18 @@ export interface Page {
   publishedAt?: string | null;
   slug: string;
   slugLock?: boolean | null;
+  /**
+   * Check this to exclude this page from the sitemap
+   */
+  excludeFromSitemap?: boolean | null;
+  /**
+   * Priority of this page relative to other pages (0.0 to 1.0). Leave empty for automatic priority.
+   */
+  sitemapPriority?: number | null;
+  /**
+   * How frequently the page is likely to change. Leave empty for automatic frequency.
+   */
+  sitemapChangefreq?: ('always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never') | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -515,6 +527,18 @@ export interface Post {
   authors?: (number | User)[] | null;
   slug: string;
   slugLock?: boolean | null;
+  /**
+   * Check this to exclude this post from the sitemap
+   */
+  excludeFromSitemap?: boolean | null;
+  /**
+   * Priority of this post relative to other pages (0.0 to 1.0). Leave empty for automatic priority based on recency.
+   */
+  sitemapPriority?: number | null;
+  /**
+   * How frequently the post is likely to change. Leave empty for automatic frequency based on age.
+   */
+  sitemapChangefreq?: ('always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never') | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1926,6 +1950,9 @@ export interface PagesSelect<T extends boolean = true> {
   publishedAt?: T;
   slug?: T;
   slugLock?: T;
+  excludeFromSitemap?: T;
+  sitemapPriority?: T;
+  sitemapChangefreq?: T;
   meta?:
     | T
     | {
@@ -2332,6 +2359,9 @@ export interface PostsSelect<T extends boolean = true> {
   authors?: T;
   slug?: T;
   slugLock?: T;
+  excludeFromSitemap?: T;
+  sitemapPriority?: T;
+  sitemapChangefreq?: T;
   meta?:
     | T
     | {
