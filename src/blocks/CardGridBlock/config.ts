@@ -203,8 +203,12 @@ export const CardGridBlock: Block = {
           name: 'cardBackground',
           type: 'select',
           label: 'Card Background',
-          defaultValue: 'primary',
+          defaultValue: 'none',
           options: [
+            {
+              label: 'None (Transparent)',
+              value: 'none',
+            },
             {
               label: 'Primary',
               value: 'primary',

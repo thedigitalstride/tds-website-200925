@@ -49,7 +49,7 @@ export function applyRateLimit(userId: string | number): {
  * @returns NextResponse with rate limit headers
  */
 export function withRateLimitHeaders(
-  response: any,
+  response: unknown,
   rateLimitResult: RateLimitResult
 ): NextResponse {
   return NextResponse.json(

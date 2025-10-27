@@ -47,6 +47,9 @@ import * as migration_20251024_223505 from './20251024_223505';
 import * as migration_20251025_113149 from './20251025_113149';
 import * as migration_20251025_122256 from './20251025_122256';
 import * as migration_20251026_142934 from './20251026_142934';
+import * as migration_20251027_113621_add_missing_button_enum_values from './20251027_113621_add_missing_button_enum_values';
+import * as migration_20251027_205000_fix_custom_class from './20251027_205000_fix_custom_class';
+import * as migration_20251027_210000_fix_card_grid_enum from './20251027_210000_fix_card_grid_enum';
 
 export const migrations = [
   {
@@ -293,5 +296,20 @@ export const migrations = [
     up: migration_20251026_142934.up,
     down: migration_20251026_142934.down,
     name: '20251026_142934',
+  },
+  {
+    up: migration_20251027_113621_add_missing_button_enum_values.up,
+    down: migration_20251027_113621_add_missing_button_enum_values.down,
+    name: '20251027_113621_add_missing_button_enum_values',
+  },
+  {
+    up: migration_20251027_205000_fix_custom_class.up,
+    down: migration_20251027_205000_fix_custom_class.down,
+    name: '20251027_205000_fix_custom_class'
+  },
+  {
+    up: migration_20251027_210000_fix_card_grid_enum.up,
+    down: migration_20251027_210000_fix_card_grid_enum.down,
+    name: '20251027_210000_fix_card_grid_enum'
   },
 ];

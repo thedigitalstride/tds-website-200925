@@ -135,3 +135,113 @@ input[type="search"]::-webkit-search-cancel-button {
 .mobile-menu-popover[data-exiting] {
     animation: none !important;
 }
+
+/* Animated Background Classes for BackgroundSection Block */
+/* Animated gradient background */
+.animated-gradient {
+    background: linear-gradient(-45deg, #1689FF, #031A43, #23a6d5, #031A43);
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Subtle wave animation background */
+.wave-animation {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.wave-animation::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: wave 8s linear infinite;
+}
+
+@keyframes wave {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* Particle background placeholder - requires JavaScript implementation */
+.particle-bg {
+    background: linear-gradient(180deg, #031A43 0%, #1689FF 100%);
+    position: relative;
+}
+
+/* Subtle moving gradient */
+.subtle-gradient {
+    background: linear-gradient(270deg, #031A43, #052952, #031A43);
+    background-size: 600% 600%;
+    animation: subtle-shift 20s ease infinite;
+}
+
+@keyframes subtle-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Aurora borealis effect */
+.aurora-bg {
+    background: linear-gradient(to bottom, #031A43 0%, #1689FF 50%, #031A43 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.aurora-bg::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: conic-gradient(from 0deg, transparent, #1689FF, transparent, #23a6d5, transparent);
+    animation: rotate 30s linear infinite;
+    opacity: 0.3;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Gradient utilities for BackgroundSection */
+@utility bg-gradient-radial {
+    background: radial-gradient(ellipse at center, var(--tw-gradient-from) 0%, var(--tw-gradient-via) 50%, var(--tw-gradient-to) 100%);
+}
+
+@utility bg-gradient-to-br {
+    background: linear-gradient(to bottom right, var(--tw-gradient-from) 0%, var(--tw-gradient-via) 50%, var(--tw-gradient-to) 100%);
+}
+
+@utility bg-gradient-to-b {
+    background: linear-gradient(to bottom, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%);
+}

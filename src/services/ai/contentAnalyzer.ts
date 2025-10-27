@@ -205,7 +205,7 @@ function extractLexicalContent(lexicalData: any): string {
     // Handle heading nodes
     if (node.type === 'heading' && node.children) {
       const headingText = node.children
-        .map((child: any) => (child.text ? child.text : ''))
+        .map((child: { text?: string }) => (child.text ? child.text : ''))
         .join('')
       if (headingText) {
         extracted.push(`\n${headingText}\n`)
@@ -215,7 +215,7 @@ function extractLexicalContent(lexicalData: any): string {
     // Handle paragraph nodes
     if (node.type === 'paragraph' && node.children) {
       const paraText = node.children
-        .map((child: any) => (child.text ? child.text : ''))
+        .map((child: { text?: string }) => (child.text ? child.text : ''))
         .join('')
       if (paraText) {
         extracted.push(paraText)
@@ -227,7 +227,7 @@ function extractLexicalContent(lexicalData: any): string {
       for (const listItem of node.children) {
         if (listItem.children) {
           const itemText = listItem.children
-            .map((child: any) => (child.text ? child.text : ''))
+            .map((child: { text?: string }) => (child.text ? child.text : ''))
             .join('')
           if (itemText) {
             extracted.push(`• ${itemText}`)
@@ -239,7 +239,7 @@ function extractLexicalContent(lexicalData: any): string {
     // Handle quote nodes
     if (node.type === 'quote' && node.children) {
       const quoteText = node.children
-        .map((child: any) => (child.text ? child.text : ''))
+        .map((child: { text?: string }) => (child.text ? child.text : ''))
         .join('')
       if (quoteText) {
         extracted.push(`"${quoteText}"`)
