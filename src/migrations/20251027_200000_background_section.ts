@@ -1,18 +1,14 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
-  // First check if tables already exist
-  const tableCheck = await db.execute(sql`
-    SELECT EXISTS (
-      SELECT FROM information_schema.tables
-      WHERE table_name = 'pages_blocks_background_section'
-    );
+  // Drop existing tables if they exist (they might be partial/incorrect from failed migrations)
+  // This ensures we start fresh with the correct schema
+  await db.execute(sql`
+    DROP TABLE IF EXISTS "pages_blocks_background_section_content_blocks" CASCADE;
+    DROP TABLE IF EXISTS "_pages_v_blocks_background_section_content_blocks" CASCADE;
+    DROP TABLE IF EXISTS "pages_blocks_background_section" CASCADE;
+    DROP TABLE IF EXISTS "_pages_v_blocks_background_section" CASCADE;
   `);
-
-  if (tableCheck.rows[0]?.exists) {
-    console.log('Background section tables already exist, skipping creation');
-    return;
-  }
   // Create enum types if they don't exist
   await db.execute(sql`
     DO $$
