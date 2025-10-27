@@ -354,19 +354,43 @@
   margin-bottom: 0;
 }
 
-/* Prevent prose styles from affecting buttons */
-.prose a[data-rac],
-.prose [data-rac] {
+/*
+ * BUTTON STYLES IN RICHTEXT
+ *
+ * NOTE: Due to Tailwind prose style inheritance complexities,
+ * only Accent and Secondary button variants display correctly
+ * in richtext when using dark mode.
+ *
+ * Recommended for richtext in dark mode:
+ * - Accent (blue background, white text - works in both modes)
+ * - Secondary (outlined button - adapts to both modes)
+ *
+ * Not recommended for richtext:
+ * - Primary (color inheritance issues in dark mode)
+ * - Primary-reversed (color inheritance issues)
+ * - Tertiary (may have contrast issues)
+ */
+
+/* Basic button styling - remove underlines and preserve layout */
+.prose .not-prose a[data-rac],
+.payload-richtext .not-prose a[data-rac] {
   text-decoration: none !important;
-  font-weight: inherit !important;
 }
 
-/* Ensure button blocks don't inherit prose styles */
-.prose .not-prose a,
-.prose .not-prose [data-rac] {
-  text-decoration: none !important;
-  font-weight: inherit !important;
+/* Explicitly set button font weight to semibold (600) */
+.prose .not-prose .font-semibold,
+.payload-richtext .not-prose .font-semibold,
+.prose .not-prose a[data-rac],
+.payload-richtext .not-prose a[data-rac] {
+  font-weight: 600 !important;
 }
+
+/* Ensure buttons use the correct font family */
+.prose .not-prose a[data-rac],
+.payload-richtext .not-prose a[data-rac] {
+  font-family: var(--font-body); /* Use body font, not prose font */
+}
+
 
 /* Button block spacing in richtext */
 .payload-richtext .not-prose {
