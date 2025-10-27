@@ -6,6 +6,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   // Helper function to safely add enum value
   const addEnumValue = async (typeName: string, value: string, position?: { type: 'BEFORE' | 'AFTER', reference: string }) => {
     try {
+      // First check if the enum type exists
+      const typeExists = await db.execute(sql`
+        SELECT 1 FROM pg_type
+        WHERE typname = ${typeName}
+        AND typnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public')
+      `)
+
+      if (typeExists.rows.length === 0) {
+        console.log(`Enum type ${typeName} does not exist, skipping...`)
+        return
+      }
+
       // Check if the value already exists
       const checkResult = await db.execute(sql`
         SELECT 1 FROM pg_enum
