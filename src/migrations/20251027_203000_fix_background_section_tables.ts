@@ -9,6 +9,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     DROP TABLE IF EXISTS "pages_blocks_background_section" CASCADE;
     DROP TABLE IF EXISTS "_pages_v_blocks_background_section" CASCADE;
   `);
+
   // Create enum types if they don't exist
   await db.execute(sql`
     DO $$
@@ -104,7 +105,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     );
   `);
 
-  // Create main table
+  // Create main table with ALL required columns including background_image_id
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS "pages_blocks_background_section" (
       "_order" integer NOT NULL,
