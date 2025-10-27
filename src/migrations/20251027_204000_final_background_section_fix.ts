@@ -29,11 +29,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
       IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum_pages_blocks_background_section_gradient') THEN
         CREATE TYPE "public"."enum_pages_blocks_background_section_gradient" AS ENUM('brand-radial', 'accent-gradient', 'dark-light', 'sunrise', 'ocean', 'purple-haze');
       END IF;
-      IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum_pages_blocks_background_section_background_image_overlay') THEN
-        CREATE TYPE "public"."enum_pages_blocks_background_section_background_image_overlay" AS ENUM('none', 'light-20', 'light-40', 'light-60', 'dark-20', 'dark-40', 'dark-60', 'dark-80', 'brand-40', 'brand-60');
+      IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum_pages_blocks_background_section_image_overlay') THEN
+        CREATE TYPE "public"."enum_pages_blocks_background_section_image_overlay" AS ENUM('none', 'light-20', 'light-40', 'light-60', 'dark-20', 'dark-40', 'dark-60', 'dark-80', 'brand-40', 'brand-60');
       END IF;
-      IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum_pages_blocks_background_section_background_image_position') THEN
-        CREATE TYPE "public"."enum_pages_blocks_background_section_background_image_position" AS ENUM('center', 'top', 'bottom', 'left', 'right');
+      IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum_pages_blocks_background_section_image_position') THEN
+        CREATE TYPE "public"."enum_pages_blocks_background_section_image_position" AS ENUM('center', 'top', 'bottom', 'left', 'right');
       END IF;
       IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum_pages_blocks_background_section_spacing') THEN
         CREATE TYPE "public"."enum_pages_blocks_background_section_spacing" AS ENUM('none', 'compact', 'normal', 'spacious', 'extra');
@@ -60,11 +60,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
       IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum__pages_v_blocks_background_section_gradient') THEN
         CREATE TYPE "public"."enum__pages_v_blocks_background_section_gradient" AS ENUM('brand-radial', 'accent-gradient', 'dark-light', 'sunrise', 'ocean', 'purple-haze');
       END IF;
-      IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum__pages_v_blocks_background_section_background_image_overlay') THEN
-        CREATE TYPE "public"."enum__pages_v_blocks_background_section_background_image_overlay" AS ENUM('none', 'light-20', 'light-40', 'light-60', 'dark-20', 'dark-40', 'dark-60', 'dark-80', 'brand-40', 'brand-60');
+      IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum__pages_v_blocks_background_section_image_overlay') THEN
+        CREATE TYPE "public"."enum__pages_v_blocks_background_section_image_overlay" AS ENUM('none', 'light-20', 'light-40', 'light-60', 'dark-20', 'dark-40', 'dark-60', 'dark-80', 'brand-40', 'brand-60');
       END IF;
-      IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum__pages_v_blocks_background_section_background_image_position') THEN
-        CREATE TYPE "public"."enum__pages_v_blocks_background_section_background_image_position" AS ENUM('center', 'top', 'bottom', 'left', 'right');
+      IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum__pages_v_blocks_background_section_image_position') THEN
+        CREATE TYPE "public"."enum__pages_v_blocks_background_section_image_position" AS ENUM('center', 'top', 'bottom', 'left', 'right');
       END IF;
       IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'enum__pages_v_blocks_background_section_spacing') THEN
         CREATE TYPE "public"."enum__pages_v_blocks_background_section_spacing" AS ENUM('none', 'compact', 'normal', 'spacious', 'extra');
@@ -122,8 +122,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
       "solid_color" "public"."enum_pages_blocks_background_section_solid_color" DEFAULT 'primary',
       "gradient" "public"."enum_pages_blocks_background_section_gradient" DEFAULT 'brand-radial',
       "background_image_id" integer,
-      "background_image_overlay" "public"."enum_pages_blocks_background_section_background_image_overlay" DEFAULT 'none',
-      "background_image_position" "public"."enum_pages_blocks_background_section_background_image_position" DEFAULT 'center',
+      "image_overlay" "public"."enum_pages_blocks_background_section_image_overlay" DEFAULT 'none',
+      "image_position" "public"."enum_pages_blocks_background_section_image_position" DEFAULT 'center',
+      "enable_parallax" boolean DEFAULT false,
       "custom_class_name" varchar,
       "spacing" "public"."enum_pages_blocks_background_section_spacing" DEFAULT 'normal',
       "content_width" "public"."enum_pages_blocks_background_section_content_width" DEFAULT 'container',
@@ -153,8 +154,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
       "solid_color" "public"."enum__pages_v_blocks_background_section_solid_color" DEFAULT 'primary',
       "gradient" "public"."enum__pages_v_blocks_background_section_gradient" DEFAULT 'brand-radial',
       "background_image_id" integer,
-      "background_image_overlay" "public"."enum__pages_v_blocks_background_section_background_image_overlay" DEFAULT 'none',
-      "background_image_position" "public"."enum__pages_v_blocks_background_section_background_image_position" DEFAULT 'center',
+      "image_overlay" "public"."enum__pages_v_blocks_background_section_image_overlay" DEFAULT 'none',
+      "image_position" "public"."enum__pages_v_blocks_background_section_image_position" DEFAULT 'center',
+      "enable_parallax" boolean DEFAULT false,
       "custom_class_name" varchar,
       "spacing" "public"."enum__pages_v_blocks_background_section_spacing" DEFAULT 'normal',
       "content_width" "public"."enum__pages_v_blocks_background_section_content_width" DEFAULT 'container',
@@ -256,8 +258,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE IF EXISTS "public"."enum_pages_blocks_background_section_background_type" CASCADE;
   DROP TYPE IF EXISTS "public"."enum_pages_blocks_background_section_solid_color" CASCADE;
   DROP TYPE IF EXISTS "public"."enum_pages_blocks_background_section_gradient" CASCADE;
-  DROP TYPE IF EXISTS "public"."enum_pages_blocks_background_section_background_image_overlay" CASCADE;
-  DROP TYPE IF EXISTS "public"."enum_pages_blocks_background_section_background_image_position" CASCADE;
+  DROP TYPE IF EXISTS "public"."enum_pages_blocks_background_section_image_overlay" CASCADE;
+  DROP TYPE IF EXISTS "public"."enum_pages_blocks_background_section_image_position" CASCADE;
   DROP TYPE IF EXISTS "public"."enum_pages_blocks_background_section_spacing" CASCADE;
   DROP TYPE IF EXISTS "public"."enum_pages_blocks_background_section_content_width" CASCADE;
   DROP TYPE IF EXISTS "public"."enum_pages_blocks_background_section_color_mode" CASCADE;
@@ -266,8 +268,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_background_section_background_type" CASCADE;
   DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_background_section_solid_color" CASCADE;
   DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_background_section_gradient" CASCADE;
-  DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_background_section_background_image_overlay" CASCADE;
-  DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_background_section_background_image_position" CASCADE;
+  DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_background_section_image_overlay" CASCADE;
+  DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_background_section_image_position" CASCADE;
   DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_background_section_spacing" CASCADE;
   DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_background_section_content_width" CASCADE;
   DROP TYPE IF EXISTS "public"."enum__pages_v_blocks_background_section_color_mode" CASCADE;`);

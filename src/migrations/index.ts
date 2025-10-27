@@ -48,7 +48,7 @@ import * as migration_20251025_113149 from './20251025_113149';
 import * as migration_20251025_122256 from './20251025_122256';
 import * as migration_20251026_142934 from './20251026_142934';
 import * as migration_20251027_113621_add_missing_button_enum_values from './20251027_113621_add_missing_button_enum_values';
-import * as migration_20251027_203000_fix_background_section_tables from './20251027_203000_fix_background_section_tables';
+import * as migration_20251027_204000_final_background_section_fix from './20251027_204000_final_background_section_fix';
 
 export const migrations = [
   {
@@ -302,8 +302,8 @@ export const migrations = [
     name: '20251027_113621_add_missing_button_enum_values',
   },
   {
-    up: migration_20251027_203000_fix_background_section_tables.up,
-    down: migration_20251027_203000_fix_background_section_tables.down,
-    name: '20251027_203000_fix_background_section_tables'
+    up: migration_20251027_204000_final_background_section_fix.up,
+    down: migration_20251027_204000_final_background_section_fix.down,
+    name: '20251027_204000_final_background_section_fix'
   },
 ];
