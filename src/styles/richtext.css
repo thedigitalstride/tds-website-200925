@@ -159,17 +159,17 @@
 }
 
 /* Links - add hover state */
-.prose a {
+.prose a:not([data-rac]) {
   font-weight: 500;
   text-decoration: underline;
   transition: color 0.2s ease;
 }
 
-.prose a:hover {
+.prose a:not([data-rac]):hover {
   color: var(--color-text-primary);
 }
 
-.dark-mode .prose a:hover {
+.dark-mode .prose a:not([data-rac]):hover {
   color: var(--color-text-primary);
 }
 
@@ -235,21 +235,21 @@
 }
 
 /* Override link colors within list items to match body text */
-.prose li a {
+.prose li a:not([data-rac]) {
   color: var(--color-text-secondary);
   text-decoration: underline;
 }
 
-.prose li a:hover {
+.prose li a:not([data-rac]):hover {
   color: var(--color-text-primary);
 }
 
 /* Dark mode link colors in lists */
-.dark-mode .prose li a {
+.dark-mode .prose li a:not([data-rac]) {
   color: var(--color-text-secondary);
 }
 
-.dark-mode .prose li a:hover {
+.dark-mode .prose li a:not([data-rac]):hover {
   color: var(--color-text-primary);
 }
 
@@ -352,6 +352,34 @@
 
 .payload-richtext > *:last-child {
   margin-bottom: 0;
+}
+
+/* Prevent prose styles from affecting buttons */
+.prose a[data-rac],
+.prose [data-rac] {
+  text-decoration: none !important;
+  font-weight: inherit !important;
+}
+
+/* Ensure button blocks don't inherit prose styles */
+.prose .not-prose a,
+.prose .not-prose [data-rac] {
+  text-decoration: none !important;
+  font-weight: inherit !important;
+}
+
+/* Button block spacing in richtext */
+.payload-richtext .not-prose {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Adjust spacing on larger screens to match prose */
+@media (min-width: 768px) {
+  .payload-richtext .not-prose {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
 }
 
 /* Inline images from rich text editor */
@@ -457,7 +485,7 @@
    ========================================================================= */
 
 /* Focus states for links */
-.prose a:focus-visible {
+.prose a:not([data-rac]):focus-visible {
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
   border-radius: 0.125rem;

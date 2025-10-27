@@ -27,7 +27,7 @@ export const ButtonBlockComponent: React.FC<ButtonBlockProps & { className?: str
 
   return (
     <div
-      className={`flex ${layoutClasses[layout || 'horizontal']} ${alignmentClasses[alignment || 'left']} flex-wrap ${className || ''}`}
+      className={`not-prose flex ${layoutClasses[layout || 'horizontal']} ${alignmentClasses[alignment || 'left']} flex-wrap ${className || ''}`}
     >
       {buttons.map((button, index) => {
         const { link } = button
