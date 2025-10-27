@@ -19,7 +19,11 @@ interface CardProps {
   footer?: ReactNode
 }
 
-export const CardGridBlock: React.FC<CardGridBlockProps> = ({
+interface ExtendedCardGridBlockProps extends CardGridBlockProps {
+  disableInnerContainer?: boolean
+}
+
+export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   header,
   cards,
   cardStyle,
@@ -28,6 +32,7 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
   iconColor,
   iconTheme,
   spacing,
+  disableInnerContainer,
 }) => {
   // Extract values from collapsible fields (stored at root level)
   const spacingValue = spacing || 'normal'
@@ -41,16 +46,20 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
     rawIconColor
   ) as 'brand' | 'brand-reversed' | 'accent' | 'secondary' | 'tertiary'
   const iconShape = (iconTheme || 'rounded-square') as 'rounded-square' | 'round'
-  const cardStyleValue = cardBackground || 'primary'
+  const cardStyleValue = cardBackground || 'none'
 
   // Use shared background variant system
   const cardBgClasses = getBackgroundClasses(cardStyleValue as BackgroundVariant)
 
   // Determine padding based on style variant
   const isLineVariant = cardStyleValue === 'line'
+  const isNoneVariant = cardStyleValue === 'none'
   const getCardPaddingClasses = () => {
     if (isLineVariant) {
       return 'py-5 md:py-6' // No horizontal padding for line variant
+    }
+    if (isNoneVariant) {
+      return 'p-5 md:p-6' // Standard padding but no background
     }
     return 'p-5 md:p-6' // Standard padding
   }
@@ -564,37 +573,37 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
   const headerAlignment = header?.headerAlignment || 'left'
   const isHeaderCentered = headerAlignment === 'center'
 
-  return (
-    <section className={cn('bg-primary', spacingClasses[spacingValue])}>
-      <div className="mx-auto w-full max-w-container px-4 md:px-8">
-        {/* Optional Header Section */}
-        {header?.showHeader && (
-          <div className={cn(
-            "flex w-full max-w-3xl flex-col",
-            isHeaderCentered && "mx-auto text-center"
-          )}>
-            {header.eyebrow && (
-              <span className="text-sm font-semibold text-brand-secondary md:text-md">
-                {header.eyebrow}
-              </span>
-            )}
-            {header.heading && (
-              <h2 className="mt-3 text-display-sm font-semibold text-primary md:text-display-md">
-                {header.heading}
-              </h2>
-            )}
-            {header.description && (
-              <p className="mt-4 text-lg text-tertiary md:mt-5 md:text-xl">
-                {header.description}
-              </p>
-            )}
-          </div>
-        )}
+  // Content to render (shared between container and no-container versions)
+  const content = (
+    <>
+      {/* Optional Header Section */}
+      {header?.showHeader && (
+        <div className={cn(
+          "flex w-full max-w-3xl flex-col",
+          isHeaderCentered && "mx-auto text-center"
+        )}>
+          {header.eyebrow && (
+            <span className="text-sm font-semibold text-brand-secondary md:text-md">
+              {header.eyebrow}
+            </span>
+          )}
+          {header.heading && (
+            <h2 className="mt-3 text-display-sm font-semibold text-primary md:text-display-md">
+              {header.heading}
+            </h2>
+          )}
+          {header.description && (
+            <p className="mt-4 text-lg text-tertiary md:mt-5 md:text-xl">
+              {header.description}
+            </p>
+          )}
+        </div>
+      )}
 
-        {/* Cards Grid */}
-        <div className={cn('mt-12 md:mt-16', !header?.showHeader && 'mt-0')}>
-          <ul className={cn('grid w-full', gridHeightClass, gridGapClasses, gridClasses)}>
-            {cards?.map((card, index) => {
+      {/* Cards Grid */}
+      <div className={cn(header?.showHeader && 'mt-12 md:mt-16')}>
+        <ul className={cn('grid w-full', gridHeightClass, gridGapClasses, gridClasses)}>
+          {cards?.map((card, index) => {
               const IconComponent = getIcon(card.icon ?? undefined)
               const hasIcon = !!IconComponent
 
@@ -655,6 +664,19 @@ export const CardGridBlock: React.FC<CardGridBlockProps> = ({
             })}
           </ul>
         </div>
+    </>
+  )
+
+  // If disableInnerContainer is true (when used inside BackgroundSection), render without container
+  if (disableInnerContainer) {
+    return content
+  }
+
+  // Otherwise, render with full section container (standalone usage)
+  return (
+    <section className={cn('bg-primary', spacingClasses[spacingValue])}>
+      <div className="mx-auto w-full max-w-container px-4 md:px-8">
+        {content}
       </div>
     </section>
   )

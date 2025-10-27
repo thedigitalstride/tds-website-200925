@@ -7,6 +7,7 @@
  */
 
 export type BackgroundVariant =
+  | 'none'               // No background (transparent)
   | 'primary'            // Primary: white bg in light, dark bg in dark
   | 'primary-reversed'   // Primary reversed: dark bg in light, white bg in dark
   | 'secondary'          // Secondary/outlined style (transparent with border)
@@ -23,6 +24,8 @@ export type BackgroundVariant =
  */
 export function getBackgroundClasses(variant: BackgroundVariant): string {
   switch (variant) {
+    case 'none':
+      return ''  // No background (transparent)
     case 'primary':
       return 'bg-primary'  // White in light, dark in dark
     case 'primary-reversed':
@@ -47,6 +50,10 @@ export function getBackgroundClasses(variant: BackgroundVariant): string {
  * Matches button system naming (primary, secondary, tertiary, accent) for perfect consistency
  */
 export const backgroundVariantFieldOptions = [
+  {
+    label: 'None (Transparent)',
+    value: 'none' as const,
+  },
   {
     label: 'Primary',
     value: 'primary' as const,

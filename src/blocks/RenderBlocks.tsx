@@ -4,6 +4,7 @@ import type { Page } from '@/payload-types'
 
 import { AccordionBlock } from '@/blocks/AccordionBlock/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
+import { BackgroundSectionBlock } from '@/blocks/BackgroundSection/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
@@ -17,6 +18,7 @@ import { LatestPostsBlock } from '@/blocks/LatestPostsBlock/Component'
 
 const blockComponents = {
   accordion: AccordionBlock,
+  backgroundSection: BackgroundSectionBlock,
   heroHeading: HeroHeadingBlock,
   breadcrumb: BreadcrumbBlock,
   archive: ArchiveBlock,
@@ -37,8 +39,9 @@ export const RenderBlocks: React.FC<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   blocks: (LayoutBlock | any)[]
   breadcrumbs?: BreadcrumbItem[] | null
+  disableInnerContainer?: boolean
 }> = (props) => {
-  const { blocks, breadcrumbs } = props
+  const { blocks, breadcrumbs, disableInnerContainer } = props
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
@@ -53,7 +56,12 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <Block key={index} {...block} breadcrumbs={breadcrumbs} disableInnerContainer />
+                <Block
+                  key={index}
+                  {...block}
+                  breadcrumbs={breadcrumbs}
+                  {...(disableInnerContainer && { disableInnerContainer })}
+                />
               )
             }
           }

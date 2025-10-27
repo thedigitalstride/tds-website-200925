@@ -48,6 +48,7 @@ import * as migration_20251025_113149 from './20251025_113149';
 import * as migration_20251025_122256 from './20251025_122256';
 import * as migration_20251026_142934 from './20251026_142934';
 import * as migration_20251027_113621_add_missing_button_enum_values from './20251027_113621_add_missing_button_enum_values';
+import * as migration_20251027_191803 from './20251027_191803';
 
 export const migrations = [
   {
@@ -299,5 +300,10 @@ export const migrations = [
     up: migration_20251027_113621_add_missing_button_enum_values.up,
     down: migration_20251027_113621_add_missing_button_enum_values.down,
     name: '20251027_113621_add_missing_button_enum_values',
+  },
+  {
+    up: migration_20251027_191803.up,
+    down: migration_20251027_191803.down,
+    name: '20251027_191803'
   },
 ];

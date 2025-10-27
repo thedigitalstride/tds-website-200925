@@ -4,6 +4,7 @@ import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { AccordionBlock } from '../../blocks/AccordionBlock/config'
 import { Archive } from '../../blocks/ArchiveBlock/config'
+import { BackgroundSection } from '../../blocks/BackgroundSection/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
@@ -93,7 +94,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [HeroHeadingBlock, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, CardGridBlock, FeaturesBlock, LatestPostsBlock, AccordionBlock],
+              blocks: [HeroHeadingBlock, BackgroundSection, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, CardGridBlock, FeaturesBlock, LatestPostsBlock, AccordionBlock],
               admin: {
                 initCollapsed: true,
               },
