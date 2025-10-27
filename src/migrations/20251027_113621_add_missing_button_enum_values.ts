@@ -1,6 +1,8 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+  console.log('Starting migration to add missing button enum values...')
+
   // Helper function to safely add enum value
   const addEnumValue = async (typeName: string, value: string, position?: { type: 'BEFORE' | 'AFTER', reference: string }) => {
     try {
@@ -109,6 +111,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   for (const enumName of iconColorEnums) {
     await addEnumValue(enumName, 'primary-reversed', { type: 'AFTER', reference: 'primary' })
   }
+
+  console.log('Migration completed successfully!')
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
