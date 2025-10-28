@@ -30,8 +30,12 @@ export async function POST(request: NextRequest) {
     // Get the model to use
     const modelToUse = aiSettings.iconEnhancement?.model || aiSettings.model || 'gpt-4o-mini'
 
-    // Initialize AI service
-    const iconAI = new IconIntelligence(aiSettings.apiKey, modelToUse)
+    // Initialize AI service with provider config
+    const iconAI = new IconIntelligence({
+      provider: aiSettings.provider || 'openai',
+      apiKey: aiSettings.apiKey,
+      model: modelToUse,
+    })
 
     // Generate metadata
     const metadata = await iconAI.suggestMetadata(iconName)
