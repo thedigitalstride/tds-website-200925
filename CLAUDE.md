@@ -160,6 +160,7 @@ src/
 - Import UUI components from `/src/components/uui/`
 - Pass icons as props (`iconLeading={Icon}`), not children
 - Use `categories` array (not `category` object) in blog queries
+- Use `iconSelectorField()` helper for icon selection in blocks
 
 **❌ DON'T:**
 - Use `<img>` tags directly (breaks optimization)
@@ -185,6 +186,9 @@ Nested taxonomy for organizing posts and content filtering
 
 ### Users (`/admin/collections/users`)
 Authentication, admin access, author profiles
+
+### Icons (`/admin/collections/icons`)
+SVG icon library with AI-enhanced metadata, visual selector for blocks. See [ICON_SELECTOR.md](/docs/ICON_SELECTOR.md)
 
 ## Features
 
