@@ -1,4 +1,5 @@
 import type { Field } from 'payload'
+import { IconSelectorField } from './Field'
 
 export const iconSelectorField = (overrides?: Partial<Field>): Field => ({
   name: 'icon',
@@ -7,6 +8,11 @@ export const iconSelectorField = (overrides?: Partial<Field>): Field => ({
   required: false,
   admin: {
     description: 'Select an icon from the Icons collection',
+    components: {
+      Field: IconSelectorField,
+    },
   },
   ...overrides,
 })
+
+export { IconSelectorField }
