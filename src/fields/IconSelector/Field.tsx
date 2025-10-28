@@ -1,11 +1,10 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import type { TextFieldClientComponent } from 'payload'
 import { IconGrid } from './Component'
 import type { Icon } from '@/payload-types'
 
-export const IconSelectorField: TextFieldClientComponent = (props) => {
+export const IconSelectorField = (props: any) => {
   const { value, setValue } = props
   const [selectedIcon, setSelectedIcon] = useState<Icon | null>(null)
   const [showGrid, setShowGrid] = useState(false)
