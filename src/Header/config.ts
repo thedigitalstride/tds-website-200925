@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
+import { iconSelectorField } from '@/fields/IconSelector'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
 export const Header: GlobalConfig = {
@@ -118,15 +119,13 @@ export const Header: GlobalConfig = {
                 description: 'Brief description that appears below the link text',
               },
             },
-            {
+            iconSelectorField({
               name: 'icon',
-              type: 'text',
-              label: 'Icon',
+              required: false,
               admin: {
-                description: 'Optional icon name from @untitledui/icons (e.g., "TrendUp01", "Users01", "ArrowRight", "Download01")',
-                placeholder: 'TrendUp01',
+                description: 'Select an icon to display next to the dropdown item',
               },
-            },
+            }),
           ],
           maxRows: 10,
           admin: {
