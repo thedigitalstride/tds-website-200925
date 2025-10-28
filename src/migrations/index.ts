@@ -51,6 +51,7 @@ import * as migration_20251027_113621_add_missing_button_enum_values from './202
 import * as migration_20251027_205000_fix_custom_class from './20251027_205000_fix_custom_class';
 import * as migration_20251027_210000_fix_card_grid_enum from './20251027_210000_fix_card_grid_enum';
 import * as migration_20251028_171537 from './20251028_171537';
+import * as migration_20251028_215241 from './20251028_215241';
 
 export const migrations = [
   {
@@ -316,6 +317,11 @@ export const migrations = [
   {
     up: migration_20251028_171537.up,
     down: migration_20251028_171537.down,
-    name: '20251028_171537'
+    name: '20251028_171537',
+  },
+  {
+    up: migration_20251028_215241.up,
+    down: migration_20251028_215241.down,
+    name: '20251028_215241'
   },
 ];
