@@ -89,15 +89,133 @@ When queried with `depth: 1`, the icon field returns:
 - SVG code is automatically optimized by the processSVGHook
 - Icons use `currentColor` for color inheritance
 
+## Button Icon Integration
+
+The icon selector is also integrated into button configurations with position control:
+
+### Usage in Link Field (Button Configuration)
+
+The `iconSelectorWithPositionField` provides visual icon selection with integrated position toggle:
+
+```typescript
+import { iconSelectorWithPositionField } from '@/fields/IconSelectorWithPosition'
+
+// In link field configuration
+linkResult.fields.push(
+  iconSelectorWithPositionField({
+    admin: {
+      description: 'Select an icon and configure its position relative to button text',
+    },
+  })
+)
+```
+
+### Admin Panel Features
+
+- **Visual Icon Grid**: Searchable grid of all available icons
+- **Position Toggle**: Integrated buttons for leading/trailing position
+- **Icon Preview**: See selected icon with current position setting
+- **Live Search**: Real-time filtering by name, label, keywords, description
+
+### Rendering Button Icons in Components
+
+```typescript
+import { IconSVG } from '@/components/IconSVG'
+
+// Extract icon configuration from link object
+const iconConfig = link.buttonIconConfig
+const iconData = typeof iconConfig?.icon === 'object' ? iconConfig.icon : null
+const iconPosition = iconConfig?.position || 'trailing'
+
+// Render in Button component
+<Button
+  color="primary"
+  iconLeading={iconPosition === 'leading' && iconData?.svgCode ?
+    <IconSVG svgCode={iconData.svgCode} className="size-5" /> : undefined
+  }
+  iconTrailing={iconPosition === 'trailing' && iconData?.svgCode ?
+    <IconSVG svgCode={iconData.svgCode} className="size-5" /> : undefined
+  }
+>
+  Button Text
+</Button>
+```
+
+### Data Structure
+
+Button icon configuration is stored as a group field:
+
+```typescript
+{
+  buttonIconConfig: {
+    icon: number | Icon  // Relationship to Icons collection
+    position: 'leading' | 'trailing'
+  }
+}
+```
+
+When queried with `depth: 1`, the icon is populated with full SVG data:
+
+```typescript
+{
+  buttonIconConfig: {
+    icon: {
+      id: number
+      name: string
+      label: string
+      svgCode: string  // Optimized SVG with currentColor
+      category: string
+      // ... other icon fields
+    },
+    position: 'trailing'
+  }
+}
+```
+
+### Icon Sizing for Buttons
+
+Button icons use size classes that match the button size variant:
+
+- **sm**: `size-4` (1rem / 16px)
+- **md**: `size-5` (1.25rem / 20px)
+- **lg**: `size-6` (1.5rem / 24px)
+- **xl**: `size-7` (1.75rem / 28px)
+
+The `UUIButton` component automatically applies the correct size class based on the button's `size` prop.
+
+### Legacy Support
+
+Existing buttons with text-based icon names are supported via fallback:
+
+```typescript
+// Legacy: Text-based icon name
+{
+  buttonIcon: "ArrowRight",
+  iconPos: "trailing"
+}
+
+// New: Visual icon selector
+{
+  buttonIconConfig: {
+    icon: { id: 123, svgCode: "...", ... },
+    position: "trailing"
+  }
+}
+```
+
+The `UUIButton` component checks `buttonIconConfig` first, then falls back to `buttonIcon` if present.
+
 ## Implementation Blocks
 
 Currently integrated in:
-- CardGridBlock (`/src/blocks/CardGridBlock/`)
-- FeaturesBlock (`/src/blocks/FeaturesBlock/`)
+- **Card & Feature Icons**: CardGridBlock, FeaturesBlock
+- **Button Icons**: All blocks using link fields (ButtonBlock, CallToAction, HeroHeadingBlock, etc.)
 
 ## Related Files
 
-- Field Component: `/src/fields/IconSelector/Field.tsx`
-- Grid Component: `/src/fields/IconSelector/Component.tsx`
-- SVG Renderer: `/src/components/IconSVG.tsx`
-- Icons Collection: `/src/collections/Icons.ts`
+- **Icon Selector**: `/src/fields/IconSelector/Field.tsx`, `/src/fields/IconSelector/Component.tsx`
+- **Button Icon Selector**: `/src/fields/IconSelectorWithPosition/Field.tsx`, `/src/fields/IconSelectorWithPosition/index.ts`
+- **SVG Renderer**: `/src/components/IconSVG.tsx`
+- **Button Component**: `/src/components/payload-ui/UUIButton.tsx`
+- **Link Field**: `/src/fields/link.ts`
+- **Icons Collection**: `/src/collections/Icons.ts`

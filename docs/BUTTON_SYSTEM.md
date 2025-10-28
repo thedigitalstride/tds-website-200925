@@ -143,32 +143,64 @@ const isLinkType = ["link", "link-destructive"].includes(color);
 
 ## Icon Integration
 
-### Import Icons
+### For Content Editors (Payload CMS)
+
+Icons are added to buttons via the **visual icon selector** in the admin panel:
+
+1. **Open any block with a button** (Button Block, CTA, Hero, etc.)
+2. **Locate the "Button Icon" section** under button configuration
+3. **Click "Select Icon"** to open the icon grid
+4. **Search or filter** to find your desired icon
+5. **Select position** using the toggle buttons:
+   - **Before Text (Leading)** - Icon appears to the left of button text
+   - **After Text (Trailing)** - Icon appears to the right of button text
+
+**Features:**
+- Visual grid with 1000+ optimized icons
+- Real-time search across icon names, labels, and keywords
+- Category filtering (navigation, action, social, etc.)
+- Icon preview with metadata
+- Server-side SVG rendering (zero client JavaScript)
+
+**Legacy Support:**
+Existing buttons with text-based icon names (e.g., "ArrowRight") will continue to work via fallback support until manually updated to use the visual selector.
+
+---
+
+### For Developers (React Components)
+
+#### Direct Component Usage
 
 ```tsx
 import { ArrowRight } from "@untitledui/icons/ArrowRight";
 import { Download01 as Download } from "@untitledui/icons/Download01";
 import { Plus } from "@untitledui/icons/Plus";
-```
 
-### Usage Patterns
-
-#### Leading Icon
-
-```tsx
+// Leading Icon
 <Button color="primary" iconLeading={Plus}>Create New</Button>
-```
 
-#### Trailing Icon
-
-```tsx
+// Trailing Icon
 <Button color="primary" iconTrailing={ArrowRight}>Continue</Button>
+
+// Icon Only
+<Button color="primary" iconLeading={Plus} aria-label="Add" />
 ```
 
-#### Icon Only
+#### With Icons Collection (Server-Side SVG)
 
 ```tsx
-<Button color="primary" iconLeading={Plus} aria-label="Add" />
+import { IconSVG } from '@/components/IconSVG'
+
+// Fetch icon from Icons collection (with depth: 1)
+const iconData = typeof link.buttonIconConfig?.icon === 'object' ? link.buttonIconConfig.icon : null
+
+// Render as server-side SVG
+<Button
+  color="primary"
+  iconTrailing={iconData?.svgCode ? <IconSVG svgCode={iconData.svgCode} className="size-5" /> : undefined}
+>
+  Continue
+</Button>
 ```
 
 **IMPORTANT**: Icons must be passed as props (`iconLeading`/`iconTrailing`), NOT as children. Passing icons as children breaks layout.
