@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 import { link } from '@/fields/link'
 import { lexicalEditor, HeadingFeature, UnorderedListFeature, OrderedListFeature, ChecklistFeature, BlocksFeature, FixedToolbarFeature, InlineToolbarFeature } from '@payloadcms/richtext-lexical'
 import { ButtonBlock } from '@/blocks/ButtonBlock/config'
+import { iconSelectorField } from '@/fields/IconSelector'
 
 /**
  * Rich text editor for card descriptions with headings support
@@ -94,16 +95,13 @@ export const CardGridBlock: Block = {
       maxRows: 12,
       label: 'Cards',
       fields: [
-        {
+        iconSelectorField({
           name: 'icon',
-          type: 'text',
-          label: 'Icon Name',
+          required: false,
           admin: {
-            description:
-              'Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com',
-            placeholder: 'Zap',
+            description: 'Select an icon from the Icons collection to display in the card',
           },
-        },
+        }),
         {
           name: 'eyebrow',
           type: 'text',
