@@ -8,6 +8,7 @@ node_modules
 package.json.local
 .next
 .vercel
+.worktrees/
 
 # Payload default media upload directory
 public/media/
