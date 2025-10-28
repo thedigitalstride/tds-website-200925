@@ -195,7 +195,13 @@ export const Header = ({
     // Use UUIButton component which handles both new icon selector and legacy icons
     // Cast to any to handle the slight type mismatch between Header and PayloadLinkObject
     // UUIButton reads size from link.uuiSize, so we pass a size prop as fallback
-    return <UUIButton link={ctaButton.link as any} size={defaultSize} />
+    return (
+      <UUIButton
+        label={ctaButton.link.label || 'ENQUIRE'}
+        link={ctaButton.link as any}
+        size={defaultSize}
+      />
+    )
   }
 
   // Helper function to render mobile CTA button
@@ -211,7 +217,13 @@ export const Header = ({
     // Use UUIButton component which handles both new icon selector and legacy icons
     // Cast to any to handle the slight type mismatch between Header and PayloadLinkObject
     // UUIButton reads size from link.uuiSize, so we pass a size prop as fallback
-    return <UUIButton link={effectiveCta.link as any} size="sm" />
+    return (
+      <UUIButton
+        label={effectiveCta.link.label || 'ENQUIRE'}
+        link={effectiveCta.link as any}
+        size="sm"
+      />
+    )
   }
 
   return (
