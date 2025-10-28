@@ -2,6 +2,7 @@ import type { FC, ReactNode, Ref } from "react";
 import { isValidElement } from "react";
 import { cx, sortCx } from "@/utils/cx";
 import { isReactComponent } from "@/utils/is-react-component";
+import { IconSVG } from '@/components/IconSVG';
 
 const iconsSizes = {
     sm: "*:data-icon:size-4",
@@ -51,13 +52,14 @@ interface FeaturedIconProps {
     children?: ReactNode;
     className?: string;
     icon?: FC<{ className?: string }> | ReactNode;
+    svgCode?: string;
     size?: "sm" | "md" | "lg" | "xl";
     color: "brand" | "brand-reversed" | "accent" | "secondary" | "tertiary";
     shape?: "rounded-square" | "round";
 }
 
 export const FeaturedIcon = (props: FeaturedIconProps) => {
-    const { size = "sm", shape = "rounded-square", color = "brand", icon: Icon, ...otherProps } = props;
+    const { size = "sm", shape = "rounded-square", color = "brand", icon: Icon, svgCode, ...otherProps } = props;
 
     // Defensive: Handle legacy shape values from database by falling back to rounded-square
     const validShape = (shape in styles) ? shape : "rounded-square";
@@ -77,8 +79,14 @@ export const FeaturedIcon = (props: FeaturedIconProps) => {
                 props.className,
             )}
         >
-            {isReactComponent(Icon) && <Icon data-icon className="z-1" />}
-            {isValidElement(Icon) && <div className="z-1">{Icon}</div>}
+            {svgCode ? (
+                <IconSVG svgCode={svgCode} className="z-1 h-full w-full" />
+            ) : (
+                <>
+                    {isReactComponent(Icon) && <Icon data-icon className="z-1" />}
+                    {isValidElement(Icon) && <div className="z-1">{Icon}</div>}
+                </>
+            )}
 
             {props.children}
         </div>
