@@ -3,7 +3,6 @@
 import React from 'react'
 import type { FC, ReactNode } from 'react'
 import type { CardGridBlock as CardGridBlockProps } from '@/payload-types'
-import { getIcon } from '@/Header/utils/IconMap'
 import { FeaturedIcon } from '@/components/uui/foundations/featured-icon/featured-icon'
 import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
@@ -13,7 +12,8 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 interface CardProps {
   eyebrow?: string
-  icon: FC<{ className?: string }>
+  icon?: FC<{ className?: string }>
+  svgCode?: string
   title: string
   subtitle: DefaultTypedEditorState | string | undefined
   footer?: ReactNode
@@ -131,7 +131,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   const gridHeightClass = isFullWidth ? '' : 'auto-rows-fr'
 
   // Wrapper components with dynamic icon color/shape support and eyebrow
-  const CardWithIcon = ({ eyebrow, icon, title, subtitle, footer }: CardProps) => (
+  const CardWithIcon = ({ eyebrow, icon, svgCode, title, subtitle, footer }: CardProps) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
       !isLineVariant && "rounded-xl",
@@ -141,6 +141,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
       <div className="flex flex-col gap-4">
         <FeaturedIcon
           icon={icon}
+          svgCode={svgCode}
           size="lg"
           color={mappedIconColor}
           shape={iconShape}
@@ -183,7 +184,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
     </div>
   )
 
-  const CardLeftIconWithColors = ({ eyebrow, icon, title, subtitle, footer }: CardProps) => (
+  const CardLeftIconWithColors = ({ eyebrow, icon, svgCode, title, subtitle, footer }: CardProps) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
       !isLineVariant && "rounded-xl",
@@ -193,6 +194,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
       <div className="flex flex-col gap-4">
         <FeaturedIcon
           icon={icon}
+          svgCode={svgCode}
           size="lg"
           color={mappedIconColor}
           shape={iconShape}
@@ -200,6 +202,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         />
         <FeaturedIcon
           icon={icon}
+          svgCode={svgCode}
           size="md"
           color={mappedIconColor}
           shape={iconShape}
@@ -243,7 +246,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
     </div>
   )
 
-  const CardHorizontalIconWithColors = ({ eyebrow, icon, title, subtitle, footer }: CardProps) => (
+  const CardHorizontalIconWithColors = ({ eyebrow, icon, svgCode, title, subtitle, footer }: CardProps) => (
     <div className={cn(
       "flex gap-4 h-full w-full",
       !isLineVariant && "rounded-xl",
@@ -252,6 +255,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
     )}>
       <FeaturedIcon
         icon={icon}
+        svgCode={svgCode}
         size="lg"
         color={mappedIconColor}
         shape={iconShape}
@@ -259,6 +263,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
       />
       <FeaturedIcon
         icon={icon}
+        svgCode={svgCode}
         size="md"
         color={mappedIconColor}
         shape={iconShape}
@@ -303,7 +308,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
     </div>
   )
 
-  const CardBoxWithIcon = ({ eyebrow, icon, title, subtitle, footer }: CardProps) => (
+  const CardBoxWithIcon = ({ eyebrow, icon, svgCode, title, subtitle, footer }: CardProps) => (
     <div className={cn(
       "mt-6 flex flex-col justify-between items-center gap-4 text-center h-full w-full",
       !isLineVariant && "rounded-xl",
@@ -313,6 +318,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
       <div className="flex flex-col items-center gap-4">
         <FeaturedIcon
           icon={icon}
+          svgCode={svgCode}
           size="lg"
           color={mappedIconColor}
           shape={iconShape}
@@ -357,7 +363,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   )
 
   // Centered icon component with rich text support
-  const CardCenteredIconWithColors = ({ eyebrow, icon, title, subtitle, footer }: CardProps) => (
+  const CardCenteredIconWithColors = ({ eyebrow, icon, svgCode, title, subtitle, footer }: CardProps) => (
     <div className={cn(
       "flex flex-col justify-between items-center gap-4 text-center h-full w-full",
       !isLineVariant && "rounded-xl",
@@ -367,6 +373,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
       <div className="flex flex-col items-center gap-4">
         <FeaturedIcon
           icon={icon}
+          svgCode={svgCode}
           size="lg"
           color={mappedIconColor}
           shape={iconShape}
@@ -374,6 +381,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         />
         <FeaturedIcon
           icon={icon}
+          svgCode={svgCode}
           size="md"
           color={mappedIconColor}
           shape={iconShape}
@@ -604,8 +612,8 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
       <div className={cn(header?.showHeader && 'mt-12 md:mt-16')}>
         <ul className={cn('grid w-full', gridHeightClass, gridGapClasses, gridClasses)}>
           {cards?.map((card, index) => {
-              const IconComponent = getIcon(card.icon ?? undefined)
-              const hasIcon = !!IconComponent
+              const iconData = typeof card.icon === 'object' ? card.icon : null
+              const hasIcon = !!iconData?.svgCode
 
               // Select appropriate component based on whether icon exists
               const CardComponent = hasIcon
@@ -637,7 +645,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
               // Prepare props
               const cardProps = hasIcon
                 ? {
-                    icon: IconComponent,
+                    svgCode: iconData?.svgCode,
                     eyebrow: card.eyebrow || undefined,
                     title: card.title || '',
                     subtitle: card.description || undefined,

@@ -1,6 +1,7 @@
 import type { Field, GroupField } from 'payload'
 
 import deepMerge from '@/utilities/deepMerge'
+import { iconSelectorWithPositionField } from './IconSelectorWithPosition'
 
 // UntitledUI Button Color Variants
 export type UUIButtonColors =
@@ -273,35 +274,36 @@ export const link: LinkType = ({
       ],
     })
 
-    // Add icon configuration for buttons
+    // Add icon configuration for buttons - using visual icon selector
+    linkResult.fields.push(
+      iconSelectorWithPositionField({
+        admin: {
+          description: 'Select an icon from the Icons collection and configure its position relative to button text',
+        },
+      })
+    )
+
+    // Backward compatibility: Keep legacy text field with hidden visibility for data migration
     linkResult.fields.push({
-      type: 'row',
-      fields: [
-        {
-          name: 'buttonIcon',
-          type: 'text',
-          label: 'Button Icon',
-          admin: {
-            description: 'Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com',
-            placeholder: 'ArrowRight',
-            width: '50%',
-          },
-        },
-        {
-          name: 'iconPos',
-          type: 'select',
-          label: 'Icon Position',
-          defaultValue: 'trailing',
-          options: [
-            { label: 'Before Text (Leading)', value: 'leading' },
-            { label: 'After Text (Trailing)', value: 'trailing' },
-          ],
-          admin: {
-            description: 'Position of the icon relative to the button text',
-            width: '50%',
-            condition: (_, siblingData) => !!siblingData?.buttonIcon,
-          },
-        },
+      name: 'buttonIcon',
+      type: 'text',
+      label: 'Legacy Button Icon (Hidden)',
+      admin: {
+        hidden: true,
+        description: 'Legacy field - use buttonIconConfig instead',
+      },
+    })
+    linkResult.fields.push({
+      name: 'iconPos',
+      type: 'select',
+      label: 'Legacy Icon Position (Hidden)',
+      admin: {
+        hidden: true,
+        description: 'Legacy field - use buttonIconConfig instead',
+      },
+      options: [
+        { label: 'Leading', value: 'leading' },
+        { label: 'Trailing', value: 'trailing' },
       ],
     })
   }

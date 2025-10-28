@@ -5,6 +5,7 @@ import { Button } from '@/components/uui/button'
 import type { ButtonProps } from '@/components/uui/button'
 import { getPageUrl } from '@/utilities/pageHelpers'
 import { getIcon } from '@/Header/utils/IconMap'
+import { IconSVG } from '@/components/IconSVG'
 
 /**
  * Payload-adapted UntitledUI Button component
@@ -15,7 +16,7 @@ import { getIcon } from '@/Header/utils/IconMap'
  */
 
 // Use the generated Payload link types directly
-import type { Page, Post } from '@/payload-types'
+import type { Page, Post, Icon } from '@/payload-types'
 
 export interface PayloadLinkObject {
   type?: 'reference' | 'custom' | null
@@ -28,7 +29,12 @@ export interface PayloadLinkObject {
   // UUI Button styling properties
   uuiColor?: 'primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
   uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
-  // UUI Button icon properties
+  // Button icon properties (new system with visual selector)
+  buttonIconConfig?: {
+    icon?: number | Icon | null
+    position?: 'leading' | 'trailing' | null
+  } | null
+  // Legacy button icon properties (for backward compatibility)
   buttonIcon?: string | null
   iconPos?: 'leading' | 'trailing' | null
 }
@@ -116,10 +122,34 @@ export const UUIButton: React.FC<UUIButtonProps> = ({
   }
 
   // Dynamic icon loading from link object (takes precedence over icon prop)
-  let IconComponent: React.FC<{ className?: string }> | undefined = IconProp
+  let IconComponent: React.FC<{ className?: string }> | React.ReactNode | undefined = IconProp
   let effectiveIconPosition = iconPosition
 
-  if (typeof link === 'object' && link?.buttonIcon) {
+  // Priority 1: New icon selector with visual preview (buttonIconConfig)
+  if (typeof link === 'object' && link?.buttonIconConfig) {
+    const iconData = link.buttonIconConfig.icon
+
+    // Check if icon is populated object (depth: 1)
+    if (iconData && typeof iconData === 'object' && 'svgCode' in iconData) {
+      const iconSvgCode = iconData.svgCode
+      if (iconSvgCode) {
+        // Determine size class based on button size
+        const iconSizeClasses = {
+          sm: 'size-4',
+          md: 'size-5',
+          lg: 'size-6',
+          xl: 'size-7',
+        }
+        const sizeClass = iconSizeClasses[uuiSize] || 'size-5'
+
+        // Render as SVG ReactNode
+        IconComponent = <IconSVG svgCode={iconSvgCode} className={sizeClass} />
+        effectiveIconPosition = link.buttonIconConfig.position || 'trailing'
+      }
+    }
+  }
+  // Priority 2: Legacy text-based icon (buttonIcon) for backward compatibility
+  else if (typeof link === 'object' && link?.buttonIcon) {
     const DynamicIcon = getIcon(link.buttonIcon)
     if (DynamicIcon) {
       IconComponent = DynamicIcon

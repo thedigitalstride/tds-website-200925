@@ -3,7 +3,6 @@
 import React from 'react'
 import type { FC, ReactNode } from 'react'
 import type { FeaturesBlock as FeaturesBlockProps } from '@/payload-types'
-import { getIcon } from '@/Header/utils/IconMap'
 import {
   FeatureTextFeaturedIconTopCentered,
 } from '@/components/uui/marketing/features/base-components/feature-text'
@@ -15,7 +14,8 @@ import RichText from '@/components/RichText'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 interface FeatureCardProps {
-  icon: FC<{ className?: string }>
+  icon?: FC<{ className?: string }>
+  svgCode?: string
   title: string
   subtitle: DefaultTypedEditorState | string | undefined
   footer?: ReactNode
@@ -111,7 +111,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     : cn('grid-cols-1', columnClasses[columns])
 
   // Wrapper components with dynamic icon color/shape support
-  const FeatureCardWithIcon = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
+  const FeatureCardWithIcon = ({ icon, svgCode, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
       !isLineVariant && "rounded-xl",
@@ -121,6 +121,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
       <div className="flex flex-col gap-4">
         <FeaturedIcon
           icon={icon}
+          svgCode={svgCode}
           size="lg"
           color={iconColor}
           shape={iconShape}
@@ -147,7 +148,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     </div>
   )
 
-  const FeatureLeftIconWithColors = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
+  const FeatureLeftIconWithColors = ({ icon, svgCode, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex flex-col justify-between gap-4 h-full w-full",
       !isLineVariant && "rounded-xl",
@@ -157,6 +158,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
       <div className="flex flex-col gap-4">
         <FeaturedIcon
           icon={icon}
+          svgCode={svgCode}
           size="lg"
           color={iconColor}
           shape={iconShape}
@@ -164,6 +166,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
         />
         <FeaturedIcon
           icon={icon}
+          svgCode={svgCode}
           size="md"
           color={iconColor}
           shape={iconShape}
@@ -191,7 +194,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     </div>
   )
 
-  const FeatureHorizontalIconWithColors = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
+  const FeatureHorizontalIconWithColors = ({ icon, svgCode, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "flex gap-4 h-full w-full",
       !isLineVariant && "rounded-xl",
@@ -200,6 +203,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     )}>
       <FeaturedIcon
         icon={icon}
+        svgCode={svgCode}
         size="lg"
         color={iconColor}
         shape={iconShape}
@@ -207,6 +211,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
       />
       <FeaturedIcon
         icon={icon}
+        svgCode={svgCode}
         size="md"
         color={iconColor}
         shape={iconShape}
@@ -235,7 +240,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
     </div>
   )
 
-  const FeatureBoxWithIcon = ({ icon, title, subtitle, footer }: FeatureCardProps) => (
+  const FeatureBoxWithIcon = ({ icon, svgCode, title, subtitle, footer }: FeatureCardProps) => (
     <div className={cn(
       "mt-6 flex flex-col justify-between items-center gap-4 text-center h-full w-full",
       !isLineVariant && "rounded-xl",
@@ -245,6 +250,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
       <div className="flex flex-col items-center gap-4">
         <FeaturedIcon
           icon={icon}
+          svgCode={svgCode}
           size="lg"
           color={iconColor}
           shape={iconShape}
@@ -411,8 +417,8 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
         <div className={cn('mt-12 md:mt-16', !header?.showHeader && 'mt-0')}>
           <ul className={cn('grid w-full auto-rows-fr', gridGapClasses, gridClasses)}>
             {features?.map((feature, index) => {
-              const IconComponent = getIcon(feature.icon ?? undefined)
-              const hasIcon = !!IconComponent
+              const iconData = typeof feature.icon === 'object' ? feature.icon : null
+              const hasIcon = !!iconData?.svgCode
 
               // Select appropriate component based on whether icon exists
               const CardComponent = hasIcon
@@ -432,7 +438,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
               // Prepare props for icon components
               const iconProps = hasIcon
                 ? {
-                    icon: IconComponent,
+                    svgCode: iconData?.svgCode,
                     ...(cardLayout === 'centered-icon'
                       ? {
                           color: iconColor,
