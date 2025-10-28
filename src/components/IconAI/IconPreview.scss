@@ -1,0 +1,127 @@
+.icon-preview {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--theme-elevation-50);
+  border: 1px solid var(--theme-elevation-200);
+  border-radius: 4px;
+
+  .icon-preview-label {
+    font-weight: 500;
+    font-size: 13px;
+    margin-bottom: 12px;
+    color: var(--theme-elevation-800);
+  }
+
+  .icon-preview-grid {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .icon-preview-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .icon-preview-svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: white;
+    border: 1px solid var(--theme-elevation-200);
+    border-radius: 4px;
+
+    svg {
+      display: block;
+    }
+  }
+
+  .icon-preview-small {
+    width: 32px;
+    height: 32px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .icon-preview-medium {
+    width: 40px;
+    height: 40px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .icon-preview-large {
+    width: 48px;
+    height: 48px;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .icon-preview-xlarge {
+    width: 64px;
+    height: 64px;
+
+    svg {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  .icon-preview-size-label {
+    font-size: 11px;
+    color: var(--theme-elevation-600);
+    font-weight: 500;
+  }
+
+  .icon-preview-colors {
+    border-top: 1px solid var(--theme-elevation-200);
+    padding-top: 16px;
+  }
+
+  .icon-preview-color-grid {
+    display: flex;
+    gap: 16px;
+  }
+
+  // Color variations
+  .icon-preview-default {
+    color: currentColor;
+  }
+
+  .icon-preview-primary {
+    color: var(--theme-elevation-900);
+    background: var(--theme-elevation-100);
+  }
+
+  .icon-preview-muted {
+    color: var(--theme-elevation-500);
+  }
+
+  .icon-preview-inverted {
+    background: var(--theme-elevation-900);
+    color: white;
+  }
+}
+
+.icon-preview-empty {
+  margin-top: 16px;
+  padding: 24px;
+  text-align: center;
+  background: var(--theme-elevation-50);
+  border: 2px dashed var(--theme-elevation-200);
+  border-radius: 4px;
+  color: var(--theme-elevation-500);
+  font-size: 13px;
+}

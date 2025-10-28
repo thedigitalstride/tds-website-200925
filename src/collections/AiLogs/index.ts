@@ -42,6 +42,10 @@ export const AiLogs: CollectionConfig = {
           value: 'seo-description',
         },
         {
+          label: 'Icon Enhancement',
+          value: 'icon-enhancement',
+        },
+        {
           label: 'Content Generation',
           value: 'content',
         },
@@ -179,6 +183,22 @@ export const AiLogs: CollectionConfig = {
       admin: {
         description: 'Error message if operation failed',
         condition: (data) => !data.success,
+      },
+    },
+    {
+      name: 'aiInput',
+      type: 'textarea',
+      admin: {
+        description: 'The prompt/input sent to the AI model',
+        rows: 6,
+      },
+    },
+    {
+      name: 'aiOutput',
+      type: 'textarea',
+      admin: {
+        description: 'The raw response received from the AI model',
+        rows: 6,
       },
     },
     {

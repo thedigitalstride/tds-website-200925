@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url'
 import { AiLogs } from './collections/AiLogs'
 import { Categories } from './collections/Categories'
 import { FAQs } from './collections/FAQs'
+import { Icons } from './collections/Icons'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
@@ -85,7 +86,7 @@ export default buildConfig({
       connectionTimeoutMillis: 10000, // Timeout acquiring a client from pool
     },
   }),
-  collections: [Pages, Posts, Media, Categories, FAQs, Users, AiLogs],
+  collections: [Pages, Posts, Media, Categories, FAQs, Icons, Users, AiLogs],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
   plugins: [

@@ -1,0 +1,27 @@
+.icon-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+
+  .icon-cell-svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--theme-elevation-700);
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+}
+
+.icon-cell-empty {
+  color: var(--theme-elevation-400);
+  font-size: 14px;
+}

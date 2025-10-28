@@ -593,6 +593,116 @@ export const AiSettings: GlobalConfig = {
             },
           ],
         },
+        {
+          label: 'Icon Enhancement',
+          description: 'Configure AI-powered icon metadata and categorization',
+          fields: [
+            {
+              name: 'iconEnhancement',
+              type: 'group',
+              label: 'Icon Enhancement Settings',
+              fields: [
+                {
+                  name: 'enabled',
+                  type: 'checkbox',
+                  label: 'Enable Icon AI Enhancement',
+                  defaultValue: false,
+                  admin: {
+                    description:
+                      'Automatically generate keywords, categories, and descriptions for uploaded icons',
+                  },
+                },
+                {
+                  name: 'model',
+                  type: 'select',
+                  label: 'Model for Icon Enhancement',
+                  options: [
+                    {
+                      label: 'Use Default Model (from Provider Configuration)',
+                      value: '',
+                    },
+                    {
+                      label: 'GPT-4o Mini (Fast & Cheap - Recommended) $',
+                      value: 'gpt-4o-mini',
+                    },
+                    {
+                      label: 'GPT-4o (Better Quality) $$',
+                      value: 'gpt-4o',
+                    },
+                    {
+                      label: 'GPT-3.5 Turbo (Cheapest) $',
+                      value: 'gpt-3.5-turbo',
+                    },
+                  ],
+                  admin: {
+                    description:
+                      'Model for generating icon metadata. GPT-4o-mini recommended for best cost/performance. Estimated cost: ~$0.0001 per icon.',
+                    condition: (_, siblingData) => siblingData?.enabled === true,
+                  },
+                },
+                {
+                  name: 'autoKeywords',
+                  type: 'checkbox',
+                  label: 'Auto-generate Keywords',
+                  defaultValue: true,
+                  admin: {
+                    description:
+                      'Generate search keywords based on icon name and visual patterns',
+                    condition: (_, siblingData) => siblingData?.enabled === true,
+                  },
+                },
+                {
+                  name: 'autoCategory',
+                  type: 'checkbox',
+                  label: 'Auto-categorize Icons',
+                  defaultValue: true,
+                  admin: {
+                    description:
+                      'Automatically assign categories (navigation, action, social, etc.)',
+                    condition: (_, siblingData) => siblingData?.enabled === true,
+                  },
+                },
+                {
+                  name: 'semanticSearch',
+                  type: 'checkbox',
+                  label: 'Enable Semantic Search',
+                  defaultValue: false,
+                  admin: {
+                    description:
+                      'Use AI embeddings for natural language icon search (additional cost)',
+                    condition: (_, siblingData) => siblingData?.enabled === true,
+                  },
+                },
+                {
+                  name: 'systemPrimer',
+                  type: 'textarea',
+                  label: 'System Primer',
+                  defaultValue:
+                    'Analyze this icon name and generate: 1) 5-10 relevant keywords for search, 2) appropriate category (navigation/action/social/communication/interface/file/device/commerce/media/custom), 3) brief description (max 50 words). Focus on common usage patterns and synonyms.',
+                  required: true,
+                  admin: {
+                    description:
+                      'Instructions for AI icon analysis. Customize based on your icon naming conventions.',
+                    rows: 4,
+                    condition: (_, siblingData) => siblingData?.enabled === true,
+                  },
+                },
+                {
+                  name: 'maxKeywords',
+                  type: 'number',
+                  label: 'Maximum Keywords',
+                  defaultValue: 10,
+                  min: 5,
+                  max: 20,
+                  admin: {
+                    description: 'Maximum number of keywords to generate per icon',
+                    condition: (_, siblingData) => siblingData?.enabled === true,
+                  },
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],

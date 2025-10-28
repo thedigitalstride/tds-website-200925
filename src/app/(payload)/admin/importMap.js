@@ -27,6 +27,10 @@ import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { AltTextField as AltTextField_e216b989468be801f1a333a0bdacb002 } from '@/components/Media/AltTextField'
 import { ResourceRowLabel as ResourceRowLabel_f52403e563aa41e67f12df08370f134b } from '@/collections/FAQs/ResourceRowLabel'
+import { default as default_9bd6562c7c8eb4ec73a1d765b5eb3dec } from '@/components/IconAI/IconCell'
+import { default as default_20a15c9391a063e4fc2448542ae5e41f } from '@/components/IconAI/IconPreview'
+import { KeywordRowLabel as KeywordRowLabel_eedbc85d36c7c70586918e33b25758f8 } from '@/collections/Icons/components/KeywordRowLabel'
+import { TagRowLabel as TagRowLabel_d834707fd1bd242a17e2ca42154d3852 } from '@/collections/Icons/components/TagRowLabel'
 import { default as default_2e4e5fe9b35089c56189fb95d190f0df } from '@/components/AiLogs/CostField'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
@@ -74,6 +78,10 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@/components/Media/AltTextField#AltTextField": AltTextField_e216b989468be801f1a333a0bdacb002,
   "@/collections/FAQs/ResourceRowLabel#ResourceRowLabel": ResourceRowLabel_f52403e563aa41e67f12df08370f134b,
+  "@/components/IconAI/IconCell#default": default_9bd6562c7c8eb4ec73a1d765b5eb3dec,
+  "@/components/IconAI/IconPreview#default": default_20a15c9391a063e4fc2448542ae5e41f,
+  "@/collections/Icons/components/KeywordRowLabel#KeywordRowLabel": KeywordRowLabel_eedbc85d36c7c70586918e33b25758f8,
+  "@/collections/Icons/components/TagRowLabel#TagRowLabel": TagRowLabel_d834707fd1bd242a17e2ca42154d3852,
   "@/components/AiLogs/CostField#default": default_2e4e5fe9b35089c56189fb95d190f0df,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
