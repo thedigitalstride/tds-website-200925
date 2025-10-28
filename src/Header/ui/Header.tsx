@@ -5,11 +5,11 @@ import { useRef, useState, useEffect } from 'react'
 import { ChevronDown } from '@untitledui/icons'
 import { motion, AnimatePresence } from 'motion/react'
 import { Button } from '@/components/uui/button'
+import { UUIButton } from '@/components/payload-ui/UUIButton'
 import { TDSLogo } from '@/components/Logo/tds-logo'
 import { cx } from '@/utils/cx'
 import Link from 'next/link'
 import { MobileMenuButton } from '../components/MobileMenuButton'
-import { getIcon } from '../utils/IconMap'
 
 type HeaderNavItem = {
   label: string
@@ -192,43 +192,10 @@ export const Header = ({
       )
     }
 
-    const linkData = ctaButton.link
-    let href = '#'
-
-    if (linkData.type === 'reference' && linkData.reference) {
-      if (typeof linkData.reference === 'object' && 'slug' in linkData.reference) {
-        href = `/${linkData.reference.slug}`
-      }
-    } else if (linkData.type === 'custom' && linkData.url) {
-      href = linkData.url
-    }
-
-    const size =
-      linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize)
-        ? (linkData.uuiSize as 'sm' | 'md' | 'lg' | 'xl')
-        : defaultSize
-    const color =
-      linkData.uuiColor &&
-      ['primary', 'accent', 'secondary', 'tertiary', 'link'].includes(linkData.uuiColor)
-        ? (linkData.uuiColor as 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link')
-        : 'secondary'
-
-    // Get icon component if specified
-    const IconComponent = linkData.buttonIcon ? getIcon(linkData.buttonIcon) : null
-    const iconPosition = linkData.iconPos || 'trailing'
-
-    return (
-      <Button
-        color={color}
-        size={size}
-        href={href}
-        iconLeading={iconPosition === 'leading' ? IconComponent : undefined}
-        iconTrailing={iconPosition === 'trailing' ? IconComponent : undefined}
-        {...(linkData.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      >
-        {linkData.label || 'ENQUIRE'}
-      </Button>
-    )
+    // Use UUIButton component which handles both new icon selector and legacy icons
+    // Cast to any to handle the slight type mismatch between Header and PayloadLinkObject
+    // UUIButton reads size from link.uuiSize, so we pass a size prop as fallback
+    return <UUIButton link={ctaButton.link as any} size={defaultSize} />
   }
 
   // Helper function to render mobile CTA button
@@ -241,43 +208,10 @@ export const Header = ({
       return null
     }
 
-    const linkData = effectiveCta.link
-    let href = '#'
-
-    if (linkData.type === 'reference' && linkData.reference) {
-      if (typeof linkData.reference === 'object' && 'slug' in linkData.reference) {
-        href = `/${linkData.reference.slug}`
-      }
-    } else if (linkData.type === 'custom' && linkData.url) {
-      href = linkData.url
-    }
-
-    const size =
-      linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize)
-        ? (linkData.uuiSize as 'sm' | 'md' | 'lg' | 'xl')
-        : 'sm' // Default to small for mobile
-    const color =
-      linkData.uuiColor &&
-      ['primary', 'accent', 'secondary', 'tertiary', 'link'].includes(linkData.uuiColor)
-        ? (linkData.uuiColor as 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link')
-        : 'secondary'
-
-    // Get icon component if specified
-    const IconComponent = linkData.buttonIcon ? getIcon(linkData.buttonIcon) : null
-    const iconPosition = linkData.iconPos || 'trailing'
-
-    return (
-      <Button
-        color={color}
-        size={size}
-        href={href}
-        iconLeading={iconPosition === 'leading' ? IconComponent : undefined}
-        iconTrailing={iconPosition === 'trailing' ? IconComponent : undefined}
-        {...(linkData.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      >
-        {linkData.label || 'ENQUIRE'}
-      </Button>
-    )
+    // Use UUIButton component which handles both new icon selector and legacy icons
+    // Cast to any to handle the slight type mismatch between Header and PayloadLinkObject
+    // UUIButton reads size from link.uuiSize, so we pass a size prop as fallback
+    return <UUIButton link={effectiveCta.link as any} size="sm" />
   }
 
   return (
