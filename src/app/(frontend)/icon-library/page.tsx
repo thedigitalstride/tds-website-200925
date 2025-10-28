@@ -21,7 +21,8 @@ export default async function IconLibraryPage() {
     keywords: icon.keywords ?? undefined, // Convert null to undefined
     aiMetadata: icon.aiMetadata
       ? {
-          enhanced: icon.aiMetadata.enhanced ?? undefined,
+          enhancedAt: icon.aiMetadata.enhancedAt ?? undefined,
+          model: icon.aiMetadata.model ?? undefined,
           confidence: icon.aiMetadata.confidence ?? undefined,
         }
       : undefined,

@@ -66,16 +66,16 @@ export async function POST(request: NextRequest) {
     }
 
     if (field === 'keywords') {
-      responseData.keywords = metadata.keywords
-      responseData.metadata.keywordCount = metadata.keywords.length
+      responseData.keywords = metadata.metadata.keywords
+      responseData.metadata.keywordCount = metadata.metadata.keywords.length
     } else if (field === 'description') {
-      responseData.description = metadata.description
-      responseData.metadata.characterCount = metadata.description.length
+      responseData.description = metadata.metadata.description
+      responseData.metadata.characterCount = metadata.metadata.description.length
     } else if (field === 'category') {
-      responseData.category = metadata.category
+      responseData.category = metadata.metadata.category
     } else {
       // Return all metadata
-      Object.assign(responseData, metadata)
+      Object.assign(responseData, metadata.metadata)
     }
 
     return NextResponse.json(responseData)
