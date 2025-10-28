@@ -64,6 +64,14 @@ export const FeaturedIcon = (props: FeaturedIconProps) => {
     // Defensive: Handle legacy shape values from database by falling back to rounded-square
     const validShape = (shape in styles) ? shape : "rounded-square";
 
+    // Icon size classes (slightly smaller than container for proper padding)
+    const iconSizeClasses = {
+        sm: "size-5",
+        md: "size-6",
+        lg: "size-8",
+        xl: "size-10",
+    };
+
     return (
         <div
             {...otherProps}
@@ -80,7 +88,7 @@ export const FeaturedIcon = (props: FeaturedIconProps) => {
             )}
         >
             {svgCode ? (
-                <IconSVG svgCode={svgCode} className="z-1 h-full w-full" />
+                <IconSVG svgCode={svgCode} className={`z-1 ${iconSizeClasses[size]}`} />
             ) : (
                 <>
                     {isReactComponent(Icon) && <Icon data-icon className="z-1" />}
