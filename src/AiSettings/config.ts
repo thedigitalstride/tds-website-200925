@@ -551,49 +551,6 @@ export const AiSettings: GlobalConfig = {
           ],
         },
         {
-          label: 'Usage & Monitoring',
-          description: 'Track AI usage, costs, and performance',
-          fields: [
-            {
-              type: 'ui',
-              name: 'usageStats',
-              admin: {
-                components: {
-                  Field: {
-                    path: '@/components/AiSettings/UsageStats',
-                  },
-                },
-              },
-            },
-            {
-              name: 'costTracking',
-              type: 'group',
-              label: 'Cost Tracking',
-              fields: [
-                {
-                  name: 'enabled',
-                  type: 'checkbox',
-                  label: 'Enable Cost Tracking',
-                  defaultValue: false,
-                  admin: {
-                    description: 'Track estimated costs of AI API calls',
-                  },
-                },
-                {
-                  name: 'monthlyBudget',
-                  type: 'number',
-                  label: 'Monthly Budget Alert ($)',
-                  admin: {
-                    description:
-                      'Send an alert when monthly AI costs exceed this amount',
-                    condition: (_, siblingData) => siblingData?.enabled === true,
-                  },
-                },
-              ],
-            },
-          ],
-        },
-        {
           label: 'Icon Enhancement',
           description: 'Configure AI-powered icon metadata and categorization',
           fields: [
@@ -696,6 +653,49 @@ export const AiSettings: GlobalConfig = {
                   max: 20,
                   admin: {
                     description: 'Maximum number of keywords to generate per icon',
+                    condition: (_, siblingData) => siblingData?.enabled === true,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Usage & Monitoring',
+          description: 'Track AI usage, costs, and performance',
+          fields: [
+            {
+              type: 'ui',
+              name: 'usageStats',
+              admin: {
+                components: {
+                  Field: {
+                    path: '@/components/AiSettings/UsageStats',
+                  },
+                },
+              },
+            },
+            {
+              name: 'costTracking',
+              type: 'group',
+              label: 'Cost Tracking',
+              fields: [
+                {
+                  name: 'enabled',
+                  type: 'checkbox',
+                  label: 'Enable Cost Tracking',
+                  defaultValue: false,
+                  admin: {
+                    description: 'Track estimated costs of AI API calls',
+                  },
+                },
+                {
+                  name: 'monthlyBudget',
+                  type: 'number',
+                  label: 'Monthly Budget Alert ($)',
+                  admin: {
+                    description:
+                      'Send an alert when monthly AI costs exceed this amount',
                     condition: (_, siblingData) => siblingData?.enabled === true,
                   },
                 },

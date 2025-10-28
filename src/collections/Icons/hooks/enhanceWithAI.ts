@@ -1,5 +1,6 @@
 import type { CollectionBeforeChangeHook } from 'payload'
 import { IconIntelligence } from '@/services/ai/iconIntelligence'
+import type { ProviderConfig } from '@/services/ai/types'
 
 export const enhanceWithAIHook: CollectionBeforeChangeHook = async ({
   data,
@@ -17,6 +18,8 @@ export const enhanceWithAIHook: CollectionBeforeChangeHook = async ({
     return data
   }
 
+  const startTime = Date.now()
+
   try {
     // Get AI settings
     const aiSettings = await req.payload.findGlobal({
@@ -24,7 +27,13 @@ export const enhanceWithAIHook: CollectionBeforeChangeHook = async ({
       depth: 0,
     })
 
-    // Check if API key is configured (AI enhancement always runs when key is available)
+    // Check if icon enhancement is enabled
+    if (!aiSettings?.iconEnhancement?.enabled) {
+      console.log('Icon AI enhancement skipped: Feature is disabled in AI Settings')
+      return data
+    }
+
+    // Check if API key is configured
     if (!aiSettings?.apiKey) {
       console.log('Icon AI enhancement skipped: No API key configured in AI Settings')
       return data
@@ -33,12 +42,26 @@ export const enhanceWithAIHook: CollectionBeforeChangeHook = async ({
     // Get the model to use (from icon settings or default)
     const modelToUse = aiSettings.iconEnhancement?.model || aiSettings.model || 'gpt-4o-mini'
 
-    // Initialize AI service with API key and model
-    const iconAI = new IconIntelligence(aiSettings.apiKey, modelToUse)
+    // Build provider config from global AI settings
+    const providerConfig: ProviderConfig = {
+      provider: aiSettings.provider || 'openai',
+      apiKey: aiSettings.apiKey,
+      model: modelToUse,
+      temperature: aiSettings.temperature ?? 0.3,
+      maxTokens: aiSettings.maxTokens || 500,
+      timeout: aiSettings.timeout || 30,
+    }
+
+    // Initialize AI service with full config
+    const iconAI = new IconIntelligence(providerConfig)
 
     // Generate metadata suggestions
     console.log(`Generating AI metadata for icon: ${data.name} using model: ${modelToUse}`)
     const response = await iconAI.suggestMetadata(data.name)
+
+    if (!response.success) {
+      throw new Error(response.error || 'AI metadata generation failed')
+    }
 
     // Enhance the data with AI suggestions (before it's saved)
     const enhancedData = {
@@ -57,25 +80,28 @@ export const enhanceWithAIHook: CollectionBeforeChangeHook = async ({
       },
     }
 
-    // Log AI operation (don't await to avoid blocking)
+    const duration = Date.now() - startTime
+
+    // Log AI operation (don't await to avoid blocking) with actual metrics
     req.payload
       .create({
         collection: 'ai-logs',
         data: {
           operation: 'icon-enhancement',
-          provider: 'openai',
-          model: modelToUse,
-          tokensUsed: 100, // Estimate
-          cost: 0.0001, // Required field - estimate
+          provider: response.metadata_internal?.provider || 'openai',
+          model: response.metadata_internal?.model || modelToUse,
+          tokensUsed: response.metadata_internal?.tokensUsed || 0,
+          cost: response.metadata_internal?.cost || 0,
           success: true,
-          duration: 1000, // Estimate
-          aiInput: response.prompt,
-          aiOutput: response.rawResponse,
+          duration: response.metadata_internal?.duration || duration,
+          aiInput: response.prompt || `Icon name: ${data.name}`,
+          aiOutput: response.rawResponse || JSON.stringify(response.metadata),
           metadata: {
             type: 'icon_enhancement',
             iconName: data.name,
             category: response.metadata.category,
             keywordCount: response.metadata.keywords.length,
+            confidence: response.metadata.confidence,
           },
           user: req.user?.id,
         },
@@ -84,9 +110,10 @@ export const enhanceWithAIHook: CollectionBeforeChangeHook = async ({
         console.error('Failed to log AI success:', logError)
       })
 
-    console.log(`Successfully enhanced icon ${data.name} with AI metadata`)
+    console.log(`Successfully enhanced icon ${data.name} with AI metadata (${duration}ms)`)
     return enhancedData
   } catch (error) {
+    const duration = Date.now() - startTime
     console.error('Error enhancing icon with AI:', error)
 
     // Log failed AI operation (don't await to avoid blocking)
@@ -98,10 +125,12 @@ export const enhanceWithAIHook: CollectionBeforeChangeHook = async ({
           provider: 'openai',
           model: 'gpt-4o-mini',
           tokensUsed: 0,
-          cost: 0, // Required field
+          cost: 0,
           success: false,
-          duration: 0,
+          duration,
           error: error instanceof Error ? error.message : 'Unknown error',
+          aiInput: `Icon name: ${data.name}`,
+          aiOutput: '',
           metadata: {
             type: 'icon_enhancement',
             iconName: data.name,

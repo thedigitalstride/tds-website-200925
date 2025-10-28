@@ -150,11 +150,52 @@ export interface SeoMetaResult {
 }
 
 /**
+ * Configuration for icon metadata generation
+ */
+export interface IconMetadataConfig {
+  systemPrimer?: string
+  maxKeywords?: number
+  maxTags?: number
+  descriptionMaxWords?: number
+  categories?: string[]
+}
+
+/**
+ * Icon metadata structure
+ */
+export interface IconMetadata {
+  keywords: string[]
+  category: string
+  description: string
+  tags: string[]
+  confidence?: number
+}
+
+/**
+ * Result from icon metadata generation
+ */
+export interface IconMetadataResult {
+  metadata: IconMetadata
+  success: boolean
+  error?: string
+  rawResponse?: string
+  prompt?: string
+  metadata_internal?: {
+    provider: string
+    model: string
+    tokensUsed?: number
+    cost?: number
+    duration?: number
+    timestamp: string
+  }
+}
+
+/**
  * Log entry for AI operations
  */
 export interface AiOperationLog {
   id: string
-  operation: 'alt-tag' | 'blog-post' | 'seo-title' | 'seo-description'
+  operation: 'alt-tag' | 'blog-post' | 'seo-title' | 'seo-description' | 'icon-enhancement'
   provider: string
   model: string
   input: string // URL or content snippet

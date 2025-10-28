@@ -3713,16 +3713,6 @@ export interface AiSetting {
   blogPostGeneration?: {
     enabled?: boolean | null;
   };
-  costTracking?: {
-    /**
-     * Track estimated costs of AI API calls
-     */
-    enabled?: boolean | null;
-    /**
-     * Send an alert when monthly AI costs exceed this amount
-     */
-    monthlyBudget?: number | null;
-  };
   iconEnhancement?: {
     /**
      * Automatically generate keywords, categories, and descriptions for uploaded icons
@@ -3752,6 +3742,16 @@ export interface AiSetting {
      * Maximum number of keywords to generate per icon
      */
     maxKeywords?: number | null;
+  };
+  costTracking?: {
+    /**
+     * Track estimated costs of AI API calls
+     */
+    enabled?: boolean | null;
+    /**
+     * Send an alert when monthly AI costs exceed this amount
+     */
+    monthlyBudget?: number | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -4009,12 +4009,6 @@ export interface AiSettingsSelect<T extends boolean = true> {
     | {
         enabled?: T;
       };
-  costTracking?:
-    | T
-    | {
-        enabled?: T;
-        monthlyBudget?: T;
-      };
   iconEnhancement?:
     | T
     | {
@@ -4025,6 +4019,12 @@ export interface AiSettingsSelect<T extends boolean = true> {
         semanticSearch?: T;
         systemPrimer?: T;
         maxKeywords?: T;
+      };
+  costTracking?:
+    | T
+    | {
+        enabled?: T;
+        monthlyBudget?: T;
       };
   updatedAt?: T;
   createdAt?: T;
