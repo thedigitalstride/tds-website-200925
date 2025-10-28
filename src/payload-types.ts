@@ -1270,9 +1270,9 @@ export interface FeaturesBlock {
   };
   features: {
     /**
-     * Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com
+     * Select an icon from the Icons collection to display in the feature card
      */
-    icon?: string | null;
+    icon?: (number | null) | Icon;
     title: string;
     /**
      * Rich description with formatting, lists, and links

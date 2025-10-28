@@ -1,6 +1,7 @@
 import type { Block } from 'payload'
 import { link } from '@/fields/link'
 import { richTextEditorSimple } from '@/fields/richTextWithButtons'
+import { iconSelectorField } from '@/fields/IconSelector'
 
 export const FeaturesBlock: Block = {
   slug: 'features',
@@ -71,16 +72,13 @@ export const FeaturesBlock: Block = {
       maxRows: 12,
       label: 'Features',
       fields: [
-        {
+        iconSelectorField({
           name: 'icon',
-          type: 'text',
-          label: 'Icon Name',
+          required: false,
           admin: {
-            description:
-              'Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com',
-            placeholder: 'Zap',
+            description: 'Select an icon from the Icons collection to display in the feature card',
           },
-        },
+        }),
         {
           name: 'title',
           type: 'text',
