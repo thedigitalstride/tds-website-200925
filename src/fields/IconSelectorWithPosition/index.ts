@@ -22,6 +22,7 @@ export const iconSelectorWithPositionField = (overrides?: Partial<Field>): Field
       name: 'position',
       type: 'select',
       defaultValue: 'trailing',
+      dbName: 'btn_icon_pos', // Short DB name to avoid PostgreSQL 63-char limit
       options: [
         { label: 'Leading', value: 'leading' },
         { label: 'Trailing', value: 'trailing' },
