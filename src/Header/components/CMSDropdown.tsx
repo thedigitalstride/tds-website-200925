@@ -105,8 +105,8 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
               // Extract icon data - supports both new (relationship) and legacy (text) icons
               const iconData = typeof item.icon === 'object' ? item.icon as Icon : null
 
-              // Fallback to legacy text-based icon if no relationship icon
-              const LegacyIconComponent = iconData ? null : getIcon(item.icon ?? undefined)
+              // Fallback to legacy text-based icon if no relationship icon (only if string)
+              const LegacyIconComponent = iconData ? null : getIcon(typeof item.icon === 'string' ? item.icon : undefined)
 
               // Render icon as SVG if we have icon data, otherwise use legacy component
               const icon = iconData?.svgCode ? (

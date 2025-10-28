@@ -1,6 +1,7 @@
 import type { Field, GroupField } from 'payload'
 
 import deepMerge from '@/utilities/deepMerge'
+import { iconSelectorWithPositionField } from './IconSelectorWithPosition'
 
 // UntitledUI Button Color Variants
 export type UUIButtonColors =
@@ -274,7 +275,6 @@ export const link: LinkType = ({
     })
 
     // Add icon configuration for buttons - using visual icon selector
-    const { iconSelectorWithPositionField } = require('../fields/IconSelectorWithPosition')
     linkResult.fields.push(
       iconSelectorWithPositionField({
         admin: {
