@@ -77,21 +77,21 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
       case 'primary-reversed':
         // White text on dark bg (light mode), dark text on white bg (dark mode)
         return {
-          eyebrow: 'text-white dark:text-brand-500',
-          heading: 'text-white dark:text-brand-500',
-          description: 'text-white dark:text-brand-500'
+          eyebrow: 'text-white dark:text-gray-700',
+          heading: 'text-white dark:text-gray-700',
+          description: 'text-white dark:text-secondary'
         }
       case 'tertiary':
         // Dark text on gray-solid background (both modes)
         return {
-          eyebrow: 'text-brand-700',
-          heading: 'text-brand-900',
-          description: 'text-brand-900'
+          eyebrow: 'text-primary dark:text-gray-700',
+          heading: 'text-primary dark:text-gray-700',
+          description: 'text-secondary'
         }
       default:
         // Default semantic colors for primary, secondary, line
         return {
-          eyebrow: 'text-brand-secondary',
+          eyebrow: 'text-primary',
           heading: 'text-primary',
           description: 'text-secondary'
         }

@@ -1,17 +1,33 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useField } from '@payloadcms/ui'
 import { IconGrid } from '../IconSelector/Component'
 import type { Icon } from '@/payload-types'
 
 export const IconSelectorWithPositionField = (props: any) => {
-  const { value, setValue, path } = props
+  const { path, field } = props
   const [selectedIcon, setSelectedIcon] = useState<Icon | null>(null)
   const [showGrid, setShowGrid] = useState(false)
 
-  // Extract icon and position from value
-  const iconValue = value?.icon
-  const positionValue = value?.position || 'trailing'
+  // Debug: Log the props to understand the field structure
+  console.log('[IconSelector] Component Props:', { path, fieldName: field?.name, props })
+
+  // Use separate useField hooks for each nested field
+  const basePath = path || 'buttonIconConfig'
+  console.log('[IconSelector] Using basePath:', basePath)
+
+  const { value: iconValue, setValue: setIconValue } = useField<string>({
+    path: `${basePath}.icon`
+  })
+  const { value: positionValue, setValue: setPositionValue } = useField<string>({
+    path: `${basePath}.position`
+  })
+
+  console.log('[IconSelector] Current values:', { iconValue, positionValue })
+
+  // Default position to trailing if not set
+  const currentPosition = positionValue || 'trailing'
 
   // Fetch selected icon details when icon value changes
   useEffect(() => {
@@ -26,26 +42,20 @@ export const IconSelectorWithPositionField = (props: any) => {
   }, [iconValue])
 
   const handleSelect = (iconId: string) => {
-    setValue({
-      icon: iconId,
-      position: positionValue,
-    })
+    console.log('[IconSelector] Setting icon:', iconId)
+    setIconValue(iconId)
     setShowGrid(false)
   }
 
   const handleClear = () => {
-    setValue({
-      icon: null,
-      position: positionValue,
-    })
+    console.log('[IconSelector] Clearing icon')
+    setIconValue(null as any)
     setSelectedIcon(null)
   }
 
   const handlePositionChange = (position: 'leading' | 'trailing') => {
-    setValue({
-      icon: iconValue,
-      position,
-    })
+    console.log('[IconSelector] Setting position:', position)
+    setPositionValue(position)
   }
 
   return (
@@ -90,7 +100,7 @@ export const IconSelectorWithPositionField = (props: any) => {
                 type="button"
                 onClick={() => handlePositionChange('leading')}
                 className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-                  positionValue === 'leading'
+                  currentPosition === 'leading'
                     ? 'bg-blue-500 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
@@ -106,7 +116,7 @@ export const IconSelectorWithPositionField = (props: any) => {
                 type="button"
                 onClick={() => handlePositionChange('trailing')}
                 className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-                  positionValue === 'trailing'
+                  currentPosition === 'trailing'
                     ? 'bg-blue-500 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}

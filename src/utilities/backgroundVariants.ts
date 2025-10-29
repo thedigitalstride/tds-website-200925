@@ -11,7 +11,7 @@ export type BackgroundVariant =
   | 'primary'            // Primary: white bg in light, dark bg in dark
   | 'primary-reversed'   // Primary reversed: dark bg in light, white bg in dark
   | 'secondary'          // Secondary/outlined style (transparent with border)
-  | 'tertiary'           // Tertiary: gray-solid background
+  | 'tertiary'           // Tertiary: light greay across both light and dark modes
   | 'accent'             // Accent blue solid color
   | 'line'               // Top border only (cards only)
 
@@ -33,7 +33,7 @@ export function getBackgroundClasses(variant: BackgroundVariant): string {
     case 'secondary':
       return 'bg-transparent ring-1 ring-gray-solid ring-inset'  // Outlined style with gray-solid ring
     case 'tertiary':
-      return 'bg-gray-solid'  // Gray-solid background
+      return 'bg-tertiary'  // Tertiary background
     case 'accent':
       return 'bg-accent-solid'  // Accent blue background
     case 'line':

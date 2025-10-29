@@ -24,8 +24,8 @@ const styles = sortCx({
             brand: "bg-primary text-brand-500 dark:text-white",
             "brand-reversed": "bg-brand-solid text-white dark:!bg-white dark:text-brand-500",
             accent: "bg-accent-solid !text-white",
-            secondary: "bg-transparent text-brand-500 dark:text-white ring-1 ring-gray-solid ring-inset",
-            tertiary: "bg-gray-solid text-brand-500 dark:text-brand-900",
+            secondary: "bg-transparent text-primary dark:text-brand-500 ring-2 ring-brand-500 ring-inset",
+            tertiary: "bg-tertiary text-primary dark:text-brand-500",
         },
     },
 
@@ -41,8 +41,8 @@ const styles = sortCx({
             brand: "bg-primary text-brand-500 dark:text-white",
             "brand-reversed": "bg-brand-solid text-white dark:!bg-white dark:text-brand-500",
             accent: "bg-accent-solid !text-white",
-            secondary: "bg-transparent text-brand-500 dark:text-white ring-1 ring-gray-solid ring-inset",
-            tertiary: "bg-gray-solid text-brand-500 dark:text-brand-900",
+            secondary: "bg-transparent text-primary dark:text-brand-500 ring-2 ring-brand-500 ring-inset",
+            tertiary: "bg-tertiary text-primary dark:text-brand-500",
         },
     },
 });

@@ -798,7 +798,7 @@
 
     /* BACKGROUND COLORS */
     --color-bg-primary: var(--color-white);
-    --color-bg-tertiary: var(--color-gray-300);
+    --color-bg-tertiary: var(--color-gray-100);
     --color-bg-brand-primary: var(--color-brand-50);
     --color-bg-error-secondary: var(--color-error-100);
     --color-bg-warning-primary: var(--color-warning-50);
@@ -1318,7 +1318,7 @@
 
         /* BACKGROUND COLORS */
         --color-bg-primary: var(--color-brand-500);
-        --color-bg-tertiary: var(--color-gray-300);
+        --color-bg-tertiary: var(--color-gray-100);
         --color-bg-brand-primary: var(--color-brand-500);
         --color-bg-error-secondary: var(--color-error-600);
         --color-bg-warning-primary: var(--color-warning-950);

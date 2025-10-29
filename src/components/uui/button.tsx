@@ -50,7 +50,7 @@ export const styles = sortCx({
     colors: {
         primary: {
             root: [
-                "bg-white text-brand-500 dark:bg-brand-500 dark:text-white ring-1 ring-transparent ring-inset hover:scale-105",
+                "bg-white text-brand-500 dark:bg-brand-500 dark:text-white ring-2 ring-transparent ring-inset hover:scale-105",
                 // Disabled styles
                 "disabled:bg-disabled disabled:text-fg-disabled",
                 // Icon styles
@@ -59,7 +59,7 @@ export const styles = sortCx({
         },
         "primary-reversed": {
             root: [
-                "bg-brand-500 text-white dark:bg-white dark:text-brand-500 ring-1 ring-transparent ring-inset hover:scale-105",
+                "bg-brand-500 text-white dark:bg-white dark:text-brand-500 ring-2 ring-transparent ring-inset hover:scale-105",
                 // Disabled styles
                 "disabled:bg-disabled disabled:text-fg-disabled",
                 // Icon styles
@@ -68,7 +68,7 @@ export const styles = sortCx({
         },
         accent: {
             root: [
-                "bg-accent-solid text-white ring-1 ring-transparent ring-inset hover:scale-105",
+                "bg-accent-solid text-white ring-2 ring-transparent ring-inset hover:scale-105",
                 // Disabled styles
                 "disabled:bg-disabled disabled:text-fg-disabled",
                 // Icon styles
@@ -77,7 +77,7 @@ export const styles = sortCx({
         },
         secondary: {
             root: [
-                "bg-transparent text-brand-500 dark:text-white ring-1 ring-gray-solid ring-inset hover:scale-105",
+                "bg-transparent text-brand-500 dark:text-white ring-2 ring-brand-500 dark:ring-white ring-inset hover:scale-105",
                 // Disabled styles
                 "disabled:ring-disabled_subtle",
                 // Icon styles
@@ -86,18 +86,18 @@ export const styles = sortCx({
         },
         tertiary: {
             root: [
-                "bg-gray-solid text-brand-500 dark:text-brand-900 hover:scale-105",
+                "bg-tertiary text-primary dark:text-brand-500 hover:scale-105",
                 // Icon styles
-                "*:data-icon:text-brand-500 dark:*:data-icon:text-brand-900",
+                "*:data-icon:text-brand-500 dark:*:data-icon:text-brand-500",
             ].join(" "),
         },
         "link": {
             root: [
-                "justify-normal rounded p-0! text-brand-500/70 dark:text-white/70",
+                "justify-normal rounded p-0! text-brand-500 dark:text-white",
                 // Inner text underline
                 "*:data-text:underline *:data-text:decoration-transparent *:data-text:underline-offset-4 hover:*:data-text:decoration-current",
                 // Icon styles
-                "*:data-icon:text-brand-500/70 dark:*:data-icon:text-white/70",
+                "*:data-icon:text-brand-500 dark:*:data-icon:text-white",
             ].join(" "),
         },
         "primary-destructive": {

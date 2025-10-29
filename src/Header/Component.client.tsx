@@ -80,6 +80,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           reference: data.ctaButton.link.reference ?? undefined,
           uuiColor: data.ctaButton.link.uuiColor ?? undefined,
           uuiSize: data.ctaButton.link.uuiSize ?? undefined,
+          buttonIconConfig: data.ctaButton.link.buttonIconConfig ?? undefined,
           buttonIcon: data.ctaButton.link.buttonIcon ?? undefined,
           iconPos: data.ctaButton.link.iconPos ?? undefined,
         },
@@ -102,6 +103,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           reference: data.mobileCtaButton.link.reference ?? undefined,
           uuiColor: data.mobileCtaButton.link.uuiColor ?? undefined,
           uuiSize: data.mobileCtaButton.link.uuiSize ?? undefined,
+          buttonIconConfig: data.mobileCtaButton.link.buttonIconConfig ?? undefined,
           buttonIcon: data.mobileCtaButton.link.buttonIcon ?? undefined,
           iconPos: data.mobileCtaButton.link.iconPos ?? undefined,
         },
@@ -114,7 +116,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   return (
     <header className="fixed top-4 left-0 right-0 z-50">
       <div className="mx-auto max-w-container px-4 md:px-8">
-        <div className="bg-brand-50/30 dark:bg-brand-900/50 rounded-xl overflow-hidden backdrop-blur-lg">
+        <div className="bg-tertiary/70 dark:bg-brand-900/70 rounded-2xl overflow-hidden backdrop-blur-lg">
           <UUIHeader
             items={navigationItems}
             ctaButton={effectiveCtaButton}

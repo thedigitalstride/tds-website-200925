@@ -141,7 +141,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
     // Hero-specific background overrides
     let heroBgClasses = getBackgroundClasses(bgVariant)
     if (bgVariant === 'primary') {
-      heroBgClasses = 'bg-gray-solid dark:bg-brand-700'  // Gray in light, dark in dark
+      heroBgClasses = 'bg-tertiary dark:bg-brand-700'  // Gray in light, dark in dark
     } else if (bgVariant === 'primary-reversed') {
       heroBgClasses = 'bg-brand-solid dark:bg-white'  // Dark blue in light, white in dark
     }
