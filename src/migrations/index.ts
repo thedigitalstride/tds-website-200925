@@ -52,7 +52,6 @@ import * as migration_20251027_205000_fix_custom_class from './20251027_205000_f
 import * as migration_20251027_210000_fix_card_grid_enum from './20251027_210000_fix_card_grid_enum';
 import * as migration_20251028_171537 from './20251028_171537';
 import * as migration_20251028_215241 from './20251028_215241';
-import * as migration_20251029_124829 from './20251029_124829';
 
 export const migrations = [
   {
@@ -324,10 +323,5 @@ export const migrations = [
     up: migration_20251028_215241.up,
     down: migration_20251028_215241.down,
     name: '20251028_215241',
-  },
-  {
-    up: migration_20251029_124829.up,
-    down: migration_20251029_124829.down,
-    name: '20251029_124829'
   },
 ];
