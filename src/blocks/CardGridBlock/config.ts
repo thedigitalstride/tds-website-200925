@@ -1,30 +1,7 @@
 import type { Block } from 'payload'
 import { link } from '@/fields/link'
-import { lexicalEditor, HeadingFeature, UnorderedListFeature, OrderedListFeature, ChecklistFeature, BlocksFeature, FixedToolbarFeature, InlineToolbarFeature } from '@payloadcms/richtext-lexical'
-import { ButtonBlock } from '@/blocks/ButtonBlock/config'
+import { richTextStandard } from '@/fields/richTextWithButtons'
 import { iconSelectorField } from '@/fields/IconSelector'
-
-/**
- * Rich text editor for card descriptions with headings support
- * Includes: headings (h3, h4), lists, checkboxes, and buttons
- */
-const richTextEditorWithHeadings = () => lexicalEditor({
-  features: ({ rootFeatures }) => {
-    return [
-      ...rootFeatures,
-      HeadingFeature({
-        enabledHeadingSizes: ['h3', 'h4'], // Smaller headings appropriate for cards
-      }),
-      UnorderedListFeature(),
-      OrderedListFeature(),
-      ChecklistFeature(),
-      BlocksFeature({ blocks: [ButtonBlock] }),
-      // Add toolbar features last so they can detect all content features
-      FixedToolbarFeature(),
-      InlineToolbarFeature(),
-    ]
-  },
-})
 
 export const CardGridBlock: Block = {
   slug: 'cardGrid',
@@ -125,7 +102,7 @@ export const CardGridBlock: Block = {
           type: 'richText',
           required: false,
           label: 'Card Description',
-          editor: richTextEditorWithHeadings(),
+          editor: richTextStandard({ headings: ['h3', 'h4'], enableButtons: true }),
           admin: {
             description: 'Rich description with headings, formatting, lists, and links',
           },

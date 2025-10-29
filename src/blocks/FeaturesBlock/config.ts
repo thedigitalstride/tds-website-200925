@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 import { link } from '@/fields/link'
-import { richTextEditorSimple } from '@/fields/richTextWithButtons'
+import { richTextStandard } from '@/fields/richTextWithButtons'
 import { iconSelectorField } from '@/fields/IconSelector'
 
 export const FeaturesBlock: Block = {
@@ -90,7 +90,7 @@ export const FeaturesBlock: Block = {
           type: 'richText',
           required: false,
           label: 'Feature Description',
-          editor: richTextEditorSimple(),
+          editor: richTextStandard(),
           admin: {
             description: 'Rich description with formatting, lists, and links',
           },

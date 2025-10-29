@@ -1,4 +1,5 @@
 import type { Block } from 'payload'
+import { richTextStandard } from '@/fields/richTextWithButtons'
 
 export const Conclusion: Block = {
   slug: 'conclusion',
@@ -17,6 +18,7 @@ export const Conclusion: Block = {
       name: 'content',
       type: 'richText',
       required: true,
+      editor: richTextStandard({ enableButtons: true }),
       admin: {
         description: 'Conclusion content (supports multiple paragraphs)',
       },

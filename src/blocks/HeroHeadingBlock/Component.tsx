@@ -1,10 +1,9 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import type { HeroHeadingBlock as HeroHeadingBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import { OptimizedImage } from '@/components/OptimizedImage'
 import type { Media } from '@/payload-types'
-import { Typewriter } from 'motion-plus/react'
 import { UUIButton } from '@/components/payload-ui/UUIButton'
 import { HeroSplitImageMask } from '@/components/HeroSplitImageMask'
 import { getBackgroundClasses, type BackgroundVariant } from '@/utilities/backgroundVariants'
@@ -17,7 +16,6 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   spacing,
   subtitleSize,
   bg,
-  enableTypewriter,
   heroLayout,
   splitImage,
   heroBackground,
@@ -28,54 +26,6 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   const finalSpacing = spacing ?? 'normal'
   const finalHeadlineColor = headlineColor ?? 'primary'
   const finalSubtitleSize = subtitleSize ?? 'normal'
-
-  // Track when headline typing completes to start subtitle
-  const [headlineComplete, setHeadlineComplete] = useState(!enableTypewriter)
-  const [subtitleComplete, setSubtitleComplete] = useState(false)
-  const [startSubtitle, setStartSubtitle] = useState(false)
-  const [startHeadline, setStartHeadline] = useState(!enableTypewriter)
-
-  // Split headline by lines for sequential typing with pauses
-  // Use regex to handle both Unix (\n) and Windows (\r\n) line endings
-  const headlineLines = headline?.split(/\r?\n/) || []
-  const [currentLineIndex, setCurrentLineIndex] = useState(0)
-  const [startCurrentLine, setStartCurrentLine] = useState(false)
-
-  // Add initial delay before starting headline animation
-  React.useEffect(() => {
-    if (enableTypewriter && !startHeadline) {
-      const timer = setTimeout(() => {
-        setStartHeadline(true)
-        setStartCurrentLine(true)
-      }, 3000) // 3 second pause with cursor before headline starts
-      return () => clearTimeout(timer)
-    }
-  }, [enableTypewriter, startHeadline])
-
-  // Handle line-by-line typing with pauses
-  const handleLineComplete = React.useCallback(() => {
-    if (currentLineIndex < headlineLines.length - 1) {
-      // More lines to type - pause then start next line
-      setStartCurrentLine(false)
-      setTimeout(() => {
-        setCurrentLineIndex(prev => prev + 1)
-        setStartCurrentLine(true)
-      }, 600) // 600ms pause between lines
-    } else {
-      // All lines complete
-      setHeadlineComplete(true)
-    }
-  }, [currentLineIndex, headlineLines.length])
-
-  // Add delay before starting subtitle animation
-  React.useEffect(() => {
-    if (headlineComplete && enableTypewriter) {
-      const timer = setTimeout(() => {
-        setStartSubtitle(true)
-      }, 800) // 800ms pause before subtitle starts
-      return () => clearTimeout(timer)
-    }
-  }, [headlineComplete, enableTypewriter])
 
   // New structure: bg.enabled and bg.heightVariant instead of fullHeight
   const bgEnabled = bg?.enabled === true
@@ -508,102 +458,30 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
         // Add top padding when background extends behind header (to compensate for negative margin)
         bgEnabled && backgroundType === 'image' && "pt-18 md:pt-20"
       )}>
-        <div className={cn('flex flex-col w-full', alignmentClasses[finalTextAlignment], enableTypewriter && 'relative')}>
-          {/* Invisible placeholder layer in document flow to reserve full space */}
-          {enableTypewriter && (
-            <div className="flex flex-col w-full" aria-hidden="true">
-              <h1
-                className={cn(
-                  'mt-4 font-semibold invisible',
-                  headlineColorClasses[finalHeadlineColor],
-                )}
-                style={{
-                  whiteSpace: 'pre-line',
-                  fontFamily: 'var(--font-poppins, Poppins)',
-                  fontSize: 'clamp(2.1rem, 5vw + 1rem, 6.5rem)',
-                  lineHeight: '1.2',
-                  fontWeight: '700',
-                }}
-              >
-                {headline}
-              </h1>
-              {subtitle && (
-                <h2
-                  className="mt-10 font-normal invisible text-brand-500 dark:text-white"
-                  style={subtitleSizeStyles[finalSubtitleSize]}
-                >
-                  {subtitle}
-                </h2>
-              )}
-            </div>
-          )}
-
-          {/* Visible content layer positioned absolutely over placeholder */}
-          <div className={cn(
-            'flex flex-col w-full',
-            enableTypewriter && 'absolute inset-0'
-          )}>
-            <h1
-              className={cn(
-                'mt-4 font-semibold',
-                headlineColorClasses[finalHeadlineColor],
-              )}
-              style={{
-                whiteSpace: 'pre-line',
-                fontFamily: 'var(--font-poppins, Poppins)',
-                fontSize: 'clamp(2.1rem, 5vw + 1rem, 6.5rem)',
-                lineHeight: '1.2',
-                fontWeight: '700',
-              }}
-            >
-              {enableTypewriter ? (
-                <>
-                  {headlineLines.map((line, index) => (
-                    index <= currentLineIndex && (
-                      <span key={index} style={{ display: 'block' }}>
-                        <Typewriter
-                          speed="normal"
-                          variance="natural"
-                          play={index === currentLineIndex ? startCurrentLine : false}
-                          onComplete={index === currentLineIndex ? handleLineComplete : undefined}
-                          cursorStyle={
-                            index < currentLineIndex || headlineComplete
-                              ? { display: 'none' }
-                              : undefined
-                          }
-                        >
-                          {line}
-                        </Typewriter>
-                      </span>
-                    )
-                  ))}
-                </>
-              ) : (
-                headline
-              )}
-            </h1>
-            {subtitle && (
-              <h2
-                className="mt-10 font-normal text-brand-500 dark:text-white"
-                style={subtitleSizeStyles[finalSubtitleSize]}
-              >
-                {enableTypewriter ? (
-                  startSubtitle ? (
-                    <Typewriter
-                      speed="normal"
-                      variance="natural"
-                      onComplete={() => setSubtitleComplete(true)}
-                      cursorStyle={subtitleComplete ? { display: 'none' } : undefined}
-                    >
-                      {subtitle}
-                    </Typewriter>
-                  ) : null
-                ) : (
-                  subtitle
-                )}
-              </h2>
+        <div className={cn('flex flex-col w-full', alignmentClasses[finalTextAlignment])}>
+          <h1
+            className={cn(
+              'mt-4 font-semibold',
+              headlineColorClasses[finalHeadlineColor],
             )}
-          </div>
+            style={{
+              whiteSpace: 'pre-line',
+              fontFamily: 'var(--font-poppins, Poppins)',
+              fontSize: 'clamp(2.1rem, 5vw + 1rem, 6.5rem)',
+              lineHeight: '1.2',
+              fontWeight: '700',
+            }}
+          >
+            {headline}
+          </h1>
+          {subtitle && (
+            <h2
+              className="mt-10 font-normal text-brand-500 dark:text-white"
+              style={subtitleSizeStyles[finalSubtitleSize]}
+            >
+              {subtitle}
+            </h2>
+          )}
         </div>
       </div>
     </section>

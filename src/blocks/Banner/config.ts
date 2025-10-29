@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 
-import { richTextEditorSimple } from '@/fields/richTextWithButtons'
+import { richTextStandard } from '@/fields/richTextWithButtons'
 
 export const Banner: Block = {
   slug: 'banner',
@@ -20,7 +20,7 @@ export const Banner: Block = {
     {
       name: 'content',
       type: 'richText',
-      editor: richTextEditorSimple(),
+      editor: richTextStandard({ enableButtons: true }),
       label: false,
       required: true,
     },

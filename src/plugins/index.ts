@@ -6,7 +6,7 @@ import { searchPlugin } from '@payloadcms/plugin-search'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL, GenerateDescription, GenerateImage } from '@payloadcms/plugin-seo/types'
-import { richTextEditor } from '@/fields/richTextWithButtons'
+import { richTextStandard } from '@/fields/richTextWithButtons'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 import { Page, Post } from '@/payload-types'
@@ -99,7 +99,7 @@ export const plugins: Plugin[] = [
           if ('name' in field && field.name === 'confirmationMessage') {
             return {
               ...field,
-              editor: richTextEditor({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+              editor: richTextStandard({ headings: ['h1', 'h2', 'h3', 'h4'], enableButtons: true }),
             }
           }
           return field

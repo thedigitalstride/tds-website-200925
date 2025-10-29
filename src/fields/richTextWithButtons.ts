@@ -1,12 +1,6 @@
 import type { Block } from 'payload'
-import type { TextFieldSingleValidation } from 'payload'
 import {
-  BoldFeature,
-  ItalicFeature,
-  LinkFeature,
-  ParagraphFeature,
   lexicalEditor,
-  UnderlineFeature,
   BlocksFeature,
   FixedToolbarFeature,
   InlineToolbarFeature,
@@ -16,33 +10,89 @@ import {
   OrderedListFeature,
   ChecklistFeature,
   UploadFeature,
-  type LinkFields,
 } from '@payloadcms/richtext-lexical'
 
 import { ButtonBlock } from '@/blocks/ButtonBlock/config'
+import { MediaBlock } from '@/blocks/MediaBlock/config'
 
 /**
- * Standard rich text editor with ButtonBlock and common features
- * Suitable for most content areas like blog posts, content blocks, etc.
+ * Minimal rich text editor for captions and short text
+ *
+ * Features:
+ * - Basic formatting (Bold, Italic, Link from rootFeatures)
+ * - Lists (Unordered, Ordered, Checklist)
+ * - Toolbars (Fixed, Inline)
+ *
+ * Use cases:
+ * - Media captions
+ * - Short descriptions
+ * - Metadata fields
  */
-export const richTextEditor = (options?: {
-  enabledHeadingSizes?: ('h1' | 'h2' | 'h3' | 'h4')[]
-  additionalBlocks?: Block[]
+export const richTextMinimal = () => lexicalEditor({
+  features: ({ rootFeatures }) => {
+    return [
+      ...rootFeatures,
+      UnorderedListFeature(),
+      OrderedListFeature(),
+      ChecklistFeature(),
+      FixedToolbarFeature(),
+      InlineToolbarFeature(),
+    ]
+  },
+})
+
+/**
+ * Standard rich text editor for most content areas
+ *
+ * Features:
+ * - All features from richTextMinimal
+ * - Headings (configurable sizes)
+ * - MediaBlock (for embedding media)
+ * - Optional ButtonBlock
+ * - Optional additional custom blocks
+ * - Optional horizontal rule
+ *
+ * Use cases:
+ * - Content blocks
+ * - Hero sections
+ * - Feature descriptions
+ * - Banner content
+ *
+ * @param options.headings - Array of enabled heading sizes (e.g., ['h2', 'h3', 'h4'])
+ * @param options.enableButtons - Whether to include ButtonBlock (default: false)
+ * @param options.enableHorizontalRule - Whether to include HorizontalRuleFeature (default: false)
+ * @param options.additionalBlocks - Additional custom blocks to include
+ */
+export const richTextStandard = (options?: {
+  headings?: ('h1' | 'h2' | 'h3' | 'h4')[]
+  enableButtons?: boolean
   enableHorizontalRule?: boolean
+  additionalBlocks?: Block[]
 }) => lexicalEditor({
   features: ({ rootFeatures }) => {
     const features = [
       ...rootFeatures,
-      HeadingFeature({
-        enabledHeadingSizes: options?.enabledHeadingSizes || ['h2', 'h3', 'h4']
-      }),
       UnorderedListFeature(),
       OrderedListFeature(),
       ChecklistFeature(),
-      BlocksFeature({
-        blocks: [ButtonBlock, ...(options?.additionalBlocks || [])]
-      }),
     ]
+
+    // Add headings if specified
+    if (options?.headings && options.headings.length > 0) {
+      features.push(HeadingFeature({
+        enabledHeadingSizes: options.headings
+      }))
+    }
+
+    // Build blocks array - MediaBlock is always included
+    const blocks: Block[] = [MediaBlock]
+    if (options?.enableButtons) {
+      blocks.push(ButtonBlock)
+    }
+    if (options?.additionalBlocks && options.additionalBlocks.length > 0) {
+      blocks.push(...options.additionalBlocks)
+    }
+    features.push(BlocksFeature({ blocks }))
 
     // Add horizontal rule if enabled
     if (options?.enableHorizontalRule) {
@@ -58,14 +108,33 @@ export const richTextEditor = (options?: {
 })
 
 /**
- * Full-featured rich text editor with all blocks and features
- * Suitable for main content areas like blog posts
+ * Full-featured rich text editor with inline uploads
+ *
+ * Features:
+ * - All features from richTextStandard
+ * - UploadFeature for inline image uploads with captions
+ * - All heading sizes (h1-h4)
+ * - ButtonBlock included
+ * - HorizontalRule included
+ * - Optional additional custom blocks
+ *
+ * Use cases:
+ * - Blog post content
+ * - FAQ answers
+ * - Long-form content areas
+ *
+ * Note: This is the heaviest editor variant and should only be used
+ * for main content areas that require inline image uploads.
+ *
+ * @param options.additionalBlocks - Additional custom blocks to include
  */
-export const richTextEditorFull = (additionalBlocks: Block[] = []) => lexicalEditor({
+export const richTextFull = (options?: {
+  additionalBlocks?: Block[]
+}) => lexicalEditor({
   features: ({ rootFeatures }) => {
     return [
       ...rootFeatures,
-      // Add UploadFeature for inline image uploads - Payload best practice
+      // UploadFeature for inline image uploads with captions
       UploadFeature({
         collections: {
           media: {
@@ -94,94 +163,11 @@ export const richTextEditorFull = (additionalBlocks: Block[] = []) => lexicalEdi
       OrderedListFeature(),
       ChecklistFeature(),
       BlocksFeature({
-        blocks: [ButtonBlock, ...additionalBlocks]
+        blocks: [ButtonBlock, MediaBlock, ...(options?.additionalBlocks || [])]
       }),
       HorizontalRuleFeature(),
-      // Add toolbar features last so they can detect all content features
       FixedToolbarFeature(),
       InlineToolbarFeature(),
     ]
   },
-})
-
-/**
- * Simple rich text editor with minimal features but includes ButtonBlock
- * Suitable for captions, short descriptions, etc.
- */
-export const richTextEditorSimple = () => lexicalEditor({
-  features: ({ rootFeatures }) => {
-    return [
-      ...rootFeatures,
-      UnorderedListFeature(),
-      OrderedListFeature(),
-      ChecklistFeature(),
-      BlocksFeature({ blocks: [ButtonBlock] }),
-      // Add toolbar features last so they can detect all content features
-      FixedToolbarFeature(),
-      InlineToolbarFeature(),
-    ]
-  },
-})
-
-/**
- * Minimal rich text editor without ButtonBlock
- * For cases where buttons are not appropriate (e.g., meta descriptions)
- */
-export const richTextEditorMinimal = () => lexicalEditor({
-  features: ({ rootFeatures }) => {
-    return [
-      ...rootFeatures,
-      UnorderedListFeature(),
-      OrderedListFeature(),
-      ChecklistFeature(),
-      // Add toolbar features last so they can detect all content features
-      FixedToolbarFeature(),
-      InlineToolbarFeature(),
-    ]
-  },
-})
-
-/**
- * Enhanced default lexical editor that includes ButtonBlock
- * This replaces the original defaultLexical with button support
- */
-export const defaultLexicalWithButtons = lexicalEditor({
-  features: [
-    ParagraphFeature(),
-    UnderlineFeature(),
-    BoldFeature(),
-    ItalicFeature(),
-    UnorderedListFeature(),
-    OrderedListFeature(),
-    ChecklistFeature(),
-    BlocksFeature({ blocks: [ButtonBlock] }),
-    LinkFeature({
-      enabledCollections: ['pages', 'posts'],
-      fields: ({ defaultFields }) => {
-        const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
-          if ('name' in field && field.name === 'url') return false
-          return true
-        })
-
-        return [
-          ...defaultFieldsWithoutUrl,
-          {
-            name: 'url',
-            type: 'text',
-            admin: {
-              condition: (_data, siblingData) => siblingData?.linkType !== 'internal',
-            },
-            label: ({ t }) => t('fields:enterURL'),
-            required: true,
-            validate: ((value, options) => {
-              if ((options?.siblingData as LinkFields)?.linkType === 'internal') {
-                return true // no validation needed, as no url should exist for internal links
-              }
-              return value ? true : 'URL is required'
-            }) as TextFieldSingleValidation,
-          },
-        ]
-      },
-    }),
-  ],
 })

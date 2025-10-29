@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 
-import { richTextEditor } from '@/fields/richTextWithButtons'
+import { richTextStandard } from '@/fields/richTextWithButtons'
 
 export const Archive: Block = {
   slug: 'archive',
@@ -9,7 +9,7 @@ export const Archive: Block = {
     {
       name: 'introContent',
       type: 'richText',
-      editor: richTextEditor({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+      editor: richTextStandard({ headings: ['h1', 'h2', 'h3', 'h4'], enableButtons: true }),
       label: 'Intro Content',
     },
     {

@@ -2,10 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { richTextEditorFull } from '@/fields/richTextWithButtons'
+import { richTextFull } from '@/fields/richTextWithButtons'
 import { slugField } from '@/fields/slug'
 import { revalidateFAQ, revalidateDeleteFAQ } from './hooks/revalidateFAQ'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { Code } from '../../blocks/Code/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 
@@ -51,7 +50,7 @@ export const FAQs: CollectionConfig<'faqs'> = {
               type: 'richText',
               label: 'Answer',
               required: true,
-              editor: richTextEditorFull([MediaBlock, Code, CallToAction]),
+              editor: richTextFull({ additionalBlocks: [Code, CallToAction] }),
               admin: {
                 description:
                   'Rich answer with images, code blocks, videos, and links to related content',

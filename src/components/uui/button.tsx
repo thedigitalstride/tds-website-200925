@@ -77,7 +77,7 @@ export const styles = sortCx({
         },
         secondary: {
             root: [
-                "bg-transparent text-brand-500 dark:text-white ring-2 ring-tertiary ring-inset hover:scale-105",
+                "bg-white text-brand-500 ring-2 ring-tertiary ring-inset hover:scale-105",
                 // Disabled styles
                 "disabled:ring-disabled_subtle",
                 // Icon styles

@@ -15,6 +15,15 @@ import readline from 'readline';
 const args = process.argv.slice(2);
 const command = args[0];
 
+// Check if someone is trying to use :safe suffix through the wrong command
+if (command && command.includes(':safe')) {
+  console.log('\n❌ ERROR: Incorrect usage of :safe suffix\n');
+  console.log('You ran: pnpm payload migrate:create:safe');
+  console.log('You should run: pnpm migrate:create:safe\n');
+  console.log('The :safe suffix is a separate npm script, not a payload command.\n');
+  process.exit(1);
+}
+
 // List of migration commands that should trigger a warning
 const migrationCommands = [
   'migrate',

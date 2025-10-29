@@ -937,10 +937,13 @@ export interface CallToActionBlock {
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
+  /**
+   * Select or upload an image to display
+   */
   media: number | Media;
   caption?: {
     /**
-     * Caption text
+     * Text caption for the image
      */
     text?: string | null;
     link?: {
@@ -1232,9 +1235,20 @@ export interface CardGridBlock {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
+  /**
+   * Add and arrange columns. ⚠️ Reordering columns with rich text can cause errors - instead, duplicate the column and delete the old one.
+   */
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+        /**
+         * Vertical alignment of all content in this column (text, images, buttons)
+         */
+        verticalAlign?: ('top' | 'middle' | 'bottom') | null;
+        /**
+         * Choose between rich text content or a direct image upload
+         */
+        contentType?: ('richText' | 'image') | null;
         richText?: {
           root: {
             type: string;
@@ -1250,6 +1264,28 @@ export interface ContentBlock {
           };
           [k: string]: unknown;
         } | null;
+        /**
+         * Select or upload an image for this column
+         */
+        image?: (number | null) | Media;
+        imageOptions?: {
+          /**
+           * How the image should fit within its container
+           */
+          fit?: ('cover' | 'contain' | 'fill' | 'none') | null;
+          /**
+           * Aspect ratio constraint for the image
+           */
+          ratio?: ('auto' | 'square' | 'video' | 'portrait') | null;
+          /**
+           * Make the image stick to the top of the viewport when scrolling
+           */
+          isSticky?: boolean | null;
+          /**
+           * Top offset when sticky (e.g., "80px" for header clearance)
+           */
+          stickyTop?: string | null;
+        };
         enableLink?: boolean | null;
         link?: {
           type?: ('reference' | 'custom') | null;
@@ -2443,7 +2479,18 @@ export interface ContentBlockSelect<T extends boolean = true> {
     | T
     | {
         size?: T;
+        verticalAlign?: T;
+        contentType?: T;
         richText?: T;
+        image?: T;
+        imageOptions?:
+          | T
+          | {
+              fit?: T;
+              ratio?: T;
+              isSticky?: T;
+              stickyTop?: T;
+            };
         enableLink?: T;
         link?:
           | T

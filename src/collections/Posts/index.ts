@@ -10,7 +10,7 @@ import { Conclusion } from '../../blocks/Conclusion/config'
 import { LatestPostsBlock } from '../../blocks/LatestPostsBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { BreadcrumbBlock } from '../../blocks/BreadcrumbBlock/config'
-import { richTextEditorFull } from '@/fields/richTextWithButtons'
+import { richTextFull } from '@/fields/richTextWithButtons'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
@@ -126,7 +126,7 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'content',
               type: 'richText',
-              editor: richTextEditorFull([Banner, Code, MediaBlock, Quote, Conclusion]),
+              editor: richTextFull({ additionalBlocks: [Banner, Code, Quote, Conclusion] }),
               label: false,
               required: true,
             },
