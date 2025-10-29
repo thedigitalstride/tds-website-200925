@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
-    "ci": "payload migrate && pnpm build",
+    "ci": "pnpm build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "dev:watch": "pnpm run lint:watch & pnpm dev",
     "dev:stable": "./scripts/dev-stable.sh",
