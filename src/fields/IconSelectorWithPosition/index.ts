@@ -1,5 +1,4 @@
 import type { Field } from 'payload'
-import { iconSelectorField } from '../IconSelector'
 
 export const iconSelectorWithPositionField = (overrides?: Partial<Field>): Field => ({
   name: 'buttonIconConfig',
@@ -7,15 +6,20 @@ export const iconSelectorWithPositionField = (overrides?: Partial<Field>): Field
   label: 'Button Icon',
   admin: {
     description: 'Configure icon for the button',
+    components: {
+      Field: '@/fields/IconSelectorWithPosition/Field#IconSelectorWithPositionField',
+    },
   },
   fields: [
-    iconSelectorField({
+    {
       name: 'icon',
+      type: 'relationship',
+      relationTo: 'icons',
       required: false,
       admin: {
         description: 'Select an icon to display in the button',
       },
-    }),
+    },
     {
       name: 'position',
       type: 'select',
@@ -34,4 +38,4 @@ export const iconSelectorWithPositionField = (overrides?: Partial<Field>): Field
   ...overrides,
 } as Field)
 
-export { IconSelectorWithPositionField } from './Field'
+// DO NOT export the Field component directly to avoid CSS import issues during migration

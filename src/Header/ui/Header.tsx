@@ -203,7 +203,6 @@ export const Header = ({
     // Use UUIButton component which handles both new icon selector and legacy icons
     // Cast to any to handle the slight type mismatch between Header and PayloadLinkObject
     // UUIButton reads size from link.uuiSize, so we pass a size prop as fallback
-    console.log('Full CTA Button Link Object:', JSON.stringify(ctaButton.link, null, 2))
     return (
       <UUIButton
         label={ctaButton.link.label || 'ENQUIRE'}

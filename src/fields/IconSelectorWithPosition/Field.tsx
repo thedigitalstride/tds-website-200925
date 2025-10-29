@@ -10,12 +10,8 @@ export const IconSelectorWithPositionField = (props: any) => {
   const [selectedIcon, setSelectedIcon] = useState<Icon | null>(null)
   const [showGrid, setShowGrid] = useState(false)
 
-  // Debug: Log the props to understand the field structure
-  console.log('[IconSelector] Component Props:', { path, fieldName: field?.name, props })
-
   // Use separate useField hooks for each nested field
   const basePath = path || 'buttonIconConfig'
-  console.log('[IconSelector] Using basePath:', basePath)
 
   const { value: iconValue, setValue: setIconValue } = useField<string>({
     path: `${basePath}.icon`
@@ -23,8 +19,6 @@ export const IconSelectorWithPositionField = (props: any) => {
   const { value: positionValue, setValue: setPositionValue } = useField<string>({
     path: `${basePath}.position`
   })
-
-  console.log('[IconSelector] Current values:', { iconValue, positionValue })
 
   // Default position to trailing if not set
   const currentPosition = positionValue || 'trailing'
@@ -42,19 +36,16 @@ export const IconSelectorWithPositionField = (props: any) => {
   }, [iconValue])
 
   const handleSelect = (iconId: string) => {
-    console.log('[IconSelector] Setting icon:', iconId)
     setIconValue(iconId)
     setShowGrid(false)
   }
 
   const handleClear = () => {
-    console.log('[IconSelector] Clearing icon')
     setIconValue(null as any)
     setSelectedIcon(null)
   }
 
   const handlePositionChange = (position: 'leading' | 'trailing') => {
-    console.log('[IconSelector] Setting position:', position)
     setPositionValue(position)
   }
 

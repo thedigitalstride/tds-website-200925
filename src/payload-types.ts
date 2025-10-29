@@ -304,7 +304,13 @@ export interface HeroHeadingBlock {
            * Select an icon from the Icons collection and configure its position relative to button text
            */
           buttonIconConfig?: {
+            /**
+             * Select an icon to display in the button
+             */
             icon?: (number | null) | Icon;
+            /**
+             * Position of the icon relative to button text
+             */
             position?: ('leading' | 'trailing') | null;
           };
           /**
@@ -670,7 +676,13 @@ export interface LatestPostsBlock {
        * Select an icon from the Icons collection and configure its position relative to button text
        */
       buttonIconConfig?: {
+        /**
+         * Select an icon to display in the button
+         */
         icon?: (number | null) | Icon;
+        /**
+         * Position of the icon relative to button text
+         */
         position?: ('leading' | 'trailing') | null;
       };
       /**
@@ -891,7 +903,13 @@ export interface CallToActionBlock {
            * Select an icon from the Icons collection and configure its position relative to button text
            */
           buttonIconConfig?: {
+            /**
+             * Select an icon to display in the button
+             */
             icon?: (number | null) | Icon;
+            /**
+             * Position of the icon relative to button text
+             */
             position?: ('leading' | 'trailing') | null;
           };
           /**
@@ -1161,7 +1179,13 @@ export interface CardGridBlock {
        * Select an icon from the Icons collection and configure its position relative to button text
        */
       buttonIconConfig?: {
+        /**
+         * Select an icon to display in the button
+         */
         icon?: (number | null) | Icon;
+        /**
+         * Position of the icon relative to button text
+         */
         position?: ('leading' | 'trailing') | null;
       };
       /**
@@ -1253,7 +1277,13 @@ export interface ContentBlock {
            * Select an icon from the Icons collection and configure its position relative to button text
            */
           buttonIconConfig?: {
+            /**
+             * Select an icon to display in the button
+             */
             icon?: (number | null) | Icon;
+            /**
+             * Position of the icon relative to button text
+             */
             position?: ('leading' | 'trailing') | null;
           };
           /**
@@ -1357,7 +1387,13 @@ export interface FeaturesBlock {
        * Select an icon from the Icons collection and configure its position relative to button text
        */
       buttonIconConfig?: {
+        /**
+         * Select an icon to display in the button
+         */
         icon?: (number | null) | Icon;
+        /**
+         * Position of the icon relative to button text
+         */
         position?: ('leading' | 'trailing') | null;
       };
       /**
@@ -3364,7 +3400,13 @@ export interface Header {
        * Select an icon from the Icons collection and configure its position relative to button text
        */
       buttonIconConfig?: {
+        /**
+         * Select an icon to display in the button
+         */
         icon?: (number | null) | Icon;
+        /**
+         * Position of the icon relative to button text
+         */
         position?: ('leading' | 'trailing') | null;
       };
       /**
@@ -3411,7 +3453,13 @@ export interface Header {
        * Select an icon from the Icons collection and configure its position relative to button text
        */
       buttonIconConfig?: {
+        /**
+         * Select an icon to display in the button
+         */
         icon?: (number | null) | Icon;
+        /**
+         * Position of the icon relative to button text
+         */
         position?: ('leading' | 'trailing') | null;
       };
       /**
@@ -3479,7 +3527,13 @@ export interface Footer {
                  * Select an icon from the Icons collection and configure its position relative to button text
                  */
                 buttonIconConfig?: {
+                  /**
+                   * Select an icon to display in the button
+                   */
                   icon?: (number | null) | Icon;
+                  /**
+                   * Position of the icon relative to button text
+                   */
                   position?: ('leading' | 'trailing') | null;
                 };
                 /**
@@ -3576,7 +3630,13 @@ export interface NotFound {
      * Select an icon from the Icons collection and configure its position relative to button text
      */
     buttonIconConfig?: {
+      /**
+       * Select an icon to display in the button
+       */
       icon?: (number | null) | Icon;
+      /**
+       * Position of the icon relative to button text
+       */
       position?: ('leading' | 'trailing') | null;
     };
     /**
@@ -4218,7 +4278,13 @@ export interface ButtonBlock {
            * Select an icon from the Icons collection and configure its position relative to button text
            */
           buttonIconConfig?: {
+            /**
+             * Select an icon to display in the button
+             */
             icon?: (number | null) | Icon;
+            /**
+             * Position of the icon relative to button text
+             */
             position?: ('leading' | 'trailing') | null;
           };
           /**
