@@ -31,13 +31,13 @@ export function getBackgroundClasses(variant: BackgroundVariant): string {
     case 'primary-reversed':
       return 'bg-brand-solid dark:!bg-white'  // Dark in light, white in dark (forced)
     case 'secondary':
-      return 'bg-transparent ring-1 ring-gray-solid ring-inset'  // Outlined style with gray-solid ring
+      return 'bg-transparent ring-2 ring-tertiary ring-inset'  // Outlined style with gray-solid ring
     case 'tertiary':
       return 'bg-tertiary'  // Tertiary background
     case 'accent':
       return 'bg-accent-solid'  // Accent blue background
     case 'line':
-      return 'border-t-2 border-gray-solid'  // Top border only
+      return 'border-t-2 border-tertiary'  // Top border only
     default:
       return 'bg-primary'
   }

@@ -312,7 +312,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
     <div className={cn(
       "mt-6 flex flex-col justify-between items-center gap-4 text-center h-full w-full",
       !isLineVariant && "rounded-xl",
-      isLineVariant ? 'px-0 pb-8' : 'px-6 pb-8',
+      isLineVariant ? 'px-0 pb-2' : 'px-6 pb-2',
       cardBgClasses
     )}>
       <div className="flex flex-col items-center gap-4">
