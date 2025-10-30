@@ -219,10 +219,17 @@ export default function StyleGuidePage() {
         <section id="colors">
           <h2 className="text-display-md font-semibold text-primary mb-8">Color System</h2>
           <div className="mb-8 p-6 bg-secondary rounded-lg border border-primary">
-            <h3 className="text-lg font-semibold text-primary mb-3">Brand & Accent Colors</h3>
-            <div className="space-y-2 text-sm text-secondary">
-              <p><span className="font-semibold text-primary">Brand (Dark Blue #031A43):</span> Main brand identity, primary CTAs, key UI elements</p>
-              <p><span className="font-semibold text-primary">Accent (Light Blue #1689FF):</span> Secondary actions, buttons, highlights, visual interest</p>
+            <h3 className="text-lg font-semibold text-primary mb-3">Simplified Color System</h3>
+            <div className="space-y-3 text-sm text-secondary">
+              <p><span className="font-semibold text-primary">Brand = Primary:</span> Dark Blue (#031A43) - Main brand color for buttons, borders, key elements</p>
+              <p><span className="font-semibold text-primary">Accent:</span> Light Blue (#1689FF) - Secondary actions, CTAs, highlights</p>
+              <p><span className="font-semibold text-primary">Text Hierarchy:</span> Uses greys (NOT brand color) for readability</p>
+              <ul className="ml-4 space-y-1 text-xs">
+                <li>• <code className="text-brand-secondary">text-primary</code> = Dark grey (gray-900)</li>
+                <li>• <code className="text-brand-secondary">text-secondary</code> = Medium grey (gray-700)</li>
+                <li>• <code className="text-brand-secondary">text-tertiary</code> = Light grey (gray-600)</li>
+                <li>• <code className="text-brand-secondary">text-brand-*</code> = When you need blue text</li>
+              </ul>
             </div>
           </div>
 
@@ -259,7 +266,7 @@ export default function StyleGuidePage() {
               ))}
             </div>
             <code className="block text-xs text-brand-secondary bg-secondary px-3 py-2 rounded-md">
-              bg-brand-500 (Main) • bg-brand-900 (Hover) • Use: Buttons, headers, key UI elements
+              bg-brand-solid (Main #031A43) • bg-brand-subtle (Tint) • border-brand (Dark blue)
             </code>
           </div>
 
@@ -295,13 +302,66 @@ export default function StyleGuidePage() {
               ))}
             </div>
             <code className="block text-xs text-brand-secondary bg-secondary px-3 py-2 rounded-md">
-              bg-accent-500 (Main) • bg-accent-600 (Hover) • Use: Secondary buttons, highlights, badges
+              bg-accent-solid (Main #1689FF) • bg-accent-subtle (Tint) • border-accent (Light blue)
             </code>
+          </div>
+
+          {/* Semantic Color Examples */}
+          <div className="mb-12">
+            <h3 className="text-xl font-semibold text-primary mb-6">Semantic Color Usage</h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Background colors */}
+              <div className="space-y-3">
+                <h4 className="text-md font-semibold text-secondary mb-3">Backgrounds</h4>
+                <div className="space-y-2">
+                  <div className="p-4 bg-[var(--color-bg-primary)] border border-primary rounded">
+                    <code className="text-sm">bg-primary</code>
+                    <p className="text-xs text-tertiary mt-1">Page background (white/dark blue)</p>
+                  </div>
+                  <div className="p-4 bg-secondary border border-primary rounded">
+                    <code className="text-sm">bg-secondary</code>
+                    <p className="text-xs text-tertiary mt-1">Cards, panels (grey-50/grey-900)</p>
+                  </div>
+                  <div className="p-4 bg-tertiary border border-primary rounded">
+                    <code className="text-sm">bg-tertiary</code>
+                    <p className="text-xs text-tertiary mt-1">Nested elements (grey-100/grey-800)</p>
+                  </div>
+                  <div className="p-4 bg-[var(--color-bg-brand-solid)] text-white border border-primary rounded">
+                    <code className="text-sm text-white">bg-brand-solid</code>
+                    <p className="text-xs text-white/80 mt-1">Solid brand (dark blue/white inverted)</p>
+                  </div>
+                  <div className="p-4 bg-[var(--color-bg-accent-solid)] text-white border border-primary rounded">
+                    <code className="text-sm text-white">bg-accent-solid</code>
+                    <p className="text-xs text-white/80 mt-1">Accent buttons (light blue)</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Text colors */}
+              <div className="space-y-3">
+                <h4 className="text-md font-semibold text-secondary mb-3">Text Colors</h4>
+                <div className="space-y-2 p-4 bg-secondary rounded border border-primary">
+                  <p className="text-primary"><code className="text-sm">text-primary</code> - Dark grey headings</p>
+                  <p className="text-secondary"><code className="text-sm">text-secondary</code> - Medium grey body</p>
+                  <p className="text-tertiary"><code className="text-sm">text-tertiary</code> - Light grey captions</p>
+                  <p className="text-quaternary"><code className="text-sm">text-quaternary</code> - Very light metadata</p>
+                </div>
+                <div className="space-y-2 p-4 bg-secondary rounded border border-primary">
+                  <p className="text-[var(--color-brand-500)]"><code className="text-sm">text-brand-500</code> - Brand blue</p>
+                  <p className="text-[var(--color-accent-500)]"><code className="text-sm">text-accent-500</code> - Accent blue</p>
+                </div>
+                <div className="space-y-2 p-4 bg-secondary rounded border border-primary">
+                  <div className="border-l-4 border-primary pl-3"><code className="text-sm">border-primary</code> - Grey-300</div>
+                  <div className="border-l-4 border-brand pl-3"><code className="text-sm">border-brand</code> - Dark blue</div>
+                  <div className="border-l-4 border-accent pl-3"><code className="text-sm">border-accent</code> - Light blue</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Text Colors */}
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-primary mb-6">Text Colors</h3>
+            <h3 className="text-xl font-semibold text-primary mb-6">Complete Text Color Scale</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
                 <div>
