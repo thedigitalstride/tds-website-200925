@@ -11,6 +11,8 @@
 @custom-variant focus-input-within (&:has(input:focus));
 
 /* Ensure our theme color utilities work */
+
+/* Border utilities */
 @utility border-tertiary {
     border-color: var(--color-border-tertiary);
 }
@@ -21,6 +23,81 @@
 
 @utility border-primary {
     border-color: var(--color-border-primary);
+}
+
+/* Background utilities */
+@utility bg-tertiary {
+    background-color: var(--color-bg-tertiary);
+}
+
+@utility bg-secondary {
+    background-color: var(--color-bg-secondary);
+}
+
+/* Text utilities */
+@utility text-primary {
+    color: var(--color-text-primary);
+}
+
+@utility text-secondary {
+    color: var(--color-text-secondary);
+}
+
+@utility text-tertiary {
+    color: var(--color-text-tertiary);
+}
+
+@utility text-quaternary {
+    color: var(--color-text-quaternary);
+}
+
+/* Ring utilities for secondary button */
+@utility ring-tertiary {
+    --tw-ring-color: var(--color-border-tertiary);
+}
+
+@utility ring-disabled_subtle {
+    --tw-ring-color: var(--color-border-disabled_subtle);
+}
+
+/* Foreground utilities (for icons) */
+@utility text-fg-quaternary {
+    color: var(--color-fg-quaternary);
+}
+
+@utility text-fg-quaternary_hover {
+    color: var(--color-fg-quaternary_hover);
+}
+
+/* Background hover states */
+@utility bg-primary_hover {
+    background-color: var(--color-bg-primary_hover);
+}
+
+@utility bg-secondary_hover {
+    background-color: var(--color-bg-secondary_hover);
+}
+
+/* Text hover states */
+@utility text-tertiary_hover {
+    color: var(--color-text-tertiary_hover);
+}
+
+@utility text-secondary_hover {
+    color: var(--color-text-secondary_hover);
+}
+
+/* Additional commonly used utilities */
+@utility bg-disabled {
+    background-color: var(--color-bg-disabled);
+}
+
+@utility text-disabled {
+    color: var(--color-text-disabled);
+}
+
+@utility text-fg-disabled {
+    color: var(--color-fg-disabled);
 }
 
 @utility scrollbar-hide {
