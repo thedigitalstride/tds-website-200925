@@ -497,14 +497,10 @@
     --color-bg-brand-section: var(--color-brand-800);
     --color-bg-brand-section_subtle: var(--color-brand-700);
     --color-bg-primary-solid: var(--color-gray-950);
-    --color-bg-accent-primary: var(--color-accent-50);
-    --color-bg-accent-secondary: var(--color-accent-100);
-    --color-bg-accent-solid: var(--color-accent-500);
+    /* Accent backgrounds - simplified */
+    --color-bg-accent-solid: var(--color-accent-500);        /* Solid accent buttons */
     --color-bg-accent-solid_hover: var(--color-accent-600);
-    --color-bg-accent-primary_alt: var(--color-accent-50);
-    --color-bg-accent-secondary_alt: var(--color-accent-100);
-    --color-bg-accent-section: var(--color-accent-800);
-    --color-bg-accent-section_subtle: var(--color-accent-700);
+    --color-bg-accent-subtle: var(--color-accent-50);        /* Subtle tinted background */
 
     /* ACCORDION VARIABLES */
     --accordion-border-color: var(--color-border-primary);
@@ -713,14 +709,10 @@
         --color-bg-brand-section: var(--color-bg-secondary);
         --color-bg-brand-section_subtle: var(--color-bg-primary);
         --color-bg-primary-solid: var(--color-bg-secondary);
-        --color-bg-accent-primary: var(--color-accent-500);
-        --color-bg-accent-secondary: var(--color-accent-600);
+        /* Accent backgrounds - simplified (dark mode same as light) */
         --color-bg-accent-solid: var(--color-accent-500);
         --color-bg-accent-solid_hover: var(--color-accent-600);
-        --color-bg-accent-primary_alt: var(--color-bg-secondary);
-        --color-bg-accent-secondary_alt: var(--color-bg-primary);
-        --color-bg-accent-section: var(--color-bg-secondary);
-        --color-bg-accent-section_subtle: var(--color-bg-primary);
+        --color-bg-accent-subtle: var(--color-accent-50);
 
         /* ACCORDION VARIABLES - Dark mode */
         --accordion-border-color: var(--color-border-secondary);
