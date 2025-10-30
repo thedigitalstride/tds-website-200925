@@ -94,28 +94,31 @@ export function StylingSystemSection() {
 
           {/* Typography */}
           <div>
-            <h4 className="text-md font-semibold text-secondary mb-3">Typography Scale</h4>
+            <h4 className="text-md font-semibold text-secondary mb-3">Typography Scale (Rem-Based)</h4>
             <code className="block text-sm text-brand-secondary bg-tertiary px-4 py-3 rounded-md mb-3 overflow-x-auto whitespace-pre">
-              {`/* Text sizes */
---text-xs: 12px;
---text-sm: 14px;
---text-md: 16px; /* Base size */
---text-lg: 18px;
---text-xl: 20px;
+              {`/* Text sizes - rem units for accessibility */
+--text-xs: 0.75rem;        /* 12px */
+--text-sm: 0.875rem;       /* 14px */
+--text-md: 1rem;           /* 16px desktop, 17px mobile */
+--text-lg: 1.125rem;       /* 18px */
+--text-xl: 1.25rem;        /* 20px */
 
 /* Display sizes for headings */
---text-display-xs: 24px;
---text-display-sm: 30px;
---text-display-md: 36px;
---text-display-lg: 48px;
---text-display-xl: 60px;
---text-display-2xl: 72px;
+--text-display-xs: 1.5rem;    /* 24px */
+--text-display-sm: 1.875rem;  /* 30px - h3 */
+--text-display-md: 2.25rem;   /* 36px - h2 */
+--text-display-lg: 3rem;      /* 48px - h1 */
+--text-display-xl: 3.75rem;   /* 60px */
+--text-display-2xl: 4.5rem;   /* 72px */
 
 /* Fluid hero heading */
 --text-hero-fluid: clamp(2.1rem, 5vw + 1rem, 6.5rem);`}
             </code>
             <p className="text-sm text-tertiary">
-              <strong className="text-primary">Usage:</strong> <code className="text-brand-secondary">text-md</code>, <code className="text-brand-secondary">text-display-lg</code>, <code className="text-brand-secondary">text-hero-fluid</code>
+              <strong className="text-primary">Single Source of Truth:</strong> All typography in <code className="text-brand-secondary">theme.css</code>. Rich text and components use same CSS variables.
+            </p>
+            <p className="text-sm text-tertiary mt-2">
+              <strong className="text-primary">Usage:</strong> <code className="text-brand-secondary">text-md</code>, <code className="text-brand-secondary">text-display-lg</code> - See <a href="#" className="text-brand-secondary underline">TYPOGRAPHY_SYSTEM.md</a>
             </p>
           </div>
 

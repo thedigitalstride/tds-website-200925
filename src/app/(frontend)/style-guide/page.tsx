@@ -142,51 +142,52 @@ export default function StyleGuidePage() {
 
         {/* Typography Scale */}
         <section id="typography">
-          <h2 className="text-display-md font-semibold text-primary mb-8">Typography Scale</h2>
+          <h2 className="text-display-md font-semibold text-primary mb-8">Typography Scale (Rem-Based)</h2>
+          <p className="text-md text-tertiary mb-6">All typography uses rem units for accessibility and SEO. Single source of truth in theme.css.</p>
           <div className="space-y-8">
             <div className="space-y-2">
               <p className="text-display-2xl font-semibold text-primary">Display 2XL</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-2xl (72px)</code>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-2xl: 4.5rem (72px)</code>
             </div>
             <div className="space-y-2">
               <p className="text-display-xl font-semibold text-primary">Display XL</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-xl (60px)</code>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-xl: 3.75rem (60px)</code>
             </div>
             <div className="space-y-2">
-              <p className="text-display-lg font-semibold text-primary">Display LG</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-lg (48px)</code>
+              <p className="text-display-lg font-semibold text-primary">Display LG (h1)</p>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-lg: 3rem (48px)</code>
             </div>
             <div className="space-y-2">
-              <p className="text-display-md font-semibold text-primary">Display MD</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-md (36px)</code>
+              <p className="text-display-md font-semibold text-primary">Display MD (h2)</p>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-md: 2.25rem (36px)</code>
             </div>
             <div className="space-y-2">
-              <p className="text-display-sm font-semibold text-primary">Display SM</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-sm (30px)</code>
+              <p className="text-display-sm font-semibold text-primary">Display SM (h3)</p>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-sm: 1.875rem (30px)</code>
             </div>
             <div className="space-y-2">
-              <p className="text-display-xs font-semibold text-primary">Display XS</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-xs (24px)</code>
+              <p className="text-display-xs font-semibold text-primary">Display XS (h4)</p>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-xs: 1.5rem (24px)</code>
             </div>
             <div className="space-y-2">
-              <p className="text-xl text-primary">Text XL - Body text size</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-xl (20px)</code>
+              <p className="text-xl text-primary">Text XL (h4, large body)</p>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-xl: 1.25rem (20px)</code>
             </div>
             <div className="space-y-2">
-              <p className="text-lg text-primary">Text LG - Body text size</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-lg (18px)</code>
+              <p className="text-lg text-primary">Text LG (h5/h6, emphasized)</p>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-lg: 1.125rem (18px)</code>
             </div>
             <div className="space-y-2">
               <p className="text-md text-primary">Text MD - Default body text</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-md (16px) - DEFAULT</code>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-md: 1rem desktop / 1.0625rem mobile - DEFAULT</code>
             </div>
             <div className="space-y-2">
               <p className="text-sm text-primary">Text SM - Small text</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-sm (14px)</code>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-sm: 0.875rem (14px)</code>
             </div>
             <div className="space-y-2">
               <p className="text-xs text-primary">Text XS - Extra small text</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-xs (12px)</code>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-xs: 0.75rem (12px)</code>
             </div>
           </div>
         </section>

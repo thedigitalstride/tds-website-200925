@@ -221,6 +221,76 @@ colors: {
 
 **Location**: `src/styles/theme.css` lines 124-139
 
+---
+
+## Typography System
+
+The site uses a unified, rem-based typography scale for accessibility and SEO compliance.
+
+**Full documentation:** See [TYPOGRAPHY_SYSTEM.md](./TYPOGRAPHY_SYSTEM.md)
+
+### Quick Reference
+
+**Headings (Display Scale):**
+- `text-display-lg` (3rem / 48px) - h1, large hero
+- `text-display-md` (2.25rem / 36px) - h2, page titles
+- `text-display-sm` (1.875rem / 30px) - h3, section titles
+- `text-xl` (1.25rem / 20px) - h4, subheadings
+- `text-lg` (1.125rem / 18px) - h5/h6, emphasized text
+
+**Body Text:**
+- `text-md` (1.0625rem mobile / 1rem desktop) - **Standard body text**
+- `text-lg` (1.125rem / 18px) - Emphasized body
+- `text-sm` (0.875rem / 14px) - Small text, captions
+- `text-xs` (0.75rem / 12px) - Meta info
+
+**Font Families:**
+- Body: Inter (`--font-body`)
+- Headings: Poppins (`--font-display`)
+
+### Single Source of Truth
+
+**All typography is defined in `theme.css` as CSS variables.**
+
+```css
+/* theme.css - edit here */
+@theme {
+  --text-display-md: 2.25rem;  /* h2 everywhere */
+  --text-md: 1.0625rem;         /* body text */
+}
+```
+
+**All components and rich text reference these variables:**
+
+```tsx
+/* Component */
+<h2 className="text-display-md">Title</h2>
+→ Uses var(--text-display-md)
+
+/* Rich text */
+.prose h2 { font-size: var(--text-display-md); }
+→ Uses same variable!
+```
+
+### Consistency Rules
+
+1. **Same semantic level = same size everywhere**
+   - h2 in a block = h2 in rich text = 2.25rem (36px)
+   
+2. **Use classes for components, prose for rich text**
+   - Components: `className="text-display-md"`
+   - Rich text: `<RichText enableProse={true} />`
+   
+3. **Rem-based for accessibility**
+   - Scales with user preferences
+   - Google Lighthouse compliant
+   - Browser zoom friendly
+
+4. **Change in one place**
+   - Edit `theme.css` only
+   - No need to update richtext.css or components
+   - Typography updates everywhere automatically
+
 ```css
 @theme {
   /* Brand colors - using #031A43 */
