@@ -41,9 +41,11 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   const rawIconColor = iconColor || 'primary'
   // Map 'primary' to 'brand' and 'primary-reversed' to 'brand-reversed' for FeaturedIcon compatibility
   const mappedIconColor = (
-    rawIconColor === 'primary' ? 'brand' :
-    rawIconColor === 'primary-reversed' ? 'brand-reversed' :
-    rawIconColor
+    rawIconColor === 'primary'
+      ? 'brand'
+      : rawIconColor === 'primary-reversed'
+        ? 'brand-reversed'
+        : rawIconColor
   ) as 'brand' | 'brand-reversed' | 'accent' | 'secondary' | 'tertiary'
   const iconShape = (iconTheme || 'rounded-square') as 'rounded-square' | 'round'
   const cardStyleValue = cardBackground || 'none'
@@ -72,28 +74,28 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         return {
           eyebrow: 'text-white',
           heading: 'text-white',
-          description: 'text-white'
+          description: 'text-white',
         }
       case 'primary-reversed':
         // White text on dark bg (light mode), dark text on white bg (dark mode)
         return {
           eyebrow: 'text-white dark:text-gray-700',
           heading: 'text-white dark:text-gray-700',
-          description: 'text-white dark:text-secondary'
+          description: 'text-white dark:text-secondary',
         }
       case 'tertiary':
         // Dark text on gray-solid background (both modes)
         return {
           eyebrow: 'text-primary dark:text-gray-700',
           heading: 'text-primary dark:text-gray-700',
-          description: 'text-secondary'
+          description: 'text-secondary',
         }
       default:
         // Default semantic colors for primary, secondary, line
         return {
           eyebrow: 'text-primary',
           heading: 'text-primary',
-          description: 'text-secondary'
+          description: 'text-secondary',
         }
     }
   }
@@ -123,21 +125,21 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
 
   // Override column classes if only one card or explicitly set to 1 column
   const isFullWidth = cardCount === 1 || columnsValue === '1'
-  const gridClasses = isFullWidth
-    ? 'grid-cols-1'
-    : cn('grid-cols-1', columnClasses[columnsValue])
+  const gridClasses = isFullWidth ? 'grid-cols-1' : cn('grid-cols-1', columnClasses[columnsValue])
 
   // Smart grid height: Only use equal heights for multi-column layouts
   const gridHeightClass = isFullWidth ? '' : 'auto-rows-fr'
 
   // Wrapper components with dynamic icon color/shape support and eyebrow
   const CardWithIcon = ({ eyebrow, icon, svgCode, title, subtitle, footer }: CardProps) => (
-    <div className={cn(
-      "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-xl",
-      cardPaddingClasses,
-      cardBgClasses
-    )}>
+    <div
+      className={cn(
+        'flex flex-col justify-between gap-4 h-full w-full',
+        !isLineVariant && 'rounded-xl',
+        cardPaddingClasses,
+        cardBgClasses,
+      )}
+    >
       <div className="flex flex-col gap-4">
         <FeaturedIcon
           icon={icon}
@@ -148,29 +150,26 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
+            <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
-          <h3 className={cn(
-            "text-lg font-semibold",
-            eyebrow && "mt-2",
-            textClasses.heading
-          )}>
+          <h3 className={cn('text-lg font-semibold', eyebrow && 'mt-2', textClasses.heading)}>
             {title}
           </h3>
           {subtitle && (
-            <div className={cn("mt-1 text-md", textClasses.description)}>
+            <div className={cn('mt-1 text-md', textClasses.description)}>
               {typeof subtitle === 'object' && 'root' in subtitle ? (
                 <RichText
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
                   className={cn(
-                    "prose-compact",
-                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
-                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
-                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                    'prose-compact',
+                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                    cardStyleValue === 'primary-reversed' &&
+                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                   )}
                 />
               ) : (
@@ -184,13 +183,22 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
     </div>
   )
 
-  const CardLeftIconWithColors = ({ eyebrow, icon, svgCode, title, subtitle, footer }: CardProps) => (
-    <div className={cn(
-      "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-xl",
-      cardPaddingClasses,
-      cardBgClasses
-    )}>
+  const CardLeftIconWithColors = ({
+    eyebrow,
+    icon,
+    svgCode,
+    title,
+    subtitle,
+    footer,
+  }: CardProps) => (
+    <div
+      className={cn(
+        'flex flex-col justify-between gap-4 h-full w-full',
+        !isLineVariant && 'rounded-xl',
+        cardPaddingClasses,
+        cardBgClasses,
+      )}
+    >
       <div className="flex flex-col gap-4">
         <FeaturedIcon
           icon={icon}
@@ -210,29 +218,26 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
+            <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
-          <h3 className={cn(
-            "text-lg font-semibold",
-            eyebrow && "mt-2",
-            textClasses.heading
-          )}>
+          <h3 className={cn('text-lg font-semibold', eyebrow && 'mt-2', textClasses.heading)}>
             {title}
           </h3>
           {subtitle && (
-            <div className={cn("mt-1 text-md", textClasses.description)}>
+            <div className={cn('mt-1 text-md', textClasses.description)}>
               {typeof subtitle === 'object' && 'root' in subtitle ? (
                 <RichText
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
                   className={cn(
-                    "prose-compact",
-                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
-                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
-                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                    'prose-compact',
+                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                    cardStyleValue === 'primary-reversed' &&
+                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                   )}
                 />
               ) : (
@@ -246,13 +251,22 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
     </div>
   )
 
-  const CardHorizontalIconWithColors = ({ eyebrow, icon, svgCode, title, subtitle, footer }: CardProps) => (
-    <div className={cn(
-      "flex gap-4 h-full w-full",
-      !isLineVariant && "rounded-xl",
-      cardPaddingClasses,
-      cardBgClasses
-    )}>
+  const CardHorizontalIconWithColors = ({
+    eyebrow,
+    icon,
+    svgCode,
+    title,
+    subtitle,
+    footer,
+  }: CardProps) => (
+    <div
+      className={cn(
+        'flex gap-4 h-full w-full',
+        !isLineVariant && 'rounded-xl',
+        cardPaddingClasses,
+        cardBgClasses,
+      )}
+    >
       <FeaturedIcon
         icon={icon}
         svgCode={svgCode}
@@ -272,29 +286,32 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
       <div className="flex flex-col justify-between items-start gap-4 flex-1">
         <div>
           {eyebrow && (
-            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
+            <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
-          <h3 className={cn(
-            "mt-1.5 text-lg font-semibold md:mt-2.5",
-            eyebrow && "mt-2",
-            textClasses.heading
-          )}>
+          <h3
+            className={cn(
+              'mt-1.5 text-lg font-semibold md:mt-2.5',
+              eyebrow && 'mt-2',
+              textClasses.heading,
+            )}
+          >
             {title}
           </h3>
           {subtitle && (
-            <div className={cn("mt-1 text-md", textClasses.description)}>
+            <div className={cn('mt-1 text-md', textClasses.description)}>
               {typeof subtitle === 'object' && 'root' in subtitle ? (
                 <RichText
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
                   className={cn(
-                    "prose-compact",
-                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
-                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
-                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                    'prose-compact',
+                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                    cardStyleValue === 'primary-reversed' &&
+                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                   )}
                 />
               ) : (
@@ -309,12 +326,14 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   )
 
   const CardBoxWithIcon = ({ eyebrow, icon, svgCode, title, subtitle, footer }: CardProps) => (
-    <div className={cn(
-      "mt-6 flex flex-col justify-between items-center gap-4 text-center h-full w-full",
-      !isLineVariant && "rounded-xl",
-      isLineVariant ? 'px-0 pb-2' : 'px-6 pb-2',
-      cardBgClasses
-    )}>
+    <div
+      className={cn(
+        'mt-6 flex flex-col justify-between items-center gap-4 text-center h-full w-full',
+        !isLineVariant && 'rounded-xl',
+        isLineVariant ? 'px-0 pb-2' : 'px-6 pb-2',
+        cardBgClasses,
+      )}
+    >
       <div className="flex flex-col items-center gap-4">
         <FeaturedIcon
           icon={icon}
@@ -326,29 +345,26 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
+            <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
-          <h3 className={cn(
-            "text-lg font-semibold",
-            eyebrow && "mt-2",
-            textClasses.heading
-          )}>
+          <h3 className={cn('text-lg font-semibold', eyebrow && 'mt-2', textClasses.heading)}>
             {title}
           </h3>
           {subtitle && (
-            <div className={cn("mt-1 text-md", textClasses.description)}>
+            <div className={cn('mt-1 text-md', textClasses.description)}>
               {typeof subtitle === 'object' && 'root' in subtitle ? (
                 <RichText
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
                   className={cn(
-                    "prose-compact",
-                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
-                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
-                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                    'prose-compact',
+                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                    cardStyleValue === 'primary-reversed' &&
+                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                   )}
                 />
               ) : (
@@ -363,13 +379,22 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   )
 
   // Centered icon component with rich text support
-  const CardCenteredIconWithColors = ({ eyebrow, icon, svgCode, title, subtitle, footer }: CardProps) => (
-    <div className={cn(
-      "flex flex-col justify-between items-center gap-4 text-center h-full w-full",
-      !isLineVariant && "rounded-xl",
-      cardPaddingClasses,
-      cardBgClasses
-    )}>
+  const CardCenteredIconWithColors = ({
+    eyebrow,
+    icon,
+    svgCode,
+    title,
+    subtitle,
+    footer,
+  }: CardProps) => (
+    <div
+      className={cn(
+        'flex flex-col justify-between items-center gap-4 text-center h-full w-full',
+        !isLineVariant && 'rounded-xl',
+        cardPaddingClasses,
+        cardBgClasses,
+      )}
+    >
       <div className="flex flex-col items-center gap-4">
         <FeaturedIcon
           icon={icon}
@@ -389,29 +414,26 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
+            <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
-          <h3 className={cn(
-            "text-lg font-semibold",
-            eyebrow && "mt-2",
-            textClasses.heading
-          )}>
+          <h3 className={cn('text-lg font-semibold', eyebrow && 'mt-2', textClasses.heading)}>
             {title}
           </h3>
           {subtitle && (
-            <div className={cn("mt-1 text-md", textClasses.description)}>
+            <div className={cn('mt-1 text-md', textClasses.description)}>
               {typeof subtitle === 'object' && 'root' in subtitle ? (
                 <RichText
                   data={subtitle}
                   enableGutter={false}
                   enableProse={true}
                   className={cn(
-                    "prose-compact",
-                    cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
-                    cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
-                    cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                    'prose-compact',
+                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                    cardStyleValue === 'primary-reversed' &&
+                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                   )}
                 />
               ) : (
@@ -435,38 +457,47 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   }
 
   // Wrapper components that maintain card styling without icons (with eyebrow support)
-  const CardText = ({ eyebrow, title, subtitle, footer }: { eyebrow?: string; title: string; subtitle: DefaultTypedEditorState | string | undefined; footer?: React.ReactNode }) => (
-    <div className={cn(
-      "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-xl",
-      cardPaddingClasses,
-      cardBgClasses
-    )}>
+  const CardText = ({
+    eyebrow,
+    title,
+    subtitle,
+    footer,
+  }: {
+    eyebrow?: string
+    title: string
+    subtitle: DefaultTypedEditorState | string | undefined
+    footer?: React.ReactNode
+  }) => (
+    <div
+      className={cn(
+        'flex flex-col justify-between gap-4 h-full w-full',
+        !isLineVariant && 'rounded-xl',
+        cardPaddingClasses,
+        cardBgClasses,
+      )}
+    >
       <div>
         {eyebrow && (
-          <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
+          <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}
-        <h3 className={cn(
-          "text-lg font-semibold",
-          eyebrow && "mt-2",
-          textClasses.heading
-        )}>
+        <h3 className={cn('text-lg font-semibold', eyebrow && 'mt-2', textClasses.heading)}>
           {title}
         </h3>
         {subtitle && (
-          <div className={cn("mt-1 text-md", textClasses.description)}>
+          <div className={cn('mt-1 text-md', textClasses.description)}>
             {typeof subtitle === 'object' && 'root' in subtitle ? (
               <RichText
                 data={subtitle}
                 enableGutter={false}
                 enableProse={true}
                 className={cn(
-                  "text-md",
-                  cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
-                  cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
-                  cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  'text-md',
+                  cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                  cardStyleValue === 'primary-reversed' &&
+                    '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                  cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                 )}
               />
             ) : (
@@ -480,38 +511,47 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   )
 
   // Custom wrapper for centered text layout with card styling
-  const CardTextCenteredWithCard = ({ eyebrow, title, subtitle, footer }: { eyebrow?: string; title: string; subtitle: DefaultTypedEditorState | string | undefined; footer?: React.ReactNode }) => (
-    <div className={cn(
-      "flex flex-col justify-between items-center gap-4 text-center h-full w-full",
-      !isLineVariant && "rounded-xl",
-      cardPaddingClasses,
-      cardBgClasses
-    )}>
+  const CardTextCenteredWithCard = ({
+    eyebrow,
+    title,
+    subtitle,
+    footer,
+  }: {
+    eyebrow?: string
+    title: string
+    subtitle: DefaultTypedEditorState | string | undefined
+    footer?: React.ReactNode
+  }) => (
+    <div
+      className={cn(
+        'flex flex-col justify-between items-center gap-4 text-center h-full w-full',
+        !isLineVariant && 'rounded-xl',
+        cardPaddingClasses,
+        cardBgClasses,
+      )}
+    >
       <div>
         {eyebrow && (
-          <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
+          <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}
-        <h3 className={cn(
-          "text-lg font-semibold",
-          eyebrow && "mt-2",
-          textClasses.heading
-        )}>
+        <h3 className={cn('text-lg font-semibold', eyebrow && 'mt-2', textClasses.heading)}>
           {title}
         </h3>
         {subtitle && (
-          <div className={cn("mt-1 text-md", textClasses.description)}>
+          <div className={cn('mt-1 text-md', textClasses.description)}>
             {typeof subtitle === 'object' && 'root' in subtitle ? (
               <RichText
                 data={subtitle}
                 enableGutter={false}
                 enableProse={true}
                 className={cn(
-                  "text-md",
-                  cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
-                  cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
-                  cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  'text-md',
+                  cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                  cardStyleValue === 'primary-reversed' &&
+                    '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                  cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                 )}
               />
             ) : (
@@ -525,38 +565,47 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   )
 
   // Custom wrapper for left-aligned text layout with card styling
-  const CardTextLeftWithCard = ({ eyebrow, title, subtitle, footer }: { eyebrow?: string; title: string; subtitle: DefaultTypedEditorState | string | undefined; footer?: React.ReactNode }) => (
-    <div className={cn(
-      "flex flex-col justify-between gap-4 h-full w-full",
-      !isLineVariant && "rounded-xl",
-      cardPaddingClasses,
-      cardBgClasses
-    )}>
+  const CardTextLeftWithCard = ({
+    eyebrow,
+    title,
+    subtitle,
+    footer,
+  }: {
+    eyebrow?: string
+    title: string
+    subtitle: DefaultTypedEditorState | string | undefined
+    footer?: React.ReactNode
+  }) => (
+    <div
+      className={cn(
+        'flex flex-col justify-between gap-4 h-full w-full',
+        !isLineVariant && 'rounded-xl',
+        cardPaddingClasses,
+        cardBgClasses,
+      )}
+    >
       <div>
         {eyebrow && (
-          <span className={cn("text-sm font-semibold md:text-md", textClasses.eyebrow)}>
+          <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}
-        <h3 className={cn(
-          "text-lg font-semibold",
-          eyebrow && "mt-2",
-          textClasses.heading
-        )}>
+        <h3 className={cn('text-lg font-semibold', eyebrow && 'mt-2', textClasses.heading)}>
           {title}
         </h3>
         {subtitle && (
-          <div className={cn("mt-1 text-md", textClasses.description)}>
+          <div className={cn('mt-1 text-md', textClasses.description)}>
             {typeof subtitle === 'object' && 'root' in subtitle ? (
               <RichText
                 data={subtitle}
                 enableGutter={false}
                 enableProse={true}
                 className={cn(
-                  "text-md",
-                  cardStyleValue === 'tertiary' && "[&]:!text-brand-900 [&_*]:!text-brand-900",
-                  cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-900 [&_*]:!text-white dark:[&_*]:!text-brand-900",
-                  cardStyleValue === 'accent' && "[&]:!text-white [&_*]:!text-white"
+                  'text-md',
+                  cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                  cardStyleValue === 'primary-reversed' &&
+                    '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                  cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                 )}
               />
             ) : (
@@ -586,10 +635,12 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
     <>
       {/* Optional Header Section */}
       {header?.showHeader && (
-        <div className={cn(
-          "flex w-full max-w-3xl flex-col",
-          isHeaderCentered && "mx-auto text-center"
-        )}>
+        <div
+          className={cn(
+            'flex w-full max-w-3xl flex-col',
+            isHeaderCentered && 'mx-auto text-center',
+          )}
+        >
           {header.eyebrow && (
             <span className="text-sm font-semibold text-brand-secondary md:text-md">
               {header.eyebrow}
@@ -601,9 +652,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
             </h2>
           )}
           {header.description && (
-            <p className="mt-4 text-lg text-tertiary md:mt-5 md:text-xl">
-              {header.description}
-            </p>
+            <p className="mt-4 text-lg text-tertiary md:mt-5 md:text-xl">{header.description}</p>
           )}
         </div>
       )}
@@ -612,66 +661,68 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
       <div className={cn(header?.showHeader && 'mt-12 md:mt-16')}>
         <ul className={cn('grid w-full', gridHeightClass, gridGapClasses, gridClasses)}>
           {cards?.map((card, index) => {
-              const iconData = typeof card.icon === 'object' ? card.icon : null
-              const hasIcon = !!iconData?.svgCode
+            const iconData = typeof card.icon === 'object' ? card.icon : null
+            const hasIcon = !!iconData?.svgCode
 
-              // Select appropriate component based on whether icon exists
-              const CardComponent = hasIcon
-                ? cardComponentsWithIcon[cardLayout] || CardWithIcon
-                : cardComponentsWithoutIcon[cardLayout] || CardText
+            // Select appropriate component based on whether icon exists
+            const CardComponent = hasIcon
+              ? cardComponentsWithIcon[cardLayout] || CardWithIcon
+              : cardComponentsWithoutIcon[cardLayout] || CardText
 
-              // Render footer button if link is enabled
-              const footer =
-                card.enableLink && card.link ? (
-                  <UUIButton
-                    label={card.link.label || 'Learn more'}
-                    link={card.link}
-                    className={cn(
-                      // Override link variant colors for special backgrounds
-                      (cardStyleValue === 'tertiary' || cardStyleValue === 'primary-reversed' || cardStyleValue === 'accent') &&
+            // Render footer button if link is enabled
+            const footer =
+              card.enableLink && card.link ? (
+                <UUIButton
+                  label={card.link.label || 'Learn more'}
+                  link={card.link}
+                  className={cn(
+                    // Override link variant colors for special backgrounds
+                    (cardStyleValue === 'tertiary' ||
+                      cardStyleValue === 'primary-reversed' ||
+                      cardStyleValue === 'accent') &&
                       typeof card.link === 'object' &&
                       card.link.uuiColor === 'link' && [
                         // Tertiary: dark text on light gray background (both modes)
-                        cardStyleValue === 'tertiary' && "[&]:!text-brand-700 [&_*[data-text]]:!text-brand-700 [&_*[data-icon]]:!text-brand-700 hover:[&]:!text-brand-900 hover:[&_*[data-text]]:!text-brand-900 hover:[&_*[data-icon]]:!text-brand-900",
+                        cardStyleValue === 'tertiary' &&
+                          '[&]:text-brand-700! [&_*[data-text]]:text-brand-700! [&_*[data-icon]]:text-brand-700! hover:[&]:text-brand-900! hover:[&_*[data-text]]:text-brand-900! hover:[&_*[data-icon]]:text-brand-900!',
                         // Primary-reversed: white text on dark bg (light mode), dark text on white bg (dark mode)
-                        cardStyleValue === 'primary-reversed' && "[&]:!text-white dark:[&]:!text-brand-700 [&_*[data-text]]:!text-white dark:[&_*[data-text]]:!text-brand-700 [&_*[data-icon]]:!text-white dark:[&_*[data-icon]]:!text-brand-700 hover:[&]:!text-gray-200 dark:hover:[&]:!text-brand-900 hover:[&_*[data-text]]:!text-gray-200 dark:hover:[&_*[data-text]]:!text-brand-900 hover:[&_*[data-icon]]:!text-gray-200 dark:hover:[&_*[data-icon]]:!text-brand-900",
+                        cardStyleValue === 'primary-reversed' &&
+                          '[&]:text-white! dark:[&]:text-brand-700! [&_*[data-text]]:text-white! dark:[&_*[data-text]]:text-brand-700! [&_*[data-icon]]:text-white! dark:[&_*[data-icon]]:text-brand-700! hover:[&]:text-gray-200! dark:hover:[&]:text-brand-900! hover:[&_*[data-text]]:text-gray-200! dark:hover:[&_*[data-text]]:text-brand-900! hover:[&_*[data-icon]]:text-gray-200! dark:hover:[&_*[data-icon]]:text-brand-900!',
                         // Accent: white text on blue background (both modes)
-                        cardStyleValue === 'accent' && "[&]:!text-white [&_*[data-text]]:!text-white [&_*[data-icon]]:!text-white hover:[&]:!text-gray-200 hover:[&_*[data-text]]:!text-gray-200 hover:[&_*[data-icon]]:!text-gray-200"
-                      ]
-                    )}
-                  />
-                ) : undefined
+                        cardStyleValue === 'accent' &&
+                          '[&]:text-white! [&_*[data-text]]:text-white! [&_*[data-icon]]:text-white! hover:[&]:text-gray-200! hover:[&_*[data-text]]:text-gray-200! hover:[&_*[data-icon]]:text-gray-200!',
+                      ],
+                  )}
+                />
+              ) : undefined
 
-              // Prepare props
-              const cardProps = hasIcon
-                ? {
-                    svgCode: iconData?.svgCode,
-                    eyebrow: card.eyebrow || undefined,
-                    title: card.title || '',
-                    subtitle: card.description || undefined,
-                    footer,
-                  }
-                : {
-                    eyebrow: card.eyebrow || undefined,
-                    title: card.title || '',
-                    subtitle: card.description || undefined,
-                    footer,
-                  }
+            // Prepare props
+            const cardProps = hasIcon
+              ? {
+                  svgCode: iconData?.svgCode,
+                  eyebrow: card.eyebrow || undefined,
+                  title: card.title || '',
+                  subtitle: card.description || undefined,
+                  footer,
+                }
+              : {
+                  eyebrow: card.eyebrow || undefined,
+                  title: card.title || '',
+                  subtitle: card.description || undefined,
+                  footer,
+                }
 
-              return (
-                <li
-                  key={index}
-                  className="flex w-full"
-                >
-                  <CardComponent
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    {...(cardProps as any)}
-                  />
-                </li>
-              )
-            })}
-          </ul>
-        </div>
+            return (
+              <li key={index} className="flex w-full">
+                <CardComponent
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  {...(cardProps as any)}
+                />
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </>
   )
 
@@ -683,9 +734,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   // Otherwise, render with full section container (standalone usage)
   return (
     <section className={cn('bg-primary', spacingClasses[spacingValue])}>
-      <div className="mx-auto w-full max-w-container px-4 md:px-8">
-        {content}
-      </div>
+      <div className="mx-auto w-full max-w-container px-4 md:px-8">{content}</div>
     </section>
   )
 }
