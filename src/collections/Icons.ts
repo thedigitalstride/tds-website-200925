@@ -299,7 +299,7 @@ export const Icons: CollectionConfig = {
           },
           fields: [
             {
-              name: 'collection',
+              name: 'collectionSlug',
               type: 'text',
               label: 'Collection',
             },
