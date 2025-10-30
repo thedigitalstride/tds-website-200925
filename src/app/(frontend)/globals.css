@@ -10,6 +10,19 @@
 @custom-variant label (& [data-label]);
 @custom-variant focus-input-within (&:has(input:focus));
 
+/* Ensure our theme color utilities work */
+@utility border-tertiary {
+    border-color: var(--color-border-tertiary);
+}
+
+@utility border-secondary {
+    border-color: var(--color-border-secondary);
+}
+
+@utility border-primary {
+    border-color: var(--color-border-primary);
+}
+
 @utility scrollbar-hide {
     /* For Webkit-based browsers (Chrome, Safari and Opera) */
     &::-webkit-scrollbar {
