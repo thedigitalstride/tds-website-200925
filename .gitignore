@@ -25,3 +25,4 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+src/styles/theme.css.backup
