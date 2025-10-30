@@ -6,7 +6,7 @@ import { IconIntelligence } from '@/services/ai/iconIntelligence'
 export async function POST(request: NextRequest) {
   try {
     const payload = await getPayload({ config })
-    const { documentId, iconName, field } = await request.json()
+    const { documentId: _documentId, iconName, field } = await request.json()
 
     // Verify user is logged in
     const { user } = await payload.auth({ headers: request.headers })
@@ -61,7 +61,20 @@ export async function POST(request: NextRequest) {
     })
 
     // Return the requested field(s) with metadata
-    const responseData: any = {
+    interface ResponseData {
+      success: boolean
+      metadata: {
+        cost: number
+        model: string
+        keywordCount?: number
+        characterCount?: number
+      }
+      keywords?: string[]
+      description?: string
+      category?: string
+    }
+
+    const responseData: ResponseData = {
       success: true,
       metadata: {
         cost: 0.0001, // Estimate - should be calculated based on actual usage

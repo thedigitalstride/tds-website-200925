@@ -1,6 +1,5 @@
 import 'server-only'
 import { optimize, type Config as SVGOConfig } from 'svgo'
-import type { ProcessedSVG } from './svg-processor-types'
 
 /**
  * SVGO configuration for icon optimization (server-side only)
@@ -20,16 +19,22 @@ const svgoConfig: SVGOConfig = {
           },
         },
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any, // Type assertion needed due to SVGO v4 type definitions
     {
       name: 'convertColors',
       params: {
         currentColor: true,
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any, // Type assertion needed due to SVGO v4 type definitions
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     'removeStyleElement' as any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     'removeXMLNS' as any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     'removeDimensions' as any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     'sortAttrs' as any,
   ],
 }

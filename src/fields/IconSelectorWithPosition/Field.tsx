@@ -4,9 +4,17 @@ import React, { useState, useEffect } from 'react'
 import { useField } from '@payloadcms/ui'
 import { IconGrid } from '../IconSelector/Component'
 import type { Icon } from '@/payload-types'
+import type { Field } from 'payload'
 
-export const IconSelectorWithPositionField = (props: any) => {
-  const { path, field } = props
+interface IconSelectorWithPositionFieldProps {
+  path?: string
+  field: Field & { label?: string; required?: boolean; admin?: { description?: string } }
+}
+
+export const IconSelectorWithPositionField: React.FC<IconSelectorWithPositionFieldProps> = ({
+  path,
+  field,
+}) => {
   const [selectedIcon, setSelectedIcon] = useState<Icon | null>(null)
   const [showGrid, setShowGrid] = useState(false)
 
@@ -14,10 +22,10 @@ export const IconSelectorWithPositionField = (props: any) => {
   const basePath = path || 'buttonIconConfig'
 
   const { value: iconValue, setValue: setIconValue } = useField<string>({
-    path: `${basePath}.icon`
+    path: `${basePath}.icon`,
   })
   const { value: positionValue, setValue: setPositionValue } = useField<string>({
-    path: `${basePath}.position`
+    path: `${basePath}.position`,
   })
 
   // Default position to trailing if not set
@@ -41,7 +49,7 @@ export const IconSelectorWithPositionField = (props: any) => {
   }
 
   const handleClear = () => {
-    setIconValue(null as any)
+    setIconValue(null)
     setSelectedIcon(null)
   }
 
@@ -52,12 +60,12 @@ export const IconSelectorWithPositionField = (props: any) => {
   return (
     <div className="field-type-group icon-selector-with-position-field">
       <label className="field-label">
-        {props.field.label || 'Button Icon'}
-        {props.field.required && <span className="required">*</span>}
+        {field.label || 'Button Icon'}
+        {field.required && <span className="required">*</span>}
       </label>
 
-      {props.field.admin?.description && (
-        <div className="field-description">{props.field.admin.description}</div>
+      {field.admin?.description && (
+        <div className="field-description">{field.admin.description}</div>
       )}
 
       {/* Selected Icon Preview */}
@@ -65,7 +73,7 @@ export const IconSelectorWithPositionField = (props: any) => {
         <div className="mb-4 rounded-md border border-gray-200 p-4">
           <div className="flex items-center gap-4">
             <div
-              className="h-12 w-12 flex-shrink-0 text-gray-700"
+              className="h-12 w-12 shrink-0 text-gray-700"
               dangerouslySetInnerHTML={{ __html: selectedIcon.svgCode || '' }}
             />
             <div className="flex-1">
@@ -98,7 +106,12 @@ export const IconSelectorWithPositionField = (props: any) => {
               >
                 <div className="flex items-center justify-center gap-2">
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
                   </svg>
                   <span>Before Text (Leading)</span>
                 </div>
@@ -115,7 +128,12 @@ export const IconSelectorWithPositionField = (props: any) => {
                 <div className="flex items-center justify-center gap-2">
                   <span>After Text (Trailing)</span>
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </div>
               </button>

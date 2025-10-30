@@ -1,11 +1,23 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useField } from '@payloadcms/ui'
 import { IconGrid } from './Component'
 import type { Icon } from '@/payload-types'
+import type { Field } from 'payload'
 
-export const IconSelectorField = (props: any) => {
-  const { value, setValue } = props
+interface IconSelectorFieldProps {
+  field: Field & {
+    label?: string
+    name?: string
+    required?: boolean
+    admin?: { description?: string }
+  }
+  path?: string
+}
+
+export const IconSelectorField: React.FC<IconSelectorFieldProps> = ({ field, path }) => {
+  const { value, setValue } = useField<string>({ path: path || field.name })
   const [selectedIcon, setSelectedIcon] = useState<Icon | null>(null)
   const [showGrid, setShowGrid] = useState(false)
 
@@ -34,19 +46,19 @@ export const IconSelectorField = (props: any) => {
   return (
     <div className="field-type-relationship icon-selector-field">
       <label className="field-label">
-        {props.field.label || props.field.name}
-        {props.field.required && <span className="required">*</span>}
+        {field.label || field.name}
+        {field.required && <span className="required">*</span>}
       </label>
 
-      {props.field.admin?.description && (
-        <div className="field-description">{props.field.admin.description}</div>
+      {field.admin?.description && (
+        <div className="field-description">{field.admin.description}</div>
       )}
 
       {/* Selected Icon Preview */}
       {selectedIcon && (
         <div className="mb-4 flex items-center gap-4 rounded-md border border-gray-200 p-4">
           <div
-            className="h-12 w-12 flex-shrink-0 text-gray-700"
+            className="h-12 w-12 shrink-0 text-gray-700"
             dangerouslySetInnerHTML={{ __html: selectedIcon.svgCode || '' }}
           />
           <div className="flex-1">

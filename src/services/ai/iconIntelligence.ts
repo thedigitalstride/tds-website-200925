@@ -20,7 +20,7 @@ export type { IconMetadata, IconMetadataResult }
 export class IconIntelligence {
   private provider: IconMetadataProvider
 
-  constructor(config: ProviderConfig, iconConfig?: IconMetadataConfig) {
+  constructor(config: ProviderConfig, _iconConfig?: IconMetadataConfig) {
     this.provider = new IconMetadataProvider(config)
   }
 

@@ -10,6 +10,7 @@ import { TDSLogo } from '@/components/Logo/tds-logo'
 import { cx } from '@/utils/cx'
 import Link from 'next/link'
 import { MobileMenuButton } from '../components/MobileMenuButton'
+import type { PayloadLinkObject } from '@/components/payload-ui/UUIButton'
 
 type HeaderNavItem = {
   label: string
@@ -124,39 +125,11 @@ interface HeaderProps {
   logoVariant?: 'auto' | 'dark' | 'light'
   ctaButton?: {
     enabled: boolean
-    link: {
-      label?: string
-      type: 'reference' | 'custom'
-      reference?: { value: number | { slug?: string | null }; relationTo: string }
-      url?: string
-      newTab?: boolean
-      uuiColor?: string
-      uuiSize?: string
-      buttonIconConfig?: {
-        icon?: any
-        position?: 'leading' | 'trailing' | null
-      }
-      buttonIcon?: string
-      iconPos?: string
-    }
+    link: PayloadLinkObject
   }
   mobileCtaButton?: {
     enabled: boolean
-    link: {
-      label?: string
-      type: 'reference' | 'custom'
-      reference?: { value: number | { slug?: string | null }; relationTo: string }
-      url?: string
-      newTab?: boolean
-      uuiColor?: string
-      uuiSize?: string
-      buttonIconConfig?: {
-        icon?: any
-        position?: 'leading' | 'trailing' | null
-      }
-      buttonIcon?: string
-      iconPos?: string
-    }
+    link: PayloadLinkObject
   }
 }
 
@@ -201,12 +174,10 @@ export const Header = ({
     }
 
     // Use UUIButton component which handles both new icon selector and legacy icons
-    // Cast to any to handle the slight type mismatch between Header and PayloadLinkObject
-    // UUIButton reads size from link.uuiSize, so we pass a size prop as fallback
     return (
       <UUIButton
         label={ctaButton.link.label || 'ENQUIRE'}
-        link={ctaButton.link as any}
+        link={ctaButton.link}
         size={defaultSize}
       />
     )
@@ -223,12 +194,10 @@ export const Header = ({
     }
 
     // Use UUIButton component which handles both new icon selector and legacy icons
-    // Cast to any to handle the slight type mismatch between Header and PayloadLinkObject
-    // UUIButton reads size from link.uuiSize, so we pass a size prop as fallback
     return (
       <UUIButton
         label={effectiveCta.link.label || 'ENQUIRE'}
-        link={effectiveCta.link as any}
+        link={effectiveCta.link}
         size="sm"
       />
     )

@@ -26,7 +26,10 @@ export const ColumnRowLabel: React.FC<RowLabelProps> = () => {
     preview = `📷 ${imageName}`
   } else if (contentType === 'richText' && data?.data?.richText) {
     // Try to extract first text from rich text
-    const firstChild = data.data.richText?.root?.children?.[0] as any
+    interface LexicalTextNode {
+      children?: Array<{ text?: string }>
+    }
+    const firstChild = data.data.richText?.root?.children?.[0] as LexicalTextNode | undefined
     if (firstChild?.children?.[0]?.text) {
       const text = firstChild.children[0].text as string
       preview = text.length > 30 ? `${text.substring(0, 30)}...` : text
