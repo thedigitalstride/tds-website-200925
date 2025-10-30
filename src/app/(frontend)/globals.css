@@ -25,6 +25,14 @@
     border-color: var(--color-border-primary);
 }
 
+@utility border-accent {
+    border-color: var(--color-border-accent);
+}
+
+@utility border-brand {
+    border-color: var(--color-border-brand);
+}
+
 /* Background utilities */
 @utility bg-tertiary {
     background-color: var(--color-bg-tertiary);
