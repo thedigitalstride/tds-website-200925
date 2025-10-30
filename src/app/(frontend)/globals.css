@@ -100,6 +100,32 @@
     color: var(--color-fg-disabled);
 }
 
+/* Brand text colors (for when you need blue text) */
+@utility text-brand-primary {
+    color: var(--color-text-brand-primary);
+}
+
+@utility text-brand-secondary {
+    color: var(--color-text-brand-secondary);
+}
+
+@utility text-brand-tertiary {
+    color: var(--color-text-brand-tertiary);
+}
+
+/* Direct brand color utilities (for specific blue shades) */
+@utility text-brand-500 {
+    color: var(--color-brand-500);
+}
+
+@utility text-brand-600 {
+    color: var(--color-brand-600);
+}
+
+@utility text-brand-700 {
+    color: var(--color-brand-700);
+}
+
 @utility scrollbar-hide {
     /* For Webkit-based browsers (Chrome, Safari and Opera) */
     &::-webkit-scrollbar {
