@@ -126,7 +126,7 @@ export default function StyleGuidePage() {
                   className={`
                     block w-full text-left px-3 py-2 text-sm rounded-md transition-colors
                     ${activeSection === item.id
-                      ? 'bg-brand-secondary text-brand-solid font-medium'
+                      ? 'bg-[var(--color-bg-brand-subtle)] text-[var(--color-brand-600)] font-medium'
                       : 'text-secondary hover:text-primary hover:bg-secondary'
                     }
                   `}
@@ -441,58 +441,40 @@ export default function StyleGuidePage() {
                   <div className="w-12 h-12 bg-quaternary border-2 border-primary rounded-md"></div>
                 </div>
               </div>
-              <div className="p-6 bg-brand-primary border-2 border-brand rounded-lg">
+              <div className="p-6 bg-[var(--color-bg-brand-solid)] border-2 border-brand rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Brand Primary Background</p>
-                    <code className="text-xs text-tertiary">bg-brand-primary - Brand highlights</code>
+                    <p className="text-sm font-semibold text-white mb-1">Brand Solid</p>
+                    <code className="text-xs text-white">bg-brand-solid - Solid dark blue (#031A43)</code>
                   </div>
-                  <div className="w-12 h-12 bg-brand-primary border-2 border-brand rounded-md"></div>
+                  <div className="w-12 h-12 bg-[var(--color-bg-brand-solid)] border-2 border-white rounded-md"></div>
                 </div>
               </div>
-              <div className="p-6 bg-brand-secondary border-2 border-brand rounded-lg">
+              <div className="p-6 bg-[var(--color-bg-brand-subtle)] border-2 border-brand rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Brand Secondary Background</p>
-                    <code className="text-xs text-tertiary">bg-brand-secondary - Subtle brand tints</code>
+                    <p className="text-sm font-semibold text-primary mb-1">Brand Subtle</p>
+                    <code className="text-xs text-tertiary">bg-brand-subtle - Subtle brand tint</code>
                   </div>
-                  <div className="w-12 h-12 bg-brand-secondary border-2 border-brand rounded-md"></div>
+                  <div className="w-12 h-12 bg-[var(--color-bg-brand-subtle)] border-2 border-brand rounded-md"></div>
                 </div>
               </div>
-              <div className="p-6 bg-brand-solid border-2 border-brand rounded-lg">
+              <div className="p-6 bg-[var(--color-bg-accent-solid)] border-2 border-accent rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-white mb-1">Brand Solid Background</p>
-                    <code className="text-xs text-white">bg-brand-solid - Solid brand color (buttons)</code>
+                    <p className="text-sm font-semibold text-white mb-1">Accent Solid</p>
+                    <code className="text-xs text-white">bg-accent-solid - Solid light blue (#1689FF)</code>
                   </div>
-                  <div className="w-12 h-12 bg-brand-solid border-2 border-brand rounded-md"></div>
+                  <div className="w-12 h-12 bg-[var(--color-bg-accent-solid)] border-2 border-white rounded-md"></div>
                 </div>
               </div>
-              <div className="p-6 bg-accent-primary border-2 border-accent rounded-lg">
+              <div className="p-6 bg-[var(--color-bg-accent-subtle)] border-2 border-accent rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Accent Primary Background</p>
-                    <code className="text-xs text-tertiary">bg-accent-primary - Accent highlights</code>
+                    <p className="text-sm font-semibold text-primary mb-1">Accent Subtle</p>
+                    <code className="text-xs text-tertiary">bg-accent-subtle - Subtle accent tint</code>
                   </div>
-                  <div className="w-12 h-12 bg-accent-primary border-2 border-accent rounded-md"></div>
-                </div>
-              </div>
-              <div className="p-6 bg-accent-secondary border-2 border-accent rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Accent Secondary Background</p>
-                    <code className="text-xs text-tertiary">bg-accent-secondary - Subtle accent tints</code>
-                  </div>
-                  <div className="w-12 h-12 bg-accent-secondary border-2 border-accent rounded-md"></div>
-                </div>
-              </div>
-              <div className="p-6 bg-accent-solid border-2 border-accent rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-white mb-1">Accent Solid Background</p>
-                    <code className="text-xs text-white">bg-accent-solid - Solid accent color (buttons)</code>
-                  </div>
-                  <div className="w-12 h-12 bg-accent-solid border-2 border-accent rounded-md"></div>
+                  <div className="w-12 h-12 bg-[var(--color-bg-accent-subtle)] border-2 border-accent rounded-md"></div>
                 </div>
               </div>
             </div>
