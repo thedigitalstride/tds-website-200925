@@ -11,6 +11,7 @@ import { AdvancedComponentsSection } from './AdvancedComponentsSection';
 import { RadioGroupsSection } from './RadioGroupsSection';
 import { PayloadPatternsSection } from './PayloadPatternsSection';
 import { StylingSystemSection } from './StylingSystemSection';
+import { RichTextSection } from './RichTextSection';
 
 export default function StyleGuidePage() {
   const [isDark, setIsDark] = useState(false);
@@ -66,6 +67,7 @@ export default function StyleGuidePage() {
 
   const navItems = [
     { id: 'typography', label: 'Typography' },
+    { id: 'richtext', label: 'Rich Text' },
     { id: 'colors', label: 'Colors' },
     { id: 'blocks', label: 'Blocks System' },
     { id: 'buttons', label: 'Buttons' },
@@ -166,11 +168,11 @@ export default function StyleGuidePage() {
               <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-sm: 1.875rem (30px)</code>
             </div>
             <div className="space-y-2">
-              <p className="text-display-xs font-semibold text-primary">Display XS (h4)</p>
-              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-xs: 1.5rem (24px)</code>
+              <p className="text-display-xs font-semibold text-primary">Display XS</p>
+              <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-display-xs: 1.5rem (24px) - Available but not assigned to heading</code>
             </div>
             <div className="space-y-2">
-              <p className="text-xl text-primary">Text XL (h4, large body)</p>
+              <p className="text-xl text-primary">Text XL (h4)</p>
               <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">text-xl: 1.25rem (20px)</code>
             </div>
             <div className="space-y-2">
@@ -215,12 +217,15 @@ export default function StyleGuidePage() {
           </div>
         </section>
 
+        {/* Rich Text Typography */}
+        <RichTextSection />
+
         {/* Color System */}
         <section id="colors">
           <h2 className="text-display-md font-semibold text-primary mb-8">Color System</h2>
           <div className="mb-8 p-6 bg-secondary rounded-lg border border-primary">
             <h3 className="text-lg font-semibold text-primary mb-3">Simplified Color System</h3>
-            <div className="space-y-3 text-sm text-secondary">
+            <div className="space-y-3 text-md text-secondary">
               <p><span className="font-semibold text-primary">Brand = Primary:</span> Dark Blue (#031A43) - Main brand color for buttons, borders, key elements</p>
               <p><span className="font-semibold text-primary">Accent:</span> Light Blue (#1689FF) - Secondary actions, CTAs, highlights</p>
               <p><span className="font-semibold text-primary">Text Hierarchy:</span> Uses greys (NOT brand color) for readability</p>
@@ -235,7 +240,7 @@ export default function StyleGuidePage() {
 
           {/* Color Palettes */}
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-primary mb-6">Brand Color Palette</h3>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Brand Color Palette</h3>
             <p className="text-sm text-tertiary mb-4">Dark Blue (#031A43) - Primary brand color scale</p>
             <div className="grid grid-cols-11 gap-2 mb-3">
               {[
@@ -266,12 +271,12 @@ export default function StyleGuidePage() {
               ))}
             </div>
             <code className="block text-xs text-brand-secondary bg-secondary px-3 py-2 rounded-md">
-              bg-brand-solid (Main #031A43) • bg-brand-subtle (Tint) • border-brand (Dark blue)
+              bg-brand-solid (Main #031A43) • bg-brand-subtle (Tint)
             </code>
           </div>
 
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-primary mb-6">Accent Color Palette</h3>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Accent Color Palette</h3>
             <p className="text-sm text-tertiary mb-4">Light Blue (#1689FF) - Secondary accent color scale</p>
             <div className="grid grid-cols-11 gap-2 mb-3">
               {[
@@ -308,7 +313,7 @@ export default function StyleGuidePage() {
 
           {/* Semantic Color Examples */}
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-primary mb-6">Semantic Color Usage</h3>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Semantic Color Usage</h3>
             <div className="grid md:grid-cols-2 gap-6">
               {/* Background colors */}
               <div className="space-y-3">
@@ -352,7 +357,6 @@ export default function StyleGuidePage() {
                 </div>
                 <div className="space-y-2 p-4 bg-secondary rounded border border-primary">
                   <div className="border-l-4 border-primary pl-3"><code className="text-sm">border-primary</code> - Grey-300</div>
-                  <div className="border-l-4 border-brand pl-3"><code className="text-sm">border-brand</code> - Dark blue</div>
                   <div className="border-l-4 border-accent pl-3"><code className="text-sm">border-accent</code> - Light blue</div>
                 </div>
               </div>
@@ -361,7 +365,7 @@ export default function StyleGuidePage() {
 
           {/* Text Colors */}
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-primary mb-6">Complete Text Color Scale</h3>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Complete Text Color Scale</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
                 <div>
@@ -403,121 +407,158 @@ export default function StyleGuidePage() {
 
           {/* Background Colors */}
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-primary mb-6">Background Colors</h3>
-            <div className="space-y-4">
-              <div className="p-6 bg-primary border-2 border-secondary rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Primary Background</p>
-                    <code className="text-xs text-tertiary">bg-primary - Main page background</code>
-                  </div>
-                  <div className="w-12 h-12 bg-primary border-2 border-primary rounded-md"></div>
-                </div>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Background Colors</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h6 className="text-lg font-semibold text-primary mb-3">bg-primary <span className="text-sm text-tertiary font-normal">(white / gray-950)</span></h6>
+                <div className="h-20 bg-primary rounded-lg"></div>
               </div>
-              <div className="p-6 bg-secondary border-2 border-secondary rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Secondary Background</p>
-                    <code className="text-xs text-tertiary">bg-secondary - Card backgrounds</code>
-                  </div>
-                  <div className="w-12 h-12 bg-secondary border-2 border-primary rounded-md"></div>
-                </div>
+              <div>
+                <h6 className="text-lg font-semibold text-primary mb-3">bg-secondary <span className="text-sm text-tertiary font-normal">(gray-50 / gray-900)</span></h6>
+                <div className="h-20 bg-secondary rounded-lg"></div>
               </div>
-              <div className="p-6 bg-tertiary border-2 border-secondary rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Tertiary Background</p>
-                    <code className="text-xs text-tertiary">bg-tertiary - Subtle backgrounds</code>
-                  </div>
-                  <div className="w-12 h-12 bg-tertiary border-2 border-primary rounded-md"></div>
-                </div>
+              <div>
+                <h6 className="text-lg font-semibold text-primary mb-3">bg-tertiary <span className="text-sm text-tertiary font-normal">(gray-100 / gray-800)</span></h6>
+                <div className="h-20 bg-tertiary rounded-lg"></div>
               </div>
-              <div className="p-6 bg-quaternary border-2 border-secondary rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Quaternary Background</p>
-                    <code className="text-xs text-tertiary">bg-quaternary - Extra subtle backgrounds</code>
-                  </div>
-                  <div className="w-12 h-12 bg-quaternary border-2 border-primary rounded-md"></div>
-                </div>
+              <div>
+                <h6 className="text-lg font-semibold text-primary mb-3">bg-brand-solid <span className="text-sm text-tertiary font-normal">(brand-500 #031A43)</span></h6>
+                <div className="h-20 bg-[var(--color-bg-brand-solid)] rounded-lg"></div>
               </div>
-              <div className="p-6 bg-[var(--color-bg-brand-solid)] border-2 border-brand rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-white mb-1">Brand Solid</p>
-                    <code className="text-xs text-white">bg-brand-solid - Solid dark blue (#031A43)</code>
-                  </div>
-                  <div className="w-12 h-12 bg-[var(--color-bg-brand-solid)] border-2 border-white rounded-md"></div>
-                </div>
+              <div>
+                <h6 className="text-lg font-semibold text-primary mb-3">bg-brand-subtle <span className="text-sm text-tertiary font-normal">(brand-50)</span></h6>
+                <div className="h-20 bg-[var(--color-bg-brand-subtle)] rounded-lg"></div>
               </div>
-              <div className="p-6 bg-[var(--color-bg-brand-subtle)] border-2 border-brand rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Brand Subtle</p>
-                    <code className="text-xs text-tertiary">bg-brand-subtle - Subtle brand tint</code>
-                  </div>
-                  <div className="w-12 h-12 bg-[var(--color-bg-brand-subtle)] border-2 border-brand rounded-md"></div>
-                </div>
-              </div>
-              <div className="p-6 bg-[var(--color-bg-accent-solid)] border-2 border-accent rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-white mb-1">Accent Solid</p>
-                    <code className="text-xs text-white">bg-accent-solid - Solid light blue (#1689FF)</code>
-                  </div>
-                  <div className="w-12 h-12 bg-[var(--color-bg-accent-solid)] border-2 border-white rounded-md"></div>
-                </div>
-              </div>
-              <div className="p-6 bg-[var(--color-bg-accent-subtle)] border-2 border-accent rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Accent Subtle</p>
-                    <code className="text-xs text-tertiary">bg-accent-subtle - Subtle accent tint</code>
-                  </div>
-                  <div className="w-12 h-12 bg-[var(--color-bg-accent-subtle)] border-2 border-accent rounded-md"></div>
-                </div>
+              <div>
+                <h6 className="text-lg font-semibold text-primary mb-3">bg-accent-solid <span className="text-sm text-tertiary font-normal">(accent-500 #1689FF)</span></h6>
+                <div className="h-20 bg-[var(--color-bg-accent-solid)] rounded-lg"></div>
               </div>
             </div>
           </div>
 
           {/* Border Colors */}
           <div>
-            <h3 className="text-xl font-semibold text-primary mb-6">Border Colors</h3>
-            <div className="space-y-4">
-              <div className="p-6 bg-secondary border-2 border-primary rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Primary Border</p>
-                    <code className="text-xs text-tertiary">border-primary - Default borders</code>
-                  </div>
-                  <div className="w-12 h-12 bg-primary border-4 border-primary rounded-md"></div>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Border Colors</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h6 className="text-lg font-semibold text-primary mb-3">border-primary <span className="text-sm text-tertiary font-normal">(gray-300)</span></h6>
+                <div className="h-20 bg-primary rounded-lg border-2 border-primary"></div>
+              </div>
+              <div>
+                <h6 className="text-lg font-semibold text-primary mb-3">border-secondary <span className="text-sm text-tertiary font-normal">(gray-200)</span></h6>
+                <div className="h-20 bg-primary rounded-lg border-2 border-secondary"></div>
+              </div>
+              <div>
+                <h6 className="text-lg font-semibold text-primary mb-3">border-accent <span className="text-sm text-tertiary font-normal">(accent-500 #1689FF)</span></h6>
+                <div className="h-20 bg-primary rounded-lg border-2 border-accent"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Status Colors & States */}
+          <div className="mt-12">
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Status Colors & States</h3>
+
+            {/* Status Backgrounds */}
+            <div className="mb-8">
+              <h4 className="text-xl font-semibold text-primary mb-4">Status Backgrounds</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-6 bg-[var(--color-bg-error)] border-2 border-[var(--color-border-error)] rounded-lg">
+                  <p className="text-[var(--color-text-error-primary)] font-semibold mb-1">Error Background</p>
+                  <code className="text-sm text-secondary">bg-error</code>
+                  <p className="text-xs text-tertiary mt-2">Use for error messages and alerts</p>
+                </div>
+                <div className="p-6 bg-[var(--color-bg-warning)] border-2 border-[var(--color-border-primary)] rounded-lg">
+                  <p className="text-[var(--color-text-warning-primary)] font-semibold mb-1">Warning Background</p>
+                  <code className="text-sm text-secondary">bg-warning</code>
+                  <p className="text-xs text-tertiary mt-2">Use for warning messages</p>
+                </div>
+                <div className="p-6 bg-[var(--color-bg-success)] border-2 border-[var(--color-border-primary)] rounded-lg">
+                  <p className="text-[var(--color-text-success-primary)] font-semibold mb-1">Success Background</p>
+                  <code className="text-sm text-secondary">bg-success</code>
+                  <p className="text-xs text-tertiary mt-2">Use for success messages and confirmations</p>
+                </div>
+                <div className="p-6 bg-[var(--color-bg-disabled)] border-2 border-[var(--color-border-disabled)] rounded-lg">
+                  <p className="text-[var(--color-text-disabled)] font-semibold mb-1">Disabled Background</p>
+                  <code className="text-sm text-secondary">bg-disabled</code>
+                  <p className="text-xs text-tertiary mt-2">Use for disabled form elements</p>
                 </div>
               </div>
-              <div className="p-6 bg-secondary border-2 border-secondary rounded-lg">
+            </div>
+
+            {/* Status Text Colors */}
+            <div className="mb-8">
+              <h4 className="text-xl font-semibold text-primary mb-4">Status Text Colors</h4>
+              <div className="space-y-3 p-6 bg-secondary rounded-lg border border-primary">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Secondary Border</p>
-                    <code className="text-xs text-tertiary">border-secondary - Subtle borders</code>
+                    <p className="text-[var(--color-text-error-primary)] font-semibold">Error Text</p>
+                    <code className="text-xs text-tertiary">text-error-primary</code>
                   </div>
-                  <div className="w-12 h-12 bg-primary border-4 border-secondary rounded-md"></div>
+                  <span className="text-[var(--color-text-error-primary)] text-2xl">Aa</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-[var(--color-text-warning-primary)] font-semibold">Warning Text</p>
+                    <code className="text-xs text-tertiary">text-warning-primary</code>
+                  </div>
+                  <span className="text-[var(--color-text-warning-primary)] text-2xl">Aa</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-[var(--color-text-success-primary)] font-semibold">Success Text</p>
+                    <code className="text-xs text-tertiary">text-success-primary</code>
+                  </div>
+                  <span className="text-[var(--color-text-success-primary)] text-2xl">Aa</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-[var(--color-text-disabled)] font-semibold">Disabled Text</p>
+                    <code className="text-xs text-tertiary">text-disabled</code>
+                  </div>
+                  <span className="text-[var(--color-text-disabled)] text-2xl">Aa</span>
                 </div>
               </div>
-              <div className="p-6 bg-secondary border-2 border-brand rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Brand Border</p>
-                    <code className="text-xs text-tertiary">border-brand - Brand accent borders</code>
-                  </div>
-                  <div className="w-12 h-12 bg-primary border-4 border-brand rounded-md"></div>
+            </div>
+
+            {/* Additional Background States */}
+            <div className="mb-8">
+              <h4 className="text-xl font-semibold text-primary mb-4">Interactive Background States</h4>
+              <div className="space-y-3">
+                <div className="p-4 bg-[var(--color-bg-primary_hover)] border border-primary rounded-lg">
+                  <code className="text-sm font-semibold text-primary">bg-primary_hover</code>
+                  <p className="text-xs text-tertiary mt-1">Hover state for primary backgrounds</p>
+                </div>
+                <div className="p-4 bg-[var(--color-bg-secondary_hover)] border border-primary rounded-lg">
+                  <code className="text-sm font-semibold text-primary">bg-secondary_hover</code>
+                  <p className="text-xs text-tertiary mt-1">Hover state for secondary backgrounds</p>
+                </div>
+                <div className="p-4 bg-[var(--color-bg-active)] border border-primary rounded-lg">
+                  <code className="text-sm font-semibold text-primary">bg-active</code>
+                  <p className="text-xs text-tertiary mt-1">Active/pressed state backgrounds</p>
                 </div>
               </div>
-              <div className="p-6 bg-secondary border-2 border-accent rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-primary mb-1">Accent Border</p>
-                    <code className="text-xs text-tertiary">border-accent - Accent borders</code>
-                  </div>
-                  <div className="w-12 h-12 bg-primary border-4 border-accent rounded-md"></div>
+            </div>
+
+            {/* Border Variants */}
+            <div>
+              <h4 className="text-xl font-semibold text-primary mb-4">Additional Border Variants</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-4 bg-secondary border-2 border-tertiary rounded-lg">
+                  <code className="text-sm font-semibold text-primary">border-tertiary</code>
+                  <p className="text-xs text-tertiary mt-1">Tertiary border variant (gray-300)</p>
+                </div>
+                <div className="p-4 bg-secondary border-2 border-[var(--color-border-disabled)] rounded-lg">
+                  <code className="text-sm font-semibold text-primary">border-disabled</code>
+                  <p className="text-xs text-tertiary mt-1">Disabled element borders</p>
+                </div>
+                <div className="p-4 bg-secondary border-2 border-[var(--color-border-error_subtle)] rounded-lg">
+                  <code className="text-sm font-semibold text-primary">border-error_subtle</code>
+                  <p className="text-xs text-tertiary mt-1">Subtle error borders (error-300 - lighter)</p>
+                </div>
+                <div className="p-4 bg-secondary border-2 border-[var(--color-border-error)] rounded-lg">
+                  <code className="text-sm font-semibold text-primary">border-error</code>
+                  <p className="text-xs text-tertiary mt-1">Strong error borders (error-500 - darker)</p>
                 </div>
               </div>
             </div>
@@ -529,7 +570,7 @@ export default function StyleGuidePage() {
           <h2 className="text-display-md font-semibold text-primary mb-8">Buttons</h2>
 
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-primary mb-6">Button Sizes</h3>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Button Sizes</h3>
             <div className="flex flex-wrap items-center gap-4">
               <Button size="sm" color="primary">Small</Button>
               <Button size="md" color="primary">Medium</Button>
@@ -542,7 +583,7 @@ export default function StyleGuidePage() {
           </div>
 
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-primary mb-6">Button Colors</h3>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Button Colors</h3>
             <div className="flex flex-wrap gap-4">
               <Button color="primary">Primary (Brand)</Button>
               <Button color="accent">Accent</Button>
@@ -561,7 +602,7 @@ export default function StyleGuidePage() {
           </div>
 
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-primary mb-6">Destructive Buttons</h3>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Destructive Buttons</h3>
             <div className="flex flex-wrap gap-4">
               <Button color="primary-destructive">Delete</Button>
               <Button color="secondary-destructive">Remove</Button>
@@ -574,7 +615,7 @@ export default function StyleGuidePage() {
           </div>
 
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-primary mb-6">Buttons with Icons</h3>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Buttons with Icons</h3>
             <div className="space-y-4">
               <div className="flex flex-wrap gap-4">
                 <Button color="primary" size="md" iconLeading={Zap}>With Leading Icon</Button>
@@ -596,7 +637,7 @@ export default function StyleGuidePage() {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold text-primary mb-6">Button States</h3>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Button States</h3>
             <div className="flex flex-wrap items-center gap-4">
               <Button color="primary">Default</Button>
               <Button color="primary" isDisabled>Disabled</Button>
@@ -624,7 +665,7 @@ export default function StyleGuidePage() {
           <h2 className="text-display-md font-semibold text-primary mb-8">Badges</h2>
 
           <div className="mb-12">
-            <h3 className="text-xl font-semibold text-primary mb-6">Badge Colors & Sizes</h3>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Badge Colors & Sizes</h3>
             <div className="space-y-4">
               <div className="flex flex-wrap gap-3">
                 <Badge color="brand" size="sm">Brand SM</Badge>
@@ -644,7 +685,7 @@ export default function StyleGuidePage() {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold text-primary mb-6">Badge Groups</h3>
+            <h3 className="text-display-sm font-semibold text-primary mb-6">Badge Groups</h3>
             <div className="flex flex-wrap gap-3">
               <BadgeGroup color="brand" size="md" addonText="Category">Technology</BadgeGroup>
               <BadgeGroup color="gray" size="md" addonText="Status">Published</BadgeGroup>
@@ -675,7 +716,7 @@ export default function StyleGuidePage() {
             ].map((item) => (
               <div key={item.name} className="flex items-center gap-4">
                 <div className={`${item.class} h-8 bg-brand-500 rounded`} />
-                <span className="text-sm text-secondary w-16">{item.value}</span>
+                <span className="text-md text-secondary w-16">{item.value}</span>
                 <code className="text-sm text-brand-secondary">p-{item.name} / m-{item.name} / gap-{item.name}</code>
               </div>
             ))}

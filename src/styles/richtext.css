@@ -30,7 +30,7 @@
 
   /* Quotes */
   --tw-prose-quotes: var(--color-text-primary);
-  --tw-prose-quote-borders: var(--color-border-brand);
+  --tw-prose-quote-borders: var(--color-border-primary);
 
   /* Code */
   --tw-prose-code: var(--color-text-brand-tertiary);
@@ -75,7 +75,7 @@
 
   /* Quotes */
   --tw-prose-quotes: var(--color-text-primary);
-  --tw-prose-quote-borders: var(--color-border-brand);
+  --tw-prose-quote-borders: var(--color-border-primary);
 
   /* Code - adjust for dark backgrounds */
   --tw-prose-code: var(--color-brand-400);
@@ -123,6 +123,7 @@
   font-weight: 600;
   margin-top: 2em;
   margin-bottom: 0.75em;
+  color: var(--color-text-primary);
 }
 
 /* Heading sizes - unified with UUI scale from theme.css */
@@ -144,11 +145,15 @@
 }
 
 .prose h4 {
+  font-size: var(--text-display-xs);                     /* 1.5rem = 24px */
+  line-height: var(--text-display-xs--line-height);      /* 2rem = 32px */
+}
+
+.prose h5 {
   font-size: var(--text-xl);                     /* 1.25rem = 20px */
   line-height: var(--text-xl--line-height);      /* 1.875rem = 30px */
 }
 
-.prose h5,
 .prose h6 {
   font-size: var(--text-lg);                     /* 1.125rem = 18px */
   line-height: var(--text-lg--line-height);      /* 1.75rem = 28px */

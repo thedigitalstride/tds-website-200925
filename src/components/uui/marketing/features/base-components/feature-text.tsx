@@ -14,7 +14,7 @@ interface TextCentered {
 export const FeatureTextCentered = ({ title, subtitle, footer }: TextCentered) => (
     <div className="flex max-w-sm flex-col items-center gap-4 text-center">
         <div>
-            <h3 className="text-lg font-semibold text-primary">{title}</h3>
+            <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
             <p className="mt-1 text-md text-tertiary">{subtitle}</p>
         </div>
 
@@ -25,7 +25,7 @@ export const FeatureTextCentered = ({ title, subtitle, footer }: TextCentered) =
 export const FeatureTextLeft = ({ title, subtitle, footer }: TextCentered) => (
     <div className="flex max-w-sm flex-col gap-4">
         <div>
-            <h3 className="text-lg font-semibold text-primary">{title}</h3>
+            <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
             <p className="mt-1 text-md text-tertiary">{subtitle}</p>
         </div>
 
@@ -42,7 +42,7 @@ export const FeatureTextIconTopCentered = ({ icon: Icon, title, subtitle, footer
         <Icon className="size-6 text-icon-fg-brand" />
 
         <div>
-            <h3 className="text-lg font-semibold text-primary">{title}</h3>
+            <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
             <p className="mt-1 text-md text-tertiary">{subtitle}</p>
         </div>
 
@@ -55,7 +55,7 @@ export const FeatureTextIconTopLeft = ({ icon: Icon, title, subtitle, footer }: 
         <Icon className="size-6 text-icon-fg-brand" />
 
         <div>
-            <h3 className="text-lg font-semibold text-primary">{title}</h3>
+            <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
             <p className="mt-1 text-md text-tertiary">{subtitle}</p>
         </div>
 
@@ -69,7 +69,7 @@ export const FeatureTextIconLeft = ({ icon: Icon, title, subtitle, footer }: Fea
 
         <div className="flex flex-col gap-4">
             <div>
-                <h3 className="text-lg font-semibold text-primary">{title}</h3>
+                <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
                 <p className="mt-1 text-md text-tertiary">{subtitle}</p>
             </div>
 
@@ -95,7 +95,7 @@ export const FeatureTextFeaturedIconTopCentered = ({
             <FeaturedIcon icon={icon} size="md" color={color} shape={shape} className="inline-flex md:hidden" />
 
             <div>
-                <h3 className="text-lg font-semibold text-primary">{title}</h3>
+                <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
                 <p className="mt-1 text-md text-tertiary">{subtitle}</p>
             </div>
         </div>
@@ -110,7 +110,7 @@ export const FeatureTextFeaturedIconTopLeft = ({ icon, title, subtitle, footer }
         <FeaturedIcon icon={icon} size="md" color="secondary" shape="rounded-square" className="inline-flex md:hidden" />
 
         <div>
-            <h3 className="text-lg font-semibold text-primary">{title}</h3>
+            <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
             <p className="mt-1 text-md text-tertiary">{subtitle}</p>
         </div>
 
@@ -125,7 +125,7 @@ export const FeatureTextFeaturedIconLeft = ({ icon, title, subtitle, footer }: F
 
         <div className="flex flex-col items-start gap-4">
             <div>
-                <h3 className="mt-1.5 text-lg font-semibold text-primary md:mt-2.5">{title}</h3>
+                <h3 className="mt-1.5 text-display-sm font-semibold text-primary md:mt-2.5">{title}</h3>
                 <p className="mt-1 text-md text-tertiary">{subtitle}</p>
             </div>
 
@@ -139,7 +139,7 @@ export const FeatureTextFeaturedIconBox = ({ icon, title, subtitle, footer }: Fe
         <FeaturedIcon icon={icon} size="lg" color="secondary" shape="rounded-square" className="-mt-6" />
 
         <div>
-            <h3 className="text-lg font-semibold text-primary">{title}</h3>
+            <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
             <p className="mt-1 text-md text-tertiary">{subtitle}</p>
         </div>
 
@@ -159,7 +159,7 @@ export const FeatureTextIntegrationIconTopCentered = ({ imgUrl, title, subtitle,
 
         <div className="5 flex flex-col items-center gap-4">
             <div>
-                <h3 className="text-lg font-semibold text-primary">{title}</h3>
+                <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
                 <p className="mt-1 text-md text-tertiary">{subtitle}</p>
             </div>
 
@@ -176,7 +176,7 @@ export const FeatureTextIntegrationIconTopLeft = ({ imgUrl, title, subtitle, foo
 
         <div className="flex flex-col gap-4">
             <div>
-                <h3 className="text-lg font-semibold text-primary">{title}</h3>
+                <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
                 <p className="mt-1 text-md text-tertiary">{subtitle}</p>
             </div>
 
@@ -193,7 +193,7 @@ export const FeatureTextIntegrationIconLeft = ({ imgUrl, title, subtitle, footer
 
         <div className="flex flex-col gap-4">
             <div>
-                <h3 className="mt-2.5 text-lg font-semibold text-primary md:mt-4">{title}</h3>
+                <h3 className="mt-2.5 text-display-sm font-semibold text-primary md:mt-4">{title}</h3>
                 <p className="mt-1 text-md text-tertiary">{subtitle}</p>
             </div>
 
@@ -209,7 +209,7 @@ export const FeatureTextIntegrationIconBox = ({ imgUrl, title, subtitle, footer 
         </span>
 
         <div>
-            <h3 className="text-lg font-semibold text-primary">{title}</h3>
+            <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
             <p className="mt-1 text-md text-tertiary">{subtitle}</p>
         </div>
 
@@ -223,7 +223,7 @@ export const FeatureTextIconCard = ({ icon: Icon, title, subtitle, footer }: Fea
 
         <div className="flex flex-col gap-4">
             <div>
-                <h3 className="text-lg font-semibold text-primary">{title}</h3>
+                <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
                 <p className="mt-1 text-md text-tertiary">{subtitle}</p>
             </div>
 
@@ -238,7 +238,7 @@ export const FeatureTextFeaturedIconCard = ({ icon, title, subtitle, footer }: F
 
         <div className="flex flex-col gap-4">
             <div>
-                <h3 className="text-lg font-semibold text-primary">{title}</h3>
+                <h3 className="text-display-sm font-semibold text-primary">{title}</h3>
                 <p className="mt-1 text-md text-tertiary">{subtitle}</p>
             </div>
 
@@ -250,7 +250,7 @@ export const FeatureTextFeaturedIconCard = ({ icon, title, subtitle, footer }: F
 export const FeatureTextLeftBrand = ({ title, subtitle, footer }: TextCentered) => (
     <div className="flex max-w-sm flex-col gap-4">
         <div>
-            <h3 className="text-lg font-semibold text-primary_on-brand">{title}</h3>
+            <h3 className="text-display-sm font-semibold text-primary_on-brand">{title}</h3>
             <p className="mt-1 text-md text-tertiary_on-brand">{subtitle}</p>
         </div>
 
@@ -264,7 +264,7 @@ export const FeatureTextFeaturedIconTopCenteredBrand = ({ icon, title, subtitle,
         <FeaturedIcon icon={icon} size="md" color="brand" shape="rounded-square" className="inline-flex md:hidden" />
 
         <div>
-            <h3 className="text-lg font-semibold text-primary_on-brand">{title}</h3>
+            <h3 className="text-display-sm font-semibold text-primary_on-brand">{title}</h3>
             <p className="mt-1 text-md text-tertiary_on-brand">{subtitle}</p>
         </div>
 
@@ -278,7 +278,7 @@ export const FeatureTextFeaturedIconTopLeftBrand = ({ icon, title, subtitle, foo
         <FeaturedIcon icon={icon} size="md" color="brand" shape="rounded-square" className="inline-flex md:hidden" />
 
         <div>
-            <h3 className="text-lg font-semibold text-primary_on-brand">{title}</h3>
+            <h3 className="text-display-sm font-semibold text-primary_on-brand">{title}</h3>
             <p className="mt-1 text-md text-tertiary_on-brand">{subtitle}</p>
         </div>
 

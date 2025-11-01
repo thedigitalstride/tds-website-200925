@@ -38,7 +38,7 @@ const DesktopNavItem = (props: {
     >
       <span className="px-0.5">{props.label}</span>
       <ChevronDown className={cx(
-        "size-5 stroke-[2.625px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+        "size-5 stroke-[2.625px] transition-transform duration-500 ease-in-out",
         "dark:text-white text-brand-500",
         props.isOpen ? 'rotate-0' : '-rotate-90'
       )} />
@@ -90,7 +90,7 @@ const MobileNavItem = (props: {
         {props.label}{' '}
         <ChevronDown
           className={cx(
-            'size-5 stroke-[2.625px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]',
+            'size-5 stroke-[2.625px] transition-transform duration-500 ease-in-out',
             "dark:text-white text-brand-500",
             isOpen ? 'rotate-0' : '-rotate-90',
           )}

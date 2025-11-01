@@ -96,7 +96,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
       banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
       buttonBlock: ({ node }) => <ButtonBlockComponent className="col-start-2 my-6" {...node.fields} />,
       mediaBlock: ({ node }) => (
-        <div className="not-prose col-start-1 col-span-3 !my-0">
+        <div className="not-prose col-start-1 col-span-3 my-0!">
           <MediaBlock
             imgClassName="!m-0"
             {...node.fields}

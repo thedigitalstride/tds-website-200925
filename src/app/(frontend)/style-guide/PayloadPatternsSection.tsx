@@ -12,7 +12,7 @@ export function PayloadPatternsSection() {
 
       {/* Collapsible Sections */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Collapsible Field Groups</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Collapsible Field Groups</h3>
         <p className="text-md text-tertiary mb-6">
           Used to reduce admin panel clutter by grouping related options. Commonly used for layout, styling, and advanced settings.
         </p>
@@ -38,7 +38,7 @@ export function PayloadPatternsSection() {
 
       {/* Conditional Fields */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Conditional Field Display</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Conditional Field Display</h3>
         <p className="text-md text-tertiary mb-6">
           Show/hide fields based on sibling field values. Reduces complexity by only showing relevant options.
         </p>
@@ -70,7 +70,7 @@ export function PayloadPatternsSection() {
 
       {/* Row Labels for Arrays */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Custom Row Labels</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Custom Row Labels</h3>
         <p className="text-md text-tertiary mb-6">
           Improve admin UX by showing identifiable content in array rows instead of generic &quot;Item 1&quot;, &quot;Item 2&quot; labels.
         </p>
@@ -107,7 +107,7 @@ export const FeatureRowLabel: RowLabelComponent = ({ data, index }) => {
 
       {/* Link Field with UUI Buttons */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Link Field with UUI Button Integration</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Link Field with UUI Button Integration</h3>
         <p className="text-md text-tertiary mb-6">
           Reusable link field that supports both regular links and UUI-styled buttons with full configuration options.
         </p>
@@ -140,7 +140,7 @@ link({
 
       {/* Link Group */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Link Group (Multiple Buttons)</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Link Group (Multiple Buttons)</h3>
         <p className="text-md text-tertiary mb-6">
           Array of links configured as a group, commonly used for CTAs with primary and secondary actions.
         </p>
@@ -167,7 +167,7 @@ linkGroup({
 
       {/* Spacing Control */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Spacing Control Pattern</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Spacing Control Pattern</h3>
         <p className="text-md text-tertiary mb-6">
           Consistent vertical spacing control across all blocks. Provides three levels: compact, normal, and spacious.
         </p>
@@ -202,7 +202,7 @@ const spacingClasses = {
 
       {/* Icon Selection */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Icon Selection Pattern</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Icon Selection Pattern</h3>
         <p className="text-md text-tertiary mb-6">
           Text field for selecting icons from @untitledui/icons with helpful descriptions and validation.
         </p>
@@ -237,7 +237,7 @@ const IconComponent = icon && Icons[icon as keyof typeof Icons];
 
       {/* Rich Text with Buttons */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Rich Text Editor Configuration</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Rich Text Editor Configuration</h3>
         <p className="text-md text-tertiary mb-6">
           Custom Lexical editor with configurable heading sizes and UUI button integration.
         </p>
@@ -265,7 +265,7 @@ const IconComponent = icon && Icons[icon as keyof typeof Icons];
 
       {/* Group Fields */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Group Fields for Organization</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Group Fields for Organization</h3>
         <p className="text-md text-tertiary mb-6">
           Logical grouping of related fields without visual separation (unlike collapsible fields).
         </p>
@@ -293,21 +293,21 @@ const IconComponent = icon && Icons[icon as keyof typeof Icons];
 
       {/* Documentation Links */}
       <div className="border-t border-secondary pt-12">
-        <h3 className="text-xl font-semibold text-primary mb-6">Related Documentation</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Related Documentation</h3>
         <div className="bg-secondary p-6 rounded-lg space-y-3">
-          <p className="text-sm text-secondary">
+          <p className="text-md text-secondary">
             📚 <strong className="text-primary">Full Block Configs:</strong> See <code className="text-brand-secondary">src/blocks/[BlockName]/config.ts</code>
           </p>
-          <p className="text-sm text-secondary">
+          <p className="text-md text-secondary">
             📋 <strong className="text-primary">Row Labels:</strong> [ROW_LABELS.md](docs/ROW_LABELS.md)
           </p>
-          <p className="text-sm text-secondary">
+          <p className="text-md text-secondary">
             🔧 <strong className="text-primary">Collapsible Fields:</strong> [COLLAPSIBLE_FIELDS.md](docs/COLLAPSIBLE_FIELDS.md)
           </p>
-          <p className="text-sm text-secondary">
+          <p className="text-md text-secondary">
             🎨 <strong className="text-primary">Button System:</strong> [BUTTON_SYSTEM.md](docs/BUTTON_SYSTEM.md)
           </p>
-          <p className="text-sm text-secondary">
+          <p className="text-md text-secondary">
             🗂️ <strong className="text-primary">Payload Docs:</strong> <a href="https://payloadcms.com/docs" target="_blank" rel="noopener noreferrer" className="text-brand-secondary hover:underline">payloadcms.com/docs</a>
           </p>
         </div>

@@ -73,7 +73,7 @@ export function FormElementsSection() {
 
         {/* Text Inputs */}
         <div className="mb-16">
-          <h3 className="text-xl font-semibold text-primary mb-6">Text Inputs</h3>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Text Inputs</h3>
           <div className="space-y-8">
             {/* Default State */}
             <div className="space-y-4">
@@ -145,7 +145,7 @@ export function FormElementsSection() {
 
         {/* Email Inputs */}
         <div className="mb-16">
-          <h3 className="text-xl font-semibold text-primary mb-6">Email Inputs</h3>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Email Inputs</h3>
           <div className="space-y-8">
             {/* Default State */}
             <div className="space-y-4">
@@ -215,7 +215,7 @@ export function FormElementsSection() {
 
         {/* Textarea */}
         <div className="mb-16">
-          <h3 className="text-xl font-semibold text-primary mb-6">Textarea</h3>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Textarea</h3>
           <div className="space-y-8">
             {/* Default State */}
             <div className="space-y-4">
@@ -287,7 +287,7 @@ export function FormElementsSection() {
 
         {/* Number Inputs */}
         <div className="mb-16">
-          <h3 className="text-xl font-semibold text-primary mb-6">Number Inputs</h3>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Number Inputs</h3>
           <div className="space-y-8">
             {/* Default State */}
             <div className="space-y-4">
@@ -334,7 +334,7 @@ export function FormElementsSection() {
 
         {/* Select Dropdowns */}
         <div className="mb-16">
-          <h3 className="text-xl font-semibold text-primary mb-6">Select Dropdowns</h3>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Select Dropdowns</h3>
           <div className="space-y-8">
             {/* Default State */}
             <div className="space-y-4">
@@ -417,7 +417,7 @@ export function FormElementsSection() {
 
         {/* Checkboxes */}
         <div className="mb-16">
-          <h3 className="text-xl font-semibold text-primary mb-6">Checkboxes</h3>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Checkboxes</h3>
           <div className="space-y-8">
             {/* Default State */}
             <div className="space-y-4">
@@ -467,7 +467,7 @@ export function FormElementsSection() {
 
         {/* Width Variants */}
         <div className="mb-16">
-          <h3 className="text-xl font-semibold text-primary mb-6">Width Variants</h3>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Width Variants</h3>
           <div className="space-y-6">
             <p className="text-md text-secondary">
               All form fields support width control through the <code className="text-brand-secondary">width</code> prop, which wraps fields in a <code className="text-brand-secondary">Width</code> component.
@@ -517,11 +517,11 @@ export function FormElementsSection() {
 
         {/* Integration Notes */}
         <div className="border-t border-secondary pt-12">
-          <h3 className="text-xl font-semibold text-primary mb-6">Integration Notes</h3>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Integration Notes</h3>
           <div className="bg-secondary p-6 rounded-lg space-y-4">
             <div>
               <h4 className="text-md font-semibold text-primary mb-2">React Hook Form Integration</h4>
-              <p className="text-sm text-secondary mb-2">
+              <p className="text-md text-secondary mb-2">
                 All form components are fully integrated with react-hook-form using proper event handler patterns:
               </p>
               <ul className="list-disc list-inside space-y-1 text-sm text-tertiary">
@@ -543,7 +543,7 @@ export function FormElementsSection() {
             </div>
             <div className="pt-4 border-t border-primary">
               <h4 className="text-md font-semibold text-primary mb-2">Payload CMS Integration</h4>
-              <p className="text-sm text-secondary">
+              <p className="text-md text-secondary">
                 These components are used in Payload&apos;s form builder plugin and can be found in:
               </p>
               <code className="block mt-2 text-xs text-brand-secondary">

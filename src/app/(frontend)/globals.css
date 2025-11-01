@@ -1,10 +1,11 @@
 @import "tailwindcss";
 @import "../../styles/theme.css";
-@import "../../styles/richtext.css";
 
 @plugin "tailwindcss-animate";
 @plugin "tailwindcss-react-aria-components";
 @plugin "@tailwindcss/typography";
+
+@import "../../styles/richtext.css";
 
 @custom-variant dark (&:where(.dark-mode, .dark-mode *));
 @custom-variant label (& [data-label]);
@@ -27,10 +28,6 @@
 
 @utility border-accent {
     border-color: var(--color-border-accent);
-}
-
-@utility border-brand {
-    border-color: var(--color-border-brand);
 }
 
 /* Background utilities */
