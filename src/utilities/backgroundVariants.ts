@@ -13,6 +13,7 @@ export type BackgroundVariant =
   | 'secondary'          // Secondary/outlined style (transparent with border)
   | 'tertiary'           // Tertiary: light greay across both light and dark modes
   | 'accent'             // Accent blue solid color
+  | 'outline'            // Outline: transparent with gray border
   | 'line'               // Top border only (cards only)
 
 /**
@@ -27,15 +28,17 @@ export function getBackgroundClasses(variant: BackgroundVariant): string {
     case 'none':
       return ''  // No background (transparent)
     case 'primary':
-      return 'bg-primary'  // White in light, dark in dark
+      return 'bg-primary'  // Dark blue in light, white in dark
     case 'primary-reversed':
-      return 'bg-brand-solid dark:!bg-white'  // Dark in light, white in dark (forced)
+      return 'bg-primary-reversed'  // White in light, dark blue in dark
     case 'secondary':
-      return 'bg-transparent ring-2 ring-tertiary ring-inset'  // Outlined style with gray-solid ring
+      return 'bg-secondary'  // Light gray in light mode, dark blue in dark mode
     case 'tertiary':
-      return 'bg-tertiary'  // Tertiary background
+      return 'bg-transparent ring-2 ring-accent-solid ring-inset'  // Transparent with accent ring
     case 'accent':
-      return 'bg-accent-solid'  // Accent blue background
+      return 'bg-accent'  // Accent blue background with white text
+    case 'outline':
+      return 'bg-transparent ring-2 ring-outline ring-inset'  // Transparent with gray outline
     case 'line':
       return 'border-t-2 border-tertiary'  // Top border only
     default:
@@ -73,6 +76,10 @@ export const backgroundVariantFieldOptions = [
   {
     label: 'Accent',
     value: 'accent' as const,
+  },
+  {
+    label: 'Outline',
+    value: 'outline' as const,
   },
   {
     label: 'Line (Top Border)',

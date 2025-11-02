@@ -30,7 +30,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   }
 
   return (
-    <section className={cn('bg-primary', spacingClasses[spacing || 'normal'])}>
+    <section className={cn(spacingClasses[spacing || 'normal'])}>
       <div className="mx-auto max-w-container px-4 md:px-8">
         <div className="grid grid-cols-4 lg:grid-cols-12 gap-8 lg:gap-12">
         {columns &&

@@ -20,7 +20,7 @@ import { NotFound } from './NotFound/config'
 import { PostsSettings } from './PostsSettings/config'
 import { AiSettings } from './AiSettings/config'
 import { plugins } from './plugins'
-import { defaultLexical } from '@/fields/defaultLexical'
+import { richText } from '@/fields/richText'
 import { getServerSideURL } from './utilities/getURL'
 import { resendAdapter } from '@payloadcms/email-resend'
 
@@ -75,7 +75,7 @@ export default buildConfig({
     },
   },
   // This config helps us configure global or default features that the other editors can inherit
-  editor: defaultLexical,
+  editor: richText(),
   db: mongooseAdapter({
     url: process.env.MONGODB_URI || process.env.DATABASE_URI || 'mongodb://localhost:27017/tds-website',
     // MongoDB connection options

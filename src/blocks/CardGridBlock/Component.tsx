@@ -69,6 +69,13 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   // Text colors based on background variant
   const getTextClasses = () => {
     switch (cardStyleValue) {
+      case 'primary':
+        // White text on dark bg (light mode), dark text on white bg (dark mode)
+        return {
+          eyebrow: 'text-white dark:text-gray-900',
+          heading: 'text-white dark:text-gray-900',
+          description: 'text-white dark:text-gray-900',
+        }
       case 'accent':
         // White text on accent background
         return {
@@ -77,21 +84,35 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
           description: 'text-white',
         }
       case 'primary-reversed':
-        // White text on dark bg (light mode), dark text on white bg (dark mode)
+        // Dark text on white bg (light mode), white text on dark bg (dark mode)
         return {
-          eyebrow: 'text-white dark:text-gray-700',
-          heading: 'text-white dark:text-gray-700',
-          description: 'text-white dark:text-secondary',
+          eyebrow: 'text-gray-900 dark:text-white',
+          heading: 'text-gray-900 dark:text-white',
+          description: 'text-gray-900 dark:text-white',
+        }
+      case 'secondary':
+        // Dark text on light gray bg (light mode), white text on dark blue bg (dark mode)
+        return {
+          eyebrow: 'text-gray-900 dark:text-white',
+          heading: 'text-gray-900 dark:text-white',
+          description: 'text-gray-900 dark:text-white',
         }
       case 'tertiary':
-        // Dark text on gray-solid background (both modes)
+        // Dark text in light mode, white text in dark mode
         return {
-          eyebrow: 'text-primary dark:text-gray-700',
-          heading: 'text-primary dark:text-gray-700',
-          description: 'text-secondary',
+          eyebrow: 'text-gray-900 dark:text-white',
+          heading: 'text-gray-900 dark:text-white',
+          description: 'text-gray-900 dark:text-white',
+        }
+      case 'outline':
+        // Dark text in light mode, white text in dark mode (same as tertiary)
+        return {
+          eyebrow: 'text-gray-900 dark:text-white',
+          heading: 'text-gray-900 dark:text-white',
+          description: 'text-gray-900 dark:text-white',
         }
       default:
-        // Default semantic colors for primary, secondary, line
+        // Default semantic colors for line, none
         return {
           eyebrow: 'text-primary',
           heading: 'text-primary',
@@ -150,7 +171,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
+            <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -165,9 +186,13 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
                   enableGutter={false}
                   enableProse={true}
                   className={cn(
-                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                    cardStyleValue === 'primary' && '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                    cardStyleValue === 'outline' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                    cardStyleValue === 'secondary' &&
+                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                   )}
                 />
@@ -217,7 +242,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
+            <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -232,9 +257,13 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
                   enableGutter={false}
                   enableProse={true}
                   className={cn(
-                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                    cardStyleValue === 'primary' && '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                    cardStyleValue === 'outline' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                    cardStyleValue === 'secondary' &&
+                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                   )}
                 />
@@ -284,7 +313,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
       <div className="flex flex-col justify-between items-start gap-4 flex-1">
         <div>
           {eyebrow && (
-            <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
+            <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -305,9 +334,13 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
                   enableGutter={false}
                   enableProse={true}
                   className={cn(
-                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                    cardStyleValue === 'primary' && '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                    cardStyleValue === 'outline' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                    cardStyleValue === 'secondary' &&
+                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                   )}
                 />
@@ -342,7 +375,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
+            <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -357,9 +390,13 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
                   enableGutter={false}
                   enableProse={true}
                   className={cn(
-                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                    cardStyleValue === 'primary' && '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                    cardStyleValue === 'outline' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                    cardStyleValue === 'secondary' &&
+                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                   )}
                 />
@@ -410,7 +447,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         />
         <div>
           {eyebrow && (
-            <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
+            <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>
               {eyebrow}
             </span>
           )}
@@ -425,9 +462,13 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
                   enableGutter={false}
                   enableProse={true}
                   className={cn(
-                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                    cardStyleValue === 'primary' && '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    cardStyleValue === 'tertiary' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                    cardStyleValue === 'outline' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                    cardStyleValue === 'secondary' &&
+                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                   )}
                 />
@@ -473,7 +514,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
     >
       <div>
         {eyebrow && (
-          <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
+          <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}
@@ -488,9 +529,12 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
                 enableGutter={false}
                 enableProse={true}
                 className={cn(
-                  cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                  cardStyleValue === 'tertiary' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                  cardStyleValue === 'outline' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'primary-reversed' &&
                     '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                  cardStyleValue === 'secondary' &&
+                    '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                 )}
               />
@@ -526,7 +570,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
     >
       <div>
         {eyebrow && (
-          <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
+          <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}
@@ -541,9 +585,12 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
                 enableGutter={false}
                 enableProse={true}
                 className={cn(
-                  cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                  cardStyleValue === 'tertiary' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                  cardStyleValue === 'outline' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'primary-reversed' &&
                     '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                  cardStyleValue === 'secondary' &&
+                    '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                 )}
               />
@@ -579,7 +626,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
     >
       <div>
         {eyebrow && (
-          <span className={cn('text-sm font-semibold md:text-md', textClasses.eyebrow)}>
+          <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>
             {eyebrow}
           </span>
         )}
@@ -594,9 +641,12 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
                 enableGutter={false}
                 enableProse={true}
                 className={cn(
-                  cardStyleValue === 'tertiary' && '[&]:text-brand-900! **:text-brand-900!',
+                  cardStyleValue === 'tertiary' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                  cardStyleValue === 'outline' && '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'primary-reversed' &&
                     '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                  cardStyleValue === 'secondary' &&
+                    '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
                 )}
               />
@@ -725,7 +775,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
 
   // Otherwise, render with full section container (standalone usage)
   return (
-    <section className={cn('bg-primary', spacingClasses[spacingValue])}>
+    <section className={cn(spacingClasses[spacingValue])}>
       <div className="mx-auto w-full max-w-container px-4 md:px-8">{content}</div>
     </section>
   )

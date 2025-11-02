@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 import { link } from '@/fields/link'
-import { richTextStandard } from '@/fields/richTextWithButtons'
+import { richText } from '@/fields/richText'
 import { iconSelectorField } from '@/fields/IconSelector'
 
 export const CardGridBlock: Block = {
@@ -102,7 +102,7 @@ export const CardGridBlock: Block = {
           type: 'richText',
           required: false,
           label: 'Card Description',
-          editor: richTextStandard({ headings: ['h3', 'h4'], enableButtons: true }),
+          editor: richText(),
           admin: {
             description: 'Rich description with headings, formatting, lists, and links',
           },
@@ -203,6 +203,10 @@ export const CardGridBlock: Block = {
             {
               label: 'Accent',
               value: 'accent',
+            },
+            {
+              label: 'Outline',
+              value: 'outline',
             },
             {
               label: 'Line (Top Border)',

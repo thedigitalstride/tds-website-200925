@@ -15,7 +15,6 @@ import Image from 'next/image'
 
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 import { QuoteBlock } from '@/blocks/Quote/Component'
-import { ConclusionBlock } from '@/blocks/Conclusion/Component'
 
 import type {
   BannerBlock as BannerBlockProps,
@@ -23,7 +22,6 @@ import type {
   CallToActionBlock as CTABlockProps,
   MediaBlock as MediaBlockProps,
   QuoteBlock as QuoteBlockProps,
-  ConclusionBlock as ConclusionBlockProps,
   Page,
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
@@ -35,7 +33,7 @@ import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | ButtonBlockProps | CodeBlockProps | QuoteBlockProps | ConclusionBlockProps>
+  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | ButtonBlockProps | CodeBlockProps | QuoteBlockProps>
   | SerializedUploadNode
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
@@ -110,7 +108,6 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
       code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
       cta: ({ node }) => <CallToActionBlock {...node.fields} />,
       quote: ({ node }) => <QuoteBlock className="col-start-2 mb-8" {...node.fields} />,
-      conclusion: ({ node }) => <ConclusionBlock className="col-start-2" {...node.fields} />,
     },
   }
 }

@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 
-import { richTextStandard } from '@/fields/richTextWithButtons'
+import { richText } from '@/fields/richText'
 
 export const FormBlock: Block = {
   slug: 'formBlock',
@@ -23,7 +23,7 @@ export const FormBlock: Block = {
       admin: {
         condition: (_, { enableIntro }) => Boolean(enableIntro),
       },
-      editor: richTextStandard({ headings: ['h1', 'h2', 'h3', 'h4'], enableButtons: true }),
+      editor: richText(),
       label: 'Intro Content',
     },
   ],

@@ -51,7 +51,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
   } = data
 
   return (
-    <footer className="bg-primary py-12 md:pt-16">
+    <footer className="bg-primary-reversed py-12 md:pt-16">
       <div className="mx-auto max-w-container px-4 md:px-8">
         {/* Top Border */}
         <div className="mb-12 border-t-2 border-tertiary md:mb-16" />

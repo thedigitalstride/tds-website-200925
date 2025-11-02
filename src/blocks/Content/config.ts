@@ -2,7 +2,7 @@ import type { Block, Field } from 'payload'
 import type { RowLabelComponent } from 'payload'
 
 import { link } from '@/fields/link'
-import { richTextFull } from '@/fields/richTextWithButtons'
+import { richText } from '@/fields/richText'
 import { ColumnRowLabel } from './ColumnRowLabel'
 
 const columnFields: Field[] = [
@@ -59,7 +59,7 @@ const columnFields: Field[] = [
   {
     name: 'richText',
     type: 'richText',
-    editor: richTextFull(),
+    editor: richText(),
     label: false,
     required: false,
     admin: {

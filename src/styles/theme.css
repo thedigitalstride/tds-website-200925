@@ -382,7 +382,7 @@
 
 
     /* TEXT COLORS */
-    --color-text-primary: var(--color-gray-900);      /* Very dark grey for readability */
+    --color-text-primary: var(--color-brand-500);     /* Dark blue for headings */
     --color-text-secondary: var(--color-gray-700);    /* Medium grey for body text */
     --color-text-tertiary: var(--color-gray-600);     /* Light grey for captions */
     --color-text-error-primary: var(--color-error-600);
@@ -463,9 +463,9 @@
     --color-fg-accent-secondary_hover: var(--color-accent-600);
 
     /* BACKGROUND COLORS - Simplified */
-    
+
     /* Page/Surface backgrounds */
-    --color-bg-primary: var(--color-white);           /* Page background */
+    --color-bg-primary: var(--color-brand-500);       /* Page background */
     --color-bg-secondary: var(--color-gray-50);       /* Card/panel backgrounds */
     --color-bg-tertiary: var(--color-gray-100);       /* Nested elements */
     --color-bg-quaternary: var(--color-gray-200);     /* Subtle backgrounds */
@@ -668,9 +668,9 @@
         --color-fg-accent-secondary_hover: var(--color-gray-500);
 
         /* BACKGROUND COLORS - Dark mode */
-        
+
         /* Page/Surface backgrounds */
-        --color-bg-primary: var(--color-brand-500);       /* Page background = dark blue */
+        --color-bg-primary: var(--color-white);           /* Page background = white */
         --color-bg-secondary: var(--color-gray-900);      /* Card/panel backgrounds = dark grey */
         --color-bg-tertiary: var(--color-gray-800);       /* Nested elements */
         --color-bg-quaternary: var(--color-gray-700);     /* Subtle backgrounds */

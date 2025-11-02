@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { richTextMinimal } from '@/fields/richTextWithButtons'
+import { richText } from '@/fields/richText'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { generateAltTagAfterChange } from './Media/hooks/generateAltTag'
@@ -41,7 +41,7 @@ export const Media: CollectionConfig = {
     {
       name: 'caption',
       type: 'richText',
-      editor: richTextMinimal(),
+      editor: richText(),
     },
   ],
   upload: {

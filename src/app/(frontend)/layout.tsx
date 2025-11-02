@@ -59,7 +59,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body className="bg-[var(--color-bg-primary)] antialiased flex flex-col min-h-screen">
+      <body className="bg-primary-reversed antialiased flex flex-col min-h-screen">
         <Providers>
           <RouteProvider>
             <ThemeProvider>

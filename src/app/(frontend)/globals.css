@@ -30,13 +30,296 @@
     border-color: var(--color-border-accent);
 }
 
-/* Background utilities */
-@utility bg-tertiary {
-    background-color: var(--color-bg-tertiary);
+/* Ring utilities for outline variant */
+@utility ring-outline {
+    --tw-ring-color: #D6D6D6;
 }
 
-@utility bg-secondary {
-    background-color: var(--color-bg-secondary);
+/* Background utilities with forced child text colors */
+
+/* bg-primary-reversed MUST come first so bg-primary can override it */
+.bg-primary-reversed {
+    background-color: var(--color-white);
+}
+
+.bg-primary-reversed,
+.bg-primary-reversed *,
+.bg-primary-reversed h1, .bg-primary-reversed h2, .bg-primary-reversed h3, .bg-primary-reversed h4, .bg-primary-reversed h5, .bg-primary-reversed h6,
+.bg-primary-reversed p, .bg-primary-reversed span, .bg-primary-reversed div, .bg-primary-reversed a, .bg-primary-reversed li,
+.bg-primary-reversed .prose, .bg-primary-reversed .prose *,
+.bg-primary-reversed .prose h1, .bg-primary-reversed .prose h2, .bg-primary-reversed .prose h3, .bg-primary-reversed .prose h4, .bg-primary-reversed .prose h5, .bg-primary-reversed .prose h6,
+.bg-primary-reversed .prose p, .bg-primary-reversed .prose a, .bg-primary-reversed .prose li, .bg-primary-reversed .prose strong {
+    color: var(--color-gray-900) !important;
+}
+
+/* Dark mode */
+.dark-mode .bg-primary-reversed {
+    background-color: var(--color-brand-500);
+}
+
+.dark-mode .bg-primary-reversed,
+.dark-mode .bg-primary-reversed *,
+.dark-mode .bg-primary-reversed h1, .dark-mode .bg-primary-reversed h2, .dark-mode .bg-primary-reversed h3, .dark-mode .bg-primary-reversed h4, .dark-mode .bg-primary-reversed h5, .dark-mode .bg-primary-reversed h6,
+.dark-mode .bg-primary-reversed p, .dark-mode .bg-primary-reversed span, .dark-mode .bg-primary-reversed div, .dark-mode .bg-primary-reversed a, .dark-mode .bg-primary-reversed li,
+.dark-mode .bg-primary-reversed .prose, .dark-mode .bg-primary-reversed .prose *,
+.dark-mode .bg-primary-reversed .prose h1, .dark-mode .bg-primary-reversed .prose h2, .dark-mode .bg-primary-reversed .prose h3, .dark-mode .bg-primary-reversed .prose h4, .dark-mode .bg-primary-reversed .prose h5, .dark-mode .bg-primary-reversed .prose h6,
+.dark-mode .bg-primary-reversed .prose p, .dark-mode .bg-primary-reversed .prose a, .dark-mode .bg-primary-reversed .prose li, .dark-mode .bg-primary-reversed .prose strong {
+    color: var(--color-white) !important;
+}
+
+/* bg-primary comes AFTER so it can override bg-primary-reversed */
+.bg-primary {
+    background-color: var(--color-brand-500);
+}
+
+/* Use descendant combinator to be more specific than .bg-primary-reversed * */
+.bg-primary-reversed .bg-primary,
+.bg-primary-reversed .bg-primary *,
+.bg-primary-reversed .bg-primary h1,
+.bg-primary-reversed .bg-primary h2,
+.bg-primary-reversed .bg-primary h3,
+.bg-primary-reversed .bg-primary h4,
+.bg-primary-reversed .bg-primary h5,
+.bg-primary-reversed .bg-primary h6,
+.bg-primary-reversed .bg-primary p,
+.bg-primary-reversed .bg-primary span,
+.bg-primary-reversed .bg-primary div,
+.bg-primary-reversed .bg-primary a,
+.bg-primary-reversed .bg-primary li,
+.bg-primary-reversed .bg-primary .text-display-sm,
+.bg-primary-reversed .bg-primary .text-display-md,
+.bg-primary-reversed .bg-primary .text-display-lg,
+.bg-primary-reversed .bg-primary .text-display-xl,
+.bg-primary-reversed .bg-primary .text-display-2xl,
+.bg-primary-reversed .bg-primary .prose,
+.bg-primary-reversed .bg-primary .prose *,
+.bg-primary-reversed .bg-primary .prose h1,
+.bg-primary-reversed .bg-primary .prose h2,
+.bg-primary-reversed .bg-primary .prose h3,
+.bg-primary-reversed .bg-primary .prose h4,
+.bg-primary-reversed .bg-primary .prose h5,
+.bg-primary-reversed .bg-primary .prose h6,
+.bg-primary-reversed .bg-primary .prose p,
+.bg-primary-reversed .bg-primary .prose a,
+.bg-primary-reversed .bg-primary .prose li,
+.bg-primary-reversed .bg-primary .prose strong,
+.bg-primary,
+.bg-primary *,
+.bg-primary h1,
+.bg-primary h2,
+.bg-primary h3,
+.bg-primary h4,
+.bg-primary h5,
+.bg-primary h6,
+.bg-primary p,
+.bg-primary span,
+.bg-primary div,
+.bg-primary a,
+.bg-primary li,
+.bg-primary .text-display-sm,
+.bg-primary .text-display-md,
+.bg-primary .text-display-lg,
+.bg-primary .text-display-xl,
+.bg-primary .text-display-2xl,
+.bg-primary .prose,
+.bg-primary .prose *,
+.bg-primary .prose h1,
+.bg-primary .prose h2,
+.bg-primary .prose h3,
+.bg-primary .prose h4,
+.bg-primary .prose h5,
+.bg-primary .prose h6,
+.bg-primary .prose p,
+.bg-primary .prose a,
+.bg-primary .prose li,
+.bg-primary .prose strong {
+    color: var(--color-white) !important;
+}
+
+/* Dark mode */
+.dark-mode .bg-primary {
+    background-color: var(--color-white);
+}
+
+.dark-mode .bg-primary-reversed .bg-primary,
+.dark-mode .bg-primary-reversed .bg-primary *,
+.dark-mode .bg-primary-reversed .bg-primary h1,
+.dark-mode .bg-primary-reversed .bg-primary h2,
+.dark-mode .bg-primary-reversed .bg-primary h3,
+.dark-mode .bg-primary-reversed .bg-primary h4,
+.dark-mode .bg-primary-reversed .bg-primary h5,
+.dark-mode .bg-primary-reversed .bg-primary h6,
+.dark-mode .bg-primary-reversed .bg-primary p,
+.dark-mode .bg-primary-reversed .bg-primary span,
+.dark-mode .bg-primary-reversed .bg-primary div,
+.dark-mode .bg-primary-reversed .bg-primary a,
+.dark-mode .bg-primary-reversed .bg-primary li,
+.dark-mode .bg-primary-reversed .bg-primary .text-display-sm,
+.dark-mode .bg-primary-reversed .bg-primary .text-display-md,
+.dark-mode .bg-primary-reversed .bg-primary .text-display-lg,
+.dark-mode .bg-primary-reversed .bg-primary .text-display-xl,
+.dark-mode .bg-primary-reversed .bg-primary .text-display-2xl,
+.dark-mode .bg-primary-reversed .bg-primary .prose,
+.dark-mode .bg-primary-reversed .bg-primary .prose *,
+.dark-mode .bg-primary-reversed .bg-primary .prose h1,
+.dark-mode .bg-primary-reversed .bg-primary .prose h2,
+.dark-mode .bg-primary-reversed .bg-primary .prose h3,
+.dark-mode .bg-primary-reversed .bg-primary .prose h4,
+.dark-mode .bg-primary-reversed .bg-primary .prose h5,
+.dark-mode .bg-primary-reversed .bg-primary .prose h6,
+.dark-mode .bg-primary-reversed .bg-primary .prose p,
+.dark-mode .bg-primary-reversed .bg-primary .prose a,
+.dark-mode .bg-primary-reversed .bg-primary .prose li,
+.dark-mode .bg-primary-reversed .bg-primary .prose strong,
+.dark-mode .bg-primary,
+.dark-mode .bg-primary *,
+.dark-mode .bg-primary h1,
+.dark-mode .bg-primary h2,
+.dark-mode .bg-primary h3,
+.dark-mode .bg-primary h4,
+.dark-mode .bg-primary h5,
+.dark-mode .bg-primary h6,
+.dark-mode .bg-primary p,
+.dark-mode .bg-primary span,
+.dark-mode .bg-primary div,
+.dark-mode .bg-primary a,
+.dark-mode .bg-primary li,
+.dark-mode .bg-primary .text-display-sm,
+.dark-mode .bg-primary .text-display-md,
+.dark-mode .bg-primary .text-display-lg,
+.dark-mode .bg-primary .text-display-xl,
+.dark-mode .bg-primary .text-display-2xl,
+.dark-mode .bg-primary .prose,
+.dark-mode .bg-primary .prose *,
+.dark-mode .bg-primary .prose h1,
+.dark-mode .bg-primary .prose h2,
+.dark-mode .bg-primary .prose h3,
+.dark-mode .bg-primary .prose h4,
+.dark-mode .bg-primary .prose h5,
+.dark-mode .bg-primary .prose h6,
+.dark-mode .bg-primary .prose p,
+.dark-mode .bg-primary .prose a,
+.dark-mode .bg-primary .prose li,
+.dark-mode .bg-primary .prose strong {
+    color: var(--color-gray-900) !important;
+}
+
+/* bg-accent - blue background with white text (same in both modes) */
+.bg-accent {
+    background-color: var(--color-accent-solid);
+}
+
+.bg-accent,
+.bg-accent *,
+.bg-accent h1,
+.bg-accent h2,
+.bg-accent h3,
+.bg-accent h4,
+.bg-accent h5,
+.bg-accent h6,
+.bg-accent p,
+.bg-accent span,
+.bg-accent div,
+.bg-accent a,
+.bg-accent li,
+.bg-accent .text-display-sm,
+.bg-accent .text-display-md,
+.bg-accent .text-display-lg,
+.bg-accent .text-display-xl,
+.bg-accent .text-display-2xl,
+.bg-accent .prose,
+.bg-accent .prose *,
+.bg-accent .prose h1,
+.bg-accent .prose h2,
+.bg-accent .prose h3,
+.bg-accent .prose h4,
+.bg-accent .prose h5,
+.bg-accent .prose h6,
+.bg-accent .prose p,
+.bg-accent .prose a,
+.bg-accent .prose li,
+.bg-accent .prose strong {
+    color: var(--color-white) !important;
+}
+
+/* bg-secondary - light gray background with dark text (light mode), dark blue background with white text (dark mode) */
+.bg-secondary {
+    background-color: #F3F3F3;
+}
+
+.bg-secondary,
+.bg-secondary *,
+.bg-secondary h1,
+.bg-secondary h2,
+.bg-secondary h3,
+.bg-secondary h4,
+.bg-secondary h5,
+.bg-secondary h6,
+.bg-secondary p,
+.bg-secondary span,
+.bg-secondary div,
+.bg-secondary a,
+.bg-secondary li,
+.bg-secondary .text-display-sm,
+.bg-secondary .text-display-md,
+.bg-secondary .text-display-lg,
+.bg-secondary .text-display-xl,
+.bg-secondary .text-display-2xl,
+.bg-secondary .prose,
+.bg-secondary .prose *,
+.bg-secondary .prose h1,
+.bg-secondary .prose h2,
+.bg-secondary .prose h3,
+.bg-secondary .prose h4,
+.bg-secondary .prose h5,
+.bg-secondary .prose h6,
+.bg-secondary .prose p,
+.bg-secondary .prose a,
+.bg-secondary .prose li,
+.bg-secondary .prose strong {
+    color: var(--color-gray-900) !important;
+}
+
+/* Dark mode */
+.dark-mode .bg-secondary {
+    background-color: #112852;
+}
+
+.dark-mode .bg-secondary,
+.dark-mode .bg-secondary *,
+.dark-mode .bg-secondary h1,
+.dark-mode .bg-secondary h2,
+.dark-mode .bg-secondary h3,
+.dark-mode .bg-secondary h4,
+.dark-mode .bg-secondary h5,
+.dark-mode .bg-secondary h6,
+.dark-mode .bg-secondary p,
+.dark-mode .bg-secondary span,
+.dark-mode .bg-secondary div,
+.dark-mode .bg-secondary a,
+.dark-mode .bg-secondary li,
+.dark-mode .bg-secondary .text-display-sm,
+.dark-mode .bg-secondary .text-display-md,
+.dark-mode .bg-secondary .text-display-lg,
+.dark-mode .bg-secondary .text-display-xl,
+.dark-mode .bg-secondary .text-display-2xl,
+.dark-mode .bg-secondary .prose,
+.dark-mode .bg-secondary .prose *,
+.dark-mode .bg-secondary .prose h1,
+.dark-mode .bg-secondary .prose h2,
+.dark-mode .bg-secondary .prose h3,
+.dark-mode .bg-secondary .prose h4,
+.dark-mode .bg-secondary .prose h5,
+.dark-mode .bg-secondary .prose h6,
+.dark-mode .bg-secondary .prose p,
+.dark-mode .bg-secondary .prose a,
+.dark-mode .bg-secondary .prose li,
+.dark-mode .bg-secondary .prose strong {
+    color: var(--color-white) !important;
+}
+
+@utility bg-tertiary {
+    background-color: var(--color-bg-tertiary);
 }
 
 /* Text utilities */

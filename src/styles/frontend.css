@@ -131,9 +131,6 @@
   --animate-accordion-up: accordion-up 0.2s ease-out;
 }
 
-/* Dark mode variant - supports Payload's data-theme attribute */
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
 /* Animation keyframes */
 @keyframes accordion-down {
   from { height: 0; }

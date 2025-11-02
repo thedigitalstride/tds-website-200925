@@ -1,7 +1,7 @@
 import type { Block } from 'payload'
 
 import { linkGroup } from '../../fields/linkGroup'
-import { richTextStandard } from '@/fields/richTextWithButtons'
+import { richText } from '@/fields/richText'
 
 export const CallToAction: Block = {
   slug: 'cta',
@@ -10,7 +10,7 @@ export const CallToAction: Block = {
     {
       name: 'richText',
       type: 'richText',
-      editor: richTextStandard({ headings: ['h1', 'h2', 'h3', 'h4'], enableButtons: true }),
+      editor: richText(),
       label: false,
     },
     linkGroup({
