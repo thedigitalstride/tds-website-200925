@@ -48,10 +48,10 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         : rawIconColor
   ) as 'brand' | 'brand-reversed' | 'accent' | 'secondary' | 'tertiary'
   const iconShape = (iconTheme || 'rounded-square') as 'rounded-square' | 'round'
-  const cardStyleValue = cardBackground || 'none'
+  const cardStyleValue = (cardBackground || 'none') as BackgroundVariant
 
   // Use shared background variant system
-  const cardBgClasses = getBackgroundClasses(cardStyleValue as BackgroundVariant)
+  const cardBgClasses = getBackgroundClasses(cardStyleValue)
 
   // Determine padding based on style variant
   const isLineVariant = cardStyleValue === 'line'
