@@ -168,7 +168,7 @@ export const Header = ({
       // Default fallback
       return (
         <Button color="secondary" size={defaultSize}>
-          ENQUIRE
+          ENQUIRE 
         </Button>
       )
     }
