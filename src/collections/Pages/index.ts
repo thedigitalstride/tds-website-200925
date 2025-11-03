@@ -12,7 +12,6 @@ import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { HeroHeadingBlock } from '../../blocks/HeroHeadingBlock/config'
 import { BreadcrumbBlock } from '../../blocks/BreadcrumbBlock/config'
 import { CardGridBlock } from '../../blocks/CardGridBlock/config'
-import { FeaturesBlock } from '../../blocks/FeaturesBlock/config'
 import { LatestPostsBlock } from '../../blocks/LatestPostsBlock/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -94,7 +93,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [HeroHeadingBlock, BackgroundSection, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, CardGridBlock, FeaturesBlock, LatestPostsBlock, AccordionBlock],
+              blocks: [HeroHeadingBlock, BackgroundSection, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, CardGridBlock, LatestPostsBlock, AccordionBlock],
               admin: {
                 initCollapsed: true,
               },

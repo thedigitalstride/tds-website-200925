@@ -16,7 +16,6 @@ import { LinkFeatureClient as LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { CardRowLabel as CardRowLabel_f07eca2611a6fa70744192e63be8495c } from '@/blocks/CardGridBlock/CardRowLabel'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { FeatureRowLabel as FeatureRowLabel_93ec2916c39f08cc5e613758e30778ab } from '@/blocks/FeaturesBlock/FeatureRowLabel'
 import { default as default_5515b6a61a5ff6886b18931b141a7219 } from '@/components/SEO/SeoTitleField'
 import { default as default_1fdb66f587a749568f389c3f5af01acc } from '@/components/SEO/SeoDescriptionField'
 import { SlugComponent as SlugComponent_92cc057d0a2abb4f6cf0307edf59f986 } from '@/fields/slug/SlugComponent'
@@ -67,7 +66,6 @@ export const importMap = {
   "@/blocks/CardGridBlock/CardRowLabel#CardRowLabel": CardRowLabel_f07eca2611a6fa70744192e63be8495c,
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@/blocks/FeaturesBlock/FeatureRowLabel#FeatureRowLabel": FeatureRowLabel_93ec2916c39f08cc5e613758e30778ab,
   "@/components/SEO/SeoTitleField#default": default_5515b6a61a5ff6886b18931b141a7219,
   "@/components/SEO/SeoDescriptionField#default": default_1fdb66f587a749568f389c3f5af01acc,
   "@/fields/slug/SlugComponent#SlugComponent": SlugComponent_92cc057d0a2abb4f6cf0307edf59f986,

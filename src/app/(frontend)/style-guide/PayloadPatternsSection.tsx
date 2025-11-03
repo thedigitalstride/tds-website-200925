@@ -31,7 +31,7 @@ export function PayloadPatternsSection() {
         </code>
         <div className="bg-secondary p-4 rounded-lg">
           <p className="text-sm text-tertiary">
-            <strong className="text-primary">Used in:</strong> HeroHeadingBlock (Layout & Styling), FeaturesBlock (layoutOptions group), LatestPostsBlock (layoutOptions group)
+            <strong className="text-primary">Used in:</strong> HeroHeadingBlock (Layout & Styling), CardGridBlock (layoutOptions group), LatestPostsBlock (layoutOptions group)
           </p>
         </div>
       </div>
@@ -63,7 +63,7 @@ export function PayloadPatternsSection() {
         </code>
         <div className="bg-secondary p-4 rounded-lg">
           <p className="text-sm text-tertiary">
-            <strong className="text-primary">Used in:</strong> FeaturesBlock (header fields), LatestPostsBlock (header fields, content source), HeroHeadingBlock (background options)
+            <strong className="text-primary">Used in:</strong> CardGridBlock (header fields), LatestPostsBlock (header fields, content source), HeroHeadingBlock (background options)
           </p>
         </div>
       </div>
@@ -85,7 +85,7 @@ export function PayloadPatternsSection() {
   admin: {
     initCollapsed: true,
     components: {
-      RowLabel: '@/blocks/FeaturesBlock/FeatureRowLabel#FeatureRowLabel'
+      RowLabel: '@/blocks/CardGridBlock/CardRowLabel#CardRowLabel'
     }
   }
 }
@@ -97,7 +97,7 @@ export const FeatureRowLabel: RowLabelComponent = ({ data, index }) => {
         </code>
         <div className="bg-secondary p-4 rounded-lg">
           <p className="text-sm text-tertiary">
-            <strong className="text-primary">Used in:</strong> FeaturesBlock features array
+            <strong className="text-primary">Used in:</strong> CardGridBlock cards array
           </p>
           <p className="text-sm text-tertiary mt-2">
             <strong className="text-primary">Documentation:</strong> See [ROW_LABELS.md](docs/ROW_LABELS.md)
@@ -133,7 +133,7 @@ link({
             <strong className="text-primary">Provides:</strong> Link type (internal/custom), URL, label, new tab option, UUI button toggle, button color/size selection, icon selection
           </p>
           <p className="text-sm text-tertiary">
-            <strong className="text-primary">Used in:</strong> FeaturesBlock (per-feature links), ButtonBlock, ContentBlock, CallToActionBlock
+            <strong className="text-primary">Used in:</strong> CardGridBlock (per-card links), ButtonBlock, ContentBlock, CallToActionBlock
           </p>
         </div>
       </div>
@@ -227,7 +227,7 @@ const IconComponent = icon && Icons[icon as keyof typeof Icons];
             <strong className="text-primary">Available Icons:</strong> 1000+ icons from UntitledUI
           </p>
           <p className="text-sm text-tertiary">
-            <strong className="text-primary">Used in:</strong> FeaturesBlock, ButtonBlock (via link field), HeroHeadingBlock (potential future enhancement)
+            <strong className="text-primary">Used in:</strong> CardGridBlock, ButtonBlock (via link field), HeroHeadingBlock (potential future enhancement)
           </p>
           <p className="text-sm text-tertiary">
             <strong className="text-primary">Browse Icons:</strong> <a href="https://icons.untitledui.com" target="_blank" rel="noopener noreferrer" className="text-brand-secondary hover:underline">icons.untitledui.com</a>
@@ -286,7 +286,7 @@ const IconComponent = icon && Icons[icon as keyof typeof Icons];
         </code>
         <div className="bg-secondary p-4 rounded-lg">
           <p className="text-sm text-tertiary">
-            <strong className="text-primary">Used in:</strong> FeaturesBlock (header group), LatestPostsBlock (header group), HeroHeadingBlock (bg group)
+            <strong className="text-primary">Used in:</strong> CardGridBlock (header group), LatestPostsBlock (header group), HeroHeadingBlock (bg group)
           </p>
         </div>
       </div>

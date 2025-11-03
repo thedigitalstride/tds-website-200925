@@ -6,7 +6,7 @@ import { MediaBlock } from '../blocks/MediaBlock/config'
 import { FormBlock } from '../blocks/Form/config'
 import { HeroHeadingBlock } from '../blocks/HeroHeadingBlock/config'
 import { BreadcrumbBlock } from '../blocks/BreadcrumbBlock/config'
-// Note: FeaturesBlock and AccordionBlock excluded due to database identifier length limits (PostgreSQL 63 char limit)
+// Note: AccordionBlock excluded due to database identifier length limits (PostgreSQL 63 char limit)
 
 export const PostsSettings: GlobalConfig = {
   slug: 'postsSettings',

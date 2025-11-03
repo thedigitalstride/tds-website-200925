@@ -372,7 +372,6 @@ Authentication and profiles:
 
 ### Features & Cards
 - **CardGridBlock** - Flexible card layouts (5 styles), icons, 1-4 columns, internal links
-- **FeaturesBlock** - Feature showcases with multiple layout options
 
 ### Interactive
 - **AccordionBlock** - Dynamic/manual FAQ display, category filtering, search UI, schema support

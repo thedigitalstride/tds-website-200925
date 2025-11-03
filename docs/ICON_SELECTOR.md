@@ -208,7 +208,7 @@ The `UUIButton` component checks `buttonIconConfig` first, then falls back to `b
 ## Implementation Blocks
 
 Currently integrated in:
-- **Card & Feature Icons**: CardGridBlock, FeaturesBlock
+- **Card & Feature Icons**: CardGridBlock
 - **Button Icons**: All blocks using link fields (ButtonBlock, CallToAction, HeroHeadingBlock, etc.)
 
 ## Related Files

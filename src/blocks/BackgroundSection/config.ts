@@ -3,7 +3,6 @@ import type { Block } from 'payload'
 // Import blocks that can be nested inside BackgroundSection
 import { CardGridBlock } from '../CardGridBlock/config'
 import { Content } from '../Content/config'
-import { FeaturesBlock } from '../FeaturesBlock/config'
 import { CallToAction } from '../CallToAction/config'
 import { MediaBlock } from '../MediaBlock/config'
 import { AccordionBlock } from '../AccordionBlock/config'
@@ -226,7 +225,6 @@ export const BackgroundSection: Block = {
       blocks: [
         CardGridBlock,
         Content,
-        FeaturesBlock,
         CallToAction,
         MediaBlock,
         AccordionBlock,
