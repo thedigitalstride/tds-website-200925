@@ -30,7 +30,7 @@
 
   /* Quotes */
   --tw-prose-quotes: var(--color-text-primary);
-  --tw-prose-quote-borders: var(--color-border-brand);
+  --tw-prose-quote-borders: var(--color-border-primary);
 
   /* Code */
   --tw-prose-code: var(--color-text-brand-tertiary);
@@ -75,7 +75,7 @@
 
   /* Quotes */
   --tw-prose-quotes: var(--color-text-primary);
-  --tw-prose-quote-borders: var(--color-border-brand);
+  --tw-prose-quote-borders: var(--color-border-primary);
 
   /* Code - adjust for dark backgrounds */
   --tw-prose-code: var(--color-brand-400);
@@ -112,7 +112,7 @@
   margin-top: 0;
 }
 
-/* Headings - ensure proper spacing */
+/* Headings - use UUI display scale with CSS variables */
 .prose h1,
 .prose h2,
 .prose h3,
@@ -123,32 +123,40 @@
   font-weight: 600;
   margin-top: 2em;
   margin-bottom: 0.75em;
-  line-height: 1.25;
+  color: var(--color-text-primary);
 }
 
-/* Base heading font sizes - mobile first */
+/* Heading sizes - unified with UUI scale from theme.css */
 .prose h1 {
-  font-size: 2em;        /* 32px equivalent at 16px base */
+  font-size: var(--text-display-lg);              /* 3rem = 48px */
+  line-height: var(--text-display-lg--line-height);  /* 3.75rem = 60px */
+  letter-spacing: var(--text-display-lg--letter-spacing);  /* -0.06rem */
 }
 
 .prose h2 {
-  font-size: 1.5em;      /* 24px equivalent at 16px base */
+  font-size: var(--text-display-md);              /* 2.25rem = 36px */
+  line-height: var(--text-display-md--line-height);  /* 2.75rem = 44px */
+  letter-spacing: var(--text-display-md--letter-spacing);  /* -0.045rem */
 }
 
 .prose h3 {
-  font-size: 1.25em;     /* 20px equivalent at 16px base */
+  font-size: var(--text-display-sm);              /* 1.875rem = 30px */
+  line-height: var(--text-display-sm--line-height);  /* 2.375rem = 38px */
 }
 
 .prose h4 {
-  font-size: 1.125em;    /* 18px equivalent at 16px base */
+  font-size: var(--text-display-xs);                     /* 1.5rem = 24px */
+  line-height: var(--text-display-xs--line-height);      /* 2rem = 32px */
 }
 
 .prose h5 {
-  font-size: 1em;        /* 16px equivalent at 16px base */
+  font-size: var(--text-xl);                     /* 1.25rem = 20px */
+  line-height: var(--text-xl--line-height);      /* 1.875rem = 30px */
 }
 
 .prose h6 {
-  font-size: 1em;        /* 16px equivalent at 16px base */
+  font-size: var(--text-lg);                     /* 1.125rem = 18px */
+  line-height: var(--text-lg--line-height);      /* 1.75rem = 28px */
 }
 
 /* First heading - reduce top margin */
@@ -195,7 +203,7 @@
 /* Inline code */
 .prose code {
   font-weight: 500;
-  font-size: 0.875em;
+  font-size: var(--text-sm);     /* 0.875rem = 14px */
   padding: 0.125em 0.375em;
   border-radius: 0.25rem;
   background-color: var(--color-bg-secondary);
@@ -208,7 +216,7 @@
 .prose pre code {
   background-color: transparent;
   padding: 0;
-  font-size: 0.875em;
+  font-size: var(--text-sm);     /* 0.875rem = 14px */
 }
 
 /* Lists - improve spacing */
@@ -299,7 +307,7 @@
 
 .prose figcaption {
   margin-top: 1em;
-  font-size: 0.875em;
+  font-size: var(--text-sm);     /* 0.875rem = 14px */
   text-align: center;
 }
 
@@ -326,8 +334,8 @@
 
 /* Lead paragraph styling - only for posts with .prose-centered-quote */
 .prose-centered-quote p:first-of-type {
-  font-size: var(--text-xl);
-  line-height: var(--text-xl--line-height);
+  font-size: var(--text-xl);                     /* 1.25rem = 20px */
+  line-height: var(--text-xl--line-height);      /* 1.875rem = 30px */
   color: var(--color-text-primary);
   margin-bottom: 2em;
 }
@@ -337,7 +345,8 @@
   text-align: center;
   border-left: none;
   padding-left: 0;
-  font-size: 1.25em;
+  font-size: var(--text-xl);                     /* 1.25rem = 20px */
+  line-height: var(--text-xl--line-height);      /* 1.875rem = 30px */
   font-weight: 500;
 }
 
@@ -420,7 +429,7 @@
 
 .richtext-inline-image figcaption {
   margin-top: 1em;
-  font-size: 0.875em;
+  font-size: var(--text-sm);     /* 0.875rem = 14px */
   color: var(--color-text-tertiary);
   text-align: center;
 }
@@ -436,35 +445,21 @@
    RESPONSIVE ADJUSTMENTS
    ========================================================================= */
 
-/* Mobile prose - slightly larger base for better readability */
+/* Base prose - uses UUI text-md variable */
 .prose {
-  font-size: 1.0625rem;  /* 17px base on mobile */
-  line-height: 1.625rem; /* 26px line height */
+  font-size: var(--text-md);              /* 1.0625rem mobile, 1rem desktop */
+  line-height: var(--text-md--line-height);  /* 1.625rem mobile, 1.5rem desktop */
 }
 
-/* Larger prose on desktop */
+/* Responsive adjustments */
 @media (min-width: 768px) {
-  .prose {
-    font-size: 1.125rem;   /* 18px on desktop */
-    line-height: 1.75rem;  /* 28px line height */
-  }
-
   .prose p {
     margin-top: 1.5em;
     margin-bottom: 1.5em;
   }
 
-  .prose h1 {
-    font-size: 2.25em;
-  }
-
-  .prose h2 {
-    font-size: 1.875em;
-  }
-
-  .prose h3 {
-    font-size: 1.5em;
-  }
+  /* Heading sizes already rem-based via CSS variables, no override needed */
+  /* CSS variables in theme.css handle all responsive typography */
 }
 
 /* ============================================================================
@@ -479,6 +474,19 @@
 .prose.prose-compact {
   font-size: var(--text-md) !important;
   line-height: var(--text-md--line-height) !important;
+}
+
+/* Headings in compact prose - use same size as body */
+.prose.prose-compact h1,
+.prose.prose-compact h2,
+.prose.prose-compact h3,
+.prose.prose-compact h4,
+.prose.prose-compact h5,
+.prose.prose-compact h6 {
+  font-size: var(--text-md) !important;
+  line-height: var(--text-md--line-height) !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
 /* Remove extra margins for compact prose */

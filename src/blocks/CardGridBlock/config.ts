@@ -1,29 +1,7 @@
 import type { Block } from 'payload'
 import { link } from '@/fields/link'
-import { lexicalEditor, HeadingFeature, UnorderedListFeature, OrderedListFeature, ChecklistFeature, BlocksFeature, FixedToolbarFeature, InlineToolbarFeature } from '@payloadcms/richtext-lexical'
-import { ButtonBlock } from '@/blocks/ButtonBlock/config'
-
-/**
- * Rich text editor for card descriptions with headings support
- * Includes: headings (h3, h4), lists, checkboxes, and buttons
- */
-const richTextEditorWithHeadings = () => lexicalEditor({
-  features: ({ rootFeatures }) => {
-    return [
-      ...rootFeatures,
-      HeadingFeature({
-        enabledHeadingSizes: ['h3', 'h4'], // Smaller headings appropriate for cards
-      }),
-      UnorderedListFeature(),
-      OrderedListFeature(),
-      ChecklistFeature(),
-      BlocksFeature({ blocks: [ButtonBlock] }),
-      // Add toolbar features last so they can detect all content features
-      FixedToolbarFeature(),
-      InlineToolbarFeature(),
-    ]
-  },
-})
+import { richText } from '@/fields/richText'
+import { iconSelectorField } from '@/fields/IconSelector'
 
 export const CardGridBlock: Block = {
   slug: 'cardGrid',
@@ -94,16 +72,13 @@ export const CardGridBlock: Block = {
       maxRows: 12,
       label: 'Cards',
       fields: [
-        {
+        iconSelectorField({
           name: 'icon',
-          type: 'text',
-          label: 'Icon Name',
+          required: false,
           admin: {
-            description:
-              'Icon name from @untitledui/icons (e.g., "Zap", "MessageChatCircle", "ChartBreakoutSquare", "TrendUp01", "Users01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com',
-            placeholder: 'Zap',
+            description: 'Select an icon from the Icons collection to display in the card',
           },
-        },
+        }),
         {
           name: 'eyebrow',
           type: 'text',
@@ -127,7 +102,7 @@ export const CardGridBlock: Block = {
           type: 'richText',
           required: false,
           label: 'Card Description',
-          editor: richTextEditorWithHeadings(),
+          editor: richText(),
           admin: {
             description: 'Rich description with headings, formatting, lists, and links',
           },
@@ -142,7 +117,7 @@ export const CardGridBlock: Block = {
         },
         link({
           enableUUIButton: true,
-          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'link'],
+          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'outline', 'link'],
           uuiSizes: ['sm', 'md', 'lg', 'xl'],
           defaultUUIColor: 'link',
           defaultUUISize: 'md',
@@ -230,6 +205,10 @@ export const CardGridBlock: Block = {
               value: 'accent',
             },
             {
+              label: 'Outline',
+              value: 'outline',
+            },
+            {
               label: 'Line (Top Border)',
               value: 'line',
             },
@@ -258,16 +237,17 @@ export const CardGridBlock: Block = {
           name: 'iconColor',
           type: 'select',
           defaultValue: 'primary',
-          label: 'Icon Color',
+          label: 'Icon Style',
           options: [
             { label: 'Primary', value: 'primary' },
             { label: 'Primary (Reversed)', value: 'primary-reversed' },
             { label: 'Secondary', value: 'secondary' },
             { label: 'Tertiary', value: 'tertiary' },
             { label: 'Accent', value: 'accent' },
+            { label: 'Outline', value: 'outline' },
           ],
           admin: {
-            description: 'Icon color variant - matches button color system',
+            description: 'Icon style variant - matches button and card background system',
           },
         },
         {

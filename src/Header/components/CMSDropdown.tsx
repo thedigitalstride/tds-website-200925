@@ -5,7 +5,8 @@ import { motion } from 'motion/react'
 import { NavMenuItemLink } from './NavMenuItem'
 import { getIcon } from '../utils/IconMap'
 import { getPageUrl } from '@/utilities/pageHelpers'
-import type { Header, Page } from '@/payload-types'
+import { IconSVG } from '@/components/IconSVG'
+import type { Header, Page, Icon } from '@/payload-types'
 
 interface CMSDropdownProps {
   items: NonNullable<Header['navItems']>[0]['dropdownItems']
@@ -101,7 +102,21 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
             }}
           >
             {items.map((item, index) => {
-              const IconComponent = getIcon(item.icon ?? undefined)
+              // Extract icon data - supports both new (relationship) and legacy (text) icons
+              const iconData = typeof item.icon === 'object' ? item.icon as Icon : null
+
+              // Fallback to legacy text-based icon if no relationship icon (only if string)
+              const LegacyIconComponent = iconData ? null : getIcon(typeof item.icon === 'string' ? item.icon : undefined)
+
+              // Render icon as SVG if we have icon data, otherwise use legacy component
+              const icon = iconData?.svgCode ? (
+                <IconSVG
+                  svgCode={iconData.svgCode}
+                  className="mt-0.5 size-5 shrink-0 stroke-[2.3px] dark:text-white text-brand-500"
+                  aria-label={iconData.label || iconData.name}
+                />
+              ) : LegacyIconComponent
+
               const href = getDropdownLinkHref(item.link)
 
               return (
@@ -124,7 +139,7 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
                   }}
                 >
                   <NavMenuItemLink
-                    icon={IconComponent}
+                    icon={icon}
                     title={item.link?.label || 'Untitled'}
                     subtitle={item.description ?? undefined}
                     href={href}

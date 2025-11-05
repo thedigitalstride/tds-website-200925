@@ -5,11 +5,12 @@ import { useRef, useState, useEffect } from 'react'
 import { ChevronDown } from '@untitledui/icons'
 import { motion, AnimatePresence } from 'motion/react'
 import { Button } from '@/components/uui/button'
+import { UUIButton } from '@/components/payload-ui/UUIButton'
 import { TDSLogo } from '@/components/Logo/tds-logo'
 import { cx } from '@/utils/cx'
 import Link from 'next/link'
 import { MobileMenuButton } from '../components/MobileMenuButton'
-import { getIcon } from '../utils/IconMap'
+import type { PayloadLinkObject } from '@/components/payload-ui/UUIButton'
 
 type HeaderNavItem = {
   label: string
@@ -37,7 +38,7 @@ const DesktopNavItem = (props: {
     >
       <span className="px-0.5">{props.label}</span>
       <ChevronDown className={cx(
-        "size-5 stroke-[2.625px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+        "size-5 stroke-[2.625px] transition-transform duration-500 ease-in-out",
         "dark:text-white text-brand-500",
         props.isOpen ? 'rotate-0' : '-rotate-90'
       )} />
@@ -89,7 +90,7 @@ const MobileNavItem = (props: {
         {props.label}{' '}
         <ChevronDown
           className={cx(
-            'size-5 stroke-[2.625px] transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]',
+            'size-5 stroke-[2.625px] transition-transform duration-500 ease-in-out',
             "dark:text-white text-brand-500",
             isOpen ? 'rotate-0' : '-rotate-90',
           )}
@@ -124,31 +125,11 @@ interface HeaderProps {
   logoVariant?: 'auto' | 'dark' | 'light'
   ctaButton?: {
     enabled: boolean
-    link: {
-      label?: string
-      type: 'reference' | 'custom'
-      reference?: { value: number | { slug?: string | null }; relationTo: string }
-      url?: string
-      newTab?: boolean
-      uuiColor?: string
-      uuiSize?: string
-      buttonIcon?: string
-      iconPos?: string
-    }
+    link: PayloadLinkObject
   }
   mobileCtaButton?: {
     enabled: boolean
-    link: {
-      label?: string
-      type: 'reference' | 'custom'
-      reference?: { value: number | { slug?: string | null }; relationTo: string }
-      url?: string
-      newTab?: boolean
-      uuiColor?: string
-      uuiSize?: string
-      buttonIcon?: string
-      iconPos?: string
-    }
+    link: PayloadLinkObject
   }
 }
 
@@ -187,47 +168,18 @@ export const Header = ({
       // Default fallback
       return (
         <Button color="secondary" size={defaultSize}>
-          ENQUIRE
+          ENQUIRE 
         </Button>
       )
     }
 
-    const linkData = ctaButton.link
-    let href = '#'
-
-    if (linkData.type === 'reference' && linkData.reference) {
-      if (typeof linkData.reference === 'object' && 'slug' in linkData.reference) {
-        href = `/${linkData.reference.slug}`
-      }
-    } else if (linkData.type === 'custom' && linkData.url) {
-      href = linkData.url
-    }
-
-    const size =
-      linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize)
-        ? (linkData.uuiSize as 'sm' | 'md' | 'lg' | 'xl')
-        : defaultSize
-    const color =
-      linkData.uuiColor &&
-      ['primary', 'accent', 'secondary', 'tertiary', 'link'].includes(linkData.uuiColor)
-        ? (linkData.uuiColor as 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link')
-        : 'secondary'
-
-    // Get icon component if specified
-    const IconComponent = linkData.buttonIcon ? getIcon(linkData.buttonIcon) : null
-    const iconPosition = linkData.iconPos || 'trailing'
-
+    // Use UUIButton component which handles both new icon selector and legacy icons
     return (
-      <Button
-        color={color}
-        size={size}
-        href={href}
-        iconLeading={iconPosition === 'leading' ? IconComponent : undefined}
-        iconTrailing={iconPosition === 'trailing' ? IconComponent : undefined}
-        {...(linkData.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      >
-        {linkData.label || 'ENQUIRE'}
-      </Button>
+      <UUIButton
+        label={ctaButton.link.label || 'ENQUIRE'}
+        link={ctaButton.link}
+        size={defaultSize}
+      />
     )
   }
 
@@ -241,42 +193,13 @@ export const Header = ({
       return null
     }
 
-    const linkData = effectiveCta.link
-    let href = '#'
-
-    if (linkData.type === 'reference' && linkData.reference) {
-      if (typeof linkData.reference === 'object' && 'slug' in linkData.reference) {
-        href = `/${linkData.reference.slug}`
-      }
-    } else if (linkData.type === 'custom' && linkData.url) {
-      href = linkData.url
-    }
-
-    const size =
-      linkData.uuiSize && ['sm', 'md', 'lg', 'xl'].includes(linkData.uuiSize)
-        ? (linkData.uuiSize as 'sm' | 'md' | 'lg' | 'xl')
-        : 'sm' // Default to small for mobile
-    const color =
-      linkData.uuiColor &&
-      ['primary', 'accent', 'secondary', 'tertiary', 'link'].includes(linkData.uuiColor)
-        ? (linkData.uuiColor as 'primary' | 'accent' | 'secondary' | 'tertiary' | 'link')
-        : 'secondary'
-
-    // Get icon component if specified
-    const IconComponent = linkData.buttonIcon ? getIcon(linkData.buttonIcon) : null
-    const iconPosition = linkData.iconPos || 'trailing'
-
+    // Use UUIButton component which handles both new icon selector and legacy icons
     return (
-      <Button
-        color={color}
-        size={size}
-        href={href}
-        iconLeading={iconPosition === 'leading' ? IconComponent : undefined}
-        iconTrailing={iconPosition === 'trailing' ? IconComponent : undefined}
-        {...(linkData.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      >
-        {linkData.label || 'ENQUIRE'}
-      </Button>
+      <UUIButton
+        label={effectiveCta.link.label || 'ENQUIRE'}
+        link={effectiveCta.link}
+        size="sm"
+      />
     )
   }
 

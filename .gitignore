@@ -8,6 +8,7 @@ node_modules
 package.json.local
 .next
 .vercel
+.worktrees/
 
 # Payload default media upload directory
 public/media/
@@ -24,3 +25,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+src/styles/theme.css.backup
+
+#Screenshots
+**/Screenshot*

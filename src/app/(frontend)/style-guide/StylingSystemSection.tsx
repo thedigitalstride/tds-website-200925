@@ -12,7 +12,7 @@ export function StylingSystemSection() {
 
       {/* Three-Layer Architecture */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Three-Layer Architecture</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Three-Layer Architecture</h3>
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <div className="bg-secondary p-6 rounded-lg border-t-4 border-brand">
             <h4 className="text-md font-semibold text-primary mb-2">Layer 1: CSS Variables</h4>
@@ -45,7 +45,7 @@ export function StylingSystemSection() {
 
         <div className="bg-secondary p-6 rounded-lg">
           <h4 className="text-md font-semibold text-primary mb-3">Why This Approach?</h4>
-          <ul className="list-disc list-inside space-y-2 text-sm text-secondary">
+          <ul className="list-disc list-inside space-y-2 text-md text-secondary">
             <li><strong className="text-primary">Single Source of Truth:</strong> All values in one place (<code className="text-brand-secondary">theme.css</code>)</li>
             <li><strong className="text-primary">Easy Theme Switching:</strong> Dark mode just overrides variables</li>
             <li><strong className="text-primary">No Class Duplication:</strong> No need for <code className="text-brand-secondary">dark:bg-gray-900</code> everywhere</li>
@@ -57,7 +57,7 @@ export function StylingSystemSection() {
 
       {/* CSS Variable Structure */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">CSS Variable Structure</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">CSS Variable Structure</h3>
         <p className="text-md text-tertiary mb-6">
           All variables follow UntitledUI&apos;s naming conventions. Here&apos;s how they&apos;re organized:
         </p>
@@ -94,28 +94,31 @@ export function StylingSystemSection() {
 
           {/* Typography */}
           <div>
-            <h4 className="text-md font-semibold text-secondary mb-3">Typography Scale</h4>
+            <h4 className="text-md font-semibold text-secondary mb-3">Typography Scale (Rem-Based)</h4>
             <code className="block text-sm text-brand-secondary bg-tertiary px-4 py-3 rounded-md mb-3 overflow-x-auto whitespace-pre">
-              {`/* Text sizes */
---text-xs: 12px;
---text-sm: 14px;
---text-md: 16px; /* Base size */
---text-lg: 18px;
---text-xl: 20px;
+              {`/* Text sizes - rem units for accessibility */
+--text-xs: 0.75rem;        /* 12px */
+--text-sm: 0.875rem;       /* 14px */
+--text-md: 1rem;           /* 16px desktop, 17px mobile */
+--text-lg: 1.125rem;       /* 18px */
+--text-xl: 1.25rem;        /* 20px */
 
 /* Display sizes for headings */
---text-display-xs: 24px;
---text-display-sm: 30px;
---text-display-md: 36px;
---text-display-lg: 48px;
---text-display-xl: 60px;
---text-display-2xl: 72px;
+--text-display-xs: 1.5rem;    /* 24px */
+--text-display-sm: 1.875rem;  /* 30px - h3 */
+--text-display-md: 2.25rem;   /* 36px - h2 */
+--text-display-lg: 3rem;      /* 48px - h1 */
+--text-display-xl: 3.75rem;   /* 60px */
+--text-display-2xl: 4.5rem;   /* 72px */
 
 /* Fluid hero heading */
 --text-hero-fluid: clamp(2.1rem, 5vw + 1rem, 6.5rem);`}
             </code>
             <p className="text-sm text-tertiary">
-              <strong className="text-primary">Usage:</strong> <code className="text-brand-secondary">text-md</code>, <code className="text-brand-secondary">text-display-lg</code>, <code className="text-brand-secondary">text-hero-fluid</code>
+              <strong className="text-primary">Single Source of Truth:</strong> All typography in <code className="text-brand-secondary">theme.css</code>. Rich text and components use same CSS variables.
+            </p>
+            <p className="text-sm text-tertiary mt-2">
+              <strong className="text-primary">Usage:</strong> <code className="text-brand-secondary">text-md</code>, <code className="text-brand-secondary">text-display-lg</code> - See <a href="#" className="text-brand-secondary underline">TYPOGRAPHY_SYSTEM.md</a>
             </p>
           </div>
 
@@ -162,7 +165,7 @@ export function StylingSystemSection() {
 
       {/* Dark Mode Implementation */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Dark Mode Implementation</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Dark Mode Implementation</h3>
         <p className="text-md text-tertiary mb-6">
           Dark mode works by overriding CSS variable values when <code className="text-brand-secondary">.dark-mode</code> class is present on <code className="text-brand-secondary">html</code> element.
         </p>
@@ -188,7 +191,7 @@ export function StylingSystemSection() {
 
         <div className="bg-secondary p-6 rounded-lg">
           <h4 className="text-md font-semibold text-primary mb-3">Benefits</h4>
-          <ul className="list-disc list-inside space-y-2 text-sm text-secondary">
+          <ul className="list-disc list-inside space-y-2 text-md text-secondary">
             <li>No <code className="text-brand-secondary">dark:</code> prefix needed on every element</li>
             <li>All components automatically support dark mode</li>
             <li>Easy to test: just toggle <code className="text-brand-secondary">.dark-mode</code> class</li>
@@ -199,7 +202,7 @@ export function StylingSystemSection() {
 
       {/* File Structure */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Styling Files Structure</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Styling Files Structure</h3>
         <div className="space-y-4">
           <div className="bg-secondary p-4 rounded-lg">
             <code className="block text-sm font-mono text-brand-secondary mb-2">src/styles/theme.css</code>
@@ -230,7 +233,7 @@ export function StylingSystemSection() {
 
       {/* How to Make Changes */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">How to Make Style Changes</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">How to Make Style Changes</h3>
         <div className="space-y-6">
           <div>
             <h4 className="text-md font-semibold text-secondary mb-3">Step 1: Find the Variable</h4>
@@ -285,11 +288,11 @@ export function StylingSystemSection() {
 
       {/* Rules and Best Practices */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Critical Rules</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Critical Rules</h3>
         <div className="space-y-4">
           <div className="bg-error-secondary p-4 rounded-lg border-l-4 border-error">
             <p className="text-sm font-semibold text-error mb-2">❌ DON&apos;T</p>
-            <ul className="list-disc list-inside space-y-1 text-sm text-secondary">
+            <ul className="list-disc list-inside space-y-1 text-md text-secondary">
               <li>Use arbitrary values like <code className="text-brand-secondary">bg-[#123456]</code></li>
               <li>Modify <code className="text-brand-secondary">frontend.css</code> or <code className="text-brand-secondary">globals.css</code></li>
               <li>Create custom classes outside of <code className="text-brand-secondary">theme.css</code></li>
@@ -300,7 +303,7 @@ export function StylingSystemSection() {
 
           <div className="bg-success-secondary p-4 rounded-lg border-l-4 border-success">
             <p className="text-sm font-semibold text-success mb-2">✅ DO</p>
-            <ul className="list-disc list-inside space-y-1 text-sm text-secondary">
+            <ul className="list-disc list-inside space-y-1 text-md text-secondary">
               <li>Search <code className="text-brand-secondary">theme.css</code> for existing variables before creating new ones</li>
               <li>Use semantic color names (<code className="text-brand-secondary">bg-primary</code>, not <code className="text-brand-secondary">bg-white</code>)</li>
               <li>Test in both light and dark modes</li>
@@ -313,21 +316,21 @@ export function StylingSystemSection() {
 
       {/* Documentation Links */}
       <div className="border-t border-secondary pt-12">
-        <h3 className="text-xl font-semibold text-primary mb-6">Related Documentation</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Related Documentation</h3>
         <div className="bg-secondary p-6 rounded-lg space-y-3">
-          <p className="text-sm text-secondary">
+          <p className="text-md text-secondary">
             📚 <strong className="text-primary">Complete Guide:</strong> [STYLING_SYSTEM.md](docs/STYLING_SYSTEM.md) - Full styling system documentation
           </p>
-          <p className="text-sm text-secondary">
+          <p className="text-md text-secondary">
             📋 <strong className="text-primary">Quick Reference:</strong> [STYLE_GUIDE.md](docs/STYLE_GUIDE.md) - Typography, colors, spacing reference
           </p>
-          <p className="text-sm text-secondary">
+          <p className="text-md text-secondary">
             ✅ <strong className="text-primary">Best Practices:</strong> [STYLING_BEST_PRACTICES.md](docs/STYLING_BEST_PRACTICES.md) - Consistency patterns
           </p>
-          <p className="text-sm text-secondary">
+          <p className="text-md text-secondary">
             🎨 <strong className="text-primary">UUI Components:</strong> [UUI_COMPONENTS_REFERENCE.md](docs/UUI_COMPONENTS_REFERENCE.md) - Component usage
           </p>
-          <p className="text-sm text-secondary">
+          <p className="text-md text-secondary">
             🌐 <strong className="text-primary">Tailwind v4:</strong> <a href="https://tailwindcss.com/docs/v4-beta" target="_blank" rel="noopener noreferrer" className="text-brand-secondary hover:underline">tailwindcss.com/docs/v4-beta</a>
           </p>
         </div>

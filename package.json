@@ -5,10 +5,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "preinstall": "node scripts/manage-motion-token.js inject",
-    "postinstall": "node scripts/manage-motion-token.js restore",
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
-    "ci": "payload migrate && pnpm build",
+    "ci": "pnpm build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "dev:watch": "pnpm run lint:watch & pnpm dev",
     "dev:stable": "./scripts/dev-stable.sh",
@@ -31,24 +29,26 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
     "fix:uui": "node ./scripts/fix-uui-structure.js",
     "uui:add": "npx untitledui@latest add $1 --path src/components/uui && pnpm fix:uui",
-    "seed:posts": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/seed-posts.ts"
+    "seed:posts": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/seed-posts.ts",
+    "preflight": "node scripts/preflight-check.js"
   },
   "dependencies": {
-    "@payloadcms/admin-bar": "3.59.1",
-    "@payloadcms/db-vercel-postgres": "3.59.1",
-    "@payloadcms/drizzle": "^3.59.1",
-    "@payloadcms/email-resend": "^3.59.1",
-    "@payloadcms/live-preview-react": "3.59.1",
-    "@payloadcms/next": "3.59.1",
-    "@payloadcms/payload-cloud": "3.59.1",
-    "@payloadcms/plugin-form-builder": "3.59.1",
-    "@payloadcms/plugin-nested-docs": "3.59.1",
-    "@payloadcms/plugin-redirects": "3.59.1",
-    "@payloadcms/plugin-search": "3.59.1",
-    "@payloadcms/plugin-seo": "3.59.1",
-    "@payloadcms/richtext-lexical": "3.59.1",
-    "@payloadcms/storage-vercel-blob": "3.59.1",
-    "@payloadcms/ui": "3.59.1",
+    "@payloadcms/admin-bar": "3.61.1",
+    "@payloadcms/db-mongodb": "^3.61.1",
+    "@payloadcms/db-vercel-postgres": "3.61.1",
+    "@payloadcms/drizzle": "^3.61.1",
+    "@payloadcms/email-resend": "^3.61.1",
+    "@payloadcms/live-preview-react": "3.61.1",
+    "@payloadcms/next": "3.61.1",
+    "@payloadcms/payload-cloud": "3.61.1",
+    "@payloadcms/plugin-form-builder": "3.61.1",
+    "@payloadcms/plugin-nested-docs": "3.61.1",
+    "@payloadcms/plugin-redirects": "3.61.1",
+    "@payloadcms/plugin-search": "3.61.1",
+    "@payloadcms/plugin-seo": "3.61.1",
+    "@payloadcms/richtext-lexical": "3.61.1",
+    "@payloadcms/storage-vercel-blob": "3.61.1",
+    "@payloadcms/ui": "3.61.1",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-select": "^2.0.0",
@@ -68,11 +68,11 @@
     "hamburger-react": "^2.5.2",
     "lucide-react": "^0.378.0",
     "motion": "^12.23.22",
-    "motion-plus": "https://api.motion.dev/registry?package=motion-plus&version=1.5.4&token=MOTION_TOKEN_PLACEHOLDER",
     "next": "15.4.7",
     "next-sitemap": "^4.2.3",
     "next-themes": "^0.4.6",
-    "payload": "3.59.1",
+    "payload": "3.61.1",
+    "payload-monorepo": "github:payloadcms/payload",
     "pg": "^8.16.3",
     "postcss": "^8.5.6",
     "prism-react-renderer": "^2.3.1",
@@ -82,6 +82,7 @@
     "react-dom": "19.1.0",
     "react-hook-form": "7.45.4",
     "react-stately": "^3.41.0",
+    "server-only": "^0.0.1",
     "sharp": "0.34.2",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.13",
@@ -100,19 +101,29 @@
     "copyfiles": "^2.4.1",
     "eslint": "^9.16.0",
     "eslint-config-next": "15.4.4",
+    "gray-matter": "^4.0.3",
     "jsdom": "26.1.0",
     "playwright": "1.54.1",
     "playwright-core": "1.54.1",
     "prettier": "^3.4.2",
+    "svgo": "^4.0.0",
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.2.3"
   },
   "packageManager": "pnpm@10.17.1",
   "engines": {
-    "node": "^18.20.2 || >=20.9.0"
+    "node": ">=20.9.0 <23"
   },
   "pnpm": {
+    "overrides": {
+      "tsx": "4.20.3"
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "tsx": "4.20.3"
+      }
+    },
     "onlyBuiltDependencies": [
       "sharp",
       "esbuild",

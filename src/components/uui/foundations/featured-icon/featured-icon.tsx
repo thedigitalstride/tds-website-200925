@@ -2,6 +2,7 @@ import type { FC, ReactNode, Ref } from "react";
 import { isValidElement } from "react";
 import { cx, sortCx } from "@/utils/cx";
 import { isReactComponent } from "@/utils/is-react-component";
+import { IconSVG } from '@/components/IconSVG';
 
 const iconsSizes = {
     sm: "*:data-icon:size-4",
@@ -20,11 +21,12 @@ const styles = sortCx({
             xl: "size-14 rounded-xl",
         },
         colors: {
-            brand: "bg-primary text-brand-500 dark:text-white",
-            "brand-reversed": "bg-brand-solid text-white dark:!bg-white dark:text-brand-500",
-            accent: "bg-accent-solid !text-white",
-            secondary: "bg-transparent text-brand-500 dark:text-white ring-1 ring-gray-solid ring-inset",
-            tertiary: "bg-gray-solid text-brand-500 dark:text-brand-900",
+            primary: "bg-primary text-white dark:text-brand-500",
+            "primary-reversed": "bg-primary-reversed text-brand-500 dark:text-white",
+            accent: "bg-accent-solid text-white! dark:text-white! *:data-icon:text-white! dark:*:data-icon:text-white! [&_*]:text-white! dark:[&_*]:text-white!",
+            secondary: "bg-secondary text-brand-500 dark:text-white",
+            tertiary: "bg-transparent ring-2 ring-accent-solid ring-inset text-primary dark:text-brand-500",
+            outline: "bg-transparent text-primary dark:text-white ring-2 ring-outline ring-inset",
         },
     },
 
@@ -37,11 +39,12 @@ const styles = sortCx({
             xl: "size-14",
         },
         colors: {
-            brand: "bg-primary text-brand-500 dark:text-white",
-            "brand-reversed": "bg-brand-solid text-white dark:!bg-white dark:text-brand-500",
-            accent: "bg-accent-solid !text-white",
-            secondary: "bg-transparent text-brand-500 dark:text-white ring-1 ring-gray-solid ring-inset",
-            tertiary: "bg-gray-solid text-brand-500 dark:text-brand-900",
+            primary: "bg-primary text-white dark:text-brand-500",
+            "primary-reversed": "bg-primary-reversed text-brand-500 dark:text-white",
+            accent: "bg-accent-solid text-white! dark:text-white! *:data-icon:text-white! dark:*:data-icon:text-white! [&_*]:text-white! dark:[&_*]:text-white!",
+            secondary: "bg-secondary text-brand-500 dark:text-white",
+            tertiary: "bg-transparent ring-2 ring-accent-solid ring-inset text-primary dark:text-brand-500",
+            outline: "bg-transparent text-primary dark:text-white ring-2 ring-outline ring-inset",
         },
     },
 });
@@ -51,16 +54,26 @@ interface FeaturedIconProps {
     children?: ReactNode;
     className?: string;
     icon?: FC<{ className?: string }> | ReactNode;
+    svgCode?: string;
     size?: "sm" | "md" | "lg" | "xl";
-    color: "brand" | "brand-reversed" | "accent" | "secondary" | "tertiary";
+
+    color: "primary" | "primary-reversed" | "accent" | "secondary" | "tertiary" | "outline";
     shape?: "rounded-square" | "round";
 }
 
 export const FeaturedIcon = (props: FeaturedIconProps) => {
-    const { size = "sm", shape = "rounded-square", color = "brand", icon: Icon, ...otherProps } = props;
+    const { size = "sm", shape = "rounded-square", color = "primary", icon: Icon, svgCode, ...otherProps } = props;
 
     // Defensive: Handle legacy shape values from database by falling back to rounded-square
     const validShape = (shape in styles) ? shape : "rounded-square";
+
+    // Icon size classes (slightly smaller than container for proper padding)
+    const iconSizeClasses = {
+        sm: "size-5",
+        md: "size-6",
+        lg: "size-8",
+        xl: "size-10",
+    };
 
     return (
         <div
@@ -77,8 +90,14 @@ export const FeaturedIcon = (props: FeaturedIconProps) => {
                 props.className,
             )}
         >
-            {isReactComponent(Icon) && <Icon data-icon className="z-1" />}
-            {isValidElement(Icon) && <div className="z-1">{Icon}</div>}
+            {svgCode ? (
+                <IconSVG svgCode={svgCode} className={`z-1 ${iconSizeClasses[size]}`} />
+            ) : (
+                <>
+                    {isReactComponent(Icon) && <Icon data-icon className="z-1" />}
+                    {isValidElement(Icon) && <div className="z-1">{Icon}</div>}
+                </>
+            )}
 
             {props.children}
         </div>

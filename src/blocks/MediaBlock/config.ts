@@ -9,17 +9,21 @@ export const MediaBlock: Block = {
       type: 'upload',
       relationTo: 'media',
       required: true,
+      admin: {
+        description: 'Select or upload an image to display',
+      },
     },
     {
       name: 'caption',
       type: 'group',
-      label: 'Caption',
+      label: 'Caption (Optional)',
       fields: [
         {
           name: 'text',
           type: 'text',
+          label: 'Caption Text',
           admin: {
-            description: 'Caption text',
+            description: 'Text caption for the image',
           },
         },
         {
@@ -46,4 +50,8 @@ export const MediaBlock: Block = {
       ],
     },
   ],
+  labels: {
+    singular: 'Media',
+    plural: 'Media',
+  },
 }

@@ -38,7 +38,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
   // Use centralized date formatting utility
 
   return (
-    <div className="bg-primary">
+    <div>
       {/* Hero Section - Split Layout with exact UUI styling */}
       <div className="relative mx-auto grid max-w-container grid-cols-1 items-center gap-16 px-4 pb-16 md:grid-cols-2 md:gap-8 md:px-8 md:pt-16 md:pb-24">
 

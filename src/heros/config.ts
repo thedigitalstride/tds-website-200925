@@ -1,6 +1,6 @@
 import type { Field } from 'payload'
 
-import { richTextEditor } from '@/fields/richTextWithButtons'
+import { richText } from '@/fields/richText'
 import { linkGroup } from '@/fields/linkGroup'
 
 export const hero: Field = {
@@ -35,7 +35,7 @@ export const hero: Field = {
     {
       name: 'richText',
       type: 'richText',
-      editor: richTextEditor({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+      editor: richText(),
       label: false,
     },
     linkGroup({

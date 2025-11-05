@@ -84,12 +84,12 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
   // Divider classes
   const dividerClasses = {
     line: cn(
-      'border-t border-gray-solid',
+      'border-t-2 border-tertiary',
       isLast && 'border-b'
     ),
     none: '',
     card: cn(
-      'border border-gray-solid',
+      'border-2 border-tertiary',
       // Remove bottom border except on last item to avoid double borders when stacked
       !isLast && 'border-b-0',
       // Apply rounded corners based on position when in card mode
@@ -256,7 +256,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
 
             {/* Related Content */}
             {faq.relatedContent && faq.relatedContent.length > 0 && (
-              <div className="mt-6 border-t border-gray-solid pt-6">
+              <div className="mt-6 border-t-2 border-tertiary pt-6">
                 <h4 className="text-sm font-semibold text-secondary">Related Articles</h4>
                 <ul className="mt-3 space-y-2">
                   {faq.relatedContent.map((item) => {
@@ -285,7 +285,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
 
             {/* Downloadable Resources */}
             {faq.resources && faq.resources.length > 0 && (
-              <div className="mt-6 border-t border-gray-solid pt-6">
+              <div className="mt-6 border-t-2 border-tertiary pt-6">
                 <h4 className="text-sm font-semibold text-secondary">Downloads</h4>
                 <ul className="mt-3 space-y-3">
                   {faq.resources.map((resource) => (

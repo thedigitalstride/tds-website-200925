@@ -15,7 +15,6 @@ import Image from 'next/image'
 
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 import { QuoteBlock } from '@/blocks/Quote/Component'
-import { ConclusionBlock } from '@/blocks/Conclusion/Component'
 
 import type {
   BannerBlock as BannerBlockProps,
@@ -23,7 +22,6 @@ import type {
   CallToActionBlock as CTABlockProps,
   MediaBlock as MediaBlockProps,
   QuoteBlock as QuoteBlockProps,
-  ConclusionBlock as ConclusionBlockProps,
   Page,
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
@@ -35,7 +33,7 @@ import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | ButtonBlockProps | CodeBlockProps | QuoteBlockProps | ConclusionBlockProps>
+  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | ButtonBlockProps | CodeBlockProps | QuoteBlockProps>
   | SerializedUploadNode
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
@@ -96,19 +94,20 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
       banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
       buttonBlock: ({ node }) => <ButtonBlockComponent className="col-start-2 my-6" {...node.fields} />,
       mediaBlock: ({ node }) => (
-        <MediaBlock
-          className="col-start-1 col-span-3"
-          imgClassName="m-0"
-          {...node.fields}
-          captionClassName="mx-auto max-w-[48rem]"
-          enableGutter={false}
-          disableInnerContainer={true}
-        />
+        <div className="not-prose col-start-1 col-span-3 my-0!">
+          <MediaBlock
+            imgClassName="!m-0"
+            {...node.fields}
+            captionClassName="mx-auto max-w-[48rem]"
+            enableGutter={false}
+            disableInnerContainer={true}
+            disableSpacing={true}
+          />
+        </div>
       ),
       code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
       cta: ({ node }) => <CallToActionBlock {...node.fields} />,
       quote: ({ node }) => <QuoteBlock className="col-start-2 mb-8" {...node.fields} />,
-      conclusion: ({ node }) => <ConclusionBlock className="col-start-2" {...node.fields} />,
     },
   }
 }
@@ -117,13 +116,15 @@ type Props = {
   data: DefaultTypedEditorState
   enableGutter?: boolean
   enableProse?: boolean
+  disableTextAlign?: boolean | string[]
 } & React.HTMLAttributes<HTMLDivElement>
 
 export default function RichText(props: Props) {
-  const { className, enableProse = true, enableGutter = true, ...rest } = props
+  const { className, enableProse = true, enableGutter = true, disableTextAlign = true, ...rest } = props
   return (
     <ConvertRichText
       converters={jsxConverters}
+      disableTextAlign={disableTextAlign}
       className={cn(
         'payload-richtext',
         {

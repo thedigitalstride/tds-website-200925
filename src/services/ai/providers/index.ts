@@ -54,3 +54,4 @@ export function getAvailableProviders(): Array<{
 
 export { OpenAiProvider } from './openai'
 export { BaseAiProvider } from './base'
+export { IconMetadataProvider } from './icon'

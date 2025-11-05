@@ -1,81 +1,34 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import type { HeroHeadingBlock as HeroHeadingBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import { OptimizedImage } from '@/components/OptimizedImage'
 import type { Media } from '@/payload-types'
-import { Typewriter } from 'motion-plus/react'
 import { UUIButton } from '@/components/payload-ui/UUIButton'
 import { HeroSplitImageMask } from '@/components/HeroSplitImageMask'
 import { getBackgroundClasses, type BackgroundVariant } from '@/utilities/backgroundVariants'
 
-export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
-  headline,
-  subtitle,
-  headlineColor,
-  textAlignment,
-  spacing,
-  subtitleSize,
-  bg,
-  enableTypewriter,
-  heroLayout,
-  splitImage,
-  heroBackground,
-  buttons,
-}) => {
+export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
+  const {
+    headline,
+    subtitle,
+    headlineColor,
+    textAlignment,
+    spacing,
+    bg,
+    heroLayout,
+    splitImage,
+    heroBackground,
+    buttons,
+  } = props
+  // @ts-expect-error - subheadingColor field exists in config but types need regeneration (CSS import issue prevents standalone type gen)
+  const subheadingColor = props.subheadingColor
+
   // Use defaults for any undefined values
   const finalTextAlignment = textAlignment ?? 'left'
   const finalSpacing = spacing ?? 'normal'
   const finalHeadlineColor = headlineColor ?? 'primary'
-  const finalSubtitleSize = subtitleSize ?? 'normal'
-
-  // Track when headline typing completes to start subtitle
-  const [headlineComplete, setHeadlineComplete] = useState(!enableTypewriter)
-  const [subtitleComplete, setSubtitleComplete] = useState(false)
-  const [startSubtitle, setStartSubtitle] = useState(false)
-  const [startHeadline, setStartHeadline] = useState(!enableTypewriter)
-
-  // Split headline by lines for sequential typing with pauses
-  // Use regex to handle both Unix (\n) and Windows (\r\n) line endings
-  const headlineLines = headline?.split(/\r?\n/) || []
-  const [currentLineIndex, setCurrentLineIndex] = useState(0)
-  const [startCurrentLine, setStartCurrentLine] = useState(false)
-
-  // Add initial delay before starting headline animation
-  React.useEffect(() => {
-    if (enableTypewriter && !startHeadline) {
-      const timer = setTimeout(() => {
-        setStartHeadline(true)
-        setStartCurrentLine(true)
-      }, 3000) // 3 second pause with cursor before headline starts
-      return () => clearTimeout(timer)
-    }
-  }, [enableTypewriter, startHeadline])
-
-  // Handle line-by-line typing with pauses
-  const handleLineComplete = React.useCallback(() => {
-    if (currentLineIndex < headlineLines.length - 1) {
-      // More lines to type - pause then start next line
-      setStartCurrentLine(false)
-      setTimeout(() => {
-        setCurrentLineIndex(prev => prev + 1)
-        setStartCurrentLine(true)
-      }, 600) // 600ms pause between lines
-    } else {
-      // All lines complete
-      setHeadlineComplete(true)
-    }
-  }, [currentLineIndex, headlineLines.length])
-
-  // Add delay before starting subtitle animation
-  React.useEffect(() => {
-    if (headlineComplete && enableTypewriter) {
-      const timer = setTimeout(() => {
-        setStartSubtitle(true)
-      }, 800) // 800ms pause before subtitle starts
-      return () => clearTimeout(timer)
-    }
-  }, [headlineComplete, enableTypewriter])
+  const finalSubheadingColor = subheadingColor ?? 'primary'
 
   // New structure: bg.enabled and bg.heightVariant instead of fullHeight
   const bgEnabled = bg?.enabled === true
@@ -90,34 +43,11 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
     brand: 'text-accent-500',    // Accent blue in both modes
   }
 
-  // Subheading color adapts to background variant for contained layouts
-  const getSubheadingColorForBackground = (bgVariant: BackgroundVariant) => {
-    switch (bgVariant) {
-      case 'accent':
-        return 'text-white'  // White on blue
-      case 'primary-reversed':
-        return 'text-white dark:text-brand-500'  // White text in light mode (dark bg), dark text in dark mode (white bg)
-      case 'tertiary':
-        return 'text-brand-500 dark:text-brand-900'  // Dark text on gray
-      default:
-        // Primary, secondary - default subheading color
-        return 'text-brand-500 dark:text-white'
-    }
-  }
-
-  // Subtitle size variants
-  const subtitleSizeStyles: Record<string, React.CSSProperties> = {
-    normal: {
-      fontSize: 'clamp(1.26rem, 3vw + 0.6rem, 3.9rem)',
-      lineHeight: '1.3',
-      whiteSpace: 'pre-line',
-    },
-    small: {
-      // 75% of normal size (25% reduction)
-      fontSize: 'clamp(0.95rem, 2.25vw + 0.45rem, 2.925rem)',
-      lineHeight: '1.35',
-      whiteSpace: 'pre-line',
-    },
+  // Subheading color options - primary adapts to light/dark mode
+  const subheadingColorClasses: Record<string, string> = {
+    primary: 'text-brand-500 dark:text-white',           // Dark in light mode, white in dark mode
+    'primary-reversed': 'text-white dark:text-brand-500', // White in light mode, dark in dark mode
+    brand: 'text-accent-500',                            // Accent blue in both modes
   }
 
   // Don't render if no headline content
@@ -138,13 +68,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
     const hasSplitImage = splitImage && typeof splitImage === 'object'
     const bgVariant = (heroBackground || 'primary') as BackgroundVariant
 
-    // Hero-specific background overrides
-    let heroBgClasses = getBackgroundClasses(bgVariant)
-    if (bgVariant === 'primary') {
-      heroBgClasses = 'bg-gray-solid dark:bg-brand-700'  // Gray in light, dark in dark
-    } else if (bgVariant === 'primary-reversed') {
-      heroBgClasses = 'bg-brand-solid dark:bg-white'  // Dark blue in light, white in dark
-    }
+    const heroBgClasses = getBackgroundClasses(bgVariant)
 
     return (
       <section className={containedSpacingClasses[finalSpacing]}>
@@ -200,19 +124,17 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                   {/* Content Column - aligned to top for more button space */}
                   <div className="flex flex-col justify-start py-8 px-6 lg:py-24 lg:px-12">
                   {/* Headline - further reduced max size for split layout */}
-                  <h1
-                    className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
-                    style={{
-                      whiteSpace: 'pre-line',
-                      fontFamily: 'var(--font-poppins, Poppins)',
-                      fontSize: 'clamp(1.75rem, 3.5vw + 0.5rem, 3rem)',
-                      lineHeight: '1.2',
-                      fontWeight: '700',
-                    }}
-                  >
-                    {headline}
-                  </h1>
-
+                      <h1
+                      className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
+                      style={{
+                        whiteSpace: 'pre-line',
+                        fontFamily: 'var(--font-poppins, Poppins)',
+                        fontSize: 'clamp(2rem, 3.5vw + 0.5rem, 3.2rem)',
+                        lineHeight: '1.2',
+                        fontWeight: '700',
+                      }}>
+                      {headline}
+                    </h1>
                   {/* Mobile Image - appears between headline and subtitle */}
                   {hasSplitImage && (
                     <div className="relative -mx-6 my-8 h-64 lg:hidden">
@@ -227,18 +149,15 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                     </div>
                   )}
 
-                  {/* Subtitle - much smaller for split layout */}
+                  {/* Subtitle */}
                   {subtitle && (
-                    <h2
-                      className={cn('mt-10 font-normal', getSubheadingColorForBackground(bgVariant))}
+                      <h2
+                      className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
                       style={{
-                        fontSize: finalSubtitleSize === 'small'
-                          ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
-                          : 'clamp(0.875rem, 1.75vw + 0.25rem, 1.25rem)', // Normal: max 1.25rem (20px)
-                        lineHeight: '1.5',
                         whiteSpace: 'pre-line',
-                      }}
-                    >
+                        fontSize: 'var(--text-display-md)',
+                        lineHeight: '1.2',
+                      }}>
                       {subtitle}
                     </h2>
                   )}
@@ -270,30 +189,26 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                 <div className="max-w-3xl">
                   {/* Headline - further reduced max size for split layout */}
                   <h1
-                    className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
-                    style={{
-                      whiteSpace: 'pre-line',
-                      fontFamily: 'var(--font-poppins, Poppins)',
-                      fontSize: 'clamp(1.75rem, 3.5vw + 0.5rem, 3rem)',
-                      lineHeight: '1.2',
-                      fontWeight: '700',
-                    }}
-                  >
-                    {headline}
-                  </h1>
+                  className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
+                  style={{
+                    whiteSpace: 'pre-line',
+                    fontFamily: 'var(--font-poppins, Poppins)',
+                    fontSize: 'clamp(2rem, 3.5vw + 0.5rem, 3.2rem)',
+                    lineHeight: '1.2',
+                    fontWeight: '700',
+                  }}>
+                  {headline}
+                </h1>
 
-                  {/* Subtitle - much smaller for split layout */}
+                  {/* Subtitle */}
                   {subtitle && (
-                    <h2
-                      className={cn('mt-10 font-normal', getSubheadingColorForBackground(bgVariant))}
+                      <h2
+                      className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
                       style={{
-                        fontSize: finalSubtitleSize === 'small'
-                          ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
-                          : 'clamp(0.875rem, 1.75vw + 0.25rem, 1.25rem)', // Normal: max 1.25rem (20px)
-                        lineHeight: '1.5',
                         whiteSpace: 'pre-line',
-                      }}
-                    >
+                        fontSize: 'var(--text-display-md)',
+                        lineHeight: '1.2',
+                      }}>
                       {subtitle}
                     </h2>
                   )}
@@ -326,13 +241,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
   if (heroLayout === 'standardContained') {
     const bgVariant = (heroBackground || 'primary') as BackgroundVariant
 
-    // Hero-specific background overrides
-    let heroBgClasses = getBackgroundClasses(bgVariant)
-    if (bgVariant === 'primary') {
-      heroBgClasses = 'bg-gray-solid dark:bg-brand-700'  // Gray in light, dark in dark
-    } else if (bgVariant === 'primary-reversed') {
-      heroBgClasses = 'bg-brand-solid dark:bg-white'  // Dark blue in light, white in dark
-    }
+    const heroBgClasses = getBackgroundClasses(bgVariant)
 
     return (
       <section className={containedSpacingClasses[finalSpacing]}>
@@ -353,24 +262,21 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
                   style={{
                     whiteSpace: 'pre-line',
                     fontFamily: 'var(--font-poppins, Poppins)',
-                    fontSize: 'clamp(1.75rem, 3.5vw + 0.5rem, 3rem)',
+                    fontSize: 'clamp(2rem, 3.5vw + 0.5rem, 3.2rem)',
                     lineHeight: '1.2',
                     fontWeight: '700',
-                  }}
-                >
+                  }}>
                   {headline}
                 </h1>
 
                 {/* Subtitle */}
                 {subtitle && (
                   <h2
-                    className={cn('mt-10 font-normal', getSubheadingColorForBackground(bgVariant))}
+                    className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
                     style={{
-                      fontSize: finalSubtitleSize === 'small'
-                        ? 'clamp(0.75rem, 1.5vw + 0.2rem, 1rem)'    // Small: max 1rem (16px)
-                        : 'clamp(0.875rem, 1.75vw + 0.25rem, 1.25rem)', // Normal: max 1.25rem (20px)
-                      lineHeight: '1.5',
                       whiteSpace: 'pre-line',
+                      fontSize: 'var(--text-display-md)',
+                      lineHeight: '1.2',
                     }}
                   >
                     {subtitle}
@@ -508,102 +414,33 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = ({
         // Add top padding when background extends behind header (to compensate for negative margin)
         bgEnabled && backgroundType === 'image' && "pt-18 md:pt-20"
       )}>
-        <div className={cn('flex flex-col w-full', alignmentClasses[finalTextAlignment], enableTypewriter && 'relative')}>
-          {/* Invisible placeholder layer in document flow to reserve full space */}
-          {enableTypewriter && (
-            <div className="flex flex-col w-full" aria-hidden="true">
-              <h1
-                className={cn(
-                  'mt-4 font-semibold invisible',
-                  headlineColorClasses[finalHeadlineColor],
-                )}
-                style={{
-                  whiteSpace: 'pre-line',
-                  fontFamily: 'var(--font-poppins, Poppins)',
-                  fontSize: 'clamp(2.1rem, 5vw + 1rem, 6.5rem)',
-                  lineHeight: '1.2',
-                  fontWeight: '700',
-                }}
-              >
-                {headline}
-              </h1>
-              {subtitle && (
-                <h2
-                  className="mt-10 font-normal invisible text-brand-500 dark:text-white"
-                  style={subtitleSizeStyles[finalSubtitleSize]}
-                >
+        <div className={cn('flex flex-col w-full', alignmentClasses[finalTextAlignment])}>
+          <h1
+            className={cn(
+              'mt-4 font-semibold',
+              headlineColorClasses[finalHeadlineColor],
+            )}
+            style={{
+              whiteSpace: 'pre-line',
+              fontFamily: 'var(--font-poppins, Poppins)',
+              fontSize: 'clamp(2.1rem, 5vw + 1rem, 6.5rem)',
+              lineHeight: '1.2',
+              fontWeight: '700',
+            }}
+          >
+            {headline}
+          </h1>
+          {subtitle && (
+                  <h2
+                  className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                  style={{
+                    whiteSpace: 'pre-line',
+                    fontSize: 'var(--text-display-md)',
+                    lineHeight: '1.2',
+                  }} >
                   {subtitle}
                 </h2>
-              )}
-            </div>
           )}
-
-          {/* Visible content layer positioned absolutely over placeholder */}
-          <div className={cn(
-            'flex flex-col w-full',
-            enableTypewriter && 'absolute inset-0'
-          )}>
-            <h1
-              className={cn(
-                'mt-4 font-semibold',
-                headlineColorClasses[finalHeadlineColor],
-              )}
-              style={{
-                whiteSpace: 'pre-line',
-                fontFamily: 'var(--font-poppins, Poppins)',
-                fontSize: 'clamp(2.1rem, 5vw + 1rem, 6.5rem)',
-                lineHeight: '1.2',
-                fontWeight: '700',
-              }}
-            >
-              {enableTypewriter ? (
-                <>
-                  {headlineLines.map((line, index) => (
-                    index <= currentLineIndex && (
-                      <span key={index} style={{ display: 'block' }}>
-                        <Typewriter
-                          speed="normal"
-                          variance="natural"
-                          play={index === currentLineIndex ? startCurrentLine : false}
-                          onComplete={index === currentLineIndex ? handleLineComplete : undefined}
-                          cursorStyle={
-                            index < currentLineIndex || headlineComplete
-                              ? { display: 'none' }
-                              : undefined
-                          }
-                        >
-                          {line}
-                        </Typewriter>
-                      </span>
-                    )
-                  ))}
-                </>
-              ) : (
-                headline
-              )}
-            </h1>
-            {subtitle && (
-              <h2
-                className="mt-10 font-normal text-brand-500 dark:text-white"
-                style={subtitleSizeStyles[finalSubtitleSize]}
-              >
-                {enableTypewriter ? (
-                  startSubtitle ? (
-                    <Typewriter
-                      speed="normal"
-                      variance="natural"
-                      onComplete={() => setSubtitleComplete(true)}
-                      cursorStyle={subtitleComplete ? { display: 'none' } : undefined}
-                    >
-                      {subtitle}
-                    </Typewriter>
-                  ) : null
-                ) : (
-                  subtitle
-                )}
-              </h2>
-            )}
-          </div>
         </div>
       </div>
     </section>

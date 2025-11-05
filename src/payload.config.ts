@@ -1,5 +1,5 @@
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
-import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url'
 import { AiLogs } from './collections/AiLogs'
 import { Categories } from './collections/Categories'
 import { FAQs } from './collections/FAQs'
+import { Icons } from './collections/Icons'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
@@ -19,7 +20,7 @@ import { NotFound } from './NotFound/config'
 import { PostsSettings } from './PostsSettings/config'
 import { AiSettings } from './AiSettings/config'
 import { plugins } from './plugins'
-import { defaultLexical } from '@/fields/defaultLexical'
+import { richText } from '@/fields/richText'
 import { getServerSideURL } from './utilities/getURL'
 import { resendAdapter } from '@payloadcms/email-resend'
 
@@ -74,18 +75,19 @@ export default buildConfig({
     },
   },
   // This config helps us configure global or default features that the other editors can inherit
-  editor: defaultLexical,
-  db: vercelPostgresAdapter({
-    pool: {
-      connectionString: process.env.POSTGRES_URL || '',
-      // Connection pool settings to prevent connection leaks
-      max: 20, // Maximum number of clients in the pool
-      min: 2,  // Minimum number of clients in the pool
-      idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-      connectionTimeoutMillis: 10000, // Timeout acquiring a client from pool
+  editor: richText(),
+  db: mongooseAdapter({
+    url: process.env.MONGODB_URI || process.env.DATABASE_URI || 'mongodb://localhost:27017/tds-website',
+    // MongoDB connection options
+    connectOptions: {
+      // Recommended options for production
+      maxPoolSize: 20, // Maximum number of sockets the MongoDB driver will keep open
+      minPoolSize: 2,  // Minimum number of sockets the MongoDB driver will keep open
+      serverSelectionTimeoutMS: 5000, // How long to keep trying to send operations to a server
+      socketTimeoutMS: 45000, // How long a socket stays open when inactive
     },
   }),
-  collections: [Pages, Posts, Media, Categories, FAQs, Users, AiLogs],
+  collections: [Pages, Posts, Media, Categories, FAQs, Icons, Users, AiLogs],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
   plugins: [

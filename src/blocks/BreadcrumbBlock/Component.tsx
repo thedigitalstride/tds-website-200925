@@ -14,7 +14,7 @@ export const BreadcrumbBlock: React.FC<BreadcrumbBlockComponentProps> = ({
   breadcrumbs
 }) => {
   const spacingClasses: Record<string, string> = {
-    compact: 'py-6 lg:py-8',      // Smaller spacing for breadcrumbs
+    compact: 'py-6 lg:py-6',      // Smaller spacing for breadcrumbs
     normal: 'py-12 lg:py-16',     // Medium spacing
     spacious: 'py-16 lg:py-20',   // Larger spacing
   }

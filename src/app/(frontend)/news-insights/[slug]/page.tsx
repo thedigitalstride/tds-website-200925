@@ -37,9 +37,10 @@ export async function generateStaticParams() {
   return params
 }
 
-// Prevent dynamic generation of pages not in generateStaticParams
-// This ensures only posts that exist at build time are accessible
-export const dynamicParams = false
+// Allow dynamic generation of pages for posts published after build
+// Posts are cached with ISR for performance
+export const dynamicParams = true
+export const revalidate = 3600 // Revalidate cached posts every hour (ISR)
 
 type Args = {
   params: Promise<{

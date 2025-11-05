@@ -200,7 +200,7 @@ export const BlogListing: React.FC<BlogListingProps> = ({
   })
 
   return (
-    <div className="bg-primary">
+    <div>
       <main className="mx-auto flex w-full max-w-container flex-col gap-12 px-4 py-16 md:gap-16 md:px-8 md:py-24">
         {/* Mobile Featured Post */}
         {sortedArticles.length > 0 && (
@@ -264,7 +264,7 @@ export const BlogListing: React.FC<BlogListingProps> = ({
             <motion.li
               key={article.id}
               variants={itemVariants}
-              className={cx(!isDesktop && '[&:nth-child(n+7)]:hidden')}
+              className={cx(!isDesktop && 'nth-[n+7]:hidden')}
             >
               <Simple01Vertical article={article} />
             </motion.li>

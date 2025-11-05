@@ -1,7 +1,7 @@
 import type { Block } from 'payload'
 
 import { linkGroup } from '../../fields/linkGroup'
-import { richTextEditor } from '@/fields/richTextWithButtons'
+import { richText } from '@/fields/richText'
 
 export const CallToAction: Block = {
   slug: 'cta',
@@ -10,12 +10,12 @@ export const CallToAction: Block = {
     {
       name: 'richText',
       type: 'richText',
-      editor: richTextEditor({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+      editor: richText(),
       label: false,
     },
     linkGroup({
       enableUUIButton: true,
-      uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'link'],
+      uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'outline', 'link'],
       uuiSizes: ['sm', 'md', 'lg', 'xl'],
       defaultUUIColor: 'primary',
       defaultUUISize: 'lg',

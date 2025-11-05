@@ -19,7 +19,7 @@ export function Breadcrumbs({ breadcrumbs, className = '' }: BreadcrumbsProps) {
 
   return (
     <nav aria-label="Breadcrumb" className={className}>
-      <ol className="flex flex-nowrap items-center overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 space-x-1 text-sm text-secondary">
+      <ol className="flex flex-nowrap items-center overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 space-x-1 text-md text-secondary">
         {/* Home link */}
         <li className="whitespace-nowrap">
           <Link
@@ -33,7 +33,7 @@ export function Breadcrumbs({ breadcrumbs, className = '' }: BreadcrumbsProps) {
         {/* Breadcrumb items (excluding the last one which is current page) */}
         {breadcrumbs.slice(0, -1).map((crumb, _) => (
           <li key={crumb.id || crumb.label} className="flex items-center whitespace-nowrap">
-            <ChevronRight className="w-4 h-4 mx-1 text-tertiary flex-shrink-0" />
+            <ChevronRight className="w-4 h-4 mx-1 text-primary flex-shrink-0" />
             {crumb.url ? (
               <Link
                 href={crumb.url}
@@ -49,7 +49,7 @@ export function Breadcrumbs({ breadcrumbs, className = '' }: BreadcrumbsProps) {
 
         {/* Current page (last breadcrumb) */}
         <li className="flex items-center whitespace-nowrap">
-          <ChevronRight className="w-4 h-4 mx-1 text-tertiary flex-shrink-0" />
+          <ChevronRight className="w-4 h-4 mx-1 text-primary flex-shrink-0" />
           <span className="text-primary font-medium">
             {breadcrumbs[breadcrumbs.length - 1]?.label}
           </span>

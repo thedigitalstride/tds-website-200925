@@ -71,6 +71,7 @@ src/
 ### 🎨 Styling & UI
 
 - **[STYLING_SYSTEM.md](/docs/STYLING_SYSTEM.md)** - CSS variable-based theme system (Tailwind v4 + UUI). **Read before any style changes.**
+- **[CUSTOM_TAILWIND_UTILITIES.md](/docs/CUSTOM_TAILWIND_UTILITIES.md)** - How to add custom Tailwind utilities and configure tailwind-merge. **Required for custom classes.**
 - **[BUTTON_SYSTEM.md](/docs/BUTTON_SYSTEM.md)** - Button variants, configuration, and icon usage
 - **[STYLE_GUIDE.md](/docs/STYLE_GUIDE.md)** - Visual reference for typography, colors, spacing, components
 - **[STYLING_BEST_PRACTICES.md](/docs/STYLING_BEST_PRACTICES.md)** - Site-wide consistency patterns
@@ -115,14 +116,16 @@ src/
 - Search `theme.css` for existing variables before creating new ones
 - Test in both light AND dark modes
 - Clear cache after changes: `rm -rf .next && pnpm dev`
+- For custom utilities: add @utility declaration AND configure tailwind-merge
 
 **❌ DON'T:**
 - Invent class names that don't exist in theme
 - Use arbitrary values without checking theme first
 - Modify `frontend.css` or `globals.css` structure
+- Add custom Tailwind classes without configuring tailwind-merge
 - Guess - read `/docs/STYLING_SYSTEM.md` first
 
-**See**: [STYLING_SYSTEM.md](/docs/STYLING_SYSTEM.md)
+**See**: [STYLING_SYSTEM.md](/docs/STYLING_SYSTEM.md), [CUSTOM_TAILWIND_UTILITIES.md](/docs/CUSTOM_TAILWIND_UTILITIES.md)
 
 ---
 
@@ -159,7 +162,9 @@ src/
 - Use collapsible fields for grouping optional/advanced settings
 - Import UUI components from `/src/components/uui/`
 - Pass icons as props (`iconLeading={Icon}`), not children
+- Use button variants that match card backgrounds: `primary`, `primary-reversed`, `secondary`, `tertiary`, `accent`, `outline`, `link`
 - Use `categories` array (not `category` object) in blog queries
+- Use `iconSelectorField()` helper for icon selection in blocks
 
 **❌ DON'T:**
 - Use `<img>` tags directly (breaks optimization)
@@ -185,6 +190,9 @@ Nested taxonomy for organizing posts and content filtering
 
 ### Users (`/admin/collections/users`)
 Authentication, admin access, author profiles
+
+### Icons (`/admin/collections/icons`)
+SVG icon library with AI-enhanced metadata, visual selector for blocks. See [ICON_SELECTOR.md](/docs/ICON_SELECTOR.md)
 
 ## Features
 

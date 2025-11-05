@@ -20,7 +20,7 @@ export function AdvancedComponentsSection() {
 
       {/* Input Groups */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Input Groups</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Input Groups</h3>
         <p className="text-md text-tertiary mb-8">
           Enhanced inputs with prefixes, leading addons, and trailing addons. Perfect for URLs, prices, domains, and other formatted inputs.
         </p>
@@ -117,7 +117,7 @@ export function AdvancedComponentsSection() {
 
       {/* Avatars */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Avatars</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Avatars</h3>
         <p className="text-md text-tertiary mb-8">
           User profile images with multiple sizes, placeholder support, and optional status indicators.
         </p>
@@ -174,7 +174,7 @@ export function AdvancedComponentsSection() {
 
       {/* Badges */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Badges & Badge Groups</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Badges & Badge Groups</h3>
         <p className="text-md text-tertiary mb-8">
           Status indicators and labels with multiple color variants and optional icons or addons.
         </p>
@@ -220,7 +220,7 @@ export function AdvancedComponentsSection() {
 
       {/* Tooltips */}
       <div className="mb-16">
-        <h3 className="text-xl font-semibold text-primary mb-6">Tooltips</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Tooltips</h3>
         <p className="text-md text-tertiary mb-8">
           Contextual help text that appears on hover or focus. Supports multiple placements and triggers.
         </p>
@@ -260,11 +260,11 @@ export function AdvancedComponentsSection() {
 
       {/* Integration Notes */}
       <div className="border-t border-secondary pt-12">
-        <h3 className="text-xl font-semibold text-primary mb-6">Usage Notes</h3>
+        <h3 className="text-display-sm font-semibold text-primary mb-6">Usage Notes</h3>
         <div className="bg-secondary p-6 rounded-lg space-y-4">
           <div>
             <h4 className="text-md font-semibold text-primary mb-2">React Aria Foundation</h4>
-            <p className="text-sm text-secondary">
+            <p className="text-md text-secondary">
               All advanced components are built on react-aria-components, providing:
             </p>
             <ul className="list-disc list-inside space-y-1 text-sm text-tertiary mt-2">
@@ -277,7 +277,7 @@ export function AdvancedComponentsSection() {
           </div>
           <div className="pt-4 border-t border-primary">
             <h4 className="text-md font-semibold text-primary mb-2">Theme Integration</h4>
-            <p className="text-sm text-secondary">
+            <p className="text-md text-secondary">
               Components use CSS variables from [theme.css](src/styles/theme.css) for consistent styling:
             </p>
             <ul className="list-disc list-inside space-y-1 text-sm text-tertiary mt-2">

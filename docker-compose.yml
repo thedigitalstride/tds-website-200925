@@ -1,13 +1,16 @@
 version: '3'
 
 services:
-  postgres:
-    image: postgres
+  mongodb:
+    image: mongo:latest
+    container_name: tds-mongodb
     ports:
-      - '54320:5432'
+      - '27017:27017'
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_DB: your-database-name # THIS MUST MATCH YOUR DB NAME IN .env
-      POSTGRES_HOST_AUTH_METHOD: trust
-    env_file:
-      - .env
+      MONGO_INITDB_DATABASE: tds-website
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:

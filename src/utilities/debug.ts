@@ -20,7 +20,11 @@ export const debugLog = {
    */
   info: (payload: Payload, message: string, ...args: unknown[]) => {
     if (process.env.PAYLOAD_DEBUG === 'true') {
-      payload.logger.info(message, ...args)
+      if (args.length > 0) {
+        payload.logger.info({ args }, message)
+      } else {
+        payload.logger.info(message)
+      }
     }
   },
 
@@ -29,7 +33,11 @@ export const debugLog = {
    */
   warn: (payload: Payload, message: string, ...args: unknown[]) => {
     if (process.env.PAYLOAD_DEBUG === 'true') {
-      payload.logger.warn(message, ...args)
+      if (args.length > 0) {
+        payload.logger.warn({ args }, message)
+      } else {
+        payload.logger.warn(message)
+      }
     }
   },
 

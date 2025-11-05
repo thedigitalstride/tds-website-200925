@@ -1,6 +1,7 @@
 import type { Field, GroupField } from 'payload'
 
 import deepMerge from '@/utilities/deepMerge'
+import { iconSelectorWithPositionField } from './IconSelectorWithPosition'
 
 // UntitledUI Button Color Variants
 export type UUIButtonColors =
@@ -9,6 +10,7 @@ export type UUIButtonColors =
   | 'accent'
   | 'secondary'
   | 'tertiary'
+  | 'outline'
   | 'link'
   | 'primary-destructive'
   | 'secondary-destructive'
@@ -27,27 +29,32 @@ export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: st
   primary: {
     label: 'Primary',
     value: 'primary',
-    description: 'White bg/dark text (light mode), Dark bg/white text (dark mode)'
+    description: 'Dark blue bg (light mode), white bg (dark mode)'
   },
   'primary-reversed': {
     label: 'Primary (Reversed)',
     value: 'primary-reversed',
-    description: 'Dark bg/white text (light mode), White bg/dark text (dark mode)'
+    description: 'White bg (light mode), dark blue bg (dark mode)'
   },
   secondary: {
     label: 'Secondary',
     value: 'secondary',
-    description: 'Subtle button with border and light background'
+    description: 'Light gray solid background'
   },
   tertiary: {
     label: 'Tertiary',
     value: 'tertiary',
-    description: 'Minimal button with subtle styling'
+    description: 'Transparent with accent blue ring'
   },
   accent: {
     label: 'Accent',
     value: 'accent',
-    description: 'Light blue accent button for secondary actions'
+    description: 'Light blue solid background with white text'
+  },
+  outline: {
+    label: 'Outline',
+    value: 'outline',
+    description: 'Transparent with gray ring'
   },
   link: {
     label: 'Link',
@@ -273,35 +280,36 @@ export const link: LinkType = ({
       ],
     })
 
-    // Add icon configuration for buttons
+    // Add icon configuration for buttons - using visual icon selector
+    linkResult.fields.push(
+      iconSelectorWithPositionField({
+        admin: {
+          description: 'Select an icon from the Icons collection and configure its position relative to button text',
+        },
+      })
+    )
+
+    // Backward compatibility: Keep legacy text field with hidden visibility for data migration
     linkResult.fields.push({
-      type: 'row',
-      fields: [
-        {
-          name: 'buttonIcon',
-          type: 'text',
-          label: 'Button Icon',
-          admin: {
-            description: 'Optional icon name from @untitledui/icons (e.g., "ArrowRight", "Download01", "ExternalLink01"). Case-sensitive. Browse all icons at: https://icons.untitledui.com',
-            placeholder: 'ArrowRight',
-            width: '50%',
-          },
-        },
-        {
-          name: 'iconPos',
-          type: 'select',
-          label: 'Icon Position',
-          defaultValue: 'trailing',
-          options: [
-            { label: 'Before Text (Leading)', value: 'leading' },
-            { label: 'After Text (Trailing)', value: 'trailing' },
-          ],
-          admin: {
-            description: 'Position of the icon relative to the button text',
-            width: '50%',
-            condition: (_, siblingData) => !!siblingData?.buttonIcon,
-          },
-        },
+      name: 'buttonIcon',
+      type: 'text',
+      label: 'Legacy Button Icon (Hidden)',
+      admin: {
+        hidden: true,
+        description: 'Legacy field - use buttonIconConfig instead',
+      },
+    })
+    linkResult.fields.push({
+      name: 'iconPos',
+      type: 'select',
+      label: 'Legacy Icon Position (Hidden)',
+      admin: {
+        hidden: true,
+        description: 'Legacy field - use buttonIconConfig instead',
+      },
+      options: [
+        { label: 'Leading', value: 'leading' },
+        { label: 'Trailing', value: 'trailing' },
       ],
     })
   }

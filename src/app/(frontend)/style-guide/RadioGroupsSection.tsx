@@ -95,7 +95,7 @@ export function RadioGroupsSection() {
       <div className="space-y-16">
         {/* Radio Group Checkbox */}
         <div>
-          <h3 className="text-xl font-semibold text-primary mb-6">Checkbox Style</h3>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Checkbox Style</h3>
           <p className="text-sm text-tertiary mb-6">Radio group with checkbox indicators - ideal for plan selection and feature comparisons.</p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -145,7 +145,7 @@ const items = [
 
         {/* Radio Group Icon Simple */}
         <div>
-          <h3 className="text-xl font-semibold text-primary mb-6">Icon Simple Style</h3>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Icon Simple Style</h3>
           <p className="text-sm text-tertiary mb-6">Clean radio group with featured icons - great for pricing tiers and plan selection.</p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -181,7 +181,7 @@ const items = [
 
         {/* Radio Group Icon Card */}
         <div>
-          <h3 className="text-xl font-semibold text-primary mb-6">Icon Card Style</h3>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Icon Card Style</h3>
           <p className="text-sm text-tertiary mb-6">Premium card-style radio group with pricing and badges - perfect for subscription plans.</p>
 
           <div className="space-y-8">
@@ -229,8 +229,8 @@ const items = [
 
         {/* Features & Best Practices */}
         <div className="bg-secondary p-6 rounded-lg border border-primary">
-          <h3 className="text-lg font-semibold text-primary mb-4">Features & Best Practices</h3>
-          <ul className="space-y-2 text-sm text-secondary">
+          <h3 className="text-display-sm font-semibold text-primary mb-4">Features & Best Practices</h3>
+          <ul className="space-y-2 text-md text-secondary">
             <li className="flex items-start gap-2">
               <span className="text-brand-secondary font-medium">✓</span>
               <span><strong>Full Accessibility:</strong> Built on react-aria-components with keyboard navigation, focus management, and screen reader support</span>

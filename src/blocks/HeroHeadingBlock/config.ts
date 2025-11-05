@@ -40,7 +40,7 @@ export const HeroHeadingBlock: Block = {
         rows: 3,
       },
     },
-    {
+    /* {
       name: 'enableTypewriter',
       type: 'checkbox',
       defaultValue: false,
@@ -48,7 +48,7 @@ export const HeroHeadingBlock: Block = {
         condition: (_, siblingData) => siblingData?.heroLayout === 'standard',
         description: 'Enable typewriter animation effect for the headline (only available for Standard layout)',
       },
-    },
+    }, */
     {
       label: 'Layout & Styling',
       type: 'collapsible',
@@ -57,6 +57,13 @@ export const HeroHeadingBlock: Block = {
         description: 'Configure how the hero section is displayed',
       },
       fields: [
+        createHeroBackgroundVariantField({
+          name: 'heroBackground',
+          label: 'Background Style',
+          defaultValue: 'primary',
+          description: 'Background style for the contained layout',
+          condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage' || siblingData?.heroLayout === 'standardContained',
+        }),
         {
           name: 'headlineColor',
           type: 'select',
@@ -68,6 +75,19 @@ export const HeroHeadingBlock: Block = {
           ],
           admin: {
             description: 'Color scheme for the headline. Primary adapts to light/dark modes, White stays white in both modes, Accent Blue is always accent color.',
+          },
+        },
+        {
+          name: 'subheadingColor',
+          type: 'select',
+          defaultValue: 'primary',
+          options: [
+            { label: 'Primary', value: 'primary' },
+            { label: 'Primary Reversed', value: 'primary-reversed' },
+            { label: 'Accent Blue', value: 'brand' },
+          ],
+          admin: {
+            description: 'Color scheme for the subheading. Primary is dark in light mode/white in dark mode, Primary Reversed is white in light mode/dark in dark mode, Accent Blue is always accent color.',
           },
         },
         {
@@ -97,25 +117,6 @@ export const HeroHeadingBlock: Block = {
             description: 'Vertical spacing around the hero section',
           },
         },
-        {
-          name: 'subtitleSize',
-          type: 'select',
-          defaultValue: 'normal',
-          options: [
-            { label: 'Small (75% of normal size)', value: 'small' },
-            { label: 'Normal (100%)', value: 'normal' },
-          ],
-          admin: {
-            description: 'Size variant for the subtitle text - Small reduces to 75% of normal size',
-          },
-        },
-        createHeroBackgroundVariantField({
-          name: 'heroBackground',
-          label: 'Background Style',
-          defaultValue: 'primary',
-          description: 'Background style for the contained layout',
-          condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage' || siblingData?.heroLayout === 'standardContained',
-        }),
       ],
     },
     {
@@ -141,7 +142,7 @@ export const HeroHeadingBlock: Block = {
       fields: [
         link({
           enableUUIButton: true,
-          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary'],
+          uuiColors: ['primary', 'primary-reversed', 'secondary', 'accent', 'tertiary', 'outline'],
           uuiSizes: ['md', 'lg', 'xl'],
           defaultUUIColor: 'primary',
           defaultUUISize: 'xl',
