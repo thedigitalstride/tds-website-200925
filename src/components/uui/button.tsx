@@ -56,45 +56,58 @@ export const styles = sortCx({
   colors: {
     primary: {
       root: [
-        'bg-white text-brand-500 dark:bg-brand-500 dark:text-white ring-2 ring-transparent ring-inset hover:scale-105',
-        // Disabled styles
-        'disabled:bg-disabled disabled:text-fg-disabled',
-        // Icon styles
-        '*:data-icon:text-brand-500 dark:*:data-icon:text-white',
-      ].join(' '),
-    },
-    'primary-reversed': {
-      root: [
-        'bg-brand-500 text-white dark:bg-white dark:text-brand-500 ring-2 ring-transparent ring-inset hover:scale-105',
+        'bg-primary text-white dark:text-brand-500 ring-2 ring-transparent ring-inset hover:scale-105',
         // Disabled styles
         'disabled:bg-disabled disabled:text-fg-disabled',
         // Icon styles
         '*:data-icon:text-white dark:*:data-icon:text-brand-500',
       ].join(' '),
     },
-    accent: {
+    'primary-reversed': {
       root: [
-        'bg-accent-solid text-white ring-2 ring-transparent ring-inset hover:scale-105',
+        'bg-primary-reversed text-brand-500 dark:text-white ring-2 ring-transparent ring-inset hover:scale-105',
         // Disabled styles
         'disabled:bg-disabled disabled:text-fg-disabled',
         // Icon styles
-        '*:data-icon:text-white',
+        '*:data-icon:text-brand-500 dark:*:data-icon:text-white',
+      ].join(' '),
+    },
+    accent: {
+      root: [
+        'bg-accent text-white! dark:text-white! ring-2 ring-transparent ring-inset hover:scale-105',
+        // Disabled styles
+        'disabled:bg-disabled disabled:text-fg-disabled',
+        // Icon styles
+        '*:data-icon:text-white! dark:*:data-icon:text-white!',
+        // Override global background text color rules
+        '[&_*]:text-white! dark:[&_*]:text-white!',
       ].join(' '),
     },
     secondary: {
       root: [
-        'bg-white text-brand-500 ring-2 ring-tertiary ring-inset hover:scale-105',
+        'bg-secondary text-brand-500 dark:text-white hover:scale-105',
         // Disabled styles
-        'disabled:ring-disabled_subtle',
+        'disabled:bg-disabled disabled:text-fg-disabled',
         // Icon styles
         '*:data-icon:text-brand-500 dark:*:data-icon:text-white',
       ].join(' '),
     },
     tertiary: {
       root: [
-        'bg-tertiary text-primary dark:text-brand-500 hover:scale-105',
+        'bg-transparent ring-2 ring-accent-solid ring-inset text-brand-500 dark:text-white hover:scale-105',
+        // Disabled styles
+        'disabled:ring-disabled_subtle disabled:text-fg-disabled',
         // Icon styles
-        '*:data-icon:text-brand-500 dark:*:data-icon:text-brand-500',
+        '*:data-icon:text-brand-500 dark:*:data-icon:text-white',
+      ].join(' '),
+    },
+    outline: {
+      root: [
+        'bg-transparent ring-2 ring-outline ring-inset text-brand-500 dark:text-white hover:scale-105',
+        // Disabled styles
+        'disabled:ring-disabled_subtle disabled:text-fg-disabled',
+        // Icon styles
+        '*:data-icon:text-brand-500 dark:*:data-icon:text-white',
       ].join(' '),
     },
     link: {

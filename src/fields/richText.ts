@@ -1,47 +1,51 @@
-import type { Block, TextFieldSingleValidation } from 'payload'
+import type { Block } from 'payload'
 import {
   lexicalEditor,
+  // Text Formatting
   BoldFeature,
   ItalicFeature,
   UnderlineFeature,
   StrikethroughFeature,
+  InlineCodeFeature,
   SubscriptFeature,
   SuperscriptFeature,
-  LinkFeature,
+  // Structure
   ParagraphFeature,
-  UnorderedListFeature,
-  OrderedListFeature,
-  ChecklistFeature,
   HeadingFeature,
-  AlignFeature,
-  IndentFeature,
+  // Lists
+  OrderedListFeature,
+  UnorderedListFeature,
+  ChecklistFeature,
+  // Block elements
   BlockquoteFeature,
   HorizontalRuleFeature,
-  BlocksFeature,
-  FixedToolbarFeature,
+  // Interactive
+  LinkFeature,
+  // Toolbars
   InlineToolbarFeature,
-  type LinkFields,
+  FixedToolbarFeature,
+  // Custom blocks
+  BlocksFeature,
 } from '@payloadcms/richtext-lexical'
 
 import { ButtonBlock } from '@/blocks/ButtonBlock/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
 
 /**
- * Consolidated rich text editor with all official Payload features
+ * Consolidated rich text editor with explicit feature configuration
  *
  * This is the single source of truth for all richText fields across the site.
- * It includes all official Payload features following best practices.
+ * Uses explicit feature list instead of defaultFeatures to ensure full control
+ * and avoid circular dependency issues with payload.config.ts editor setting.
  *
- * Features:
- * - Basic formatting: Bold, Italic, Underline, Strikethrough, Subscript, Superscript
- * - Links with custom validation and enabledCollections
+ * Features included:
+ * - Text formatting: Bold, Italic, Underline, Strikethrough, InlineCode, Subscript, Superscript
+ * - Structure: Paragraphs, Headings (H1-H6)
  * - Lists: Unordered, Ordered, Checklist
- * - Headings: H1-H6
- * - Alignment: Left, Center, Right, Justify
- * - Indentation: Indent/outdent
  * - Block elements: BlockQuote, HorizontalRule
- * - Custom blocks: MediaBlock, ButtonBlock (always included)
- * - Toolbars: Fixed and Inline
+ * - Links: Internal (pages, posts) and external
+ * - Toolbars: Fixed (main) and Inline (on text selection)
+ * - Custom blocks: MediaBlock, ButtonBlock, plus any additional
  *
  * Use cases:
  * - Blog post content
@@ -55,75 +59,43 @@ import { MediaBlock } from '@/blocks/MediaBlock/config'
 export const richText = (options?: {
   additionalBlocks?: Block[]
 }) => lexicalEditor({
-  features: ({ rootFeatures }) => {
-    return [
-      // Basic text formatting
-      ParagraphFeature(),
-      BoldFeature(),
-      ItalicFeature(),
-      UnderlineFeature(),
-      StrikethroughFeature(),
-      SubscriptFeature(),
-      SuperscriptFeature(),
+  features: () => [
+    // Text Formatting
+    BoldFeature(),
+    ItalicFeature(),
+    UnderlineFeature(),
+    StrikethroughFeature(),
+    InlineCodeFeature(),
+    SubscriptFeature(),
+    SuperscriptFeature(),
 
-      // Links with custom validation
-      LinkFeature({
-        enabledCollections: ['pages', 'posts'],
-        fields: ({ defaultFields }) => {
-          const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
-            if ('name' in field && field.name === 'url') return false
-            return true
-          })
+    // Structure
+    ParagraphFeature(),
+    HeadingFeature({
+      enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+    }),
 
-          return [
-            ...defaultFieldsWithoutUrl,
-            {
-              name: 'url',
-              type: 'text',
-              admin: {
-                condition: (_data, siblingData) => siblingData?.linkType !== 'internal',
-              },
-              label: ({ t }) => t('fields:enterURL'),
-              required: true,
-              validate: ((value, options) => {
-                if ((options?.siblingData as LinkFields)?.linkType === 'internal') {
-                  return true // no validation needed, as no url should exist for internal links
-                }
-                return value ? true : 'URL is required'
-              }) as TextFieldSingleValidation,
-            },
-          ]
-        },
-      }),
+    // Lists
+    OrderedListFeature(),
+    UnorderedListFeature(),
+    ChecklistFeature(),
 
-      // Lists
-      UnorderedListFeature(),
-      OrderedListFeature(),
-      ChecklistFeature(),
+    // Block elements
+    BlockquoteFeature(),
+    HorizontalRuleFeature(),
 
-      // Headings (all sizes)
-      HeadingFeature({
-        enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-      }),
+    // Interactive
+    LinkFeature({
+      enabledCollections: ['pages', 'posts'],
+    }),
 
-      // Alignment
-      AlignFeature(),
+    // Toolbars
+    InlineToolbarFeature(),
+    FixedToolbarFeature(),
 
-      // Indentation
-      IndentFeature(),
-
-      // Block elements
-      BlockquoteFeature(),
-      HorizontalRuleFeature(),
-
-      // Custom blocks (MediaBlock and ButtonBlock always included, plus any additional)
-      BlocksFeature({
-        blocks: [MediaBlock, ButtonBlock, ...(options?.additionalBlocks || [])],
-      }),
-
-      // Toolbars (add last so they can detect all content features)
-      FixedToolbarFeature(),
-      InlineToolbarFeature(),
-    ]
-  },
+    // Custom blocks (MediaBlock and ButtonBlock always included, plus any additional)
+    BlocksFeature({
+      blocks: [MediaBlock, ButtonBlock, ...(options?.additionalBlocks || [])],
+    }),
+  ],
 })

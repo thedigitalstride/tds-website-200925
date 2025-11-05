@@ -21,11 +21,12 @@ const styles = sortCx({
             xl: "size-14 rounded-xl",
         },
         colors: {
-            brand: "bg-primary text-brand-500 dark:text-white",
-            "brand-reversed": "bg-brand-solid text-white dark:!bg-white dark:text-brand-500",
-            accent: "bg-accent-solid !text-white",
-            secondary: "bg-transparent text-primary dark:text-brand-500 ring-2 ring-brand-500 ring-inset",
-            tertiary: "bg-tertiary text-primary dark:text-brand-500",
+            primary: "bg-primary text-white dark:text-brand-500",
+            "primary-reversed": "bg-primary-reversed text-brand-500 dark:text-white",
+            accent: "bg-accent-solid text-white! dark:text-white! *:data-icon:text-white! dark:*:data-icon:text-white! [&_*]:text-white! dark:[&_*]:text-white!",
+            secondary: "bg-secondary text-brand-500 dark:text-white",
+            tertiary: "bg-transparent ring-2 ring-accent-solid ring-inset text-primary dark:text-brand-500",
+            outline: "bg-transparent text-primary dark:text-white ring-2 ring-outline ring-inset",
         },
     },
 
@@ -38,11 +39,12 @@ const styles = sortCx({
             xl: "size-14",
         },
         colors: {
-            brand: "bg-primary text-brand-500 dark:text-white",
-            "brand-reversed": "bg-brand-solid text-white dark:!bg-white dark:text-brand-500",
-            accent: "bg-accent-solid !text-white",
-            secondary: "bg-transparent text-primary dark:text-brand-500 ring-2 ring-brand-500 ring-inset",
-            tertiary: "bg-tertiary text-primary dark:text-brand-500",
+            primary: "bg-primary text-white dark:text-brand-500",
+            "primary-reversed": "bg-primary-reversed text-brand-500 dark:text-white",
+            accent: "bg-accent-solid text-white! dark:text-white! *:data-icon:text-white! dark:*:data-icon:text-white! [&_*]:text-white! dark:[&_*]:text-white!",
+            secondary: "bg-secondary text-brand-500 dark:text-white",
+            tertiary: "bg-transparent ring-2 ring-accent-solid ring-inset text-primary dark:text-brand-500",
+            outline: "bg-transparent text-primary dark:text-white ring-2 ring-outline ring-inset",
         },
     },
 });
@@ -54,12 +56,13 @@ interface FeaturedIconProps {
     icon?: FC<{ className?: string }> | ReactNode;
     svgCode?: string;
     size?: "sm" | "md" | "lg" | "xl";
-    color: "brand" | "brand-reversed" | "accent" | "secondary" | "tertiary";
+
+    color: "primary" | "primary-reversed" | "accent" | "secondary" | "tertiary" | "outline";
     shape?: "rounded-square" | "round";
 }
 
 export const FeaturedIcon = (props: FeaturedIconProps) => {
-    const { size = "sm", shape = "rounded-square", color = "brand", icon: Icon, svgCode, ...otherProps } = props;
+    const { size = "sm", shape = "rounded-square", color = "primary", icon: Icon, svgCode, ...otherProps } = props;
 
     // Defensive: Handle legacy shape values from database by falling back to rounded-square
     const validShape = (shape in styles) ? shape : "rounded-square";

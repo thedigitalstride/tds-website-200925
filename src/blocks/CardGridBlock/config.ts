@@ -117,7 +117,7 @@ export const CardGridBlock: Block = {
         },
         link({
           enableUUIButton: true,
-          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'link'],
+          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'outline', 'link'],
           uuiSizes: ['sm', 'md', 'lg', 'xl'],
           defaultUUIColor: 'link',
           defaultUUISize: 'md',
@@ -237,16 +237,17 @@ export const CardGridBlock: Block = {
           name: 'iconColor',
           type: 'select',
           defaultValue: 'primary',
-          label: 'Icon Color',
+          label: 'Icon Style',
           options: [
             { label: 'Primary', value: 'primary' },
             { label: 'Primary (Reversed)', value: 'primary-reversed' },
             { label: 'Secondary', value: 'secondary' },
             { label: 'Tertiary', value: 'tertiary' },
             { label: 'Accent', value: 'accent' },
+            { label: 'Outline', value: 'outline' },
           ],
           admin: {
-            description: 'Icon color variant - matches button color system',
+            description: 'Icon style variant - matches button and card background system',
           },
         },
         {

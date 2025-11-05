@@ -38,15 +38,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   const spacingValue = spacing || 'normal'
   const cardLayout = cardStyle || 'card'
   const columnsValue = columns || '3'
-  const rawIconColor = iconColor || 'primary'
-  // Map 'primary' to 'brand' and 'primary-reversed' to 'brand-reversed' for FeaturedIcon compatibility
-  const mappedIconColor = (
-    rawIconColor === 'primary'
-      ? 'brand'
-      : rawIconColor === 'primary-reversed'
-        ? 'brand-reversed'
-        : rawIconColor
-  ) as 'brand' | 'brand-reversed' | 'accent' | 'secondary' | 'tertiary'
+  const iconColorValue = (iconColor || 'primary') as 'primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'outline'
   const iconShape = (iconTheme || 'rounded-square') as 'rounded-square' | 'round'
   const cardStyleValue = (cardBackground || 'none') as BackgroundVariant
 
@@ -166,7 +158,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
           icon={icon}
           svgCode={svgCode}
           size="lg"
-          color={mappedIconColor}
+          color={iconColorValue}
           shape={iconShape}
         />
         <div>
@@ -228,7 +220,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
           icon={icon}
           svgCode={svgCode}
           size="lg"
-          color={mappedIconColor}
+          color={iconColorValue}
           shape={iconShape}
           className="hidden md:inline-flex"
         />
@@ -236,7 +228,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
           icon={icon}
           svgCode={svgCode}
           size="md"
-          color={mappedIconColor}
+          color={iconColorValue}
           shape={iconShape}
           className="inline-flex md:hidden"
         />
@@ -298,7 +290,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         icon={icon}
         svgCode={svgCode}
         size="lg"
-        color={mappedIconColor}
+        color={iconColorValue}
         shape={iconShape}
         className="hidden md:inline-flex"
       />
@@ -306,7 +298,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
         icon={icon}
         svgCode={svgCode}
         size="md"
-        color={mappedIconColor}
+        color={iconColorValue}
         shape={iconShape}
         className="inline-flex md:hidden"
       />
@@ -318,12 +310,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
             </span>
           )}
           <h3
-            className={cn(
-              'mt-1.5 text-display-sm font-semibold md:mt-2.5',
-              eyebrow && 'mt-2',
-              textClasses.heading,
-            )}
-          >
+            className={cn('mt-1.5 text-display-sm font-semibold md:mt-2.5', eyebrow && 'mt-2', textClasses.heading)}>
             {title}
           </h3>
           {subtitle && (
@@ -369,7 +356,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
           icon={icon}
           svgCode={svgCode}
           size="lg"
-          color={mappedIconColor}
+          color={iconColorValue}
           shape={iconShape}
           className="-mt-6"
         />
@@ -433,7 +420,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
           icon={icon}
           svgCode={svgCode}
           size="lg"
-          color={mappedIconColor}
+          color={iconColorValue}
           shape={iconShape}
           className="hidden md:inline-flex"
         />
@@ -441,7 +428,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
           icon={icon}
           svgCode={svgCode}
           size="md"
-          color={mappedIconColor}
+          color={iconColorValue}
           shape={iconShape}
           className="inline-flex md:hidden"
         />

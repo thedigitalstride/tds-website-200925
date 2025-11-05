@@ -6,12 +6,16 @@ This project uses UntitledUI buttons with a simplified, consistent variant syste
 
 ## Available Button Variants
 
+**Button variants now mirror the card background system for visual consistency across the site.**
+
 ### Colors
 
-- `color="primary"` - **Brand button** (solid brand color, scales on hover)
-- `color="accent"` - **Accent button** (solid accent color, scales on hover)
-- `color="secondary"` - **Outlined button** (transparent with solid brand outline, scales on hover)
-- `color="tertiary"` - **Grey button** (light grey bg with dark brand text in light mode, dark grey bg with white text in dark mode, scales on hover)
+- `color="primary"` - **Primary** - Dark blue background in light mode, white background in dark mode
+- `color="primary-reversed"` - **Primary Reversed** - White background in light mode, dark blue background in dark mode
+- `color="secondary"` - **Secondary** - Light gray solid background
+- `color="tertiary"` - **Tertiary** - Transparent with accent blue ring (light blue border)
+- `color="accent"` - **Accent** - Light blue solid background with white text
+- `color="outline"` - **Outline** - Transparent with gray ring (gray border)
 - `color="link"` - **Link button** (text with underline, no transformation)
 
 ### Destructive Variants
@@ -31,28 +35,34 @@ This project uses UntitledUI buttons with a simplified, consistent variant syste
 
 **Reasoning**: Reduces complexity while maintaining functionality
 
-### 2. Consistent Sizing
+### 2. Card Background Alignment
 
-All buttons use `ring-1 ring-inset` for identical internal structure:
+All button variants now use the same CSS variable system as card backgrounds:
 
 ```tsx
-primary: "ring-1 ring-transparent ring-inset"  // Invisible ring
-accent: "ring-1 ring-transparent ring-inset"   // Invisible ring
-secondary: "ring-1 ring-brand-500 dark:ring-white ring-inset"  // Visible solid outline
+primary: "bg-primary"                    // Uses --color-bg-primary variable
+primary-reversed: "bg-primary-reversed"  // Uses --color-bg-primary-reversed variable
+secondary: "bg-secondary"                // Uses --color-bg-secondary variable
+tertiary: "ring-2 ring-accent-solid"     // Transparent with accent blue ring
+accent: "bg-accent"                      // Uses --color-bg-accent variable
+outline: "ring-2 ring-outline"           // Transparent with gray ring
 ```
 
 **How it works**:
-- `ring-inset` draws INSIDE padding (no box model changes)
-- Transparent rings maintain spacing without being visible
-- All buttons have identical dimensions
+- All variants use CSS variables that automatically switch in dark mode
+- Ring-based variants (tertiary, outline) use `ring-inset` to draw inside padding
+- Maintains perfect consistency with card backgrounds across the site
 
-### 3. Outline and Background Standards
+### 3. Background Color Standards
 
-**Secondary Outlines**: Solid brand-500 (dark blue) in light mode, white in dark mode
+**Primary**: Dark blue (#031A43) in light mode, white in dark mode
+**Primary Reversed**: White in light mode, dark blue in dark mode
+**Secondary**: Light gray solid background
+**Tertiary**: Transparent with accent blue ring (light blue #1689FF border)
+**Accent**: Light blue (#1689FF) solid background with white text
+**Outline**: Transparent with gray border
 
-**Tertiary Backgrounds**: Light grey (`gray-200`) with dark brand-500 text in light mode, dark grey (`gray-700`) with white text in dark mode
-
-**Reasoning**: Mode-specific grey values ensure WCAG AA contrast compliance (4.5:1 minimum) while providing clear visual distinction from primary buttons in both themes
+**Reasoning**: Buttons match card backgrounds exactly, creating visual consistency when buttons appear inside cards or alongside other elements using the background variant system
 
 ### 4. Selective Hover Effects
 
@@ -284,20 +294,31 @@ import { Plus } from '@untitledui/icons/Plus'
 
 **Result**: Dark blue button (light mode), white button (dark mode), scales on hover
 
-### Secondary Button (Outlined)
+### Primary Reversed Button
 
 ```tsx
 import { Button } from '@/components/uui/button'
-import { ArrowRight } from '@untitledui/icons/ArrowRight'
 
-<Button color="secondary" iconTrailing={ArrowRight}>
+<Button color="primary-reversed">
+  Get Started
+</Button>
+```
+
+**Result**: White button in light mode, dark blue button in dark mode (opposite of primary), scales on hover
+
+### Secondary Button
+
+```tsx
+import { Button } from '@/components/uui/button'
+
+<Button color="secondary">
   Learn More
 </Button>
 ```
 
-**Result**: Transparent button with solid brand-blue outline (light mode) or white outline (dark mode), scales on hover
+**Result**: Light gray solid background, scales on hover
 
-### Tertiary Button (Grey)
+### Tertiary Button (Accent Ring)
 
 ```tsx
 import { Button } from '@/components/uui/button'
@@ -307,7 +328,32 @@ import { Button } from '@/components/uui/button'
 </Button>
 ```
 
-**Result**: Light grey button with dark brand-blue text (light mode), dark grey button with white text (dark mode). Scales on hover. Clearly distinguishable from primary button in both modes.
+**Result**: Transparent background with light blue accent ring, scales on hover
+
+### Accent Button
+
+```tsx
+import { Button } from '@/components/uui/button'
+
+<Button color="accent">
+  Download
+</Button>
+```
+
+**Result**: Light blue solid background with white text, scales on hover
+
+### Outline Button
+
+```tsx
+import { Button } from '@/components/uui/button'
+import { ArrowRight } from '@untitledui/icons/ArrowRight'
+
+<Button color="outline" iconTrailing={ArrowRight}>
+  Continue
+</Button>
+```
+
+**Result**: Transparent background with gray ring, scales on hover
 
 ### Link Button
 

@@ -13,7 +13,7 @@ export const ButtonBlock: Block = {
       fields: [
         link({
           enableUUIButton: true,
-          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'link'],
+          uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'outline', 'link'],
           uuiSizes: ['sm', 'md', 'lg', 'xl'],
           defaultUUIColor: 'primary',
           defaultUUISize: 'md',

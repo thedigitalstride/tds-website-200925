@@ -10,6 +10,7 @@ export type UUIButtonColors =
   | 'accent'
   | 'secondary'
   | 'tertiary'
+  | 'outline'
   | 'link'
   | 'primary-destructive'
   | 'secondary-destructive'
@@ -28,27 +29,32 @@ export const uuiColorOptions: Record<UUIButtonColors, { label: string; value: st
   primary: {
     label: 'Primary',
     value: 'primary',
-    description: 'White bg/dark text (light mode), Dark bg/white text (dark mode)'
+    description: 'Dark blue bg (light mode), white bg (dark mode)'
   },
   'primary-reversed': {
     label: 'Primary (Reversed)',
     value: 'primary-reversed',
-    description: 'Dark bg/white text (light mode), White bg/dark text (dark mode)'
+    description: 'White bg (light mode), dark blue bg (dark mode)'
   },
   secondary: {
     label: 'Secondary',
     value: 'secondary',
-    description: 'Subtle button with border and light background'
+    description: 'Light gray solid background'
   },
   tertiary: {
     label: 'Tertiary',
     value: 'tertiary',
-    description: 'Minimal button with subtle styling'
+    description: 'Transparent with accent blue ring'
   },
   accent: {
     label: 'Accent',
     value: 'accent',
-    description: 'Light blue accent button for secondary actions'
+    description: 'Light blue solid background with white text'
+  },
+  outline: {
+    label: 'Outline',
+    value: 'outline',
+    description: 'Transparent with gray ring'
   },
   link: {
     label: 'Link',

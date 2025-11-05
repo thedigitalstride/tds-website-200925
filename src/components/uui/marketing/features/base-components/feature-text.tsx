@@ -79,14 +79,14 @@ export const FeatureTextIconLeft = ({ icon: Icon, title, subtitle, footer }: Fea
 );
 
 export const FeatureTextFeaturedIconTopCentered = ({
-    color = "brand",
+    color = "primary",
     shape = "rounded-square",
     icon,
     title,
     subtitle,
     footer,
 }: FeatureTextIcon & {
-    color?: "brand" | "accent" | "secondary" | "tertiary";
+    color?: "primary" | "accent" | "secondary" | "tertiary";
     shape?: "rounded-square" | "round";
 }) => (
     <div className="flex max-w-sm flex-col justify-between items-center gap-4 text-center h-full">
@@ -234,7 +234,7 @@ export const FeatureTextIconCard = ({ icon: Icon, title, subtitle, footer }: Fea
 
 export const FeatureTextFeaturedIconCard = ({ icon, title, subtitle, footer }: FeatureTextIcon) => (
     <div className="flex flex-col gap-12 bg-secondary p-5 md:inline-flex md:gap-16 md:p-6">
-        <FeaturedIcon icon={icon} size="lg" color="brand" shape="rounded-square" />
+        <FeaturedIcon icon={icon} size="lg" color="primary" shape="rounded-square" />
 
         <div className="flex flex-col gap-4">
             <div>
@@ -260,8 +260,8 @@ export const FeatureTextLeftBrand = ({ title, subtitle, footer }: TextCentered) 
 
 export const FeatureTextFeaturedIconTopCenteredBrand = ({ icon, title, subtitle, footer }: FeatureTextIcon) => (
     <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-        <FeaturedIcon icon={icon} size="lg" color="brand" shape="rounded-square" className="hidden md:inline-flex" />
-        <FeaturedIcon icon={icon} size="md" color="brand" shape="rounded-square" className="inline-flex md:hidden" />
+        <FeaturedIcon icon={icon} size="lg" color="primary" shape="rounded-square" className="hidden md:inline-flex" />
+        <FeaturedIcon icon={icon} size="md" color="primary" shape="rounded-square" className="inline-flex md:hidden" />
 
         <div>
             <h3 className="text-display-sm font-semibold text-primary_on-brand">{title}</h3>
@@ -274,8 +274,8 @@ export const FeatureTextFeaturedIconTopCenteredBrand = ({ icon, title, subtitle,
 
 export const FeatureTextFeaturedIconTopLeftBrand = ({ icon, title, subtitle, footer }: FeatureTextIcon) => (
     <div className="flex max-w-sm flex-col gap-4">
-        <FeaturedIcon icon={icon} size="lg" color="brand" shape="rounded-square" className="hidden md:inline-flex" />
-        <FeaturedIcon icon={icon} size="md" color="brand" shape="rounded-square" className="inline-flex md:hidden" />
+        <FeaturedIcon icon={icon} size="lg" color="primary" shape="rounded-square" className="hidden md:inline-flex" />
+        <FeaturedIcon icon={icon} size="md" color="primary" shape="rounded-square" className="inline-flex md:hidden" />
 
         <div>
             <h3 className="text-display-sm font-semibold text-primary_on-brand">{title}</h3>

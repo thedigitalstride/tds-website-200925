@@ -160,6 +160,52 @@
   border-color: hsl(var(--border));
 }
 
+/* Display text size utilities
+ *
+ * IMPORTANT: These @utility declarations are required for Tailwind v4 to generate
+ * the custom text-display-* utility classes from the CSS variables in theme.css.
+ *
+ * Without these, the classes won't exist in the compiled CSS.
+ *
+ * Also requires tailwind-merge configuration in src/utilities/ui.ts to prevent
+ * the classes from being removed during class merging.
+ *
+ * See: /docs/CUSTOM_TAILWIND_UTILITIES.md
+ */
+@utility text-display-xs {
+  font-size: var(--text-display-xs);
+  line-height: var(--text-display-xs--line-height);
+}
+
+@utility text-display-sm {
+  font-size: var(--text-display-sm);
+  line-height: var(--text-display-sm--line-height);
+}
+
+@utility text-display-md {
+  font-size: var(--text-display-md);
+  line-height: var(--text-display-md--line-height);
+  letter-spacing: var(--text-display-md--letter-spacing);
+}
+
+@utility text-display-lg {
+  font-size: var(--text-display-lg);
+  line-height: var(--text-display-lg--line-height);
+  letter-spacing: var(--text-display-lg--letter-spacing);
+}
+
+@utility text-display-xl {
+  font-size: var(--text-display-xl);
+  line-height: var(--text-display-xl--line-height);
+  letter-spacing: var(--text-display-xl--letter-spacing);
+}
+
+@utility text-display-2xl {
+  font-size: var(--text-display-2xl);
+  line-height: var(--text-display-2xl--line-height);
+  letter-spacing: var(--text-display-2xl--letter-spacing);
+}
+
 /* Container utility for proper centering and responsive behavior */
 @layer components {
   .container {
