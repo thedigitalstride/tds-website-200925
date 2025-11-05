@@ -124,19 +124,17 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                   {/* Content Column - aligned to top for more button space */}
                   <div className="flex flex-col justify-start py-8 px-6 lg:py-24 lg:px-12">
                   {/* Headline - further reduced max size for split layout */}
-                  <h1
-                    className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
-                    style={{
-                      whiteSpace: 'pre-line',
-                      fontFamily: 'var(--font-poppins, Poppins)',
-                      fontSize: 'clamp(1.75rem, 3.5vw + 0.5rem, 3rem)',
-                      lineHeight: '1.2',
-                      fontWeight: '700',
-                    }}
-                  >
-                    {headline}
-                  </h1>
-
+                      <h1
+                      className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
+                      style={{
+                        whiteSpace: 'pre-line',
+                        fontFamily: 'var(--font-poppins, Poppins)',
+                        fontSize: 'clamp(2rem, 3.5vw + 0.5rem, 3.2rem)',
+                        lineHeight: '1.2',
+                        fontWeight: '700',
+                      }}>
+                      {headline}
+                    </h1>
                   {/* Mobile Image - appears between headline and subtitle */}
                   {hasSplitImage && (
                     <div className="relative -mx-6 my-8 h-64 lg:hidden">
@@ -153,10 +151,12 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
 
                   {/* Subtitle */}
                   {subtitle && (
-                    <h2
-                      className={cn('mt-10 font-normal text-display-md', subheadingColorClasses[finalSubheadingColor])}
-                      style={{ whiteSpace: 'pre-line' }}
-                    >
+                      <h2
+                      className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                      style={{ 
+                        whiteSpace: 'pre-line',
+                        fontSize: 'clamp(1.25rem, 3vw + 0.5rem, 2rem)',
+                      }}>
                       {subtitle}
                     </h2>
                   )}
@@ -188,24 +188,25 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                 <div className="max-w-3xl">
                   {/* Headline - further reduced max size for split layout */}
                   <h1
-                    className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
-                    style={{
-                      whiteSpace: 'pre-line',
-                      fontFamily: 'var(--font-poppins, Poppins)',
-                      fontSize: 'clamp(1.75rem, 3.5vw + 0.5rem, 3rem)',
-                      lineHeight: '1.2',
-                      fontWeight: '700',
-                    }}
-                  >
-                    {headline}
-                  </h1>
+                  className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
+                  style={{
+                    whiteSpace: 'pre-line',
+                    fontFamily: 'var(--font-poppins, Poppins)',
+                    fontSize: 'clamp(2rem, 3.5vw + 0.5rem, 3.2rem)',
+                    lineHeight: '1.2',
+                    fontWeight: '700',
+                  }}>
+                  {headline}
+                </h1>
 
                   {/* Subtitle */}
                   {subtitle && (
-                    <h2
-                      className={cn('mt-10 font-normal text-display-md', subheadingColorClasses[finalSubheadingColor])}
-                      style={{ whiteSpace: 'pre-line' }}
-                    >
+                      <h2
+                      className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                      style={{ 
+                        whiteSpace: 'pre-line',
+                        fontSize: 'clamp(1.25rem, 3vw + 0.5rem, 2rem)',
+                      }}>
                       {subtitle}
                     </h2>
                   )}
@@ -259,19 +260,21 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                   style={{
                     whiteSpace: 'pre-line',
                     fontFamily: 'var(--font-poppins, Poppins)',
-                    fontSize: 'text-display-lg',
+                    fontSize: 'clamp(2rem, 3.5vw + 0.5rem, 3.2rem)',
                     lineHeight: '1.2',
                     fontWeight: '700',
-                  }}
-                >
+                  }}>
                   {headline}
                 </h1>
 
                 {/* Subtitle */}
                 {subtitle && (
                   <h2
-                    className={cn('mt-10 font-normal text-display-md', subheadingColorClasses[finalSubheadingColor])}
-                    style={{ whiteSpace: 'pre-line' }}
+                    className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                    style={{ 
+                      whiteSpace: 'pre-line',
+                      fontSize: 'clamp(1.25rem, 3vw + 0.5rem, 2rem)',
+                    }}
                   >
                     {subtitle}
                   </h2>
@@ -425,12 +428,14 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
             {headline}
           </h1>
           {subtitle && (
-            <h2
-              className={cn('mt-10 font-normal text-display-md', subheadingColorClasses[finalSubheadingColor])}
-              style={{ whiteSpace: 'pre-line' }}
-            >
-              {subtitle}
-            </h2>
+                  <h2
+                  className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                  style={{ 
+                    whiteSpace: 'pre-line',
+                    fontSize: 'clamp(1.25rem, 3vw + 0.5rem, 2rem)',
+                  }} >
+                  {subtitle}
+                </h2>
           )}
         </div>
       </div>
