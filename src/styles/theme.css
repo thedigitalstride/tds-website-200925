@@ -22,26 +22,26 @@
     --text-xl: 1.25rem;           /* 20px */
     --text-xl--line-height: 1.875rem;    /* 30px */
 
-    --text-display-xs: 1.5rem;    /* 24px */
-    --text-display-xs--line-height: 2rem;        /* 32px */
+    --text-display-xs: clamp(1.25rem, 1.5vw + 0.75rem, 1.5rem);    /* 20px → 24px (fluid) */
+    --text-display-xs--line-height: 1.8rem;      /* 24px * 1.2 = 28.8px */
 
-    --text-display-sm: 1.875rem;  /* 30px */
-    --text-display-sm--line-height: 2.375rem;    /* 38px */
+    --text-display-sm: clamp(1.5rem, 2vw + 0.75rem, 1.875rem);     /* 24px → 30px (fluid) */
+    --text-display-sm--line-height: 2.25rem;     /* 30px * 1.2 = 36px */
 
-    --text-display-md: 2.25rem;   /* 36px */
-    --text-display-md--line-height: 2.75rem;     /* 44px */
+    --text-display-md: clamp(1.75rem, 2.5vw + 0.75rem, 2.25rem);   /* 28px → 36px (fluid) */
+    --text-display-md--line-height: 2.7rem;      /* 36px * 1.2 = 43.2px */
     --text-display-md--letter-spacing: -0.045rem;  /* -0.72px */
 
-    --text-display-lg: 3rem;      /* 48px */
-    --text-display-lg--line-height: 3.75rem;     /* 60px */
+    --text-display-lg: clamp(2rem, 3vw + 1rem, 3rem);              /* 32px → 48px (fluid) */
+    --text-display-lg--line-height: 3.6rem;      /* 48px * 1.2 = 57.6px */
     --text-display-lg--letter-spacing: -0.06rem;   /* -0.96px */
 
-    --text-display-xl: 3.75rem;   /* 60px */
-    --text-display-xl--line-height: 4.5rem;      /* 72px */
+    --text-display-xl: clamp(2.5rem, 3.5vw + 1rem, 3.75rem);       /* 40px → 60px (fluid) */
+    --text-display-xl--line-height: 4.5rem;      /* 60px * 1.2 = 72px (already correct!) */
     --text-display-xl--letter-spacing: -0.075rem;  /* -1.2px */
 
-    --text-display-2xl: 4.5rem;   /* 72px */
-    --text-display-2xl--line-height: 5.625rem;   /* 90px */
+    --text-display-2xl: clamp(3rem, 4vw + 1.5rem, 4.5rem);         /* 48px → 72px (fluid) */
+    --text-display-2xl--line-height: 5.4rem;     /* 72px * 1.2 = 86.4px */
     --text-display-2xl--letter-spacing: -0.09rem;  /* -1.44px */
 
     /* FLUID HERO HEADING - Scales smoothly from mobile to desktop */

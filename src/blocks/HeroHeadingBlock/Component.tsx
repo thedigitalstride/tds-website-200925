@@ -153,9 +153,10 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                   {subtitle && (
                       <h2
                       className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
-                      style={{ 
+                      style={{
                         whiteSpace: 'pre-line',
-                        fontSize: 'clamp(1.25rem, 3vw + 0.5rem, 2rem)',
+                        fontSize: 'var(--text-display-md)',
+                        lineHeight: '1.2',
                       }}>
                       {subtitle}
                     </h2>
@@ -203,9 +204,10 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                   {subtitle && (
                       <h2
                       className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
-                      style={{ 
+                      style={{
                         whiteSpace: 'pre-line',
-                        fontSize: 'clamp(1.25rem, 3vw + 0.5rem, 2rem)',
+                        fontSize: 'var(--text-display-md)',
+                        lineHeight: '1.2',
                       }}>
                       {subtitle}
                     </h2>
@@ -271,9 +273,10 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                 {subtitle && (
                   <h2
                     className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
-                    style={{ 
+                    style={{
                       whiteSpace: 'pre-line',
-                      fontSize: 'clamp(1.25rem, 3vw + 0.5rem, 2rem)',
+                      fontSize: 'var(--text-display-md)',
+                      lineHeight: '1.2',
                     }}
                   >
                     {subtitle}
@@ -430,9 +433,10 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
           {subtitle && (
                   <h2
                   className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
-                  style={{ 
+                  style={{
                     whiteSpace: 'pre-line',
-                    fontSize: 'clamp(1.25rem, 3vw + 0.5rem, 2rem)',
+                    fontSize: 'var(--text-display-md)',
+                    lineHeight: '1.2',
                   }} >
                   {subtitle}
                 </h2>
