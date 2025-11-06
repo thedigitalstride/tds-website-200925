@@ -25,8 +25,8 @@ export const NavMenuItemLink = ({ href, icon: Icon, iconClassName, title, badge,
     <a
         href={href}
         className={cx(
-            "flex w-full gap-3 px-4 py-3 outline-focus-ring transition duration-200 ease-linear focus-visible:outline-2 sm:max-w-80 md:p-3 md:h-full rounded-lg",
-            "hover:bg-card-tinted dark:hover:bg-card-tinted",
+            "group flex w-full gap-3 px-4 py-3 outline-focus-ring transition duration-200 ease-linear focus-visible:outline-2 sm:max-w-80 md:p-3 md:h-full rounded-lg",
+            "hover:bg-card-tinted",
             className,
         )}
     >
@@ -56,7 +56,7 @@ export const NavMenuItemLink = ({ href, icon: Icon, iconClassName, title, badge,
                     variants={childVariants}
                     transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                 >
-                    <span className={cx("text-md font-semibold transition hover:underline underline-offset-4", "dark:text-white text-brand-500")}>{title}</span>
+                    <span className={cx("text-md font-semibold transition group-hover:underline underline-offset-4", "dark:text-white text-brand-500")}>{title}</span>
                     {badge}
                 </motion.div>
 

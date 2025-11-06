@@ -10,6 +10,7 @@ import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { RouteProvider } from '@/providers/route-provider'
 import { ThemeProvider } from '@/providers/theme-provider'
+import { SmoothScrollProvider } from '@/providers/smooth-scroll-provider'
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 
@@ -52,7 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${poppins.variable} scroll-smooth`}
+      className={`${inter.variable} ${poppins.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -63,19 +64,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Providers>
           <RouteProvider>
             <ThemeProvider>
-              <AdminBar
-                adminBarProps={{
-                  preview: isEnabled,
-                }}
-              />
+              <SmoothScrollProvider>
+                <AdminBar
+                  adminBarProps={{
+                    preview: isEnabled,
+                  }}
+                />
 
-              <Header />
+                <Header />
 
-              {/* Spacer to prevent content from being hidden under fixed header */}
-              <div className="h-18 md:h-20" aria-hidden="true" />
+                {/* Spacer to prevent content from being hidden under fixed header */}
+                <div className="h-18 md:h-20" aria-hidden="true" />
 
-              <main className="flex-1">{children}</main>
-              <Footer />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </SmoothScrollProvider>
             </ThemeProvider>
           </RouteProvider>
         </Providers>

@@ -5,6 +5,9 @@ const twMerge = extendTailwindMerge({
         theme: {
             text: ["display-xs", "display-sm", "display-md", "display-lg", "display-xl", "display-2xl"],
         },
+        classGroups: {
+            'bg-color': ["card-tinted"],
+        },
     },
 });
 

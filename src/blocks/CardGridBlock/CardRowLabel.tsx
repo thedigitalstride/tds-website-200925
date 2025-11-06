@@ -3,9 +3,7 @@
 import { useRowLabel } from '@payloadcms/ui'
 
 export const CardRowLabel = () => {
-  const { data } = useRowLabel<{title?: string }>()
+  const { data } = useRowLabel<{ title?: string }>()
 
-  if (data?.title) {
-    return data.title
-  }
+  return data?.title || 'Card'
 }
