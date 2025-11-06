@@ -116,7 +116,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   return (
     <header className="fixed top-4 left-0 right-0 z-50">
       <div className="mx-auto max-w-container px-4 md:px-8">
-        <div className="bg-tertiary/70 dark:bg-brand-900/70 rounded-2xl overflow-hidden backdrop-blur-lg">
+        <div className="bg-primary-reversed/70 rounded-2xl overflow-hidden backdrop-blur-lg">
           <UUIHeader
             items={navigationItems}
             ctaButton={effectiveCtaButton}
