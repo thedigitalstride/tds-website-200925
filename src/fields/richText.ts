@@ -30,6 +30,7 @@ import {
 
 import { ButtonBlock } from '@/blocks/ButtonBlock/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { TextSizeFeature } from '@/features/textSize/feature.server'
 
 /**
  * Consolidated rich text editor with explicit feature configuration
@@ -40,6 +41,7 @@ import { MediaBlock } from '@/blocks/MediaBlock/config'
  *
  * Features included:
  * - Text formatting: Bold, Italic, Underline, Strikethrough, InlineCode, Subscript, Superscript
+ * - Text sizing: Normal, Large Text, Small, Lead Paragraph (via custom TextSizeFeature)
  * - Structure: Paragraphs, Headings (H1-H6)
  * - Lists: Unordered, Ordered, Checklist
  * - Block elements: BlockQuote, HorizontalRule
@@ -88,6 +90,9 @@ export const richText = (options?: {
     LinkFeature({
       enabledCollections: ['pages', 'posts'],
     }),
+
+    // Custom Features
+    TextSizeFeature(),
 
     // Toolbars
     InlineToolbarFeature(),

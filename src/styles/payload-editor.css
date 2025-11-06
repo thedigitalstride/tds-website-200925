@@ -1,0 +1,44 @@
+/**
+ * Payload Admin Editor Styles
+ * Ensures inline styles from TextSizeFeature are visible in the Lexical editor
+ */
+
+/* Base font size for the editor content */
+.ContentEditable__root {
+  font-size: 16px; /* Base size for "normal" text */
+  line-height: 1.5;
+}
+
+/* Ensure paragraphs use the base size by default */
+.LexicalEditorTheme__paragraph {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/*
+ * Force inline styles to work by using more specific selectors
+ * Target spans with inline styles specifically - now using pixel values
+ */
+.ContentEditable__root span[data-lexical-text="true"][style*="font-size: 14px"] {
+  /* Small text */
+  font-size: 14px !important;
+  line-height: 20px !important;
+}
+
+.ContentEditable__root span[data-lexical-text="true"][style*="font-size: 18px"] {
+  /* Large text */
+  font-size: 18px !important;
+  line-height: 28px !important;
+}
+
+.ContentEditable__root span[data-lexical-text="true"][style*="font-size: 20px"] {
+  /* Lead text */
+  font-size: 20px !important;
+  line-height: 30px !important;
+}
+
+/* Ensure normal text without styles uses base size */
+.ContentEditable__root span[data-lexical-text="true"]:not([style]) {
+  font-size: 16px;
+  line-height: 1.5;
+}

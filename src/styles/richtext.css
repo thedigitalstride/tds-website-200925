@@ -101,6 +101,26 @@
    CUSTOM ELEMENT STYLES
    ========================================================================= */
 
+/* Custom Text Sizing - TextStateFeature attribute-based selectors */
+/* TextStateFeature applies styles via data attributes and inline styles */
+/* Ensure proper color inheritance for text with custom sizes */
+.prose span[data-text-state-fontSize] {
+  color: inherit; /* Inherit text color from parent */
+}
+
+.dark-mode .prose span[data-text-state-fontSize] {
+  color: inherit; /* Ensure dark mode text color inheritance */
+}
+
+/* Also support inline font-size styles for backwards compatibility */
+.prose span[style*="font-size"] {
+  color: inherit;
+}
+
+.dark-mode .prose span[style*="font-size"] {
+  color: inherit;
+}
+
 /* Paragraph spacing */
 .prose p {
   margin-top: 1.25em;

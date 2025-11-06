@@ -15,6 +15,7 @@ import Image from 'next/image'
 
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 import { QuoteBlock } from '@/blocks/Quote/Component'
+import { textConverter } from './textConverter'
 
 import type {
   BannerBlock as BannerBlockProps,
@@ -56,6 +57,8 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
   return {
     ...defaultConverters,
     ...LinkJSXConverter({ internalDocToHref }),
+    // Use our custom text converter to handle inline styles
+    ...textConverter,
     // Add custom upload converter for inline images - Payload best practice
     upload: ({ node }: { node: SerializedUploadNode }) => {
       if (node.relationTo === 'media') {
