@@ -117,6 +117,10 @@
     background-color: var(--color-bg-secondary_hover);
 }
 
+@utility bg-card-tinted {
+    background-color: var(--color-bg-card-tinted);
+}
+
 /* Text hover states */
 @utility text-tertiary_hover {
     color: var(--color-text-tertiary_hover);

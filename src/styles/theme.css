@@ -511,7 +511,7 @@
     --color-bg-card-brand-solid: var(--color-brand-50);
     --color-bg-card-white: var(--color-white);
     --color-bg-card-accent: var(--color-accent-500);
-    --color-bg-card-tinted: color-mix(in srgb, var(--color-black) 5%, transparent);
+    --color-bg-card-tinted: color-mix(in srgb, var(--color-black) 4%, transparent);
 
     /* MASK COLORS - Opaque equivalents for SVG masks (to prevent image bleed-through) */
     --color-mask-brand-subtle: rgb(247 248 252);  /* brand-50 @ 30% over white */
@@ -707,7 +707,7 @@
         --color-bg-card-brand-solid: var(--color-brand-900);
         --color-bg-card-white: var(--color-brand-900);
         --color-bg-card-accent: var(--color-accent-600);
-        --color-bg-card-tinted: color-mix(in srgb, var(--color-black) 25%, transparent);
+        --color-bg-card-tinted: color-mix(in srgb, var(--color-black) 15%, transparent);
 
         /* MASK COLORS - Dark mode (solid colors, no transparency) */
         --color-mask-brand-subtle: var(--color-brand-700);  /* Solid brand-700 */
