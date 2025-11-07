@@ -20,24 +20,24 @@ function parseInlineStyles(styleString: string): React.CSSProperties | null {
     return null
   }
 
-  const styles: React.CSSProperties = {}
+  // Use Record<string, string> for dynamic property assignment, then cast to CSSProperties
+  const styles: Record<string, string> = {}
 
   // Split by semicolon and parse each style rule
-  styleString.split(';').forEach(rule => {
+  styleString.split(';').forEach((rule) => {
     const trimmedRule = rule.trim()
     if (!trimmedRule) return
 
-    const [property, value] = trimmedRule.split(':').map(s => s.trim())
+    const [property, value] = trimmedRule.split(':').map((s) => s.trim())
     if (!property || !value) return
 
     // Convert kebab-case to camelCase for React
     const camelCaseProperty = property.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
 
-    // TypeScript doesn't like dynamic property assignment, so we use any
-    ;(styles as any)[camelCaseProperty] = value
+    styles[camelCaseProperty] = value
   })
 
-  return Object.keys(styles).length > 0 ? styles : null
+  return Object.keys(styles).length > 0 ? (styles as React.CSSProperties) : null
 }
 
 /**
@@ -84,5 +84,5 @@ export const textConverter = {
     }
 
     return text
-  }
+  },
 }

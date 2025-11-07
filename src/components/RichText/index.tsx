@@ -12,6 +12,7 @@ import {
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
 import Image from 'next/image'
+import { TypographyJSXConverters } from 'payload-lexical-typography/converters'
 
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 import { QuoteBlock } from '@/blocks/Quote/Component'
@@ -57,7 +58,9 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
   return {
     ...defaultConverters,
     ...LinkJSXConverter({ internalDocToHref }),
-    // Use our custom text converter to handle inline styles
+    // Typography converters for text color from payload-lexical-typography
+    ...TypographyJSXConverters,
+    // Use our custom text converter to handle inline styles (for TextSizeFeature when re-enabled)
     ...textConverter,
     // Add custom upload converter for inline images - Payload best practice
     upload: ({ node }: { node: SerializedUploadNode }) => {

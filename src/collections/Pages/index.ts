@@ -18,6 +18,7 @@ import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { validateParent } from './hooks/validateParent'
+import { validateProtectedSlugs } from './hooks/validateProtectedSlugs'
 import { syncAiSeoToMeta } from '../../hooks/syncAiSeoFields'
 
 export const Pages: CollectionConfig<'pages'> = {
@@ -251,7 +252,7 @@ export const Pages: CollectionConfig<'pages'> = {
   ],
   hooks: {
     afterChange: [revalidatePage],
-    beforeChange: [populatePublishedAt, validateParent],
+    beforeChange: [populatePublishedAt, validateParent, validateProtectedSlugs],
     afterDelete: [revalidateDelete],
   },
   versions: {
