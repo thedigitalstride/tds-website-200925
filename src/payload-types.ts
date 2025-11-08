@@ -1236,7 +1236,7 @@ export interface CardGridBlock {
  */
 export interface ContentBlock {
   /**
-   * Add and arrange columns. ⚠️ Reordering columns with rich text can cause errors - instead, duplicate the column and delete the old one.
+   * Add and arrange columns by dragging to reorder
    */
   columns?:
     | {
@@ -1246,94 +1246,18 @@ export interface ContentBlock {
          */
         verticalAlign?: ('top' | 'middle' | 'bottom') | null;
         /**
-         * Choose between rich text content or a direct image upload
+         * Add content blocks to this column (rich text, cards, images, spacers, etc.)
          */
-        contentType?: ('richText' | 'image') | null;
-        richText?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        /**
-         * Select or upload an image for this column
-         */
-        image?: (number | null) | Media;
-        imageOptions?: {
-          /**
-           * How the image should fit within its container
-           */
-          fit?: ('cover' | 'contain' | 'fill' | 'none') | null;
-          /**
-           * Aspect ratio constraint for the image
-           */
-          ratio?: ('auto' | 'square' | 'video' | 'portrait') | null;
-          /**
-           * Make the image stick to the top of the viewport when scrolling
-           */
-          isSticky?: boolean | null;
-          /**
-           * Top offset when sticky (e.g., "80px" for header clearance)
-           */
-          stickyTop?: string | null;
-        };
-        enableLink?: boolean | null;
-        link?: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Button color variant from UntitledUI design system
-           */
-          uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
-          /**
-           * Button size variant
-           */
-          uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-          /**
-           * Select an icon from the Icons collection and configure its position relative to button text
-           */
-          buttonIconConfig?: {
-            /**
-             * Select an icon to display in the button
-             */
-            icon?: (number | null) | Icon;
-            /**
-             * Position of the icon relative to button text
-             */
-            position?: ('leading' | 'trailing') | null;
-          };
-          /**
-           * Legacy field - use buttonIconConfig instead
-           */
-          buttonIcon?: string | null;
-          /**
-           * Legacy field - use buttonIconConfig instead
-           */
-          iconPos?: ('leading' | 'trailing') | null;
-        };
+        layout?:
+          | (RichTextBlock | InlineCardBlock | MediaBlock | SpacerBlock)[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Horizontal alignment of columns
+   */
+  contentAlignment?: ('left' | 'center' | 'right') | null;
   /**
    * Vertical spacing around this section
    */
@@ -1341,6 +1265,149 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock".
+ */
+export interface RichTextBlock {
+  /**
+   * Add formatted text, headings, lists, links, and more
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InlineCardBlock".
+ */
+export interface InlineCardBlock {
+  /**
+   * Select an icon from the Icons collection to display in the card
+   */
+  icon?: (number | null) | Icon;
+  /**
+   * Small text above card title (e.g., "New", "Featured", "Step 01")
+   */
+  eyebrow?: string | null;
+  /**
+   * Main heading for this card (e.g., "Fast Delivery", "Expert Support")
+   */
+  title: string;
+  /**
+   * Rich description with headings, formatting, lists, and links
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Add an optional call-to-action link or button
+   */
+  enableLink?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Button color variant from UntitledUI design system
+     */
+    uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+    /**
+     * Button size variant
+     */
+    uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+    /**
+     * Select an icon from the Icons collection and configure its position relative to button text
+     */
+    buttonIconConfig?: {
+      /**
+       * Select an icon to display in the button
+       */
+      icon?: (number | null) | Icon;
+      /**
+       * Position of the icon relative to button text
+       */
+      position?: ('leading' | 'trailing') | null;
+    };
+    /**
+     * Legacy field - use buttonIconConfig instead
+     */
+    buttonIcon?: string | null;
+    /**
+     * Legacy field - use buttonIconConfig instead
+     */
+    iconPos?: ('leading' | 'trailing') | null;
+  };
+  /**
+   * Card Layout
+   */
+  cardStyle?: ('card' | 'centered-icon' | 'left-icon' | 'horizontal-icon' | 'elevated-box') | null;
+  /**
+   * Card Background
+   */
+  cardBackground?: ('none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline' | 'line') | null;
+  /**
+   * Icon Style
+   */
+  iconColor?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline') | null;
+  /**
+   * Icon Shape
+   */
+  iconTheme?: ('rounded-square' | 'round') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'inlineCard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpacerBlock".
+ */
+export interface SpacerBlock {
+  /**
+   * Vertical spacing between content
+   */
+  height?: ('xs' | 'sm' | 'normal' | 'md' | 'lg' | 'xl' | '2xl') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'spacer';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

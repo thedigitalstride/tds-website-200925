@@ -3,6 +3,7 @@ import {
   DefaultNodeTypes,
   SerializedBlockNode,
   SerializedLinkNode,
+  SerializedTextNode,
   SerializedUploadNode,
   type DefaultTypedEditorState,
 } from '@payloadcms/richtext-lexical'
@@ -59,9 +60,10 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
     ...defaultConverters,
     ...LinkJSXConverter({ internalDocToHref }),
     // Typography converters for text color from payload-lexical-typography
+    // We use TypographyJSXConverters which handles text color, and textConverter which handles both color AND size
     ...TypographyJSXConverters,
-    // Use our custom text converter to handle inline styles (for TextSizeFeature when re-enabled)
-    ...textConverter,
+    // Our textConverter handles both color and size, overriding if needed
+    text: textConverter.text,
     // Add custom upload converter for inline images - Payload best practice
     upload: ({ node }: { node: SerializedUploadNode }) => {
       if (node.relationTo === 'media') {

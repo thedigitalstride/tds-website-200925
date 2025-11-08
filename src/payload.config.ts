@@ -23,6 +23,10 @@ import { plugins } from './plugins'
 import { richText } from '@/fields/richText'
 import { getServerSideURL } from './utilities/getURL'
 import { resendAdapter } from '@payloadcms/email-resend'
+import { RichTextBlockConfig } from './blocks/RichTextBlock'
+import { InlineCardBlockConfig } from './blocks/InlineCardBlock'
+import { MediaBlock } from './blocks/MediaBlock/config'
+import { SpacerBlockConfig } from './blocks/SpacerBlock'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -90,6 +94,7 @@ export default buildConfig({
   collections: [Pages, Posts, Media, Categories, FAQs, Icons, Users, AiLogs],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
+  blocks: [RichTextBlockConfig, InlineCardBlockConfig, MediaBlock, SpacerBlockConfig],
   plugins: [
     ...plugins,
     vercelBlobStorage({
