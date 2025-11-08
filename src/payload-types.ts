@@ -1246,6 +1246,10 @@ export interface ContentBlock {
          */
         verticalAlign?: ('top' | 'middle' | 'bottom') | null;
         /**
+         * Make this column sticky on tablet and desktop (remains visible while scrolling). Only works when columns are side-by-side. Mobile only: disabled. Not available for full-width columns.
+         */
+        sticky?: boolean | null;
+        /**
          * Add content blocks to this column (rich text, cards, images, spacers, etc.)
          */
         layout?:
