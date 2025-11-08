@@ -47,6 +47,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
   const subheadingColorClasses: Record<string, string> = {
     primary: 'text-brand-500 dark:text-white',           // Dark in light mode, white in dark mode
     'primary-reversed': 'text-white dark:text-brand-500', // White in light mode, dark in dark mode
+    white: 'text-white',                                 // White in both modes
     brand: 'text-accent-500',                            // Accent blue in both modes
   }
 
