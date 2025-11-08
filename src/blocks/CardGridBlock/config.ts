@@ -91,7 +91,7 @@ export const CardGridBlock: Block = {
         {
           name: 'title',
           type: 'text',
-          required: true,
+          required: false,
           label: 'Card Title',
           admin: {
             description: 'Main heading for this card (e.g., "Fast Delivery", "Expert Support")',

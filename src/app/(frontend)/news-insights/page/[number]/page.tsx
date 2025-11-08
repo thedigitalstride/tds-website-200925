@@ -9,6 +9,8 @@ import type { Category } from '@/payload-types'
 import type { Where } from 'payload'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 
+// Force dynamic rendering for searchParams support
+export const dynamic = 'force-dynamic'
 export const revalidate = 600
 
 type Args = {
@@ -97,7 +99,7 @@ export default async function Page(props: Args) {
   return (
     <>
       {/* Before Posts Blocks */}
-      {postsSettings.beforeBlocks && postsSettings.beforeBlocks.length > 0 && (
+      {postsSettings?.beforeBlocks && postsSettings.beforeBlocks.length > 0 && (
         <RenderBlocks blocks={postsSettings.beforeBlocks} />
       )}
 
@@ -113,7 +115,7 @@ export default async function Page(props: Args) {
       />
 
       {/* After Posts Blocks */}
-      {postsSettings.afterBlocks && postsSettings.afterBlocks.length > 0 && (
+      {postsSettings?.afterBlocks && postsSettings.afterBlocks.length > 0 && (
         <RenderBlocks blocks={postsSettings.afterBlocks} />
       )}
     </>

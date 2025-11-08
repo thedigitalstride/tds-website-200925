@@ -84,10 +84,11 @@ export const HeroHeadingBlock: Block = {
           options: [
             { label: 'Primary', value: 'primary' },
             { label: 'Primary Reversed', value: 'primary-reversed' },
+            { label: 'White', value: 'white' },
             { label: 'Accent Blue', value: 'brand' },
           ],
           admin: {
-            description: 'Color scheme for the subheading. Primary is dark in light mode/white in dark mode, Primary Reversed is white in light mode/dark in dark mode, Accent Blue is always accent color.',
+            description: 'Color scheme for the subheading. Primary is dark in light mode/white in dark mode, Primary Reversed is white in light mode/dark in dark mode, White stays white in both modes, Accent Blue is always accent color.',
           },
         },
         {

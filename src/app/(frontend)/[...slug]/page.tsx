@@ -26,7 +26,7 @@ export async function generateStaticParams() {
   })
 
   return pages.docs
-    ?.filter((doc) => doc.slug !== 'home')
+    ?.filter((doc) => doc.slug !== 'home' && doc.slug !== 'news-insights')
     .map((doc) => {
       // No breadcrumbs = top-level page
       if (!doc.breadcrumbs || doc.breadcrumbs.length === 0) {
@@ -51,6 +51,11 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = [] } = await paramsPromise
   const url = '/' + slug.join('/')
+
+  // Prevent catch-all from handling news-insights route (dedicated route exists)
+  if (slug.length === 1 && slug[0] === 'news-insights') {
+    return <PayloadRedirects url={url} />
+  }
 
   const page: RequiredDataFromCollectionSlug<'pages'> | null = await queryPageBySlug({
     slug,

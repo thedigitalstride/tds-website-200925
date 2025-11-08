@@ -1,8 +1,6 @@
 import type { Block, Field } from 'payload'
 import type { RowLabelComponent } from 'payload'
 
-import { link } from '@/fields/link'
-import { richText } from '@/fields/richText'
 import { ColumnRowLabel } from './ColumnRowLabel'
 
 const columnFields: Field[] = [
@@ -44,114 +42,27 @@ const columnFields: Field[] = [
     ],
   },
   {
-    name: 'contentType',
-    type: 'radio',
-    defaultValue: 'richText',
-    admin: {
-      layout: 'horizontal',
-      description: 'Choose between rich text content or a direct image upload',
-    },
-    options: [
-      { label: 'Rich Text', value: 'richText' },
-      { label: 'Image', value: 'image' },
-    ],
-  },
-  {
-    name: 'richText',
-    type: 'richText',
-    editor: richText(),
-    label: false,
-    required: false,
-    admin: {
-      condition: (_data, siblingData) => siblingData?.contentType === 'richText',
-    },
-  },
-  {
-    name: 'image',
-    type: 'upload',
-    relationTo: 'media',
-    label: 'Image',
-    admin: {
-      condition: (_data, siblingData) => siblingData?.contentType === 'image',
-      description: 'Select or upload an image for this column',
-    },
-  },
-  {
-    name: 'imageOptions',
-    type: 'group',
-    label: 'Image Options',
-    admin: {
-      condition: (_data, siblingData) => siblingData?.contentType === 'image',
-    },
-    fields: [
-      {
-        name: 'fit',
-        type: 'select',
-        defaultValue: 'cover',
-        label: 'Object Fit',
-        options: [
-          { label: 'Cover (fills space, may crop)', value: 'cover' },
-          { label: 'Contain (fits inside, may have gaps)', value: 'contain' },
-          { label: 'Fill (stretches to fill)', value: 'fill' },
-          { label: 'None (original size)', value: 'none' },
-        ],
-        admin: {
-          description: 'How the image should fit within its container',
-        },
-      },
-      {
-        name: 'ratio',
-        type: 'select',
-        defaultValue: 'auto',
-        label: 'Aspect Ratio',
-        options: [
-          { label: 'Auto (natural dimensions)', value: 'auto' },
-          { label: 'Square (1:1)', value: 'square' },
-          { label: 'Video (16:9)', value: 'video' },
-          { label: 'Portrait (3:4)', value: 'portrait' },
-        ],
-        admin: {
-          description: 'Aspect ratio constraint for the image',
-        },
-      },
-      {
-        name: 'isSticky',
-        type: 'checkbox',
-        label: 'Enable Sticky Positioning',
-        admin: {
-          description: 'Make the image stick to the top of the viewport when scrolling',
-        },
-      },
-      {
-        name: 'stickyTop',
-        type: 'text',
-        label: 'Sticky Top Offset',
-        defaultValue: '80px',
-        admin: {
-          condition: (_data, siblingData) => siblingData?.isSticky === true,
-          description: 'Top offset when sticky (e.g., "80px" for header clearance)',
-        },
-      },
-    ],
-  },
-  {
-    name: 'enableLink',
+    name: 'sticky',
     type: 'checkbox',
-  },
-  link({
-    enableUUIButton: true,
-    uuiColors: ['primary', 'primary-reversed', 'accent', 'secondary', 'tertiary', 'outline', 'link'],
-    uuiSizes: ['sm', 'md', 'lg', 'xl'],
-    defaultUUIColor: 'primary',
-    defaultUUISize: 'md',
-    overrides: {
-      admin: {
-        condition: (_data, siblingData) => {
-          return Boolean(siblingData?.enableLink)
-        },
+    defaultValue: false,
+    admin: {
+      description: 'Make this column sticky on tablet and desktop (remains visible while scrolling). Only works when columns are side-by-side. Mobile only: disabled. Not available for full-width columns.',
+      condition: (data, siblingData) => {
+        return siblingData?.size !== 'full'
       },
     },
-  }),
+  },
+  {
+    name: 'layout',
+    type: 'blocks',
+    label: 'Column Content',
+    required: false,
+    blockReferences: ['richText', 'inlineCard', 'mediaBlock', 'spacer'] as any,
+    blocks: [], // Required to be empty when using blockReferences
+    admin: {
+      description: 'Add content blocks to this column (rich text, cards, images, spacers, etc.)',
+    },
+  },
 ]
 
 export const Content: Block = {
@@ -169,6 +80,20 @@ export const Content: Block = {
         description: 'Add and arrange columns by dragging to reorder',
       },
       fields: columnFields,
+    },
+    {
+      name: 'contentAlignment',
+      type: 'select',
+      defaultValue: 'left',
+      label: 'Content Alignment',
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Center', value: 'center' },
+        { label: 'Right', value: 'right' },
+      ],
+      admin: {
+        description: 'Horizontal alignment of columns. Only applies when total column width is less than full width (e.g., half + third = 10/12 columns can be centered). Full-width layouts (e.g., two half columns = 12/12) ignore this setting.',
+      },
     },
     {
       name: 'spacing',

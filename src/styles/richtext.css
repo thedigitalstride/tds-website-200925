@@ -101,6 +101,26 @@
    CUSTOM ELEMENT STYLES
    ========================================================================= */
 
+/* Custom Text Sizing - TextStateFeature attribute-based selectors */
+/* TextStateFeature applies styles via data attributes and inline styles */
+/* Ensure proper color inheritance for text with custom sizes */
+.prose span[data-text-state-fontSize] {
+  color: inherit; /* Inherit text color from parent */
+}
+
+.dark-mode .prose span[data-text-state-fontSize] {
+  color: inherit; /* Ensure dark mode text color inheritance */
+}
+
+/* Also support inline font-size styles for backwards compatibility */
+.prose span[style*="font-size"] {
+  color: inherit;
+}
+
+.dark-mode .prose span[style*="font-size"] {
+  color: inherit;
+}
+
 /* Paragraph spacing */
 .prose p {
   margin-top: 1.25em;
@@ -127,36 +147,43 @@
 }
 
 /* Heading sizes - unified with UUI scale from theme.css */
+/* Using !important to override Tailwind Typography defaults */
 .prose h1 {
-  font-size: var(--text-display-lg);              /* 3rem = 48px */
-  line-height: var(--text-display-lg--line-height);  /* 3.75rem = 60px */
-  letter-spacing: var(--text-display-lg--letter-spacing);  /* -0.06rem */
+  font-size: var(--text-display-lg) !important;              /* 3rem = 48px */
+  line-height: var(--text-display-lg--line-height) !important;  /* 3.75rem = 60px */
+  letter-spacing: var(--text-display-lg--letter-spacing) !important;  /* -0.06rem */
 }
 
 .prose h2 {
-  font-size: var(--text-display-md);              /* 2.25rem = 36px */
-  line-height: var(--text-display-md--line-height);  /* 2.75rem = 44px */
-  letter-spacing: var(--text-display-md--letter-spacing);  /* -0.045rem */
+  font-size: var(--text-display-md) !important;              /* 2.25rem = 36px */
+  line-height: var(--text-display-md--line-height) !important;  /* 2.75rem = 44px */
+  letter-spacing: var(--text-display-md--letter-spacing) !important;  /* -0.045rem */
 }
 
 .prose h3 {
-  font-size: var(--text-display-sm);              /* 1.875rem = 30px */
-  line-height: var(--text-display-sm--line-height);  /* 2.375rem = 38px */
+  font-size: var(--text-display-sm) !important;              /* 1.875rem = 30px */
+  line-height: var(--text-display-sm--line-height) !important;  /* 2.375rem = 38px */
 }
 
 .prose h4 {
-  font-size: var(--text-display-xs);                     /* 1.5rem = 24px */
-  line-height: var(--text-display-xs--line-height);      /* 2rem = 32px */
+  font-size: var(--text-display-xs) !important;                     /* 1.5rem = 24px */
+  line-height: var(--text-display-xs--line-height) !important;      /* 2rem = 32px */
 }
 
 .prose h5 {
-  font-size: var(--text-xl);                     /* 1.25rem = 20px */
-  line-height: var(--text-xl--line-height);      /* 1.875rem = 30px */
+  font-size: var(--text-xl) !important;                     /* 1.25rem = 20px */
+  line-height: var(--text-xl--line-height) !important;      /* 1.875rem = 30px */
 }
 
 .prose h6 {
-  font-size: var(--text-lg);                     /* 1.125rem = 18px */
-  line-height: var(--text-lg--line-height);      /* 1.75rem = 28px */
+  font-size: var(--text-xl) !important;                     /* 1.25rem = 20px - same as H5 */
+  line-height: var(--text-xl--line-height) !important;      /* 1.875rem = 30px - same as H5 */
+  color: var(--color-accent-500) !important;                /* Accent blue #1689FF */
+}
+
+/* H6 dark mode - use lighter accent for better contrast */
+.dark-mode .prose h6 {
+  color: var(--color-accent-400) !important;                /* Lighter accent blue for dark mode */
 }
 
 /* First heading - reduce top margin */
@@ -487,6 +514,15 @@
   line-height: var(--text-md--line-height) !important;
   margin-top: 0.5rem !important;
   margin-bottom: 0.5rem !important;
+}
+
+/* H6 in compact prose - accent blue color */
+.prose.prose-compact h6 {
+  color: var(--color-accent-500) !important;
+}
+
+.dark-mode .prose.prose-compact h6 {
+  color: var(--color-accent-400) !important;
 }
 
 /* Remove extra margins for compact prose */

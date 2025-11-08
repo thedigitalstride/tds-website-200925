@@ -14,6 +14,9 @@ import { HeroHeadingBlock } from '@/blocks/HeroHeadingBlock/Component'
 import { BreadcrumbBlock } from '@/blocks/BreadcrumbBlock/Component'
 import { CardGridBlock } from '@/blocks/CardGridBlock/Component'
 import { LatestPostsBlock } from '@/blocks/LatestPostsBlock/Component'
+import { RichTextBlock } from '@/blocks/RichTextBlock/Component'
+import { InlineCardBlock } from '@/blocks/InlineCardBlock/Component'
+import { SpacerBlock } from '@/blocks/SpacerBlock/Component'
 
 const blockComponents = {
   accordion: AccordionBlock,
@@ -28,6 +31,9 @@ const blockComponents = {
   buttonBlock: ButtonBlockComponent,
   cardGrid: CardGridBlock,
   latestPosts: LatestPostsBlock,
+  richText: RichTextBlock,
+  inlineCard: InlineCardBlock,
+  spacer: SpacerBlock,
 }
 
 type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]

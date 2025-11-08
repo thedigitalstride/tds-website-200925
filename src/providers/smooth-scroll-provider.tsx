@@ -54,6 +54,11 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
 
     const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
       if (e.matches) {
+        // Cancel RAF loop before destroying to prevent race condition
+        if (rafRef.current !== undefined) {
+          cancelAnimationFrame(rafRef.current)
+          rafRef.current = undefined
+        }
         lenis.destroy()
         delete window.lenis
         setLenis(null)
@@ -71,7 +76,14 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
     if (!lenis) return
 
     function raf(time: number) {
-      if (!lenis) return
+      // Check if instance is still valid (not destroyed)
+      if (!lenis || lenis.destroy === undefined) {
+        if (rafRef.current !== undefined) {
+          cancelAnimationFrame(rafRef.current)
+          rafRef.current = undefined
+        }
+        return
+      }
       lenis.raf(time)
       rafRef.current = requestAnimationFrame(raf)
     }
@@ -79,8 +91,9 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
     rafRef.current = requestAnimationFrame(raf)
 
     return () => {
-      if (rafRef.current) {
+      if (rafRef.current !== undefined) {
         cancelAnimationFrame(rafRef.current)
+        rafRef.current = undefined
       }
     }
   }, [lenis])

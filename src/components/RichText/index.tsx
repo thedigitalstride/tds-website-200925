@@ -3,6 +3,7 @@ import {
   DefaultNodeTypes,
   SerializedBlockNode,
   SerializedLinkNode,
+  SerializedTextNode,
   SerializedUploadNode,
   type DefaultTypedEditorState,
 } from '@payloadcms/richtext-lexical'
@@ -12,9 +13,11 @@ import {
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
 import Image from 'next/image'
+import { TypographyJSXConverters } from 'payload-lexical-typography/converters'
 
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 import { QuoteBlock } from '@/blocks/Quote/Component'
+import { textConverter } from './textConverter'
 
 import type {
   BannerBlock as BannerBlockProps,
@@ -56,6 +59,11 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
   return {
     ...defaultConverters,
     ...LinkJSXConverter({ internalDocToHref }),
+    // Typography converters for text color from payload-lexical-typography
+    // We use TypographyJSXConverters which handles text color, and textConverter which handles both color AND size
+    ...TypographyJSXConverters,
+    // Our textConverter handles both color and size, overriding if needed
+    text: textConverter.text,
     // Add custom upload converter for inline images - Payload best practice
     upload: ({ node }: { node: SerializedUploadNode }) => {
       if (node.relationTo === 'media') {
