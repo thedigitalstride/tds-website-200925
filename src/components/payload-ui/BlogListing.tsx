@@ -104,7 +104,6 @@ const transformPost = (post: Post, index: number): Article => {
       avatarUrl: firstAuthorAvatar?.url || '',
       avatarMedia: firstAuthorAvatar, // Pass full Media resource for avatar
     },
-    tags: [],
     isFeatured: index === 0,
   }
 }

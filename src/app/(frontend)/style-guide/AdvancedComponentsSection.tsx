@@ -182,25 +182,23 @@ export function AdvancedComponentsSection() {
         <div className="space-y-8">
           {/* Basic Badges */}
           <div className="space-y-4">
-            <h4 className="text-md font-semibold text-secondary">Badge Colors & Sizes</h4>
+            <h4 className="text-md font-semibold text-secondary">Badge Sizes</h4>
             <div className="space-y-4">
               <div className="flex flex-wrap items-center gap-3">
-                <Badge color="brand" size="sm">Brand SM</Badge>
-                <Badge color="brand" size="md">Brand MD</Badge>
-                <Badge color="brand" size="lg">Brand LG</Badge>
-              </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <Badge color="gray" size="md">Gray</Badge>
-                <Badge color="error" size="md">Error</Badge>
-                <Badge color="warning" size="md">Warning</Badge>
-                <Badge color="success" size="md">Success</Badge>
+                <Badge size="sm">Small Badge</Badge>
+                <Badge size="md">Medium Badge</Badge>
+                <Badge size="lg">Large Badge</Badge>
               </div>
             </div>
             <code className="block text-sm text-brand-secondary bg-secondary px-4 py-3 rounded-md">
-              {`<Badge color="brand" | "gray" | "error" | "warning" | "success" size="sm" | "md" | "lg">
+              {`<Badge size="sm" | "md" | "lg">
   Label
 </Badge>`}
             </code>
+            <p className="text-sm text-tertiary mt-2">
+              Note: For colored badges with more variants, use{' '}
+              <code className="text-brand-secondary">BadgeGroup</code> component instead.
+            </p>
           </div>
 
           {/* Badge Groups */}

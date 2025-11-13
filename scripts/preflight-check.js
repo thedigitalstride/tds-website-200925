@@ -99,15 +99,17 @@ async function checkEnvironmentVariables() {
   logSection('1. Environment Variables');
 
   const requiredVars = [
-    'POSTGRES_URL',
+    'MONGODB_URI',
     'PAYLOAD_SECRET',
     'NEXT_PUBLIC_SERVER_URL',
   ];
 
   const optionalVars = [
+    'DATABASE_URI', // Fallback for MONGODB_URI
     'BLOB_READ_WRITE_TOKEN',
     'CRON_SECRET',
     'PREVIEW_SECRET',
+    'RESEND_API_KEY',
   ];
 
   // Check .env.local
@@ -115,12 +117,26 @@ async function checkEnvironmentVariables() {
   if (!existsSync(envPath)) {
     logWarning('.env.local file not found');
     logInfo('Preview deployments use Vercel environment variables');
+    logInfo('Ensure these are set in Vercel project settings for preview deployments');
     return;
   }
 
   const envContent = readFileSync(envPath, 'utf-8');
 
-  for (const varName of requiredVars) {
+  // Check MongoDB URI (primary or fallback)
+  const hasMongoUri = envContent.includes('MONGODB_URI=') || envContent.includes('DATABASE_URI=');
+  if (hasMongoUri) {
+    if (envContent.includes('MONGODB_URI=')) {
+      logSuccess('MONGODB_URI is defined locally');
+    } else if (envContent.includes('DATABASE_URI=')) {
+      logSuccess('DATABASE_URI is defined locally (fallback for MONGODB_URI)');
+    }
+  } else {
+    logWarning('MONGODB_URI or DATABASE_URI not defined locally (OK if using Vercel)');
+  }
+
+  // Check other required vars
+  for (const varName of requiredVars.filter(v => v !== 'MONGODB_URI')) {
     if (envContent.includes(`${varName}=`)) {
       logSuccess(`${varName} is defined locally`);
     } else {
@@ -128,7 +144,17 @@ async function checkEnvironmentVariables() {
     }
   }
 
-  logInfo('Ensure these are set in Vercel project settings for preview deployments');
+  // Check optional vars
+  logInfo('\nOptional variables:');
+  for (const varName of optionalVars) {
+    if (envContent.includes(`${varName}=`)) {
+      logSuccess(`${varName} is defined locally`);
+    } else {
+      logInfo(`${varName} not defined locally (optional)`);
+    }
+  }
+
+  logInfo('\nEnsure required variables are set in Vercel project settings for preview deployments');
 }
 
 async function checkGitStatus() {
@@ -177,8 +203,10 @@ async function checkMigrations() {
   const migrationsDir = resolve(process.cwd(), 'src/migrations');
 
   if (!existsSync(migrationsDir)) {
-    logWarning('No migrations directory found');
-    logInfo('If you made schema changes, create a migration: pnpm payload migrate:create');
+    logInfo('No migrations directory found');
+    logInfo('Note: MongoDB with Payload CMS uses auto-sync in development');
+    logInfo('Migrations are optional but recommended for production schema changes');
+    logInfo('If needed, create a migration: pnpm payload migrate:create');
     return;
   }
 
@@ -188,8 +216,9 @@ async function checkMigrations() {
     const migrationFiles = files.filter(f => f.endsWith('.ts') && !f.includes('index'));
 
     if (migrationFiles.length === 0) {
-      logWarning('No migration files found');
-      logInfo('If you made schema changes, create a migration: pnpm payload migrate:create');
+      logInfo('No migration files found');
+      logInfo('Note: MongoDB with Payload CMS uses auto-sync in development');
+      logInfo('Migrations are optional but recommended for production schema changes');
     } else {
       logSuccess(`Found ${migrationFiles.length} migration file(s)`);
 
@@ -205,8 +234,29 @@ async function checkMigrations() {
   }
 }
 
+async function checkMongoDBConnection() {
+  logSection('4. MongoDB Connection (Local Development)');
+
+  // Check if Docker is running MongoDB
+  try {
+    const { code, stdout } = await runCommand('docker', ['ps', '--filter', 'name=tds-mongodb', '--format', '{{.Names}}']);
+
+    if (code === 0 && stdout.trim() === 'tds-mongodb') {
+      logSuccess('MongoDB Docker container is running');
+    } else {
+      logWarning('MongoDB Docker container not running');
+      logInfo('For local development, start MongoDB: docker-compose up -d');
+      logInfo('This check is skipped for production/preview deployments');
+    }
+  } catch (error) {
+    logInfo('Docker check skipped (Docker may not be installed or MongoDB not running)');
+    logInfo('For local development, ensure MongoDB is running: docker-compose up -d');
+    logInfo('Production deployments use MongoDB Atlas via MONGODB_URI');
+  }
+}
+
 async function checkTypeScript() {
-  logSection('4. TypeScript & Types');
+  logSection('5. TypeScript & Types');
 
   // Check if payload-types.ts exists
   const typesPath = resolve(process.cwd(), 'src/payload-types.ts');
@@ -245,7 +295,7 @@ async function checkTypeScript() {
 }
 
 async function checkLinting() {
-  logSection('5. Linting');
+  logSection('6. Linting');
 
   logInfo('Running ESLint...');
   try {
@@ -271,7 +321,7 @@ async function checkLinting() {
 }
 
 async function checkDependencies() {
-  logSection('6. Dependencies');
+  logSection('7. Dependencies');
 
   const packageJsonPath = resolve(process.cwd(), 'package.json');
   const lockfilePath = resolve(process.cwd(), 'pnpm-lock.yaml');
@@ -301,7 +351,7 @@ async function checkDependencies() {
 }
 
 async function checkBuildCache() {
-  logSection('7. Build Cache');
+  logSection('8. Build Cache');
 
   const nextCachePath = resolve(process.cwd(), '.next');
 
@@ -314,7 +364,7 @@ async function checkBuildCache() {
 }
 
 async function checkCriticalFiles() {
-  logSection('8. Critical Files');
+  logSection('9. Critical Files');
 
   const criticalFiles = [
     'src/payload.config.ts',
@@ -375,6 +425,7 @@ async function main() {
   await checkEnvironmentVariables();
   await checkGitStatus();
   await checkMigrations();
+  await checkMongoDBConnection();
   await checkDependencies();
   await checkCriticalFiles();
   await checkTypeScript();

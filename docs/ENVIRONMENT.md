@@ -5,25 +5,25 @@
 ### Database
 
 ```bash
-POSTGRES_URL=postgres://username:password@host:port/database
+MONGODB_URI=mongodb://localhost:27017/tds-website
 ```
 
-**Description**: PostgreSQL database connection string
+**Description**: MongoDB database connection string
 
-**Development**: Local Postgres (Docker or system-installed)
+**Development**: Local MongoDB via Docker
 
-**Production**: Vercel Postgres or Neon Postgres
+**Production**: MongoDB Atlas or MongoDB Cloud
 
 **Example**:
 ```bash
 # Local Docker
-POSTGRES_URL=postgres://postgres@localhost:54320/tds_website
+MONGODB_URI=mongodb://localhost:27017/tds-website
 
-# Vercel Postgres
-POSTGRES_URL=postgres://user:pass@region.postgres.vercel-storage.com/db
+# MongoDB Atlas
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/tds-website
 
-# Neon
-POSTGRES_URL=postgres://user:pass@region.neon.tech/dbname
+# Alternative env var (fallback)
+DATABASE_URI=mongodb://localhost:27017/tds-website
 ```
 
 ---
@@ -157,12 +157,13 @@ Used for local development.
 
 **Example**:
 ```bash
-POSTGRES_URL=postgres://postgres@localhost:54320/tds_website
+MONGODB_URI=mongodb://localhost:27017/tds-website
 PAYLOAD_SECRET=dev-secret-min-32-chars-long-random
 NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 CRON_SECRET=dev-cron-secret
 PREVIEW_SECRET=dev-preview-secret
 BLOB_READ_WRITE_TOKEN=dev_blob_token
+RESEND_API_KEY=re_your_resend_api_key
 ```
 
 ### `.env.production` (Production)
@@ -192,21 +193,20 @@ Template for environment variables.
 **File**: `docker-compose.yml`
 
 ```yaml
-version: '3.8'
 services:
-  postgres:
-    image: postgres:15-alpine
+  mongodb:
+    image: mongo:latest
+    container_name: tds-mongodb
     ports:
-      - '54320:5432'
+      - '27017:27017'
     environment:
-      POSTGRES_DB: tds_website
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      MONGO_INITDB_DATABASE: tds-website
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mongodb_data:/data/db
+    restart: unless-stopped
 
 volumes:
-  postgres_data:
+  mongodb_data:
 ```
 
 ### Environment Configuration
@@ -214,10 +214,10 @@ volumes:
 Update `.env` for Docker:
 
 ```bash
-POSTGRES_URL=postgres://postgres:postgres@localhost:54320/tds_website
+MONGODB_URI=mongodb://localhost:27017/tds-website
 ```
 
-**Important**: Port `54320` on host maps to `5432` in container
+**Important**: MongoDB runs on default port `27017`
 
 ### Docker Commands
 
@@ -232,10 +232,10 @@ docker-compose down
 docker-compose down -v
 
 # View logs
-docker-compose logs -f postgres
+docker-compose logs -f mongodb
 
-# Access PostgreSQL shell
-docker exec -it <container-name> psql -U postgres -d tds_website
+# Access MongoDB shell
+docker exec -it tds-mongodb mongosh tds-website
 ```
 
 ## Vercel Deployment
@@ -244,17 +244,18 @@ docker exec -it <container-name> psql -U postgres -d tds_website
 
 When deploying to Vercel, these are automatically added:
 
-- `POSTGRES_URL` (if using Vercel Postgres)
 - `BLOB_READ_WRITE_TOKEN` (if using Vercel Blob Storage)
 
 ### Manual Environment Variables
 
 Add these in Vercel dashboard (Settings → Environment Variables):
 
+- `MONGODB_URI` (MongoDB Atlas connection string)
 - `PAYLOAD_SECRET`
 - `NEXT_PUBLIC_SERVER_URL`
 - `CRON_SECRET`
 - `PREVIEW_SECRET`
+- `RESEND_API_KEY` (for email functionality)
 
 ### Environment Scopes
 
@@ -316,13 +317,14 @@ PAYLOAD_SECRET=prod-secret-totally-different
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-### "Failed to connect to database"
+### "Failed to connect to MongoDB"
 
 **Check**:
-1. Database is running (`docker-compose ps`)
-2. `POSTGRES_URL` format is correct
-3. Port is not in use by another service
-4. Database name matches in both URL and Docker config
+1. MongoDB is running (`docker ps | grep mongo`)
+2. `MONGODB_URI` format is correct
+3. Port 27017 is not in use by another service
+4. Database name matches in both URI and Docker config
+5. Start MongoDB: `docker-compose up -d`
 
 ### "Preview not working"
 
@@ -343,22 +345,22 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ### Development Setup
 
 - [ ] `.env` file created
-- [ ] `POSTGRES_URL` points to local database
+- [ ] `MONGODB_URI` points to local MongoDB
 - [ ] `PAYLOAD_SECRET` is at least 32 characters
 - [ ] `NEXT_PUBLIC_SERVER_URL=http://localhost:3000`
 - [ ] `PREVIEW_SECRET` is set
-- [ ] Local database is running
+- [ ] MongoDB is running (`docker-compose up -d`)
 
 ### Production Deployment
 
 - [ ] All environment variables added to Vercel dashboard
+- [ ] `MONGODB_URI` configured with MongoDB Atlas
 - [ ] `NEXT_PUBLIC_SERVER_URL` uses production domain
 - [ ] `PAYLOAD_SECRET` is production-strength secret
 - [ ] `BLOB_READ_WRITE_TOKEN` is configured
-- [ ] Database migrations are run (`pnpm payload migrate`)
+- [ ] `RESEND_API_KEY` is configured for email
 
 ## Related Documentation
 
-- **[DATABASE_MIGRATIONS.md](/docs/DATABASE_MIGRATIONS.md)** - Database setup and migration workflow
+- **[MONGODB_MIGRATION.md](/docs/MONGODB_MIGRATION.md)** - MongoDB migration from PostgreSQL
 - **[NEXTJS_PREVIEW_FIX.md](/docs/NEXTJS_PREVIEW_FIX.md)** - Preview functionality setup
-- **[DATABASE_TROUBLESHOOTING.md](/docs/DATABASE_TROUBLESHOOTING.md)** - Database connection issues

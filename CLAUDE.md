@@ -7,7 +7,7 @@ Payload CMS website template built with Next.js App Router, designed for content
 **Type**: Full-stack CMS website
 **Framework**: Next.js 15.4.4 with App Router
 **CMS**: Payload CMS 3.55.0
-**Database**: Vercel Postgres (production) / Local Postgres (development)
+**Database**: MongoDB (production) / Local MongoDB via Docker (development)
 **Storage**: Vercel Blob Storage
 **Styling**: TailwindCSS v4 with UntitledUI components
 **Package Manager**: pnpm
@@ -30,12 +30,9 @@ pnpm test                  # Run all tests
 pnpm test:int             # Run integration tests
 pnpm test:e2e             # Run E2E tests
 
-# Database (Production Only)
-pnpm payload migrate:create # Create new migration (before deploying)
-pnpm payload migrate       # Run migrations (Vercel only)
-
-# Docker (Optional)
-docker-compose up -d       # Start local Postgres database
+# Docker
+docker-compose up -d       # Start local MongoDB database
+docker-compose down        # Stop MongoDB database
 ```
 
 ## Project Structure
@@ -79,10 +76,8 @@ src/
 
 ### 🗄️ Database & Deployment
 
-- **[DATABASE_MIGRATIONS.md](/docs/DATABASE_MIGRATIONS.md)** - Dev auto-sync vs production migrations. **Critical rules for AI agents.**
-- **[DATABASE_TROUBLESHOOTING.md](/docs/DATABASE_TROUBLESHOOTING.md)** - Common error patterns and fixes
-- **[DATABASE_PREVIEW_STRATEGY.md](/docs/DATABASE_PREVIEW_STRATEGY.md)** - Neon branching workflow for preview deployments
 - **[ENVIRONMENT.md](/docs/ENVIRONMENT.md)** - Environment variables, Docker setup, and security
+- **[MONGODB_MIGRATION.md](/docs/MONGODB_MIGRATION.md)** - MongoDB migration from PostgreSQL documentation
 
 ### ⚙️ Development & Fixes
 
@@ -129,28 +124,23 @@ src/
 
 ---
 
-### Database Migrations
+### Database Setup
 
-**Two strategies**: Dev auto-sync vs Production migrations
+**MongoDB via Docker (Development)**
 
-**✅ DO (Development):**
-- Run `pnpm dev` to auto-sync schema changes
-- Wait for "✓ Schema synchronized" before building
-- If build fails with "column does not exist": run dev server again
+**✅ DO:**
+- Start MongoDB: `docker-compose up -d`
+- Verify it's running before starting dev server
+- MongoDB runs on `localhost:27017`
+- Database name: `tds-website`
 
-**❌ DON'T (Development):**
-- Run `pnpm payload migrate` (production only)
-- Run `pnpm payload migrate:create` (only when preparing deployment)
-- Attempt to "fix" database with migrations
-- Use external SQL tools for schema changes
+**❌ DON'T:**
+- Run dev server without MongoDB running
+- Modify MongoDB connection settings without updating docker-compose.yml
 
-**Production Deployment:**
-1. Stop dev server
-2. Run `pnpm payload migrate:create`
-3. Review generated migration files
-4. Commit and push (Vercel runs migrations automatically)
-
-**See**: [DATABASE_MIGRATIONS.md](/docs/DATABASE_MIGRATIONS.md)
+**Production:**
+- MongoDB Atlas or MongoDB Cloud provider
+- Connection string set via `MONGODB_URI` environment variable
 
 ---
 
@@ -216,12 +206,14 @@ SVG icon library with AI-enhanced metadata, visual selector for blocks. See [ICO
 ## Environment Variables
 
 ```bash
-POSTGRES_URL=              # Database connection string
+MONGODB_URI=               # MongoDB connection string (production)
+DATABASE_URI=              # Alternative MongoDB connection string
 PAYLOAD_SECRET=            # JWT token encryption (min 32 chars)
 NEXT_PUBLIC_SERVER_URL=    # Public URL (no trailing slash)
 CRON_SECRET=              # Vercel cron authentication
 PREVIEW_SECRET=           # Draft preview security
 BLOB_READ_WRITE_TOKEN=    # Vercel Blob Storage token
+RESEND_API_KEY=           # Resend email service API key
 ```
 
 **See**: [ENVIRONMENT.md](/docs/ENVIRONMENT.md) for complete setup guide
@@ -235,10 +227,8 @@ BLOB_READ_WRITE_TOKEN=    # Vercel Blob Storage token
 ## Deployment
 
 **Platform**: Vercel (pre-configured)
-**Database**: Vercel Postgres or Neon Postgres
+**Database**: MongoDB Atlas (production)
 **Storage**: Vercel Blob Storage
-**CI Command**: `pnpm ci` (runs migrations + build)
+**Build Command**: `pnpm build`
 
-**Important**: Always create migration before deploying schema changes to production.
-
-**See**: [DATABASE_MIGRATIONS.md](/docs/DATABASE_MIGRATIONS.md)
+**Important**: Ensure `MONGODB_URI` is set in Vercel environment variables for production deployments.
