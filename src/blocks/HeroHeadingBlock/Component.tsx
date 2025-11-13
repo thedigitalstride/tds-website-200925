@@ -432,15 +432,23 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
             {headline}
           </h1>
           {subtitle && (
-                  <h2
-                  className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
-                  style={{
-                    whiteSpace: 'pre-line',
-                    fontSize: 'var(--text-display-md)',
-                    lineHeight: '1.2',
-                  }} >
-                  {subtitle}
-                </h2>
+            <div
+              className={cn(
+                'max-w-[75%]',
+                finalTextAlignment === 'center' && 'mx-auto'
+              )}
+            >
+              <h2
+                className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                style={{
+                  whiteSpace: 'pre-line',
+                  fontSize: 'var(--text-display-md)',
+                  lineHeight: '1.2',
+                }}
+              >
+                {subtitle}
+              </h2>
+            </div>
           )}
         </div>
       </div>
