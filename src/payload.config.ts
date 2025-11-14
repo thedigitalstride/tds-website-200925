@@ -13,6 +13,7 @@ import { Icons } from './collections/Icons'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -91,7 +92,7 @@ export default buildConfig({
       socketTimeoutMS: 45000, // How long a socket stays open when inactive
     },
   }),
-  collections: [Pages, Posts, Media, Categories, FAQs, Icons, Users, AiLogs],
+  collections: [Pages, Posts, Media, Categories, FAQs, Icons, Testimonials, Users, AiLogs],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
   blocks: [RichTextBlockConfig, InlineCardBlockConfig, MediaBlock, SpacerBlockConfig],

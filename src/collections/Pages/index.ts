@@ -13,6 +13,7 @@ import { HeroHeadingBlock } from '../../blocks/HeroHeadingBlock/config'
 import { BreadcrumbBlock } from '../../blocks/BreadcrumbBlock/config'
 import { CardGridBlock } from '../../blocks/CardGridBlock/config'
 import { LatestPostsBlock } from '../../blocks/LatestPostsBlock/config'
+import { TestimonialsBlock } from '../../blocks/TestimonialsBlock/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -94,7 +95,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [HeroHeadingBlock, BackgroundSection, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, CardGridBlock, LatestPostsBlock, AccordionBlock],
+              blocks: [HeroHeadingBlock, BackgroundSection, BreadcrumbBlock, CallToAction, Content, MediaBlock, Archive, FormBlock, CardGridBlock, LatestPostsBlock, TestimonialsBlock, AccordionBlock],
               admin: {
                 initCollapsed: true,
               },
