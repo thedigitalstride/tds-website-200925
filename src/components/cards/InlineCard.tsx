@@ -58,9 +58,9 @@ export const InlineCard: React.FC<InlineCardProps> = ({
     switch (cardStyleValue) {
       case 'primary':
         return {
-          eyebrow: 'text-white dark:text-gray-900',
-          heading: 'text-white dark:text-gray-900',
-          description: 'text-white dark:text-gray-900',
+          eyebrow: 'text-white dark:text-brand-500',
+          heading: 'text-white dark:text-brand-500',
+          description: 'text-white dark:text-brand-500',
         }
       case 'accent':
         return {
@@ -70,9 +70,9 @@ export const InlineCard: React.FC<InlineCardProps> = ({
         }
       case 'primary-reversed':
         return {
-          eyebrow: 'text-gray-900 dark:text-white',
-          heading: 'text-gray-900 dark:text-white',
-          description: 'text-gray-900 dark:text-white',
+          eyebrow: 'text-brand-500 dark:text-white',
+          heading: 'text-brand-500 dark:text-white',
+          description: 'text-brand-500 dark:text-white',
         }
       case 'secondary':
         return {
@@ -145,13 +145,13 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                   enableProse={true}
                   className={cn(
                     cardStyleValue === 'primary' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                     cardStyleValue === 'tertiary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'outline' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                      '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                     cardStyleValue === 'secondary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -217,13 +217,13 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                   enableProse={true}
                   className={cn(
                     cardStyleValue === 'primary' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                     cardStyleValue === 'tertiary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'outline' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                      '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                     cardStyleValue === 'secondary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -293,13 +293,13 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                   enableProse={true}
                   className={cn(
                     cardStyleValue === 'primary' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                     cardStyleValue === 'tertiary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'outline' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                      '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                     cardStyleValue === 'secondary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -356,13 +356,13 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                   enableProse={true}
                   className={cn(
                     cardStyleValue === 'primary' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                     cardStyleValue === 'tertiary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'outline' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                      '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                     cardStyleValue === 'secondary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -428,13 +428,13 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                   enableProse={true}
                   className={cn(
                     cardStyleValue === 'primary' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                     cardStyleValue === 'tertiary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'outline' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                      '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                     cardStyleValue === 'secondary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -481,12 +481,14 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                 enableGutter={false}
                 enableProse={true}
                 className={cn(
+                  cardStyleValue === 'primary' &&
+                    '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                   cardStyleValue === 'tertiary' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'outline' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'primary-reversed' &&
-                    '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                   cardStyleValue === 'secondary' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -531,12 +533,14 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                 enableGutter={false}
                 enableProse={true}
                 className={cn(
+                  cardStyleValue === 'primary' &&
+                    '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                   cardStyleValue === 'tertiary' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'outline' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'primary-reversed' &&
-                    '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                   cardStyleValue === 'secondary' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
