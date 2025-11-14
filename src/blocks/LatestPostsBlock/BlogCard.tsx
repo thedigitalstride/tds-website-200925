@@ -42,7 +42,7 @@ const BlogCardComponent: React.FC<{
   sizes?: string
 }> = ({ article, imageClassName, priority = false, sizes }) => (
   <article className="flex flex-col gap-4">
-    <Link href={article.href} className="overflow-hidden rounded-md" tabIndex={-1}>
+    <Link href={article.href} className="overflow-hidden rounded-xl" tabIndex={-1}>
       <OptimizedImage
         resource={article.thumbnailMedia}
         src={!article.thumbnailMedia ? article.thumbnailUrl : undefined}

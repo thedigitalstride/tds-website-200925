@@ -85,7 +85,7 @@ export const VideoCardHorizontal = (props: VideoCardProps) => {
             href={props.href}
             className="flex flex-col gap-4 rounded-lg px-4 py-3 outline-focus-ring transition hover:bg-primary_hover focus-visible:outline-2 sm:flex-row md:gap-3 md:px-3"
         >
-            <div className="relative h-34 w-60 shrink-0 overflow-hidden rounded-md sm:h-26 sm:w-44">
+            <div className="relative h-34 w-60 shrink-0 overflow-hidden rounded-xl sm:h-26 sm:w-44">
                 <OptimizedImage
                     src={props.imgSrc}
                     alt={props.title}

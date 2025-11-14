@@ -75,7 +75,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
       <section className={containedSpacingClasses[finalSpacing]}>
         <div className="mx-auto max-w-container px-4 md:px-8">
           <div className={cn(
-            'relative overflow-hidden rounded-2xl',
+            'relative overflow-hidden rounded-xl',
             heroBgClasses
           )} style={{ border: 'none' }}>
             {hasSplitImage ? (
@@ -248,7 +248,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
       <section className={containedSpacingClasses[finalSpacing]}>
         <div className="mx-auto max-w-container px-4 md:px-8">
           <div className={cn(
-            'relative overflow-hidden rounded-2xl',
+            'relative overflow-hidden rounded-xl',
             heroBgClasses
           )}>
             {/* Contained content - 75% width on desktop, alignment based on textAlignment setting */}

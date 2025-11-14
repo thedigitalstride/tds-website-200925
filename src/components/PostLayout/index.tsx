@@ -57,7 +57,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
           <Media
             resource={heroImage}
             className="order-first -ml-4 w-screen max-w-none md:order-1 md:ml-0 md:w-full md:max-w-full"
-            imgClassName="w-full md:rounded-md"
+            imgClassName="w-full md:rounded-xl"
             priority
             size="100vw"
           />
@@ -182,7 +182,7 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                                   size="48px"
                                 />
                               ) : (
-                                <div className="size-12 rounded-md bg-gray-200 flex items-center justify-center">
+                                <div className="size-12 rounded-xl bg-gray-200 flex items-center justify-center">
                                   <span className="text-sm font-medium text-gray-600">
                                     {(contributor.nickname || contributor.name)
                                       ?.charAt(0)
@@ -312,12 +312,12 @@ export const PostLayout: React.FC<PostLayoutProps> = ({ post }) => {
                                 {contributor.avatar && typeof contributor.avatar !== 'string' ? (
                                   <Media
                                     resource={contributor.avatar}
-                                    className="size-12 rounded-md object-cover"
-                                    imgClassName="size-12 rounded-md object-cover"
+                                    className="size-12 rounded-xl object-cover"
+                                    imgClassName="size-12 rounded-xl object-cover"
                                     size="48px"
                                   />
                                 ) : (
-                                  <div className="size-12 rounded-md bg-gray-200 flex items-center justify-center">
+                                  <div className="size-12 rounded-xl bg-gray-200 flex items-center justify-center">
                                     <span className="text-sm font-medium text-gray-600">
                                       {(contributor.nickname || contributor.name)
                                         ?.charAt(0)

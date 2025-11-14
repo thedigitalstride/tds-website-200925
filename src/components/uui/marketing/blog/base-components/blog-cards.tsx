@@ -36,7 +36,7 @@ export const Simple01Vertical = ({
   imageClassName?: string
 }) => (
   <article className="flex flex-col gap-4">
-    <a href={article.href} className="overflow-hidden rounded-md" tabIndex={-1}>
+    <a href={article.href} className="overflow-hidden rounded-xl" tabIndex={-1}>
       <OptimizedImage
         resource={article.thumbnailMedia}
         src={!article.thumbnailMedia ? article.thumbnailUrl : undefined}
