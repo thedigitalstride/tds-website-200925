@@ -5,7 +5,7 @@ import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
-  const { columns, spacing, contentAlignment } = props
+  const { columns, spacing, contentAlignment, cardSpacing } = props
 
   const colsSpanClasses = {
     full: 'lg:col-span-12',
@@ -30,6 +30,15 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   // Note: On tablet (md), all non-full columns use md:col-span-2 (2 out of 4 columns)
   const desktopSpanMap = { full: 12, half: 6, oneThird: 4, twoThirds: 8 }
   const tabletSpanMap = { full: 4, half: 2, oneThird: 2, twoThirds: 2 }
+  
+  // Grid gap classes (applies to the grid container, not individual columns)
+  const gridGapClasses: Record<string, string> = {
+    default: 'gap-8 lg:gap-12', // Original default grid spacing
+    compact: 'gap-4',
+    normal: 'gap-6',
+    large: 'gap-8',
+    xl: 'gap-12',
+  }
   
   // Calculate total spans for each grid system
   const desktopTotalSpan =
@@ -98,7 +107,10 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
       )}
       <section className={cn(spacingClasses[spacing || 'normal'])}>
         <div className="mx-auto max-w-container px-4 md:px-8">
-          <div className="grid grid-cols-4 lg:grid-cols-12 gap-8 lg:gap-12">
+          <div className={cn(
+            'grid grid-cols-4 lg:grid-cols-12',
+            gridGapClasses[cardSpacing || 'default']
+          )}>
             {columns &&
               columns.length > 0 &&
               columns.map((col, index) => {

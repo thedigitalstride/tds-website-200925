@@ -48,7 +48,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
       return 'py-5 md:py-6' // No horizontal padding for line variant
     }
     if (isNoneVariant) {
-      return 'p-5 md:p-6' // Standard padding but no background
+      return '' // No padding for none variant
     }
     return 'p-5 md:p-6' // Standard padding
   }

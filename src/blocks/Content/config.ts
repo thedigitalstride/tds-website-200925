@@ -108,5 +108,21 @@ export const Content: Block = {
         description: 'Vertical spacing around this section',
       },
     },
+    {
+      name: 'cardSpacing',
+      type: 'select',
+      defaultValue: 'default',
+      label: 'Grid Spacing',
+      options: [
+        { label: 'Default (2rem mobile / 3rem desktop)', value: 'default' },
+        { label: 'Compact (1rem)', value: 'compact' },
+        { label: 'Normal (1.5rem)', value: 'normal' },
+        { label: 'Large (2rem)', value: 'large' },
+        { label: 'XL (3rem)', value: 'xl' },
+      ],
+      admin: {
+        description: 'Spacing between grid columns',
+      },
+    },
   ],
 }

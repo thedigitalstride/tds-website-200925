@@ -20,6 +20,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   iconColor,
   iconTheme,
   spacing,
+  gridSpacing,
   disableInnerContainer,
 }) => {
   // Extract values from collapsible fields (stored at root level)
@@ -32,7 +33,17 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
 
   // Increase row gap for centered-icon and elevated-box layouts
   const needsExtraRowGap = cardLayout === 'centered-icon' || cardLayout === 'elevated-box'
-  const gridGapClasses = needsExtraRowGap ? 'gap-x-6 gap-y-12 md:gap-y-16' : 'gap-6'
+  
+  // Grid gap classes - configurable or fallback to old behavior
+  const gridGapClasses: Record<string, string> = {
+    default: needsExtraRowGap ? 'gap-x-6 gap-y-12 md:gap-y-16' : 'gap-6',
+    compact: 'gap-4',
+    normal: 'gap-6',
+    large: 'gap-8',
+    xl: 'gap-12',
+  }
+  
+  const finalGridGap = gridSpacing ? gridGapClasses[gridSpacing] : gridGapClasses.default
 
   const spacingClasses: Record<string, string> = {
     compact: 'py-12 lg:py-16',
@@ -89,7 +100,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
 
       {/* Cards Grid */}
       <div className={cn(header?.showHeader && 'mt-12 md:mt-16')}>
-        <ul className={cn('grid w-full', gridHeightClass, gridGapClasses, gridClasses)}>
+        <ul className={cn('grid w-full', gridHeightClass, finalGridGap, gridClasses)}>
           {cards?.map((card, index) => {
             const iconData = typeof card.icon === 'object' ? card.icon : null
             const hasIcon = !!iconData?.svgCode
