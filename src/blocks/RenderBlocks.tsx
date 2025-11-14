@@ -17,6 +17,7 @@ import { LatestPostsBlock } from '@/blocks/LatestPostsBlock/Component'
 import { RichTextBlock } from '@/blocks/RichTextBlock/Component'
 import { InlineCardBlock } from '@/blocks/InlineCardBlock/Component'
 import { SpacerBlock } from '@/blocks/SpacerBlock/Component'
+import { TestimonialsBlock } from '@/blocks/TestimonialsBlock/Component'
 
 const blockComponents = {
   accordion: AccordionBlock,
@@ -34,6 +35,7 @@ const blockComponents = {
   richText: RichTextBlock,
   inlineCard: InlineCardBlock,
   spacer: SpacerBlock,
+  testimonials: TestimonialsBlock,
 }
 
 type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]
