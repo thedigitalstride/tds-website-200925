@@ -75,7 +75,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
       <section className={containedSpacingClasses[finalSpacing]}>
         <div className="mx-auto max-w-container px-4 md:px-8">
           <div className={cn(
-            'relative overflow-hidden rounded-2xl',
+            'relative overflow-hidden rounded-xl',
             heroBgClasses
           )} style={{ border: 'none' }}>
             {hasSplitImage ? (
@@ -248,7 +248,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
       <section className={containedSpacingClasses[finalSpacing]}>
         <div className="mx-auto max-w-container px-4 md:px-8">
           <div className={cn(
-            'relative overflow-hidden rounded-2xl',
+            'relative overflow-hidden rounded-xl',
             heroBgClasses
           )}>
             {/* Contained content - 75% width on desktop, alignment based on textAlignment setting */}
@@ -432,15 +432,23 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
             {headline}
           </h1>
           {subtitle && (
-                  <h2
-                  className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
-                  style={{
-                    whiteSpace: 'pre-line',
-                    fontSize: 'var(--text-display-md)',
-                    lineHeight: '1.2',
-                  }} >
-                  {subtitle}
-                </h2>
+            <div
+              className={cn(
+                'max-w-full lg:max-w-[75%]',
+                finalTextAlignment === 'center' && 'mx-auto'
+              )}
+            >
+              <h2
+                className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                style={{
+                  whiteSpace: 'pre-line',
+                  fontSize: 'var(--text-display-md)',
+                  lineHeight: '1.2',
+                }}
+              >
+                {subtitle}
+              </h2>
+            </div>
           )}
         </div>
       </div>

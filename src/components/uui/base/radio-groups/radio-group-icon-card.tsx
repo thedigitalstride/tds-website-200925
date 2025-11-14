@@ -86,7 +86,7 @@ export const RadioGroupIconCard = ({ items, size = "sm", className, ...props }: 
                                     <p className={cx("text-tertiary", size === "md" ? "text-md" : "text-sm")}>{plan.description}</p>
                                 </div>
                                 {plan.badge && (
-                                    <BadgeWithDot size="sm" type="modern" color="success">
+                                    <BadgeWithDot size="md" color="success" addonText="">
                                         {plan.badge}
                                     </BadgeWithDot>
                                 )}

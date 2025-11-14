@@ -48,7 +48,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
       return 'py-5 md:py-6' // No horizontal padding for line variant
     }
     if (isNoneVariant) {
-      return 'p-5 md:p-6' // Standard padding but no background
+      return '' // No padding for none variant
     }
     return 'p-5 md:p-6' // Standard padding
   }
@@ -58,9 +58,9 @@ export const InlineCard: React.FC<InlineCardProps> = ({
     switch (cardStyleValue) {
       case 'primary':
         return {
-          eyebrow: 'text-white dark:text-gray-900',
-          heading: 'text-white dark:text-gray-900',
-          description: 'text-white dark:text-gray-900',
+          eyebrow: 'text-white dark:text-brand-500',
+          heading: 'text-white dark:text-brand-500',
+          description: 'text-white dark:text-brand-500',
         }
       case 'accent':
         return {
@@ -70,9 +70,9 @@ export const InlineCard: React.FC<InlineCardProps> = ({
         }
       case 'primary-reversed':
         return {
-          eyebrow: 'text-gray-900 dark:text-white',
-          heading: 'text-gray-900 dark:text-white',
-          description: 'text-gray-900 dark:text-white',
+          eyebrow: 'text-brand-500 dark:text-white',
+          heading: 'text-brand-500 dark:text-white',
+          description: 'text-brand-500 dark:text-white',
         }
       case 'secondary':
         return {
@@ -117,23 +117,27 @@ export const InlineCard: React.FC<InlineCardProps> = ({
     >
       <div className="flex flex-col gap-4">
         <FeaturedIcon
+          key="icon"
           icon={icon}
           svgCode={svgCode}
           size="lg"
           color={iconColorValue}
           shape={iconShape}
         />
-        <div>
+        <div key="content">
           {eyebrow && (
-            <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>{eyebrow}</span>
+            <span key="eyebrow" className={cn('text-lg font-semibold', textClasses.eyebrow)}>
+              {eyebrow}
+            </span>
           )}
           <h3
+            key="title"
             className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
           >
             {title}
           </h3>
           {subtitle && (
-            <div className={cn('mt-2 text-md', textClasses.description)}>
+            <div key="subtitle" className={cn('mt-2 text-md', textClasses.description)}>
               {typeof subtitle === 'object' && 'root' in subtitle ? (
                 <RichText
                   data={subtitle}
@@ -141,13 +145,13 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                   enableProse={true}
                   className={cn(
                     cardStyleValue === 'primary' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                     cardStyleValue === 'tertiary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'outline' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                      '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                     cardStyleValue === 'secondary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -160,7 +164,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           )}
         </div>
       </div>
-      {footer}
+      {footer && <div key="footer">{footer}</div>}
     </div>
   )
 
@@ -175,6 +179,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
     >
       <div className="flex flex-col gap-4">
         <FeaturedIcon
+          key="icon-desktop"
           icon={icon}
           svgCode={svgCode}
           size="lg"
@@ -183,6 +188,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           className="hidden md:inline-flex"
         />
         <FeaturedIcon
+          key="icon-mobile"
           icon={icon}
           svgCode={svgCode}
           size="md"
@@ -190,17 +196,20 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           shape={iconShape}
           className="inline-flex md:hidden"
         />
-        <div>
+        <div key="content">
           {eyebrow && (
-            <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>{eyebrow}</span>
+            <span key="eyebrow" className={cn('text-lg font-semibold', textClasses.eyebrow)}>
+              {eyebrow}
+            </span>
           )}
           <h3
+            key="title"
             className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
           >
             {title}
           </h3>
           {subtitle && (
-            <div className={cn('mt-2 text-md', textClasses.description)}>
+            <div key="subtitle" className={cn('mt-2 text-md', textClasses.description)}>
               {typeof subtitle === 'object' && 'root' in subtitle ? (
                 <RichText
                   data={subtitle}
@@ -208,13 +217,13 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                   enableProse={true}
                   className={cn(
                     cardStyleValue === 'primary' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                     cardStyleValue === 'tertiary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'outline' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                      '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                     cardStyleValue === 'secondary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -227,7 +236,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           )}
         </div>
       </div>
-      {footer}
+      {footer && <div key="footer">{footer}</div>}
     </div>
   )
 
@@ -241,6 +250,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
       )}
     >
       <FeaturedIcon
+        key="icon-desktop"
         icon={icon}
         svgCode={svgCode}
         size="lg"
@@ -249,6 +259,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
         className="hidden md:inline-flex"
       />
       <FeaturedIcon
+        key="icon-mobile"
         icon={icon}
         svgCode={svgCode}
         size="md"
@@ -256,12 +267,15 @@ export const InlineCard: React.FC<InlineCardProps> = ({
         shape={iconShape}
         className="inline-flex md:hidden"
       />
-      <div className="flex flex-col justify-between items-start gap-4 flex-1">
+      <div key="content" className="flex flex-col justify-between items-start gap-4 flex-1">
         <div>
           {eyebrow && (
-            <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>{eyebrow}</span>
+            <span key="eyebrow" className={cn('text-lg font-semibold', textClasses.eyebrow)}>
+              {eyebrow}
+            </span>
           )}
           <h3
+            key="title"
             className={cn(
               'mt-1.5 text-display-sm font-semibold md:mt-2.5',
               eyebrow && 'mt-2',
@@ -271,7 +285,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
             {title}
           </h3>
           {subtitle && (
-            <div className={cn('mt-2 text-md', textClasses.description)}>
+            <div key="subtitle" className={cn('mt-2 text-md', textClasses.description)}>
               {typeof subtitle === 'object' && 'root' in subtitle ? (
                 <RichText
                   data={subtitle}
@@ -279,13 +293,13 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                   enableProse={true}
                   className={cn(
                     cardStyleValue === 'primary' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                     cardStyleValue === 'tertiary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'outline' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                      '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                     cardStyleValue === 'secondary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -297,7 +311,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
             </div>
           )}
         </div>
-        {footer}
+        {footer && <div key="footer">{footer}</div>}
       </div>
     </div>
   )
@@ -313,6 +327,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
     >
       <div className="flex flex-col items-center gap-4">
         <FeaturedIcon
+          key="icon"
           icon={icon}
           svgCode={svgCode}
           size="lg"
@@ -320,17 +335,20 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           shape={iconShape}
           className="-mt-6"
         />
-        <div>
+        <div key="content">
           {eyebrow && (
-            <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>{eyebrow}</span>
+            <span key="eyebrow" className={cn('text-lg font-semibold', textClasses.eyebrow)}>
+              {eyebrow}
+            </span>
           )}
           <h3
+            key="title"
             className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
           >
             {title}
           </h3>
           {subtitle && (
-            <div className={cn('mt-2 text-md', textClasses.description)}>
+            <div key="subtitle" className={cn('mt-2 text-md', textClasses.description)}>
               {typeof subtitle === 'object' && 'root' in subtitle ? (
                 <RichText
                   data={subtitle}
@@ -338,13 +356,13 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                   enableProse={true}
                   className={cn(
                     cardStyleValue === 'primary' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                     cardStyleValue === 'tertiary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'outline' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                      '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                     cardStyleValue === 'secondary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -357,7 +375,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           )}
         </div>
       </div>
-      {footer}
+      {footer && <div key="footer">{footer}</div>}
     </div>
   )
 
@@ -372,6 +390,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
     >
       <div className="flex flex-col items-center gap-4">
         <FeaturedIcon
+          key="icon-desktop"
           icon={icon}
           svgCode={svgCode}
           size="lg"
@@ -380,6 +399,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           className="hidden md:inline-flex"
         />
         <FeaturedIcon
+          key="icon-mobile"
           icon={icon}
           svgCode={svgCode}
           size="md"
@@ -387,17 +407,20 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           shape={iconShape}
           className="inline-flex md:hidden"
         />
-        <div>
+        <div key="content">
           {eyebrow && (
-            <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>{eyebrow}</span>
+            <span key="eyebrow" className={cn('text-lg font-semibold', textClasses.eyebrow)}>
+              {eyebrow}
+            </span>
           )}
           <h3
+            key="title"
             className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
           >
             {title}
           </h3>
           {subtitle && (
-            <div className={cn('mt-2 text-md', textClasses.description)}>
+            <div key="subtitle" className={cn('mt-2 text-md', textClasses.description)}>
               {typeof subtitle === 'object' && 'root' in subtitle ? (
                 <RichText
                   data={subtitle}
@@ -405,13 +428,13 @@ export const InlineCard: React.FC<InlineCardProps> = ({
                   enableProse={true}
                   className={cn(
                     cardStyleValue === 'primary' &&
-                      '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                      '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                     cardStyleValue === 'tertiary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'outline' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'primary-reversed' &&
-                      '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+                      '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                     cardStyleValue === 'secondary' &&
                       '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                     cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -424,7 +447,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           )}
         </div>
       </div>
-      {footer}
+      {footer && <div key="footer">{footer}</div>}
     </div>
   )
 
@@ -440,25 +463,32 @@ export const InlineCard: React.FC<InlineCardProps> = ({
     >
       <div>
         {eyebrow && (
-          <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>{eyebrow}</span>
+          <span key="eyebrow" className={cn('text-lg font-semibold', textClasses.eyebrow)}>
+            {eyebrow}
+          </span>
         )}
-        <h3 className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}>
+        <h3
+          key="title"
+          className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
+        >
           {title}
         </h3>
         {subtitle && (
-          <div className={cn('mt-1 text-md', textClasses.description)}>
+          <div key="subtitle" className={cn('mt-1 text-md', textClasses.description)}>
             {typeof subtitle === 'object' && 'root' in subtitle ? (
               <RichText
                 data={subtitle}
                 enableGutter={false}
                 enableProse={true}
                 className={cn(
+                  cardStyleValue === 'primary' &&
+                    '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                   cardStyleValue === 'tertiary' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'outline' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'primary-reversed' &&
-                    '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                   cardStyleValue === 'secondary' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -470,7 +500,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           </div>
         )}
       </div>
-      {footer}
+      {footer && <div key="footer">{footer}</div>}
     </div>
   )
 
@@ -485,25 +515,32 @@ export const InlineCard: React.FC<InlineCardProps> = ({
     >
       <div>
         {eyebrow && (
-          <span className={cn('text-lg font-semibold', textClasses.eyebrow)}>{eyebrow}</span>
+          <span key="eyebrow" className={cn('text-lg font-semibold', textClasses.eyebrow)}>
+            {eyebrow}
+          </span>
         )}
-        <h3 className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}>
+        <h3
+          key="title"
+          className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
+        >
           {title}
         </h3>
         {subtitle && (
-          <div className={cn('mt-1 text-md', textClasses.description)}>
+          <div key="subtitle" className={cn('mt-1 text-md', textClasses.description)}>
             {typeof subtitle === 'object' && 'root' in subtitle ? (
               <RichText
                 data={subtitle}
                 enableGutter={false}
                 enableProse={true}
                 className={cn(
+                  cardStyleValue === 'primary' &&
+                    '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
                   cardStyleValue === 'tertiary' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'outline' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'primary-reversed' &&
-                    '[&]:text-white! dark:[&]:text-brand-900! **:text-white! dark:**:text-brand-900!',
+                    '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
                   cardStyleValue === 'secondary' &&
                     '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
                   cardStyleValue === 'accent' && '[&]:text-white! **:text-white!',
@@ -515,7 +552,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           </div>
         )}
       </div>
-      {footer}
+      {footer && <div key="footer">{footer}</div>}
     </div>
   )
 

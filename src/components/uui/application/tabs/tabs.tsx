@@ -4,7 +4,6 @@ import type { ComponentPropsWithRef, ReactNode } from "react";
 import { Fragment, createContext, useContext } from "react";
 import type { TabListProps as AriaTabListProps, TabProps as AriaTabProps, TabRenderProps as AriaTabRenderProps } from "react-aria-components";
 import { Tab as AriaTab, TabList as AriaTabList, TabPanel as AriaTabPanel, Tabs as AriaTabs, TabsContext, useSlottedContext } from "react-aria-components";
-import type { BadgeColors } from "@/components/uui/base/badges/badge-types";
 import { Badge } from "@/components/uui/base/badges/badges";
 import { cx } from "@/utils/cx";
 
@@ -78,15 +77,6 @@ const getHorizontalStyles = ({ size, fullWidth }: { size?: "sm" | "md"; fullWidt
     "button-minimal": "gap-0.5 rounded-lg bg-secondary_alt ring-1 ring-inset ring-secondary",
     underline: cx("gap-3", fullWidth && "w-full gap-4"),
     line: "gap-2",
-});
-
-const getColorStyles = ({ isSelected, isHovered }: Partial<AriaTabRenderProps>) => ({
-    "button-brand": isSelected || isHovered ? "brand" : "gray",
-    "button-gray": "gray",
-    "button-border": "gray",
-    "button-minimal": "gray",
-    underline: isSelected || isHovered ? "brand" : "gray",
-    line: isSelected || isHovered ? "brand" : "gray",
 });
 
 interface TabListComponentProps<T extends object, K extends Orientation> extends AriaTabListProps<T> {
@@ -197,8 +187,6 @@ export const Tab = (props: TabComponentProps) => {
                     {badge && (
                         <Badge
                             size={size}
-                            type="pill-color"
-                            color={getColorStyles(state)[type] as BadgeColors}
                             className={cx("hidden transition-inherit-all md:flex", size === "sm" && "-my-px")}
                         >
                             {badge}

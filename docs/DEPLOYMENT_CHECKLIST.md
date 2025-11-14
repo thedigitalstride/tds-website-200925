@@ -11,27 +11,17 @@ This checklist ensures safe and successful deployments to production/preview env
 - [ ] Linting passes (`pnpm lint`)
 - [ ] Tests pass (if applicable)
 
-### 2. Database Schema Changes 🗄️
-If you made any changes to collections, fields, or database structure:
+### 2. Database Verification 🗄️
+MongoDB schema verification:
 
-- [ ] Dev server auto-synced schema (verified by running `pnpm dev`)
-- [ ] Build works after schema sync (`pnpm build`)
-- [ ] **Created migration for production:**
-  ```bash
-  pnpm payload migrate:create
-  # or
-  pnpm migrate:create
-  ```
-- [ ] Migration files generated in `src/migrations/`
-- [ ] Reviewed migration files for accuracy
-- [ ] Both `.ts` and `.json` migration files exist
+- [ ] MongoDB running in development (`docker-compose up -d`)
+- [ ] Dev server connects successfully (`pnpm dev`)
+- [ ] Build succeeds (`pnpm build`)
+- [ ] MongoDB Atlas configured for production
+- [ ] Production `MONGODB_URI` set in Vercel environment variables
 
 ### 3. Git Preparation 📝
 - [ ] All changes committed
-- [ ] Migration files added to git (if created):
-  ```bash
-  git add src/migrations/
-  ```
 - [ ] Descriptive commit message:
   ```bash
   git commit -m "feat: [description of changes]"
@@ -42,12 +32,13 @@ If you made any changes to collections, fields, or database structure:
 - [ ] Production environment variables set in Vercel dashboard
 - [ ] No `.env.production` file in repository
 - [ ] All required variables documented:
-  - `POSTGRES_URL` - Production database
+  - `MONGODB_URI` - MongoDB Atlas connection string
   - `PAYLOAD_SECRET` - JWT secret
   - `NEXT_PUBLIC_SERVER_URL` - Production URL
   - `BLOB_READ_WRITE_TOKEN` - Vercel Blob storage
   - `PREVIEW_SECRET` - Preview mode security
-  - `RESEND_API_KEY` - Email service (if using)
+  - `RESEND_API_KEY` - Email service
+  - `CRON_SECRET` - Vercel cron authentication
 
 ### 5. Pre-Push Verification 🔍
 - [ ] One final local build test:
@@ -91,7 +82,7 @@ If you made any changes to collections, fields, or database structure:
 - [ ] Core functionality works (navigation, forms, etc.)
 
 ### Database Verification
-- [ ] Check Vercel function logs for migration success
+- [ ] MongoDB Atlas connection is successful
 - [ ] New features/fields appear in admin panel
 - [ ] Data displays correctly on frontend
 
@@ -110,38 +101,32 @@ If something goes wrong:
 3. Click "Redeploy" to restore
 
 ### Migration Issues
-If migration failed:
+If database connection failed:
 1. Check error in Vercel logs
-2. Fix migration locally
-3. Create new migration with fix:
-   ```bash
-   pnpm migrate:create fix_[issue]
-   ```
-4. Push fix and redeploy
+2. Verify `MONGODB_URI` is correctly set
+3. Check MongoDB Atlas network access allows Vercel IPs
+4. Verify database user credentials are correct
 
 ### Emergency Database Recovery
-- Vercel/Neon maintains automatic backups
-- Contact support if data recovery needed
+- MongoDB Atlas maintains automatic backups
+- Use Atlas dashboard to restore from backup if needed
 
 ## 📝 Common Issues & Solutions
 
-### "Column does not exist" in production
-**Cause:** Forgot to create migration
+### "Cannot connect to MongoDB" in production
+**Cause:** MongoDB Atlas not configured or network access restricted
 **Fix:**
-```bash
-pnpm migrate:create
-git add src/migrations/
-git commit -m "fix: add missing migration"
-git push
-```
+1. Verify `MONGODB_URI` is set in Vercel
+2. Add Vercel IPs to MongoDB Atlas network access
+3. Or allow access from anywhere: `0.0.0.0/0`
 
 ### Build fails on Vercel but works locally
 **Cause:** Environment variables missing
 **Fix:** Check all required env vars in Vercel dashboard
 
-### Migration timeout
-**Cause:** Large data transformation
-**Fix:** Split into smaller migrations or increase timeout
+### MongoDB connection timeout
+**Cause:** Network access restrictions
+**Fix:** Configure MongoDB Atlas network access to allow Vercel connections
 
 ### Preview mode not working
 **Cause:** Missing PREVIEW_SECRET
@@ -150,26 +135,26 @@ git push
 ## 🎯 Best Practices
 
 1. **Always deploy to preview first** - Test in preview before production
-2. **Name migrations clearly** - Use descriptive names when creating migrations
-3. **Keep migrations small** - One feature per migration
-4. **Document breaking changes** - Note any changes that might affect existing data
-5. **Monitor after deployment** - Watch logs for 10-15 minutes post-deployment
+2. **Test MongoDB connection** - Verify database connectivity before major deployments
+3. **Monitor after deployment** - Watch logs for 10-15 minutes post-deployment
+4. **Backup before major changes** - Use MongoDB Atlas backups before significant updates
 
 ## 📊 Deployment Timeline
 
 Typical deployment takes:
 - Build: 2-5 minutes
-- Migration run: 10-30 seconds
+- MongoDB connection: 1-5 seconds
 - Cache invalidation: 1-2 minutes
-- **Total: 5-10 minutes**
+- **Total: 3-8 minutes**
 
 ## 🆘 Getting Help
 
 If you encounter issues:
 1. Check Vercel function logs
 2. Review this checklist
-3. Check `/docs/DATABASE_PREVIEW_STRATEGY.md` for database issues
-4. Create an issue with error details and logs
+3. Check `/docs/ENVIRONMENT.md` for configuration help
+4. Review `/docs/MONGODB_MIGRATION.md` for MongoDB setup
+5. Create an issue with error details and logs
 
 ---
 

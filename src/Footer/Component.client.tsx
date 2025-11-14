@@ -13,7 +13,7 @@ import {
   GitHub,
   AngelList,
   Dribbble,
-  Layers
+  Layers,
 } from '@/components/uui/foundations/social-icons'
 
 interface FooterClientProps {
@@ -47,7 +47,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
     companyInfo,
     navColumns = [],
     socialLinks = [],
-    copyrightText = '© 2024 Your Company. All rights reserved.'
+    copyrightText = '© 2024 Your Company. All rights reserved.',
   } = data
 
   return (
@@ -58,8 +58,8 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
         {/* Main Content */}
         <div className="flex flex-col gap-12 md:gap-16 lg:flex-row lg:justify-between">
           {/* Company Info */}
-          <div className="flex flex-col gap-4 items-start lg:max-w-xs">
-            <TDSLogo variant="auto" size="xl" className="h-12 w-min shrink-0" />
+          <div className="flex flex-col gap-4 items-start self-start lg:max-w-xs">
+            <TDSLogo variant="auto" size="xl" className="h-12 w-min shrink-0 self-start" />
             {companyInfo?.description && (
               <p className="text-md text-secondary">{companyInfo.description}</p>
             )}
@@ -71,9 +71,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
               <ul className="flex flex-wrap gap-x-8 gap-y-12 lg:gap-x-16">
                 {navColumns.slice(0, 5).map((column, columnIndex) => (
                   <li key={columnIndex} className="min-w-[140px]">
-                    <h4 className="text-sm font-semibold text-quaternary">
-                      {column.label}
-                    </h4>
+                    <h4 className="text-sm font-semibold text-tertiary">{column.label}</h4>
                     <ul className="mt-4 flex flex-col gap-3">
                       {column.items?.map((item, itemIndex) => (
                         <li key={itemIndex}>
@@ -81,15 +79,11 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
                             <UUIButton
                               link={item.link}
                               label={item.link?.label || `Item ${itemIndex + 1}`}
+                              color="link"
                               className="gap-1"
                             />
                             {item.badge?.text && (
-                              <Badge
-                                color="gray"
-                                type="modern"
-                                size="sm"
-                                className="ml-1"
-                              >
+                              <Badge size="sm" className="ml-1">
                                 {item.badge.text}
                               </Badge>
                             )}
@@ -114,7 +108,9 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
               <ul className="flex gap-6">
                 {socialLinks.map((social, index) => {
                   const IconComponent = socialIconMap[social.platform as keyof typeof socialIconMap]
-                  const label = socialLabelMap[social.platform as keyof typeof socialLabelMap] || social.platform
+                  const label =
+                    socialLabelMap[social.platform as keyof typeof socialLabelMap] ||
+                    social.platform
 
                   if (!IconComponent || !social.url || !social.platform) return null
 

@@ -42,7 +42,7 @@ const BlogCardComponent: React.FC<{
   sizes?: string
 }> = ({ article, imageClassName, priority = false, sizes }) => (
   <article className="flex flex-col gap-4">
-    <Link href={article.href} className="overflow-hidden rounded-md" tabIndex={-1}>
+    <Link href={article.href} className="overflow-hidden rounded-xl" tabIndex={-1}>
       <OptimizedImage
         resource={article.thumbnailMedia}
         src={!article.thumbnailMedia ? article.thumbnailUrl : undefined}
@@ -69,9 +69,7 @@ const BlogCardComponent: React.FC<{
                 href={category.href}
                 className="text-sm font-semibold text-brand-secondary transition-colors hover:text-brand-secondary_hover"
               >
-                <Badge size="sm" color="brand" type="modern">
-                  {category.name}
-                </Badge>
+                <Badge size="sm">{category.name}</Badge>
               </Link>
             ))}
           </div>
@@ -101,9 +99,7 @@ const BlogCardComponent: React.FC<{
       {/* Author / Meta Info */}
       {(article.displayAuthor || article.displayDate || article.displayReadingTime) && (
         <div className="flex items-center gap-3 text-sm text-tertiary">
-          {article.displayAuthor && (
-            <span>{article.author.name}</span>
-          )}
+          {article.displayAuthor && <span>{article.author.name}</span>}
 
           {article.displayDate && (
             <>

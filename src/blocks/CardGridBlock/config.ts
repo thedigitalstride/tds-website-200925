@@ -277,6 +277,22 @@ export const CardGridBlock: Block = {
             description: 'Vertical spacing around this section',
           },
         },
+        {
+          name: 'gridSpacing',
+          type: 'select',
+          defaultValue: 'default',
+          label: 'Grid Spacing',
+          options: [
+            { label: 'Default (Auto)', value: 'default' },
+            { label: 'Compact (1rem)', value: 'compact' },
+            { label: 'Normal (1.5rem)', value: 'normal' },
+            { label: 'Large (2rem)', value: 'large' },
+            { label: 'XL (3rem)', value: 'xl' },
+          ],
+          admin: {
+            description: 'Spacing between cards in the grid. Default automatically adjusts for centered-icon and elevated-box layouts.',
+          },
+        },
       ],
     },
   ],

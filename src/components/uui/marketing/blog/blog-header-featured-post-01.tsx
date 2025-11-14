@@ -26,23 +26,6 @@ const articles: Article[] = [
             href: "#",
             avatarUrl: "https://www.untitledui.com/images/avatars/olivia-rhye?fm=webp&q=80",
         },
-        tags: [
-            {
-                name: "Design",
-                color: "brand",
-                href: "#",
-            },
-            {
-                name: "Research",
-                color: "indigo",
-                href: "#",
-            },
-            {
-                name: "Presentation",
-                color: "pink",
-                href: "#",
-            },
-        ],
         isFeatured: true,
     },
     {
@@ -62,23 +45,6 @@ const articles: Article[] = [
             href: "#",
             avatarUrl: "https://www.untitledui.com/images/avatars/phoenix-baker?fm=webp&q=80",
         },
-        tags: [
-            {
-                name: "Product",
-                color: "blue-light",
-                href: "#",
-            },
-            {
-                name: "Tools",
-                color: "pink",
-                href: "#",
-            },
-            {
-                name: "SaaS",
-                color: "pink",
-                href: "#",
-            },
-        ],
     },
     {
         id: "article-3",
@@ -97,18 +63,6 @@ const articles: Article[] = [
             href: "#",
             avatarUrl: "https://www.untitledui.com/images/avatars/lana-steiner?fm=webp&q=80",
         },
-        tags: [
-            {
-                name: "Software Development",
-                color: "success",
-                href: "#",
-            },
-            {
-                name: "Tools",
-                color: "pink",
-                href: "#",
-            },
-        ],
     },
     {
         id: "article-3.5",
@@ -127,18 +81,6 @@ const articles: Article[] = [
             href: "#",
             avatarUrl: "https://www.untitledui.com/images/avatars/alec-whitten?fm=webp&q=80",
         },
-        tags: [
-            {
-                name: "Leadership",
-                color: "brand",
-                href: "#",
-            },
-            {
-                name: "Management",
-                color: "gray-blue",
-                href: "#",
-            },
-        ],
     },
     {
         id: "article-4",
@@ -157,23 +99,6 @@ const articles: Article[] = [
             href: "#",
             avatarUrl: "https://www.untitledui.com/images/avatars/demi-wilkinson?fm=webp&q=80",
         },
-        tags: [
-            {
-                name: "Product",
-                color: "blue-light",
-                href: "#",
-            },
-            {
-                name: "Research",
-                color: "indigo",
-                href: "#",
-            },
-            {
-                name: "Frameworks",
-                color: "orange",
-                href: "#",
-            },
-        ],
     },
     {
         id: "article-5",
@@ -192,18 +117,6 @@ const articles: Article[] = [
             href: "#",
             avatarUrl: "https://www.untitledui.com/images/avatars/candice-wu?fm=webp&q=80",
         },
-        tags: [
-            {
-                name: "Design",
-                color: "brand",
-                href: "#",
-            },
-            {
-                name: "Research",
-                color: "indigo",
-                href: "#",
-            },
-        ],
     },
     {
         id: "article-6",
@@ -222,18 +135,6 @@ const articles: Article[] = [
             href: "#",
             avatarUrl: "https://www.untitledui.com/images/avatars/natali-craig?fm=webp&q=80",
         },
-        tags: [
-            {
-                name: "Design",
-                color: "brand",
-                href: "#",
-            },
-            {
-                name: "Research",
-                color: "indigo",
-                href: "#",
-            },
-        ],
     },
     {
         id: "article-7",
@@ -252,23 +153,6 @@ const articles: Article[] = [
             href: "#",
             avatarUrl: "https://www.untitledui.com/images/avatars/drew-cano?fm=webp&q=80",
         },
-        tags: [
-            {
-                name: "Software Development",
-                color: "success",
-                href: "#",
-            },
-            {
-                name: "Tools",
-                color: "pink",
-                href: "#",
-            },
-            {
-                name: "SaaS",
-                color: "pink",
-                href: "#",
-            },
-        ],
     },
     {
         id: "article-8",
@@ -287,18 +171,6 @@ const articles: Article[] = [
             href: "#",
             avatarUrl: "https://www.untitledui.com/images/avatars/orlando-diggs?fm=webp&q=80",
         },
-        tags: [
-            {
-                name: "Podcasts",
-                color: "brand",
-                href: "#",
-            },
-            {
-                name: "Customer Success",
-                color: "gray-blue",
-                href: "#",
-            },
-        ],
     },
 ];
 const tabs = [
@@ -355,23 +227,6 @@ const featuredArticle: Article = {
         href: "#",
         avatarUrl: "https://www.untitledui.com/images/avatars/amelie-laurent?fm=webp&q=80",
     },
-    tags: [
-        {
-            name: "Design",
-            color: "gray",
-            href: "#",
-        },
-        {
-            name: "Research",
-            color: "gray",
-            href: "#",
-        },
-        {
-            name: "Presentation",
-            color: "gray",
-            href: "#",
-        },
-    ],
 };
 
 export const BlogHeaderFeaturedPost01 = () => {

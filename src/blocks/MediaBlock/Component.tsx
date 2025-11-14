@@ -37,7 +37,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
     <figure className={className}>
       {(media || staticImage) && (
         <Media
-          imgClassName={cn('w-full !rounded-2xl !my-0', imgClassName)}
+          imgClassName={cn('w-full !rounded-xl !my-0', imgClassName)}
           resource={media}
           src={staticImage}
         />

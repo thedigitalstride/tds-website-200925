@@ -212,7 +212,7 @@ export const Header = ({
       )}
     >
       {/* Header bar */}
-      <div className="flex h-14 w-full items-center px-4 py-1 md:h-17 md:px-5 md:py-2">
+      <div className="flex h-14 w-full items-center px-4 py-1 md:h-17 md:px-8 md:py-2">
         <div
           className={cx(
             'w-full flex items-center justify-between',
