@@ -4,7 +4,11 @@ import React from 'react'
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 
-export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
+interface ExtendedContentBlockProps extends Omit<ContentBlockProps, 'cardSpacing'> {
+  cardSpacing?: 'default' | 'compact' | 'normal' | 'large' | 'xl'
+}
+
+export const ContentBlock: React.FC<ExtendedContentBlockProps> = (props) => {
   const { columns, spacing, contentAlignment, cardSpacing } = props
 
   const colsSpanClasses = {

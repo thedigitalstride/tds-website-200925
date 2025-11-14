@@ -434,7 +434,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
           {subtitle && (
             <div
               className={cn(
-                'max-w-[75%]',
+                'max-w-full lg:max-w-[75%]',
                 finalTextAlignment === 'center' && 'mx-auto'
               )}
             >

@@ -7,7 +7,10 @@ import { cn } from '@/utilities/ui'
 import type { BackgroundVariant } from '@/utilities/backgroundVariants'
 import { InlineCard } from '@/components/cards/InlineCard'
 
-interface ExtendedCardGridBlockProps extends CardGridBlockProps {
+interface ExtendedCardGridBlockProps extends Omit<CardGridBlockProps, 'cardBackground' | 'iconColor' | 'gridSpacing'> {
+  cardBackground?: 'none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline' | 'line'
+  iconColor?: 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline'
+  gridSpacing?: 'default' | 'compact' | 'normal' | 'large' | 'xl'
   disableInnerContainer?: boolean
 }
 
