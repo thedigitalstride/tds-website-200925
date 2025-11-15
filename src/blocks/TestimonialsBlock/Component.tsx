@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { AnimatePresence, type Transition, motion } from 'motion/react'
 import type { Media as MediaType } from '@/payload-types'
 import { PaginationDot } from '@/components/uui/application/pagination/pagination-dot'
@@ -96,11 +96,30 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps> = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
 
-  // Filter out invalid testimonials and get valid array
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const testimonials = (selectedTestimonials?.filter(
-    (t: any): t is TestimonialItem => typeof t === 'object' && t !== null,
-  ) || []) as TestimonialItem[]
+  // Preserve order of selected testimonials
+  const testimonials = useMemo(() => {
+    if (!selectedTestimonials?.length) return []
+
+    // Extract testimonial IDs in the order they were selected
+    const testimonialIds = selectedTestimonials
+      .map((t: any) => (typeof t === 'object' && t !== null ? t.id : t))
+      .filter((id): id is number => typeof id === 'number')
+
+    // Filter out invalid testimonials
+    const validTestimonials = selectedTestimonials.filter(
+      (t: any): t is TestimonialItem => typeof t === 'object' && t !== null,
+    ) as TestimonialItem[]
+
+    // Sort testimonials to match the selection order
+    return validTestimonials.sort((a, b) => {
+      const aIndex = testimonialIds.indexOf(a.id)
+      const bIndex = testimonialIds.indexOf(b.id)
+      // If ID not found, put at end
+      if (aIndex === -1) return 1
+      if (bIndex === -1) return -1
+      return aIndex - bIndex
+    })
+  }, [selectedTestimonials])
 
   const totalTestimonials = testimonials.length
 
