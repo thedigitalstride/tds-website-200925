@@ -35,7 +35,7 @@ export const TestimonialsBlock: Block = {
       min: 3,
       max: 30,
       admin: {
-        condition: (data) => data.enableAutoRotation === true,
+        condition: (_, siblingData) => siblingData?.enableAutoRotation === true,
         description: 'How long to display each testimonial before transitioning to the next (3-30 seconds)',
       },
     },

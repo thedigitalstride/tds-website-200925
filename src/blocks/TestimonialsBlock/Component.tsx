@@ -103,7 +103,7 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps> = ({
     // Extract testimonial IDs in the order they were selected
     const testimonialIds = selectedTestimonials
       .map((t: any) => (typeof t === 'object' && t !== null ? t.id : t))
-      .filter((id): id is number => typeof id === 'number')
+      .filter((id: unknown): id is number => typeof id === 'number')
 
     // Filter out invalid testimonials
     const validTestimonials = selectedTestimonials.filter(
