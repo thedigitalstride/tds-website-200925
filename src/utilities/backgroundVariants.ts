@@ -7,14 +7,14 @@
  */
 
 export type BackgroundVariant =
-  | 'none'               // No background (transparent)
-  | 'primary'            // Primary: white bg in light, dark bg in dark
-  | 'primary-reversed'   // Primary reversed: dark bg in light, white bg in dark
-  | 'secondary'          // Secondary/outlined style (transparent with border)
-  | 'tertiary'           // Tertiary: light greay across both light and dark modes
-  | 'accent'             // Accent blue solid color
-  | 'outline'            // Outline: transparent with gray border
-  | 'line'               // Top border only (cards only)
+  | 'none' // No background (transparent)
+  | 'primary' // Primary: white bg in light, dark bg in dark
+  | 'primary-reversed' // Primary reversed: dark bg in light, white bg in dark
+  | 'secondary' // Secondary/outlined style (transparent with border)
+  | 'tertiary' // Tertiary: light greay across both light and dark modes
+  | 'accent' // Accent blue solid color
+  | 'outline' // Outline: transparent with gray border
+  | 'line' // Top border only (cards only)
 
 /**
  * Returns Tailwind classes for background variants
@@ -26,23 +26,101 @@ export type BackgroundVariant =
 export function getBackgroundClasses(variant: BackgroundVariant): string {
   switch (variant) {
     case 'none':
-      return ''  // No background (transparent)
+      return '' // No background (transparent)
     case 'primary':
-      return 'bg-primary'  // Dark blue in light, white in dark
+      return 'bg-primary' // Dark blue in light, white in dark
     case 'primary-reversed':
-      return 'bg-primary-reversed'  // White in light, dark blue in dark
+      return 'bg-primary-reversed' // White in light, dark blue in dark
     case 'secondary':
-      return 'bg-secondary'  // Light gray in light mode, dark blue in dark mode
+      return 'bg-secondary' // Light gray in light mode, dark blue in dark mode
     case 'tertiary':
-      return 'bg-transparent ring-2 ring-accent-solid ring-inset'  // Transparent with accent ring
+      return 'bg-transparent ring-2 ring-accent-solid ring-inset' // Transparent with accent ring
     case 'accent':
-      return 'bg-accent'  // Accent blue background with white text
+      return 'bg-accent' // Accent blue background with white text
     case 'outline':
-      return 'bg-transparent ring-2 ring-outline ring-inset'  // Transparent with gray outline
+      return 'bg-transparent ring-2 ring-outline ring-inset' // Transparent with gray outline
     case 'line':
-      return 'border-t-2 border-tertiary'  // Top border only
+      return 'border-t-2 border-tertiary' // Top border only
     default:
       return 'bg-primary'
+  }
+}
+
+/**
+ * Returns text color classes for different content types based on background variant
+ * Ensures proper contrast and readability across all background styles
+ * Matches the logic used in InlineCard component
+ *
+ * @param variant - The background variant being used
+ * @returns Object with text color classes for different content types
+ */
+export function getTextColorClasses(variant: BackgroundVariant) {
+  switch (variant) {
+    case 'primary':
+      return {
+        heading: 'text-white dark:text-brand-500',
+        body: 'text-white dark:text-brand-500',
+        muted: 'text-white dark:text-brand-500 opacity-80',
+        accent: 'text-accent-500', // Preserve accent color on primary background
+        richText: '[&]:text-white! dark:[&]:text-brand-500! **:text-white! dark:**:text-brand-500!',
+      }
+    case 'accent':
+      return {
+        heading: 'text-white',
+        body: 'text-white',
+        muted: 'text-white opacity-80',
+        accent: 'text-primary', // Use primary (dark) text for accent elements on accent background
+        richText: '[&]:text-white! **:text-white!',
+      }
+    case 'primary-reversed':
+      return {
+        heading: 'text-brand-500 dark:text-white',
+        body: 'text-brand-500 dark:text-white',
+        muted: 'text-brand-500 dark:text-white opacity-80',
+        accent: 'text-accent-500', // Preserve accent color on primary-reversed background
+        richText: '[&]:text-brand-500! dark:[&]:text-white! **:text-brand-500! dark:**:text-white!',
+      }
+    case 'secondary':
+      return {
+        heading: 'text-gray-900 dark:text-white',
+        body: 'text-gray-900 dark:text-white',
+        muted: 'text-gray-900 dark:text-white opacity-70',
+        accent: 'text-accent-500', // Preserve accent color on secondary background
+        richText: '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+      }
+    case 'tertiary':
+      return {
+        heading: 'text-gray-900 dark:text-white',
+        body: 'text-gray-900 dark:text-white',
+        muted: 'text-gray-900 dark:text-white opacity-70',
+        accent: 'text-accent-500', // Preserve accent color on tertiary background
+        richText: '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+      }
+    case 'outline':
+      return {
+        heading: 'text-gray-900 dark:text-white',
+        body: 'text-gray-900 dark:text-white',
+        muted: 'text-gray-900 dark:text-white opacity-70',
+        accent: 'text-accent-500', // Preserve accent color on outline background
+        richText: '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+      }
+    case 'line':
+      return {
+        heading: 'text-gray-900 dark:text-white',
+        body: 'text-gray-900 dark:text-white',
+        muted: 'text-gray-900 dark:text-white opacity-70',
+        accent: 'text-accent-500', // Preserve accent color on line background
+        richText: '[&]:text-brand-900! dark:[&]:text-white! **:text-brand-900! dark:**:text-white!',
+      }
+    case 'none':
+    default:
+      return {
+        heading: 'text-primary',
+        body: 'text-secondary',
+        muted: 'text-tertiary',
+        accent: 'text-accent-500', // Preserve accent color on transparent background
+        richText: '',
+      }
   }
 }
 
@@ -91,7 +169,7 @@ export const backgroundVariantFieldOptions = [
  * Background variant options for Hero blocks (excludes line variant)
  */
 export const heroBackgroundVariantFieldOptions = backgroundVariantFieldOptions.filter(
-  option => option.value !== 'line'
+  (option) => option.value !== 'line',
 )
 
 /**
