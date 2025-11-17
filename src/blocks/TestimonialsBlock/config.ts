@@ -1,4 +1,5 @@
 import type { Block } from 'payload'
+import { createBackgroundVariantField } from '@/utilities/backgroundVariants'
 
 export const TestimonialsBlock: Block = {
   slug: 'testimonials',
@@ -18,14 +19,23 @@ export const TestimonialsBlock: Block = {
       },
     },
     {
+      name: 'enableAutoRotation',
+      type: 'checkbox',
+      label: 'Enable Auto-Rotation',
+      defaultValue: true,
+      admin: {
+        description: 'Automatically cycle through testimonials',
+      },
+    },
+    {
       name: 'rotationDelay',
       type: 'number',
       label: 'Rotation Delay (seconds)',
       defaultValue: 8,
       min: 3,
       max: 30,
-      required: true,
       admin: {
+        condition: (_, siblingData) => siblingData?.enableAutoRotation === true,
         description: 'How long to display each testimonial before transitioning to the next (3-30 seconds)',
       },
     },
@@ -37,45 +47,12 @@ export const TestimonialsBlock: Block = {
         description: 'Configure card background and spacing',
       },
       fields: [
-        {
+        createBackgroundVariantField({
           name: 'cardBackground',
-          type: 'select',
           label: 'Card Background',
           defaultValue: 'none',
-          options: [
-            {
-              label: 'None (Transparent)',
-              value: 'none',
-            },
-            {
-              label: 'Primary',
-              value: 'primary',
-            },
-            {
-              label: 'Primary (Reversed)',
-              value: 'primary-reversed',
-            },
-            {
-              label: 'Secondary',
-              value: 'secondary',
-            },
-            {
-              label: 'Tertiary',
-              value: 'tertiary',
-            },
-            {
-              label: 'Accent',
-              value: 'accent',
-            },
-            {
-              label: 'Outline',
-              value: 'outline',
-            },
-          ],
-          admin: {
-            description: 'Visual style for the testimonial card',
-          },
-        },
+          description: 'Visual style for the testimonial card',
+        }),
         {
           name: 'spacing',
           type: 'select',
