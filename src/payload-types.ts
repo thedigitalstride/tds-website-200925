@@ -65,7 +65,12 @@ export interface Config {
   auth: {
     users: UserAuthOperations;
   };
-  blocks: {};
+  blocks: {
+    richText: RichTextBlock;
+    inlineCard: InlineCardBlock;
+    mediaBlock: MediaBlock;
+    spacer: SpacerBlock;
+  };
   collections: {
     pages: Page;
     posts: Post;
@@ -73,7 +78,9 @@ export interface Config {
     categories: Category;
     faqs: Faq;
     icons: Icon;
+    testimonials: Testimonial;
     users: User;
+    accounts: Account;
     'ai-logs': AiLog;
     redirects: Redirect;
     forms: Form;
@@ -92,7 +99,9 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     icons: IconsSelect<false> | IconsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    accounts: AccountsSelect<false> | AccountsSelect<true>;
     'ai-logs': AiLogsSelect<false> | AiLogsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -104,7 +113,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   globals: {
     header: Header;
@@ -155,224 +164,13 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
+ * via the `definition` "RichTextBlock".
  */
-export interface Page {
-  id: number;
-  title: string;
-  layout?:
-    | (
-        | HeroHeadingBlock
-        | BackgroundSection
-        | BreadcrumbBlock
-        | CallToActionBlock
-        | ContentBlock
-        | MediaBlock
-        | ArchiveBlock
-        | FormBlock
-        | CardGridBlock
-        | FeaturesBlock
-        | LatestPostsBlock
-        | AccordionBlock
-      )[]
-    | null;
+export interface RichTextBlock {
   /**
-   * Enter target keywords for this page (one per line or comma-separated). AI will use these to optimize the meta title and description.
+   * Add formatted text, headings, lists, links, and more
    */
-  seoKeywords?: string | null;
-  /**
-   * Optional: Provide specific guidance for AI generation (tone, focus areas, unique selling points, target audience, etc.)
-   */
-  seoGuidance?: string | null;
-  /**
-   * Click "Generate Title" to create an SEO-optimized title using AI based on page content and keywords. This will automatically populate the SEO tab.
-   */
-  aiSeoTitle?: string | null;
-  /**
-   * Click "Generate Description" to create an SEO-optimized description using AI based on page content and keywords. This will automatically populate the SEO tab.
-   */
-  aiSeoDescription?: string | null;
-  publishedAt?: string | null;
-  slug: string;
-  slugLock?: boolean | null;
-  /**
-   * Check this to exclude this page from the sitemap
-   */
-  excludeFromSitemap?: boolean | null;
-  /**
-   * Priority of this page relative to other pages (0.0 to 1.0). Leave empty for automatic priority.
-   */
-  sitemapPriority?: number | null;
-  /**
-   * How frequently the page is likely to change. Leave empty for automatic frequency.
-   */
-  sitemapChangefreq?: ('always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never') | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  parent?: (number | null) | Page;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Page;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroHeadingBlock".
- */
-export interface HeroHeadingBlock {
-  /**
-   * Choose the hero layout style. Split Image displays content on left with optional image on right. Standard Contained is a clean, boxed layout without backgrounds.
-   */
-  heroLayout?: ('standard' | 'splitImage' | 'standardContained') | null;
-  /**
-   * Main headline text. Use line breaks to create multiple lines that will scale responsively.
-   */
-  headline: string;
-  /**
-   * Subtitle text displayed below the headline
-   */
-  subtitle?: string | null;
-  /**
-   * Enable typewriter animation effect for the headline (only available for Standard layout)
-   */
-  enableTypewriter?: boolean | null;
-  /**
-   * Color scheme for the headline. Primary adapts to light/dark modes, White stays white in both modes, Accent Blue is always accent color.
-   */
-  headlineColor?: ('primary' | 'white' | 'brand') | null;
-  /**
-   * Text alignment for headline and subtitle (not available for Split Image layout)
-   */
-  textAlignment?: ('left' | 'center') | null;
-  /**
-   * Vertical spacing around the hero section
-   */
-  spacing?: ('spacious' | 'normal' | 'compact' | 'minimal') | null;
-  /**
-   * Size variant for the subtitle text - Small reduces to 75% of normal size
-   */
-  subtitleSize?: ('small' | 'normal') | null;
-  /**
-   * Background style for the contained layout
-   */
-  heroBackground?: ('none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent') | null;
-  /**
-   * Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile). Alt text is automatically used from the media upload.
-   */
-  splitImage?: (number | null) | Media;
-  /**
-   * Add up to 2 CTA buttons (e.g., "Get Started", "Learn More")
-   */
-  buttons?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Button color variant from UntitledUI design system
-           */
-          uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary') | null;
-          /**
-           * Button size variant
-           */
-          uuiSize?: ('md' | 'lg' | 'xl') | null;
-          /**
-           * Select an icon from the Icons collection and configure its position relative to button text
-           */
-          buttonIconConfig?: {
-            /**
-             * Select an icon to display in the button
-             */
-            icon?: (number | null) | Icon;
-            /**
-             * Position of the icon relative to button text
-             */
-            position?: ('leading' | 'trailing') | null;
-          };
-          /**
-           * Legacy field - use buttonIconConfig instead
-           */
-          buttonIcon?: string | null;
-          /**
-           * Legacy field - use buttonIconConfig instead
-           */
-          iconPos?: ('leading' | 'trailing') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Add custom background with image, gradient, or custom styling (only available for Standard layout)
-   */
-  bg?: {
-    /**
-     * Toggle to enable background customization
-     */
-    enabled?: boolean | null;
-    /**
-     * Choose how tall the hero section should be. Full Height creates a full-screen hero that extends behind the header.
-     */
-    heightVariant?: ('default' | 'fullHeight') | null;
-    /**
-     * Background type - choose gradient for CSS gradients, image for uploads, or custom for animation containers
-     */
-    type?: ('none' | 'gradient' | 'image' | 'custom') | null;
-    /**
-     * Pre-configured gradient styles using theme colors
-     */
-    gradient?: ('brand-radial' | 'accent-gradient' | 'dark-light') | null;
-    /**
-     * Upload background image - will be optimized automatically
-     */
-    image?: (number | null) | Media;
-    /**
-     * Overlay darkness (0-100) - helps ensure text readability over images
-     */
-    imageOpacity?: number | null;
-    /**
-     * Custom CSS class for animation containers or React-based effects
-     */
-    customClass?: string | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'heroHeading';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Alt text for accessibility. Leave empty to auto-generate with AI, or click "Generate ALT Tag" button.
-   */
-  alt?: string | null;
-  caption?: {
+  content?: {
     root: {
       type: string;
       children: {
@@ -387,114 +185,31 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    square?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    'card-mobile'?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    small?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    large?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    xlarge?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    og?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richText';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "InlineCardBlock".
  */
-export interface Post {
-  id: number;
-  title: string;
+export interface InlineCardBlock {
   /**
-   * Lead paragraph that appears under the title
+   * Select an icon from the Icons collection to display in the card
    */
-  subtitle?: string | null;
+  icon?: (string | null) | Icon;
   /**
-   * Blocks displayed before the post content (breadcrumbs always included by default)
+   * Small text above card title (e.g., "New", "Featured", "Step 01")
    */
-  beforeContent?: BreadcrumbBlock[] | null;
+  eyebrow?: string | null;
   /**
-   * Optional table of contents for the sidebar
+   * Main heading for this card (e.g., "Fast Delivery", "Expert Support")
    */
-  tableOfContents?:
-    | {
-        title: string;
-        /**
-         * Link to section (e.g., #introduction)
-         */
-        href: string;
-        id?: string | null;
-      }[]
-    | null;
-  heroImage?: (number | null) | Media;
-  content: {
+  title?: string | null;
+  /**
+   * Rich description with headings, formatting, lists, and links
+   */
+  description?: {
     root: {
       type: string;
       children: {
@@ -508,221 +223,76 @@ export interface Post {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
   /**
-   * Optional blocks to display after the main post content
+   * Add an optional call-to-action link or button
    */
-  afterContent?: (LatestPostsBlock | CallToActionBlock | MediaBlock)[] | null;
-  /**
-   * Enter target keywords for this post (one per line or comma-separated). AI will use these to optimize the meta title and description.
-   */
-  seoKeywords?: string | null;
-  /**
-   * Optional: Provide specific guidance for AI generation (tone, focus areas, unique selling points, target audience, etc.)
-   */
-  seoGuidance?: string | null;
-  /**
-   * Click "Generate Title" to create an SEO-optimized title using AI based on post content and keywords. This will automatically populate the SEO tab.
-   */
-  aiSeoTitle?: string | null;
-  /**
-   * Click "Generate Description" to create an SEO-optimized description using AI based on post content and keywords. This will automatically populate the SEO tab.
-   */
-  aiSeoDescription?: string | null;
-  relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
-  /**
-   * People who contributed to this post (separate from authors)
-   */
-  contributors?: (number | User)[] | null;
-  publishedAt?: string | null;
-  authors?: (number | User)[] | null;
-  slug: string;
-  slugLock?: boolean | null;
-  /**
-   * Check this to exclude this post from the sitemap
-   */
-  excludeFromSitemap?: boolean | null;
-  /**
-   * Priority of this post relative to other pages (0.0 to 1.0). Leave empty for automatic priority based on recency.
-   */
-  sitemapPriority?: number | null;
-  /**
-   * How frequently the post is likely to change. Leave empty for automatic frequency based on age.
-   */
-  sitemapChangefreq?: ('always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never') | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
+  enableLink?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: string | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: string | Post;
+        } | null);
+    url?: string | null;
+    label: string;
     /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     * Button color variant from UntitledUI design system
      */
-    image?: (number | null) | Media;
-  };
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-        nickname?: string | null;
-        avatar?: (number | null) | Media;
-      }[]
-    | null;
-  populatedContributors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-        nickname?: string | null;
-        avatar?: (number | null) | Media;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BreadcrumbBlock".
- */
-export interface BreadcrumbBlock {
-  /**
-   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
-   */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'breadcrumb';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LatestPostsBlock".
- */
-export interface LatestPostsBlock {
-  header?: {
+    uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'outline' | 'link') | null;
     /**
-     * Toggle to show/hide the header section
+     * Button size variant
      */
-    showHeader?: boolean | null;
+    uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
     /**
-     * Small text above heading (e.g., "Our blog")
+     * Select an icon from the Icons collection and configure its position relative to button text
      */
-    eyebrow?: string | null;
-    /**
-     * Main heading for the blog section
-     */
-    heading?: string | null;
-    /**
-     * Description text that appears below the heading
-     */
-    description?: string | null;
-  };
-  /**
-   * Choose between automatically showing latest posts or manually selecting specific posts
-   */
-  contentSource?: ('latest' | 'manual') | null;
-  opts?: {
-    /**
-     * How many latest posts to display
-     */
-    numPosts?: ('3' | '6' | '9' | '12') | null;
-    /**
-     * Optional: Show only posts from these categories (OR logic - matches any)
-     */
-    categoryFilter?: (number | Category)[] | null;
-    /**
-     * Optional: Hide these posts even if they match other filters
-     */
-    excludePosts?: (number | Post)[] | null;
-    /**
-     * How to sort the posts
-     */
-    sortBy?: ('date-desc' | 'date-asc' | 'title-asc' | 'title-desc') | null;
-    /**
-     * Show featured posts at the beginning, regardless of sort order
-     */
-    showFeaturedFirst?: boolean | null;
-  };
-  /**
-   * Manually select which posts to display
-   */
-  selectedPosts?: (number | Post)[] | null;
-  buttonConfig?: {
-    /**
-     * Toggle to show/hide the button that links to all posts
-     */
-    showButton?: boolean | null;
-    link?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null);
-      url?: string | null;
-      label: string;
+    buttonIconConfig?: {
       /**
-       * Button color variant from UntitledUI design system
+       * Select an icon to display in the button
        */
-      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      icon?: (string | null) | Icon;
       /**
-       * Button size variant
+       * Position of the icon relative to button text
        */
-      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-      /**
-       * Select an icon from the Icons collection and configure its position relative to button text
-       */
-      buttonIconConfig?: {
-        /**
-         * Select an icon to display in the button
-         */
-        icon?: (number | null) | Icon;
-        /**
-         * Position of the icon relative to button text
-         */
-        position?: ('leading' | 'trailing') | null;
-      };
-      /**
-       * Legacy field - use buttonIconConfig instead
-       */
-      buttonIcon?: string | null;
-      /**
-       * Legacy field - use buttonIconConfig instead
-       */
-      iconPos?: ('leading' | 'trailing') | null;
+      position?: ('leading' | 'trailing') | null;
     };
+    /**
+     * Legacy field - use buttonIconConfig instead
+     */
+    buttonIcon?: string | null;
+    /**
+     * Legacy field - use buttonIconConfig instead
+     */
+    iconPos?: ('leading' | 'trailing') | null;
   };
   /**
-   * Vertical spacing around this section
+   * Layout arrangement for card (icon position and alignment)
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  cardStyle?: ('card' | 'centered-icon' | 'left-icon' | 'horizontal-icon' | 'elevated-box') | null;
+  /**
+   * Visual style for card (background and borders)
+   */
+  cardBackground?:
+    | ('none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline' | 'line')
+    | null;
+  /**
+   * Icon style variant - matches button and card background system
+   */
+  iconColor?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline') | null;
+  /**
+   * Shape of the icon container
+   */
+  iconTheme?: ('rounded-square' | 'round') | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'latestPosts';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  parent?: (number | null) | Category;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
+  blockType: 'inlineCard';
 }
 /**
  * Manage SVG icons for use throughout the site
@@ -731,7 +301,7 @@ export interface Category {
  * via the `definition` "icons".
  */
 export interface Icon {
-  id: number;
+  id: string;
   /**
    * Unique identifier for the icon (e.g., "home", "settings")
    */
@@ -846,12 +416,579 @@ export interface Icon {
      */
     locations?:
       | {
-          collection?: string | null;
+          collectionSlug?: string | null;
           field?: string | null;
           id?: string | null;
         }[]
       | null;
   };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: string;
+  title: string;
+  layout?:
+    | (
+        | HeroHeadingBlock
+        | BackgroundSection
+        | BreadcrumbBlock
+        | CallToActionBlock
+        | ContentBlock
+        | MediaBlock
+        | ArchiveBlock
+        | FormBlock
+        | CardGridBlock
+        | LatestPostsBlock
+        | TestimonialsBlock
+        | AccordionBlock
+      )[]
+    | null;
+  /**
+   * Enter target keywords for this page (one per line or comma-separated). AI will use these to optimize the meta title and description.
+   */
+  seoKeywords?: string | null;
+  /**
+   * Optional: Provide specific guidance for AI generation (tone, focus areas, unique selling points, target audience, etc.)
+   */
+  seoGuidance?: string | null;
+  /**
+   * Click "Generate Title" to create an SEO-optimized title using AI based on page content and keywords. This will automatically populate the SEO tab.
+   */
+  aiSeoTitle?: string | null;
+  /**
+   * Click "Generate Description" to create an SEO-optimized description using AI based on page content and keywords. This will automatically populate the SEO tab.
+   */
+  aiSeoDescription?: string | null;
+  publishedAt?: string | null;
+  slug: string;
+  slugLock?: boolean | null;
+  /**
+   * Check this to exclude this page from the sitemap
+   */
+  excludeFromSitemap?: boolean | null;
+  /**
+   * Priority of this page relative to other pages (0.0 to 1.0). Leave empty for automatic priority.
+   */
+  sitemapPriority?: number | null;
+  /**
+   * How frequently the page is likely to change. Leave empty for automatic frequency.
+   */
+  sitemapChangefreq?: ('always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never') | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+  };
+  parent?: (string | null) | Page;
+  breadcrumbs?:
+    | {
+        doc?: (string | null) | Page;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroHeadingBlock".
+ */
+export interface HeroHeadingBlock {
+  /**
+   * Choose the hero layout style. Split Image displays content on left with optional image on right. Standard Contained is a clean, boxed layout without backgrounds.
+   */
+  heroLayout?: ('standard' | 'splitImage' | 'standardContained') | null;
+  /**
+   * Main headline text. Use line breaks to create multiple lines that will scale responsively.
+   */
+  headline: string;
+  /**
+   * Subtitle text displayed below the headline
+   */
+  subtitle?: string | null;
+  /**
+   * Background style for the contained layout
+   */
+  heroBackground?: ('none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline') | null;
+  /**
+   * Color scheme for the headline. Primary adapts to light/dark modes, White stays white in both modes, Accent Blue is always accent color.
+   */
+  headlineColor?: ('primary' | 'white' | 'brand') | null;
+  /**
+   * Color scheme for the subheading. Primary is dark in light mode/white in dark mode, Primary Reversed is white in light mode/dark in dark mode, White stays white in both modes, Accent Blue is always accent color.
+   */
+  subheadingColor?: ('primary' | 'primary-reversed' | 'white' | 'brand') | null;
+  /**
+   * Text alignment for headline and subtitle (not available for Split Image layout)
+   */
+  textAlignment?: ('left' | 'center') | null;
+  /**
+   * Vertical spacing around the hero section
+   */
+  spacing?: ('spacious' | 'normal' | 'compact' | 'minimal') | null;
+  /**
+   * Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile). Alt text is automatically used from the media upload.
+   */
+  splitImage?: (string | null) | Media;
+  /**
+   * Add up to 2 CTA buttons (e.g., "Get Started", "Learn More")
+   */
+  buttons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Button color variant from UntitledUI design system
+           */
+          uuiColor?: ('primary' | 'primary-reversed' | 'secondary' | 'accent' | 'tertiary' | 'outline') | null;
+          /**
+           * Button size variant
+           */
+          uuiSize?: ('md' | 'lg' | 'xl') | null;
+          /**
+           * Select an icon from the Icons collection and configure its position relative to button text
+           */
+          buttonIconConfig?: {
+            /**
+             * Select an icon to display in the button
+             */
+            icon?: (string | null) | Icon;
+            /**
+             * Position of the icon relative to button text
+             */
+            position?: ('leading' | 'trailing') | null;
+          };
+          /**
+           * Legacy field - use buttonIconConfig instead
+           */
+          buttonIcon?: string | null;
+          /**
+           * Legacy field - use buttonIconConfig instead
+           */
+          iconPos?: ('leading' | 'trailing') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add custom background with image, gradient, or custom styling (only available for Standard layout)
+   */
+  bg?: {
+    /**
+     * Toggle to enable background customization
+     */
+    enabled?: boolean | null;
+    /**
+     * Choose how tall the hero section should be. Full Height creates a full-screen hero that extends behind the header.
+     */
+    heightVariant?: ('default' | 'fullHeight') | null;
+    /**
+     * Background type - choose gradient for CSS gradients, image for uploads, or custom for animation containers
+     */
+    type?: ('none' | 'gradient' | 'image' | 'custom') | null;
+    /**
+     * Pre-configured gradient styles using theme colors
+     */
+    gradient?: ('brand-radial' | 'accent-gradient' | 'dark-light') | null;
+    /**
+     * Upload background image - will be optimized automatically
+     */
+    image?: (string | null) | Media;
+    /**
+     * Overlay darkness (0-100) - helps ensure text readability over images
+     */
+    imageOpacity?: number | null;
+    /**
+     * Custom CSS class for animation containers or React-based effects
+     */
+    customClass?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroHeading';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  /**
+   * Alt text for accessibility. Leave empty to auto-generate with AI, or click "Generate ALT Tag" button.
+   */
+  alt?: string | null;
+  caption?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    square?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    'card-mobile'?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    large?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    xlarge?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    og?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: string;
+  title: string;
+  /**
+   * Lead paragraph that appears under the title
+   */
+  subtitle?: string | null;
+  /**
+   * Blocks displayed before the post content (breadcrumbs always included by default)
+   */
+  beforeContent?: BreadcrumbBlock[] | null;
+  /**
+   * Optional table of contents for the sidebar
+   */
+  tableOfContents?:
+    | {
+        title: string;
+        /**
+         * Link to section (e.g., #introduction)
+         */
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  heroImage?: (string | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Optional blocks to display after the main post content
+   */
+  afterContent?: (LatestPostsBlock | CallToActionBlock | MediaBlock)[] | null;
+  /**
+   * Enter target keywords for this post (one per line or comma-separated). AI will use these to optimize the meta title and description.
+   */
+  seoKeywords?: string | null;
+  /**
+   * Optional: Provide specific guidance for AI generation (tone, focus areas, unique selling points, target audience, etc.)
+   */
+  seoGuidance?: string | null;
+  /**
+   * Click "Generate Title" to create an SEO-optimized title using AI based on post content and keywords. This will automatically populate the SEO tab.
+   */
+  aiSeoTitle?: string | null;
+  /**
+   * Click "Generate Description" to create an SEO-optimized description using AI based on post content and keywords. This will automatically populate the SEO tab.
+   */
+  aiSeoDescription?: string | null;
+  relatedPosts?: (string | Post)[] | null;
+  categories?: (string | Category)[] | null;
+  /**
+   * People who contributed to this post (separate from authors)
+   */
+  contributors?: (string | User)[] | null;
+  publishedAt?: string | null;
+  authors?: (string | User)[] | null;
+  slug: string;
+  slugLock?: boolean | null;
+  /**
+   * Check this to exclude this post from the sitemap
+   */
+  excludeFromSitemap?: boolean | null;
+  /**
+   * Priority of this post relative to other pages (0.0 to 1.0). Leave empty for automatic priority based on recency.
+   */
+  sitemapPriority?: number | null;
+  /**
+   * How frequently the post is likely to change. Leave empty for automatic frequency based on age.
+   */
+  sitemapChangefreq?: ('always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never') | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+  };
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+        nickname?: string | null;
+        avatar?: (string | null) | Media;
+      }[]
+    | null;
+  populatedContributors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+        nickname?: string | null;
+        avatar?: (string | null) | Media;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BreadcrumbBlock".
+ */
+export interface BreadcrumbBlock {
+  /**
+   * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'breadcrumb';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestPostsBlock".
+ */
+export interface LatestPostsBlock {
+  header?: {
+    /**
+     * Toggle to show/hide the header section
+     */
+    showHeader?: boolean | null;
+    /**
+     * Small text above heading (e.g., "Our blog")
+     */
+    eyebrow?: string | null;
+    /**
+     * Main heading for the blog section
+     */
+    heading?: string | null;
+    /**
+     * Description text that appears below the heading
+     */
+    description?: string | null;
+  };
+  /**
+   * Choose between automatically showing latest posts or manually selecting specific posts
+   */
+  contentSource?: ('latest' | 'manual') | null;
+  opts?: {
+    /**
+     * How many latest posts to display
+     */
+    numPosts?: ('3' | '6' | '9' | '12') | null;
+    /**
+     * Optional: Show only posts from these categories (OR logic - matches any)
+     */
+    categoryFilter?: (string | Category)[] | null;
+    /**
+     * Optional: Hide these posts even if they match other filters
+     */
+    excludePosts?: (string | Post)[] | null;
+    /**
+     * How to sort the posts
+     */
+    sortBy?: ('date-desc' | 'date-asc' | 'title-asc' | 'title-desc') | null;
+    /**
+     * Show featured posts at the beginning, regardless of sort order
+     */
+    showFeaturedFirst?: boolean | null;
+  };
+  /**
+   * Manually select which posts to display
+   */
+  selectedPosts?: (string | Post)[] | null;
+  buttonConfig?: {
+    /**
+     * Toggle to show/hide the button that links to all posts
+     */
+    showButton?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: string | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: string | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+      /**
+       * Button color variant from UntitledUI design system
+       */
+      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'outline' | 'link') | null;
+      /**
+       * Button size variant
+       */
+      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
+      /**
+       * Select an icon from the Icons collection and configure its position relative to button text
+       */
+      buttonIconConfig?: {
+        /**
+         * Select an icon to display in the button
+         */
+        icon?: (string | null) | Icon;
+        /**
+         * Position of the icon relative to button text
+         */
+        position?: ('leading' | 'trailing') | null;
+      };
+      /**
+       * Legacy field - use buttonIconConfig instead
+       */
+      buttonIcon?: string | null;
+      /**
+       * Legacy field - use buttonIconConfig instead
+       */
+      iconPos?: ('leading' | 'trailing') | null;
+    };
+  };
+  /**
+   * Vertical spacing around this section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'latestPosts';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  parent?: (string | null) | Category;
+  breadcrumbs?:
+    | {
+        doc?: (string | null) | Category;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -883,18 +1020,18 @@ export interface CallToActionBlock {
           reference?:
             | ({
                 relationTo: 'pages';
-                value: number | Page;
+                value: string | Page;
               } | null)
             | ({
                 relationTo: 'posts';
-                value: number | Post;
+                value: string | Post;
               } | null);
           url?: string | null;
           label: string;
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+          uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'outline' | 'link') | null;
           /**
            * Button size variant
            */
@@ -906,7 +1043,7 @@ export interface CallToActionBlock {
             /**
              * Select an icon to display in the button
              */
-            icon?: (number | null) | Icon;
+            icon?: (string | null) | Icon;
             /**
              * Position of the icon relative to button text
              */
@@ -940,7 +1077,7 @@ export interface MediaBlock {
   /**
    * Select or upload an image to display
    */
-  media: number | Media;
+  media: string | Media;
   caption?: {
     /**
      * Text caption for the image
@@ -966,7 +1103,7 @@ export interface MediaBlock {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   name?: string | null;
   /**
    * Display name for public content (e.g., blog posts)
@@ -979,7 +1116,31 @@ export interface User {
   /**
    * Profile picture for contributor listings
    */
-  avatar?: (number | null) | Media;
+  avatar?: (string | null) | Media;
+  /**
+   * OAuth subject identifier (provider user ID)
+   */
+  sub?: string | null;
+  /**
+   * Google user ID (legacy/alias for sub)
+   */
+  googleId?: string | null;
+  /**
+   * Profile picture URL from Google
+   */
+  picture?: string | null;
+  /**
+   * Email verification status
+   */
+  emailVerified?: boolean | null;
+  /**
+   * Authentication method used
+   */
+  authProvider?: ('email' | 'google') | null;
+  /**
+   * Account approval status
+   */
+  approvalStatus?: ('pending' | 'approved' | 'rejected') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1044,7 +1205,7 @@ export interface BackgroundSection {
   /**
    * Upload a background image - will be optimized automatically
    */
-  backgroundImage?: (number | null) | Media;
+  backgroundImage?: (string | null) | Media;
   /**
    * Add an overlay to ensure text readability
    */
@@ -1077,7 +1238,7 @@ export interface BackgroundSection {
   /**
    * Add content blocks that will appear inside this background section
    */
-  contentBlocks: (CardGridBlock | ContentBlock | FeaturesBlock | CallToActionBlock | MediaBlock | AccordionBlock)[];
+  contentBlocks: (CardGridBlock | ContentBlock | CallToActionBlock | MediaBlock | AccordionBlock)[];
   /**
    * Vertical padding for this section
    */
@@ -1125,7 +1286,7 @@ export interface CardGridBlock {
     /**
      * Select an icon from the Icons collection to display in the card
      */
-    icon?: (number | null) | Icon;
+    icon?: (string | null) | Icon;
     /**
      * Small text above card title (e.g., "New", "Featured", "Step 01")
      */
@@ -1133,7 +1294,7 @@ export interface CardGridBlock {
     /**
      * Main heading for this card (e.g., "Fast Delivery", "Expert Support")
      */
-    title: string;
+    title?: string | null;
     /**
      * Rich description with headings, formatting, lists, and links
      */
@@ -1162,18 +1323,18 @@ export interface CardGridBlock {
       reference?:
         | ({
             relationTo: 'pages';
-            value: number | Page;
+            value: string | Page;
           } | null)
         | ({
             relationTo: 'posts';
-            value: number | Post;
+            value: string | Post;
           } | null);
       url?: string | null;
       label: string;
       /**
        * Button color variant from UntitledUI design system
        */
-      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'outline' | 'link') | null;
       /**
        * Button size variant
        */
@@ -1185,7 +1346,7 @@ export interface CardGridBlock {
         /**
          * Select an icon to display in the button
          */
-        icon?: (number | null) | Icon;
+        icon?: (string | null) | Icon;
         /**
          * Position of the icon relative to button text
          */
@@ -1209,15 +1370,17 @@ export interface CardGridBlock {
   /**
    * Visual style for cards (background and borders)
    */
-  cardBackground?: ('none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'line') | null;
+  cardBackground?:
+    | ('none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline' | 'line')
+    | null;
   /**
    * Number of columns in the grid (1-4). Single column layout allows natural card heights; multi-column layouts use equal heights.
    */
   columns?: ('1' | '2' | '3' | '4') | null;
   /**
-   * Icon color variant - matches button color system
+   * Icon style variant - matches button and card background system
    */
-  iconColor?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent') | null;
+  iconColor?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline') | null;
   /**
    * Shape of the icon container
    */
@@ -1226,6 +1389,10 @@ export interface CardGridBlock {
    * Vertical spacing around this section
    */
   spacing?: ('compact' | 'normal' | 'spacious') | null;
+  /**
+   * Spacing between cards in the grid. Default automatically adjusts for centered-icon and elevated-box layouts.
+   */
+  gridSpacing?: ('default' | 'compact' | 'normal' | 'large' | 'xl') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'cardGrid';
@@ -1252,153 +1419,25 @@ export interface ContentBlock {
         /**
          * Add content blocks to this column (rich text, cards, images, spacers, etc.)
          */
-        layout?:
-          | (RichTextBlock | InlineCardBlock | MediaBlock | SpacerBlock)[]
-          | null;
+        layout?: (RichTextBlock | InlineCardBlock | MediaBlock | SpacerBlock)[] | null;
         id?: string | null;
       }[]
     | null;
   /**
-   * Horizontal alignment of columns
+   * Horizontal alignment of columns. Only applies when total column width is less than full width (e.g., half + third = 10/12 columns can be centered). Full-width layouts (e.g., two half columns = 12/12) ignore this setting.
    */
   contentAlignment?: ('left' | 'center' | 'right') | null;
   /**
    * Vertical spacing around this section
    */
   spacing?: ('compact' | 'normal' | 'spacious') | null;
+  /**
+   * Spacing between grid columns
+   */
+  cardSpacing?: ('default' | 'compact' | 'normal' | 'large' | 'xl') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RichTextBlock".
- */
-export interface RichTextBlock {
-  /**
-   * Add formatted text, headings, lists, links, and more
-   */
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'richText';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "InlineCardBlock".
- */
-export interface InlineCardBlock {
-  /**
-   * Select an icon from the Icons collection to display in the card
-   */
-  icon?: (number | null) | Icon;
-  /**
-   * Small text above card title (e.g., "New", "Featured", "Step 01")
-   */
-  eyebrow?: string | null;
-  /**
-   * Main heading for this card (e.g., "Fast Delivery", "Expert Support")
-   */
-  title: string;
-  /**
-   * Rich description with headings, formatting, lists, and links
-   */
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Add an optional call-to-action link or button
-   */
-  enableLink?: boolean | null;
-  link?: {
-    type?: ('reference' | 'custom') | null;
-    newTab?: boolean | null;
-    reference?:
-      | ({
-          relationTo: 'pages';
-          value: number | Page;
-        } | null)
-      | ({
-          relationTo: 'posts';
-          value: number | Post;
-        } | null);
-    url?: string | null;
-    label: string;
-    /**
-     * Button color variant from UntitledUI design system
-     */
-    uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
-    /**
-     * Button size variant
-     */
-    uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-    /**
-     * Select an icon from the Icons collection and configure its position relative to button text
-     */
-    buttonIconConfig?: {
-      /**
-       * Select an icon to display in the button
-       */
-      icon?: (number | null) | Icon;
-      /**
-       * Position of the icon relative to button text
-       */
-      position?: ('leading' | 'trailing') | null;
-    };
-    /**
-     * Legacy field - use buttonIconConfig instead
-     */
-    buttonIcon?: string | null;
-    /**
-     * Legacy field - use buttonIconConfig instead
-     */
-    iconPos?: ('leading' | 'trailing') | null;
-  };
-  /**
-   * Card Layout
-   */
-  cardStyle?: ('card' | 'centered-icon' | 'left-icon' | 'horizontal-icon' | 'elevated-box') | null;
-  /**
-   * Card Background
-   */
-  cardBackground?: ('none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline' | 'line') | null;
-  /**
-   * Icon Style
-   */
-  iconColor?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline') | null;
-  /**
-   * Icon Shape
-   */
-  iconTheme?: ('rounded-square' | 'round') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'inlineCard';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1412,140 +1451,6 @@ export interface SpacerBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'spacer';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FeaturesBlock".
- */
-export interface FeaturesBlock {
-  header?: {
-    /**
-     * Toggle to show/hide the header section
-     */
-    showHeader?: boolean | null;
-    /**
-     * Small text above heading (e.g., "Features")
-     */
-    eyebrow?: string | null;
-    /**
-     * Main heading for the features section
-     */
-    heading?: string | null;
-    /**
-     * Description text that appears below the heading
-     */
-    description?: string | null;
-    /**
-     * Alignment of the section header
-     */
-    headerAlignment?: ('left' | 'center') | null;
-  };
-  features: {
-    /**
-     * Select an icon from the Icons collection to display in the feature card
-     */
-    icon?: (number | null) | Icon;
-    title: string;
-    /**
-     * Rich description with formatting, lists, and links
-     */
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    /**
-     * Add an optional call-to-action link or button
-     */
-    enableLink?: boolean | null;
-    link?: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?:
-        | ({
-            relationTo: 'pages';
-            value: number | Page;
-          } | null)
-        | ({
-            relationTo: 'posts';
-            value: number | Post;
-          } | null);
-      url?: string | null;
-      label: string;
-      /**
-       * Button color variant from UntitledUI design system
-       */
-      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
-      /**
-       * Button size variant
-       */
-      uuiSize?: ('sm' | 'md' | 'lg' | 'xl') | null;
-      /**
-       * Select an icon from the Icons collection and configure its position relative to button text
-       */
-      buttonIconConfig?: {
-        /**
-         * Select an icon to display in the button
-         */
-        icon?: (number | null) | Icon;
-        /**
-         * Position of the icon relative to button text
-         */
-        position?: ('leading' | 'trailing') | null;
-      };
-      /**
-       * Legacy field - use buttonIconConfig instead
-       */
-      buttonIcon?: string | null;
-      /**
-       * Legacy field - use buttonIconConfig instead
-       */
-      iconPos?: ('leading' | 'trailing') | null;
-    };
-    id?: string | null;
-  }[];
-  /**
-   * Configure how the features section is displayed
-   */
-  layoutOptions?: {
-    /**
-     * Layout arrangement for feature cards (icon position and alignment)
-     */
-    cardStyle?: ('card' | 'centered-icon' | 'left-icon' | 'horizontal-icon' | 'elevated-box') | null;
-    /**
-     * Visual style for feature cards (background and borders)
-     */
-    cardBackground?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'line') | null;
-    /**
-     * Number of columns in the grid (1-4). Automatically switches to full-width if only one feature exists.
-     */
-    columns?: ('1' | '2' | '3' | '4') | null;
-    /**
-     * Icon color variant - matches button color system
-     */
-    iconColor?: ('primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent') | null;
-    /**
-     * Shape of the icon container
-     */
-    iconTheme?: ('rounded-square' | 'round') | null;
-    /**
-     * Vertical spacing around this section
-     */
-    spacing?: ('compact' | 'normal' | 'spacious') | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'features';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1582,7 +1487,7 @@ export interface AccordionBlock {
     /**
      * Optional: Show only FAQs from these categories (OR logic - matches any)
      */
-    categoryFilter?: (number | Category)[] | null;
+    categoryFilter?: (string | Category)[] | null;
     /**
      * Maximum number of FAQs to display
      */
@@ -1594,12 +1499,12 @@ export interface AccordionBlock {
     /**
      * Optional: Hide these FAQs even if they match other filters
      */
-    excludeFAQs?: (number | Faq)[] | null;
+    excludeFAQs?: (string | Faq)[] | null;
   };
   /**
    * Manually select which FAQs to display
    */
-  selectedFAQs?: (number | Faq)[] | null;
+  selectedFAQs?: (string | Faq)[] | null;
   /**
    * Configure how accordions are displayed
    */
@@ -1661,7 +1566,7 @@ export interface AccordionBlock {
  * via the `definition` "faqs".
  */
 export interface Faq {
-  id: number;
+  id: string;
   /**
    * The question text (e.g., "How do I get started?")
    */
@@ -1691,11 +1596,11 @@ export interface Faq {
     | (
         | {
             relationTo: 'posts';
-            value: number | Post;
+            value: string | Post;
           }
         | {
             relationTo: 'pages';
-            value: number | Page;
+            value: string | Page;
           }
       )[]
     | null;
@@ -1705,7 +1610,7 @@ export interface Faq {
   resources?:
     | {
         title: string;
-        file: number | Media;
+        file: string | Media;
         /**
          * Brief description of what this resource contains
          */
@@ -1716,7 +1621,7 @@ export interface Faq {
   /**
    * Tag FAQs with categories for filtering in AccordionBlocks
    */
-  categories?: (number | Category)[] | null;
+  categories?: (string | Category)[] | null;
   /**
    * Pin this FAQ to the top of filtered lists
    */
@@ -1757,12 +1662,12 @@ export interface ArchiveBlock {
   } | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?: 'posts' | null;
-  categories?: (number | Category)[] | null;
+  categories?: (string | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
     | {
         relationTo: 'posts';
-        value: number | Post;
+        value: string | Post;
       }[]
     | null;
   /**
@@ -1778,7 +1683,7 @@ export interface ArchiveBlock {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
-  form: number | Form;
+  form: string | Form;
   enableIntro?: boolean | null;
   introContent?: {
     root: {
@@ -1804,7 +1709,7 @@ export interface FormBlock {
  * via the `definition` "forms".
  */
 export interface Form {
-  id: number;
+  id: string;
   title: string;
   fields?:
     | (
@@ -1974,13 +1879,156 @@ export interface Form {
   createdAt: string;
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock".
+ */
+export interface TestimonialsBlock {
+  /**
+   * Choose which testimonials to display in this section
+   */
+  selectedTestimonials: (string | Testimonial)[];
+  /**
+   * Automatically cycle through testimonials
+   */
+  enableAutoRotation?: boolean | null;
+  /**
+   * How long to display each testimonial before transitioning to the next (3-30 seconds)
+   */
+  rotationDelay?: number | null;
+  /**
+   * Visual style for the testimonial card
+   */
+  cardBackground?:
+    | ('none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline' | 'line')
+    | null;
+  /**
+   * Vertical spacing around this section
+   */
+  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: string;
+  /**
+   * The main testimonial quote or content
+   */
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Name of the person giving the testimonial (optional)
+   */
+  person?: string | null;
+  /**
+   * Job title or position of the person (optional)
+   */
+  position?: string | null;
+  /**
+   * Company or organization name (optional)
+   */
+  company?: string | null;
+  /**
+   * Company logo displayed in subtle grey under the content (optional)
+   */
+  logo?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "accounts".
+ */
+export interface Account {
+  id: string;
+  /**
+   * OAuth subject identifier (unique across all providers)
+   */
+  sub: string;
+  /**
+   * The user this account belongs to
+   */
+  user: string | User;
+  /**
+   * OAuth provider (e.g., "google", "github")
+   */
+  provider?: string | null;
+  /**
+   * Unique ID from the OAuth provider
+   */
+  providerAccountId?: string | null;
+  /**
+   * OAuth issuer name
+   */
+  issuerName?: string | null;
+  /**
+   * User name from OAuth provider
+   */
+  name?: string | null;
+  /**
+   * Email from OAuth provider
+   */
+  email?: string | null;
+  /**
+   * Profile picture URL from OAuth provider
+   */
+  picture?: string | null;
+  /**
+   * OAuth access token (encrypted)
+   */
+  access_token?: string | null;
+  /**
+   * OAuth refresh token (encrypted)
+   */
+  refresh_token?: string | null;
+  /**
+   * Token expiry timestamp
+   */
+  expires_at?: number | null;
+  /**
+   * Token type (usually "Bearer")
+   */
+  token_type?: string | null;
+  /**
+   * OAuth scopes granted
+   */
+  scope?: string | null;
+  /**
+   * OpenID Connect ID token
+   */
+  id_token?: string | null;
+  /**
+   * Random password for OAuth users (internal use only)
+   */
+  oauth_password?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Audit trail of AI API usage with cost tracking
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ai-logs".
  */
 export interface AiLog {
-  id: number;
+  id: string;
   /**
    * Type of AI operation performed
    */
@@ -2074,7 +2122,7 @@ export interface AiLog {
   /**
    * User who triggered the operation (if applicable)
    */
-  user?: (number | null) | User;
+  user?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -2083,7 +2131,7 @@ export interface AiLog {
  * via the `definition` "redirects".
  */
 export interface Redirect {
-  id: number;
+  id: string;
   /**
    * You will need to rebuild the website when changing this field.
    */
@@ -2093,11 +2141,11 @@ export interface Redirect {
     reference?:
       | ({
           relationTo: 'pages';
-          value: number | Page;
+          value: string | Page;
         } | null)
       | ({
           relationTo: 'posts';
-          value: number | Post;
+          value: string | Post;
         } | null);
     url?: string | null;
   };
@@ -2109,8 +2157,8 @@ export interface Redirect {
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
-  id: number;
-  form: number | Form;
+  id: string;
+  form: string | Form;
   submissionData?:
     | {
         field: string;
@@ -2128,18 +2176,18 @@ export interface FormSubmission {
  * via the `definition` "search".
  */
 export interface Search {
-  id: number;
+  id: string;
   title?: string | null;
   priority?: number | null;
   doc: {
     relationTo: 'posts';
-    value: number | Post;
+    value: string | Post;
   };
   slug?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
-    image?: (number | null) | Media;
+    image?: (string | null) | Media;
   };
   categories?:
     | {
@@ -2157,7 +2205,7 @@ export interface Search {
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
-  id: number;
+  id: string;
   /**
    * Input data provided to the job
    */
@@ -2249,64 +2297,72 @@ export interface PayloadJob {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: string;
   document?:
     | ({
         relationTo: 'pages';
-        value: number | Page;
+        value: string | Page;
       } | null)
     | ({
         relationTo: 'posts';
-        value: number | Post;
+        value: string | Post;
       } | null)
     | ({
         relationTo: 'media';
-        value: number | Media;
+        value: string | Media;
       } | null)
     | ({
         relationTo: 'categories';
-        value: number | Category;
+        value: string | Category;
       } | null)
     | ({
         relationTo: 'faqs';
-        value: number | Faq;
+        value: string | Faq;
       } | null)
     | ({
         relationTo: 'icons';
-        value: number | Icon;
+        value: string | Icon;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: string | Testimonial;
       } | null)
     | ({
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
+      } | null)
+    | ({
+        relationTo: 'accounts';
+        value: string | Account;
       } | null)
     | ({
         relationTo: 'ai-logs';
-        value: number | AiLog;
+        value: string | AiLog;
       } | null)
     | ({
         relationTo: 'redirects';
-        value: number | Redirect;
+        value: string | Redirect;
       } | null)
     | ({
         relationTo: 'forms';
-        value: number | Form;
+        value: string | Form;
       } | null)
     | ({
         relationTo: 'form-submissions';
-        value: number | FormSubmission;
+        value: string | FormSubmission;
       } | null)
     | ({
         relationTo: 'search';
-        value: number | Search;
+        value: string | Search;
       } | null)
     | ({
         relationTo: 'payload-jobs';
-        value: number | PayloadJob;
+        value: string | PayloadJob;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -2316,10 +2372,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -2339,7 +2395,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -2363,8 +2419,8 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         cardGrid?: T | CardGridBlockSelect<T>;
-        features?: T | FeaturesBlockSelect<T>;
         latestPosts?: T | LatestPostsBlockSelect<T>;
+        testimonials?: T | TestimonialsBlockSelect<T>;
         accordion?: T | AccordionBlockSelect<T>;
       };
   seoKeywords?: T;
@@ -2405,12 +2461,11 @@ export interface HeroHeadingBlockSelect<T extends boolean = true> {
   heroLayout?: T;
   headline?: T;
   subtitle?: T;
-  enableTypewriter?: T;
+  heroBackground?: T;
   headlineColor?: T;
+  subheadingColor?: T;
   textAlignment?: T;
   spacing?: T;
-  subtitleSize?: T;
-  heroBackground?: T;
   splitImage?: T;
   buttons?:
     | T
@@ -2478,7 +2533,6 @@ export interface BackgroundSectionSelect<T extends boolean = true> {
     | {
         cardGrid?: T | CardGridBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
-        features?: T | FeaturesBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         accordion?: T | AccordionBlockSelect<T>;
@@ -2538,6 +2592,7 @@ export interface CardGridBlockSelect<T extends boolean = true> {
   iconColor?: T;
   iconTheme?: T;
   spacing?: T;
+  gridSpacing?: T;
   id?: T;
   blockName?: T;
 }
@@ -2551,95 +2606,13 @@ export interface ContentBlockSelect<T extends boolean = true> {
     | {
         size?: T;
         verticalAlign?: T;
-        contentType?: T;
-        richText?: T;
-        image?: T;
-        imageOptions?:
-          | T
-          | {
-              fit?: T;
-              ratio?: T;
-              isSticky?: T;
-              stickyTop?: T;
-            };
-        enableLink?: T;
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              uuiColor?: T;
-              uuiSize?: T;
-              buttonIconConfig?:
-                | T
-                | {
-                    icon?: T;
-                    position?: T;
-                  };
-              buttonIcon?: T;
-              iconPos?: T;
-            };
+        sticky?: T;
+        layout?: T | {};
         id?: T;
       };
+  contentAlignment?: T;
   spacing?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FeaturesBlock_select".
- */
-export interface FeaturesBlockSelect<T extends boolean = true> {
-  header?:
-    | T
-    | {
-        showHeader?: T;
-        eyebrow?: T;
-        heading?: T;
-        description?: T;
-        headerAlignment?: T;
-      };
-  features?:
-    | T
-    | {
-        icon?: T;
-        title?: T;
-        description?: T;
-        enableLink?: T;
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              uuiColor?: T;
-              uuiSize?: T;
-              buttonIconConfig?:
-                | T
-                | {
-                    icon?: T;
-                    position?: T;
-                  };
-              buttonIcon?: T;
-              iconPos?: T;
-            };
-        id?: T;
-      };
-  layoutOptions?:
-    | T
-    | {
-        cardStyle?: T;
-        cardBackground?: T;
-        columns?: T;
-        iconColor?: T;
-        iconTheme?: T;
-        spacing?: T;
-      };
+  cardSpacing?: T;
   id?: T;
   blockName?: T;
 }
@@ -2825,6 +2798,19 @@ export interface LatestPostsBlockSelect<T extends boolean = true> {
               iconPos?: T;
             };
       };
+  spacing?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock_select".
+ */
+export interface TestimonialsBlockSelect<T extends boolean = true> {
+  selectedTestimonials?: T;
+  enableAutoRotation?: T;
+  rotationDelay?: T;
+  cardBackground?: T;
   spacing?: T;
   id?: T;
   blockName?: T;
@@ -3094,11 +3080,24 @@ export interface IconsSelect<T extends boolean = true> {
         locations?:
           | T
           | {
-              collection?: T;
+              collectionSlug?: T;
               field?: T;
               id?: T;
             };
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  content?: T;
+  person?: T;
+  position?: T;
+  company?: T;
+  logo?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -3111,6 +3110,12 @@ export interface UsersSelect<T extends boolean = true> {
   nickname?: T;
   role?: T;
   avatar?: T;
+  sub?: T;
+  googleId?: T;
+  picture?: T;
+  emailVerified?: T;
+  authProvider?: T;
+  approvalStatus?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -3127,6 +3132,29 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "accounts_select".
+ */
+export interface AccountsSelect<T extends boolean = true> {
+  sub?: T;
+  user?: T;
+  provider?: T;
+  providerAccountId?: T;
+  issuerName?: T;
+  name?: T;
+  email?: T;
+  picture?: T;
+  access_token?: T;
+  refresh_token?: T;
+  expires_at?: T;
+  token_type?: T;
+  scope?: T;
+  id_token?: T;
+  oauth_password?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3425,7 +3453,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  * via the `definition` "header".
  */
 export interface Header {
-  id: number;
+  id: string;
   navItems?:
     | {
         /**
@@ -3437,11 +3465,11 @@ export interface Header {
           reference?:
             | ({
                 relationTo: 'pages';
-                value: number | Page;
+                value: string | Page;
               } | null)
             | ({
                 relationTo: 'posts';
-                value: number | Post;
+                value: string | Post;
               } | null);
           url?: string | null;
           label: string;
@@ -3461,11 +3489,11 @@ export interface Header {
                 reference?:
                   | ({
                       relationTo: 'pages';
-                      value: number | Page;
+                      value: string | Page;
                     } | null)
                   | ({
                       relationTo: 'posts';
-                      value: number | Post;
+                      value: string | Post;
                     } | null);
                 url?: string | null;
                 label: string;
@@ -3477,7 +3505,7 @@ export interface Header {
               /**
                * Select an icon to display next to the dropdown item
                */
-              icon?: (number | null) | Icon;
+              icon?: (string | null) | Icon;
               id?: string | null;
             }[]
           | null;
@@ -3498,18 +3526,18 @@ export interface Header {
       reference?:
         | ({
             relationTo: 'pages';
-            value: number | Page;
+            value: string | Page;
           } | null)
         | ({
             relationTo: 'posts';
-            value: number | Post;
+            value: string | Post;
           } | null);
       url?: string | null;
       label: string;
       /**
        * Button color variant from UntitledUI design system
        */
-      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'outline' | 'link') | null;
       /**
        * Button size variant
        */
@@ -3521,7 +3549,7 @@ export interface Header {
         /**
          * Select an icon to display in the button
          */
-        icon?: (number | null) | Icon;
+        icon?: (string | null) | Icon;
         /**
          * Position of the icon relative to button text
          */
@@ -3551,18 +3579,18 @@ export interface Header {
       reference?:
         | ({
             relationTo: 'pages';
-            value: number | Page;
+            value: string | Page;
           } | null)
         | ({
             relationTo: 'posts';
-            value: number | Post;
+            value: string | Post;
           } | null);
       url?: string | null;
       label: string;
       /**
        * Button color variant from UntitledUI design system
        */
-      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+      uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'outline' | 'link') | null;
       /**
        * Button size variant
        */
@@ -3574,7 +3602,7 @@ export interface Header {
         /**
          * Select an icon to display in the button
          */
-        icon?: (number | null) | Icon;
+        icon?: (string | null) | Icon;
         /**
          * Position of the icon relative to button text
          */
@@ -3598,7 +3626,7 @@ export interface Header {
  * via the `definition` "footer".
  */
 export interface Footer {
-  id: number;
+  id: string;
   companyInfo?: {
     /**
      * Brief company description that appears below the logo
@@ -3625,11 +3653,11 @@ export interface Footer {
                 reference?:
                   | ({
                       relationTo: 'pages';
-                      value: number | Page;
+                      value: string | Page;
                     } | null)
                   | ({
                       relationTo: 'posts';
-                      value: number | Post;
+                      value: string | Post;
                     } | null);
                 url?: string | null;
                 label: string;
@@ -3648,7 +3676,7 @@ export interface Footer {
                   /**
                    * Select an icon to display in the button
                    */
-                  icon?: (number | null) | Icon;
+                  icon?: (string | null) | Icon;
                   /**
                    * Position of the icon relative to button text
                    */
@@ -3710,7 +3738,7 @@ export interface Footer {
  * via the `definition` "notFound".
  */
 export interface NotFound {
-  id: number;
+  id: string;
   /**
    * Main heading displayed on the 404 page
    */
@@ -3728,18 +3756,18 @@ export interface NotFound {
     reference?:
       | ({
           relationTo: 'pages';
-          value: number | Page;
+          value: string | Page;
         } | null)
       | ({
           relationTo: 'posts';
-          value: number | Post;
+          value: string | Post;
         } | null);
     url?: string | null;
     label: string;
     /**
      * Button color variant from UntitledUI design system
      */
-    uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+    uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'outline' | 'link') | null;
     /**
      * Button size variant
      */
@@ -3751,7 +3779,7 @@ export interface NotFound {
       /**
        * Select an icon to display in the button
        */
-      icon?: (number | null) | Icon;
+      icon?: (string | null) | Icon;
       /**
        * Position of the icon relative to button text
        */
@@ -3774,7 +3802,7 @@ export interface NotFound {
  * via the `definition` "postsSettings".
  */
 export interface PostsSetting {
-  id: number;
+  id: string;
   /**
    * Blocks to display before the posts grid on /news-insights (use HeroHeadingBlock for page header)
    */
@@ -3874,7 +3902,7 @@ export interface PostsSetting {
  * via the `definition` "aiSettings".
  */
 export interface AiSetting {
-  id: number;
+  id: string;
   /**
    * Select your preferred AI provider for content generation
    */
@@ -4349,14 +4377,14 @@ export interface TaskSchedulePublish {
     doc?:
       | ({
           relationTo: 'pages';
-          value: number | Page;
+          value: string | Page;
         } | null)
       | ({
           relationTo: 'posts';
-          value: number | Post;
+          value: string | Post;
         } | null);
     global?: string | null;
-    user?: (number | null) | User;
+    user?: (string | null) | User;
   };
   output?: unknown;
 }
@@ -4376,18 +4404,18 @@ export interface ButtonBlock {
           reference?:
             | ({
                 relationTo: 'pages';
-                value: number | Page;
+                value: string | Page;
               } | null)
             | ({
                 relationTo: 'posts';
-                value: number | Post;
+                value: string | Post;
               } | null);
           url?: string | null;
           label: string;
           /**
            * Button color variant from UntitledUI design system
            */
-          uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link') | null;
+          uuiColor?: ('primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'outline' | 'link') | null;
           /**
            * Button size variant
            */
@@ -4399,7 +4427,7 @@ export interface ButtonBlock {
             /**
              * Select an icon to display in the button
              */
-            icon?: (number | null) | Icon;
+            icon?: (string | null) | Icon;
             /**
              * Position of the icon relative to button text
              */
@@ -4478,37 +4506,6 @@ export interface QuoteBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'quote';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ConclusionBlock".
- */
-export interface ConclusionBlock {
-  /**
-   * Heading for the conclusion section
-   */
-  title: string;
-  /**
-   * Conclusion content (supports multiple paragraphs)
-   */
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'conclusion';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

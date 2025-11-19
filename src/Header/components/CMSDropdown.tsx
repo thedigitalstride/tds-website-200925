@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import React, { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
@@ -16,7 +16,11 @@ interface CMSDropdownProps {
  * Convert dropdown item link to proper href string
  * Uses the same logic as CMSLink and UUIButton components
  */
-function getDropdownLinkHref(linkData: { type?: 'reference' | 'custom' | null; url?: string | null; reference?: { value: number | Page; relationTo: string } | null }): string {
+function getDropdownLinkHref(linkData: {
+  type?: 'reference' | 'custom' | null
+  url?: string | null
+  reference?: { value: string | number | Page; relationTo: string } | null
+}): string {
   if (!linkData) return '#'
 
   // Handle custom URLs
@@ -28,8 +32,8 @@ function getDropdownLinkHref(linkData: { type?: 'reference' | 'custom' | null; u
   if (linkData.type === 'reference' && linkData.reference) {
     const { value, relationTo } = linkData.reference
 
-    // Handle number ID references (not populated)
-    if (typeof value === 'number') {
+    // Handle string or number ID references (not populated)
+    if (typeof value === 'string' || typeof value === 'number') {
       return `/${relationTo}/${value}`
     }
 
@@ -68,87 +72,91 @@ export const CMSDropdown: React.FC<CMSDropdownProps> = ({ items }) => {
   return (
     <motion.nav
       initial={{ height: 0 }}
-      animate={{ height: "auto" }}
+      animate={{ height: 'auto' }}
       exit={{
         height: 0,
         transition: {
-          height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
-        }
+          height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+        },
       }}
       transition={{
-        height: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+        height: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
       }}
       className="overflow-hidden"
     >
-        <div className="pt-3 pb-3 md:px-5 md:pb-5">
-          <motion.ul
-            className="flex flex-col gap-0.5 md:grid md:grid-cols-4 md:gap-3 md:auto-rows-fr"
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            variants={{
-              visible: {
-                transition: {
-                  staggerChildren: 0.02,
-                  delayChildren: 0.05
-                }
+      <div className="pt-3 pb-3 md:px-5 md:pb-5">
+        <motion.ul
+          className="flex flex-col gap-0.5 md:grid md:grid-cols-4 md:gap-3 md:auto-rows-fr"
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.02,
+                delayChildren: 0.05,
               },
-              hidden: {
-                transition: {
-                  staggerChildren: 0.02,
-                  staggerDirection: -1
-                }
-              }
-            }}
-          >
-            {items.map((item, index) => {
-              // Extract icon data - supports both new (relationship) and legacy (text) icons
-              const iconData = typeof item.icon === 'object' ? item.icon as Icon : null
+            },
+            hidden: {
+              transition: {
+                staggerChildren: 0.02,
+                staggerDirection: -1,
+              },
+            },
+          }}
+        >
+          {items.map((item, index) => {
+            // Extract icon data - supports both new (relationship) and legacy (text) icons
+            const iconData = typeof item.icon === 'object' ? (item.icon as Icon) : null
 
-              // Fallback to legacy text-based icon if no relationship icon (only if string)
-              const LegacyIconComponent = iconData ? null : getIcon(typeof item.icon === 'string' ? item.icon : undefined)
+            // Fallback to legacy text-based icon if no relationship icon (only if string)
+            const LegacyIconComponent = iconData
+              ? null
+              : getIcon(typeof item.icon === 'string' ? item.icon : undefined)
 
-              // Render icon as SVG if we have icon data, otherwise use legacy component
-              const icon = iconData?.svgCode ? (
-                <IconSVG
-                  svgCode={iconData.svgCode}
-                  className="mt-0.5 size-5 shrink-0 stroke-[2.3px] dark:text-white text-brand-500"
-                  aria-label={iconData.label || iconData.name}
+            // Render icon as SVG if we have icon data, otherwise use legacy component
+            const icon = iconData?.svgCode ? (
+              <IconSVG
+                svgCode={iconData.svgCode}
+                className="mt-0.5 size-5 shrink-0 stroke-[2.3px] dark:text-white text-brand-500"
+                aria-label={iconData.label || iconData.name}
+              />
+            ) : (
+              LegacyIconComponent
+            )
+
+            const href = getDropdownLinkHref(item.link)
+
+            return (
+              <motion.li
+                key={index}
+                className="h-full"
+                variants={{
+                  hidden: {
+                    opacity: 0,
+                    y: isDesktop ? -32 : 0,
+                  },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                  },
+                }}
+                transition={{
+                  duration: 0.2,
+                  ease: [0.4, 0, 0.2, 1],
+                }}
+              >
+                <NavMenuItemLink
+                  icon={icon}
+                  title={item.link?.label || 'Untitled'}
+                  subtitle={item.description ?? undefined}
+                  href={href}
                 />
-              ) : LegacyIconComponent
-
-              const href = getDropdownLinkHref(item.link)
-
-              return (
-                <motion.li
-                  key={index}
-                  className="h-full"
-                  variants={{
-                    hidden: {
-                      opacity: 0,
-                      y: isDesktop ? -32 : 0
-                    },
-                    visible: {
-                      opacity: 1,
-                      y: 0
-                    }
-                  }}
-                  transition={{
-                    duration: 0.2,
-                    ease: [0.4, 0, 0.2, 1]
-                  }}
-                >
-                  <NavMenuItemLink
-                    icon={icon}
-                    title={item.link?.label || 'Untitled'}
-                    subtitle={item.description ?? undefined}
-                    href={href}
-                  />
-                </motion.li>
-              )
-            })}
-          </motion.ul>
-        </div>
-      </motion.nav>
+              </motion.li>
+            )
+          })}
+        </motion.ul>
+      </div>
+    </motion.nav>
   )
 }

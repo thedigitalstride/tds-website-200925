@@ -21,7 +21,6 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
     heroBackground,
     buttons,
   } = props
-  // @ts-expect-error - subheadingColor field exists in config but types need regeneration (CSS import issue prevents standalone type gen)
   const subheadingColor = props.subheadingColor
 
   // Use defaults for any undefined values

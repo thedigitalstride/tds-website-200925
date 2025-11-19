@@ -23,6 +23,7 @@ src/app/(frontend)/style-guide/
 node_modules/
 /test-results/
 /playwright-report/
+.playwright-mcp/
 /blob-report/
 /playwright/.cache/
 src/styles/theme.css.backup
@@ -30,3 +31,4 @@ src/styles/theme.css.backup
 #Screenshots
 **/Screenshot*
 
+.pnpm-store/
