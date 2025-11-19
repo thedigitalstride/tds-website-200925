@@ -268,7 +268,7 @@ export const RelatedPostsSection: React.FC<RelatedPostsSectionProps> = async ({
   )
 
   return (
-    <section className="bg-primary py-12 lg:py-16">
+    <section className="py-12 lg:py-16">
       <div className="mx-auto max-w-container px-4 md:px-8">
         {/* Simple heading - no eyebrow, no button */}
         <div className="max-w-3xl">
