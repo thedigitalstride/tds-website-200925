@@ -21,6 +21,7 @@ export const getAuthorizationUrl = (state?: string) => {
     ],
     prompt: 'consent',
     state: state, // CSRF protection
+    hd: 'thedigitalstride.co.uk', // Restrict to @thedigitalstride.co.uk domain
   })
 
   return authorizationUrl

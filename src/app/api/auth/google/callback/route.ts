@@ -58,6 +58,15 @@ export async function GET(request: NextRequest) {
     // Fetch user info from Google
     const googleUser: GoogleUserInfo = await getGoogleUserInfo(tokens.access_token)
 
+    // Validate email domain (server-side validation for defense in depth)
+    const allowedDomain = 'thedigitalstride.co.uk'
+    if (!googleUser.email.endsWith(`@${allowedDomain}`)) {
+      console.error('[OAuth Debug] Unauthorized domain:', googleUser.email)
+      return NextResponse.redirect(
+        new URL(`/admin/login?error=unauthorized_domain`, request.url)
+      )
+    }
+
     // Get Payload instance
     const payload = await getPayloadHMR({ config })
 
