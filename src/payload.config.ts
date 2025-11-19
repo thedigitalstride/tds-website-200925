@@ -6,6 +6,7 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
+import { Accounts } from './collections/Accounts'
 import { AiLogs } from './collections/AiLogs'
 import { Categories } from './collections/Categories'
 import { FAQs } from './collections/FAQs'
@@ -33,6 +34,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  serverURL: getServerSideURL(),
   // Configure logger for production optimization
   logger:
     process.env.NODE_ENV === 'production'
@@ -92,7 +94,7 @@ export default buildConfig({
       socketTimeoutMS: 45000, // How long a socket stays open when inactive
     },
   }),
-  collections: [Pages, Posts, Media, Categories, FAQs, Icons, Testimonials, Users, AiLogs],
+  collections: [Pages, Posts, Media, Categories, FAQs, Icons, Testimonials, Users, Accounts, AiLogs],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
   blocks: [RichTextBlockConfig, InlineCardBlockConfig, MediaBlock, SpacerBlockConfig],

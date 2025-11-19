@@ -16,7 +16,7 @@ public/media/
 public/robots.txt
 public/sitemap*.xml
 
-src/app/frontend/style-guide/
+src/app/(frontend)/style-guide/
 
 
 # Playwright
@@ -29,3 +29,4 @@ src/styles/theme.css.backup
 
 #Screenshots
 **/Screenshot*
+
