@@ -145,7 +145,7 @@ export const LatestPostsBlock: React.FC<
     if (categoryFilters && Array.isArray(categoryFilters) && categoryFilters.length > 0) {
       const categoryIds = categoryFilters
         .map((cat) => (typeof cat === 'object' ? cat.id : cat))
-        .filter((id): id is number => typeof id === 'number')
+        .filter((id): id is string => typeof id === 'string')
 
       if (categoryIds.length > 0) {
         whereClause.categories = { in: categoryIds }
@@ -156,7 +156,7 @@ export const LatestPostsBlock: React.FC<
     if (excludePosts && Array.isArray(excludePosts) && excludePosts.length > 0) {
       const excludeIds = excludePosts
         .map((post) => (typeof post === 'object' ? post.id : post))
-        .filter((id): id is number => typeof id === 'number')
+        .filter((id): id is string => typeof id === 'string')
 
       if (excludeIds.length > 0) {
         whereClause.id = { not_in: excludeIds }
@@ -208,7 +208,7 @@ export const LatestPostsBlock: React.FC<
       // Extract post IDs from selectedPosts
       const postIds = selectedPosts
         .map((post) => (typeof post === 'object' ? post.id : post))
-        .filter((id): id is number => typeof id === 'number')
+        .filter((id): id is string => typeof id === 'string')
 
       // Fetch full posts with relationships populated
       if (postIds.length > 0) {

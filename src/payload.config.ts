@@ -95,7 +95,14 @@ export default buildConfig({
     },
   }),
   collections: [Pages, Posts, Media, Categories, FAQs, Icons, Testimonials, Users, Accounts, AiLogs],
-  cors: [getServerSideURL()].filter(Boolean),
+  cors: [
+    // Primary production domain (custom domain)
+    'https://prod.thedigitalstride.co.uk',
+    // Vercel production URL (fallback)
+    'https://tds-website-200925.vercel.app',
+    // Dynamic URL from getServerSideURL() (for preview deployments and local dev)
+    getServerSideURL(),
+  ].filter(Boolean),
   globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
   blocks: [RichTextBlockConfig, InlineCardBlockConfig, MediaBlock, SpacerBlockConfig],
   plugins: [

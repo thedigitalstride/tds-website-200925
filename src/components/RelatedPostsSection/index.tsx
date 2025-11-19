@@ -140,7 +140,7 @@ export const RelatedPostsSection: React.FC<RelatedPostsSectionProps> = async ({
     // Use manually configured related posts
     const postIds = currentPost.relatedPosts
       .map((post) => (typeof post === 'object' ? post.id : post))
-      .filter((id): id is number => typeof id === 'number')
+      .filter((id): id is string => typeof id === 'string')
 
     if (postIds.length > 0) {
       const fetchedPosts = await payload.find({
@@ -161,7 +161,7 @@ export const RelatedPostsSection: React.FC<RelatedPostsSectionProps> = async ({
       Array.isArray(currentPost.categories) && currentPost.categories.length > 0
         ? currentPost.categories
             .map((cat) => (typeof cat === 'object' ? cat.id : cat))
-            .filter((id): id is number => typeof id === 'number')
+            .filter((id): id is string => typeof id === 'string')
         : []
 
     if (categoryIds.length > 0) {

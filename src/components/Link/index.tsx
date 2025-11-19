@@ -20,7 +20,7 @@ type CMSLinkType = {
   type?: 'custom' | 'reference' | null
   url?: string | null
   // UUI Button properties
-  uuiColor?: 'primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
+  uuiColor?: 'primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'outline' | 'link' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
   uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
   buttonIcon?: string | null
   iconPos?: 'leading' | 'trailing' | null
@@ -71,7 +71,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
         type,
         url,
         newTab,
-        reference: reference as ({ relationTo: 'pages'; value: number | Page } | { relationTo: 'posts'; value: number | Post } | null),
+        reference: reference as ({ relationTo: 'pages'; value: string | number | Page } | { relationTo: 'posts'; value: string | number | Post } | null),
         uuiColor: uuiColor || 'primary', // Default to primary if not specified
         uuiSize: uuiSize || 'md', // Default to md if not specified
         buttonIcon,

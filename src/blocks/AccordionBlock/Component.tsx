@@ -57,7 +57,7 @@ export const AccordionBlock: React.FC<
     if (categoryFilter && Array.isArray(categoryFilter) && categoryFilter.length > 0) {
       const categoryIds = categoryFilter
         .map((cat) => (typeof cat === 'object' ? cat.id : cat))
-        .filter((id): id is number => typeof id === 'number')
+        .filter((id): id is string => typeof id === 'string')
 
       if (categoryIds.length > 0) {
         whereClause.categories = { in: categoryIds }
@@ -68,7 +68,7 @@ export const AccordionBlock: React.FC<
     if (excludeFAQs && Array.isArray(excludeFAQs) && excludeFAQs.length > 0) {
       const excludeIds = excludeFAQs
         .map((faq) => (typeof faq === 'object' ? faq.id : faq))
-        .filter((id): id is number => typeof id === 'number')
+        .filter((id): id is string => typeof id === 'string')
 
       if (excludeIds.length > 0) {
         whereClause.id = { not_in: excludeIds }
@@ -121,7 +121,7 @@ export const AccordionBlock: React.FC<
       // Extract FAQ IDs from selectedFAQs
       const faqIds = selectedFAQs
         .map((faq) => (typeof faq === 'object' ? faq.id : faq))
-        .filter((id): id is number => typeof id === 'number')
+        .filter((id): id is string => typeof id === 'string')
 
       // Fetch full FAQs with relationships populated
       if (faqIds.length > 0) {

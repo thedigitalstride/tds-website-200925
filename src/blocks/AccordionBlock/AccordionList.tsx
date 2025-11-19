@@ -41,7 +41,7 @@ export const AccordionList: React.FC<AccordionListProps> = ({
   animationSpeed,
 }) => {
   // State for open items (array of FAQ IDs)
-  const [openItems, setOpenItems] = useState<number[]>(() => {
+  const [openItems, setOpenItems] = useState<string[]>(() => {
     // Initialize based on defaultState
     switch (defaultState) {
       case 'all-open':
@@ -107,11 +107,11 @@ export const AccordionList: React.FC<AccordionListProps> = ({
   }, [faqs])
 
   // Toggle accordion item
-  const toggleItem = (faqId: number) => {
+  const toggleItem = (faqId: string) => {
     setOpenItems((prev) => {
       const isOpen = prev.includes(faqId)
 
-      let newOpenItems: number[]
+      let newOpenItems: string[]
 
       if (allowMultipleOpen) {
         // Multi-select mode

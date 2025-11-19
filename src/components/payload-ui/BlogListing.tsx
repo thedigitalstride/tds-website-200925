@@ -154,7 +154,7 @@ export const BlogListing: React.FC<BlogListingProps> = ({
       acc[categoryId] = postCount
       return acc
     },
-    {} as Record<number, number>,
+    {} as Record<string, number>,
   )
 
   // Create tabs from categories - only include categories with posts

@@ -24,14 +24,14 @@ export interface PayloadLinkObject {
   label?: string | null
   newTab?: boolean | null
   reference?:
-    | ({ relationTo: 'pages'; value: number | Page } | null)
-    | ({ relationTo: 'posts'; value: number | Post } | null)
+    | ({ relationTo: 'pages'; value: string | number | Page } | null)
+    | ({ relationTo: 'posts'; value: string | number | Post } | null)
   // UUI Button styling properties
-  uuiColor?: 'primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'link' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
+  uuiColor?: 'primary' | 'primary-reversed' | 'accent' | 'secondary' | 'tertiary' | 'outline' | 'link' | 'link-gray' | 'link-color' | 'primary-destructive' | 'secondary-destructive' | 'tertiary-destructive' | 'link-destructive' | null
   uuiSize?: 'sm' | 'md' | 'lg' | 'xl' | null
   // Button icon properties (new system with visual selector)
   buttonIconConfig?: {
-    icon?: number | Icon | null
+    icon?: string | number | Icon | null
     position?: 'leading' | 'trailing' | null
   } | null
   // Legacy button icon properties (for backward compatibility)
@@ -69,8 +69,8 @@ function getLinkHref(link?: PayloadLinkObject | string): string | undefined {
   if (link.type === 'reference' && link.reference) {
     const { value, relationTo } = link.reference
 
-    // Handle number ID references
-    if (typeof value === 'number') {
+    // Handle string or number ID references (unpopulated)
+    if (typeof value === 'string' || typeof value === 'number') {
       return `/${relationTo}/${value}`
     }
 
