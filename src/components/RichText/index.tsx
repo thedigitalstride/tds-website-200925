@@ -3,7 +3,7 @@ import {
   DefaultNodeTypes,
   SerializedBlockNode,
   SerializedLinkNode,
-  SerializedTextNode,
+  // SerializedTextNode, // Available but not currently used
   SerializedUploadNode,
   type DefaultTypedEditorState,
 } from '@payloadcms/richtext-lexical'

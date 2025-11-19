@@ -93,7 +93,7 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps> = ({
 }) => {
   const [maxHeight, setMaxHeight] = useState<number>(0)
   const [transitionDirection, setTransitionDirection] = useState<'left' | 'right'>('right')
-  const containerRef = useRef<HTMLDivElement>(null)
+  const _containerRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
 
   // Preserve order of selected testimonials
