@@ -38,10 +38,10 @@
     "@lexical/rich-text": "^0.35.0",
     "@lexical/selection": "^0.35.0",
     "@payloadcms/admin-bar": "3.61.1",
-    "@payloadcms/db-mongodb": "^3.61.1",
+    "@payloadcms/db-mongodb": "3.61.1",
     "@payloadcms/db-vercel-postgres": "3.61.1",
-    "@payloadcms/drizzle": "^3.61.1",
-    "@payloadcms/email-resend": "^3.61.1",
+    "@payloadcms/drizzle": "3.61.1",
+    "@payloadcms/email-resend": "3.61.1",
     "@payloadcms/live-preview-react": "3.61.1",
     "@payloadcms/next": "3.61.1",
     "@payloadcms/payload-cloud": "3.61.1",
@@ -136,7 +136,10 @@
   "pnpm": {
     "overrides": {
       "tsx": "4.20.3",
-      "sharp": "0.34.5"
+      "sharp": "0.34.5",
+      "@payloadcms/db-mongodb": "3.61.1",
+      "@payloadcms/drizzle": "3.61.1",
+      "@payloadcms/email-resend": "3.61.1"
     },
     "peerDependencyRules": {
       "allowedVersions": {

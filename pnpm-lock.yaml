@@ -7,6 +7,9 @@ settings:
 overrides:
   tsx: 4.20.3
   sharp: 0.34.5
+  '@payloadcms/db-mongodb': 3.61.1
+  '@payloadcms/drizzle': 3.61.1
+  '@payloadcms/email-resend': 3.61.1
 
 importers:
 
@@ -25,17 +28,17 @@ importers:
         specifier: 3.61.1
         version: 3.61.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@payloadcms/db-mongodb':
-        specifier: ^3.61.1
-        version: 3.64.0(@aws-sdk/credential-providers@3.936.0)(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))
+        specifier: 3.61.1
+        version: 3.61.1(@aws-sdk/credential-providers@3.936.0)(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))
       '@payloadcms/db-vercel-postgres':
         specifier: 3.61.1
         version: 3.61.1(@types/pg@8.11.6)(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))
       '@payloadcms/drizzle':
-        specifier: ^3.61.1
-        version: 3.64.0(@types/pg@8.11.6)(@vercel/postgres@0.9.0)(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))(pg@8.16.3)
+        specifier: 3.61.1
+        version: 3.61.1(@types/pg@8.11.6)(@vercel/postgres@0.9.0)(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))(pg@8.16.3)
       '@payloadcms/email-resend':
-        specifier: ^3.61.1
-        version: 3.64.0(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))
+        specifier: 3.61.1
+        version: 3.61.1(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))
       '@payloadcms/live-preview-react':
         specifier: 3.61.1
         version: 3.61.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -1559,10 +1562,10 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  '@payloadcms/db-mongodb@3.64.0':
-    resolution: {integrity: sha512-V0VHLc5B9FDShPEECJ/QLN5YaM0M8gJBl7GEwkG2/+OApSA6i0NCfNKYfEtLBNGDDPStFNzph0UWxJdx7WT0cA==}
+  '@payloadcms/db-mongodb@3.61.1':
+    resolution: {integrity: sha512-gLRC2ZFdLS/v2Ki2I0y7IWZsuAKTZ1vNp04YwpqiNMIaO9BwSoiM+HZ92MIqgnfTDcUFY35wpYMXZZ8cFgibhQ==}
     peerDependencies:
-      payload: 3.64.0
+      payload: 3.61.1
 
   '@payloadcms/db-vercel-postgres@3.61.1':
     resolution: {integrity: sha512-+3+zsqry6XDPCLRk7Q57y6EsxfgJPPY5jVGwJCdPkNaX2zp453NVENX0VAh95cl4VKokjvGTCz5vq6sXDGuepQ==}
@@ -1574,22 +1577,17 @@ packages:
     peerDependencies:
       payload: 3.61.1
 
-  '@payloadcms/drizzle@3.64.0':
-    resolution: {integrity: sha512-QflKffH/Mi9MoHiYiI5aolPaQ6a4JAh/0YMszDCwhluHFJbxlCnkcFiwgoARDTb9SkeVUM1ShKUO+BDY1IhrTw==}
-    peerDependencies:
-      payload: 3.64.0
-
   '@payloadcms/email-nodemailer@3.61.1':
     resolution: {integrity: sha512-PpavLrcNQcpSQjGKLpQi7FvulwOpSFoWABiycTPWdVCWGI4RpgSJWmpefMa6Zj7dGbWL3chb6FrPiiAZWkzFLQ==}
     engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
       payload: 3.61.1
 
-  '@payloadcms/email-resend@3.64.0':
-    resolution: {integrity: sha512-GzqzEqbAXQAlEU8iCSbk67opcv+xKsmasnGCV1szgKGZ/mdY8CUxfqhCyPOo1hhHuMupKpAnfO+OXaIrWvc6WA==}
+  '@payloadcms/email-resend@3.61.1':
+    resolution: {integrity: sha512-srd6GMuVh34pxVQvTCmhbjmgM2NFri8Ke0PutXD4DR2tVDHTrshAXpL421pE14RJZveX0ELEAALtUTO9RMwmQA==}
     engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
-      payload: 3.64.0
+      payload: 3.61.1
 
   '@payloadcms/graphql@3.61.1':
     resolution: {integrity: sha512-EiPRhuI2EQZiTB6q8WOy0dVCozwEV6Ef0+j+a95oN2/aO79fuA8/uRO0e6k5nOB7JCjaccjyTP1ET5oOsK/1nw==}
@@ -8442,7 +8440,7 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@payloadcms/db-mongodb@3.64.0(@aws-sdk/credential-providers@3.936.0)(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))':
+  '@payloadcms/db-mongodb@3.61.1(@aws-sdk/credential-providers@3.936.0)(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))':
     dependencies:
       mongoose: 8.15.1(@aws-sdk/credential-providers@3.936.0)
       mongoose-paginate-v2: 1.8.5
@@ -8542,52 +8540,12 @@ snapshots:
       - sql.js
       - sqlite3
 
-  '@payloadcms/drizzle@3.64.0(@types/pg@8.11.6)(@vercel/postgres@0.9.0)(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))(pg@8.16.3)':
-    dependencies:
-      console-table-printer: 2.12.1
-      dequal: 2.0.3
-      drizzle-orm: 0.44.6(@types/pg@8.11.6)(@vercel/postgres@0.9.0)(pg@8.16.3)
-      payload: 3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5)
-      prompts: 2.4.2
-      to-snake-case: 1.0.0
-      uuid: 9.0.0
-    transitivePeerDependencies:
-      - '@aws-sdk/client-rds-data'
-      - '@cloudflare/workers-types'
-      - '@electric-sql/pglite'
-      - '@libsql/client'
-      - '@libsql/client-wasm'
-      - '@neondatabase/serverless'
-      - '@op-engineering/op-sqlite'
-      - '@opentelemetry/api'
-      - '@planetscale/database'
-      - '@prisma/client'
-      - '@tidbcloud/serverless'
-      - '@types/better-sqlite3'
-      - '@types/pg'
-      - '@types/sql.js'
-      - '@upstash/redis'
-      - '@vercel/postgres'
-      - '@xata.io/client'
-      - better-sqlite3
-      - bun-types
-      - expo-sqlite
-      - gel
-      - knex
-      - kysely
-      - mysql2
-      - pg
-      - postgres
-      - prisma
-      - sql.js
-      - sqlite3
-
   '@payloadcms/email-nodemailer@3.61.1(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))':
     dependencies:
       nodemailer: 7.0.9
       payload: 3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5)
 
-  '@payloadcms/email-resend@3.64.0(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))':
+  '@payloadcms/email-resend@3.61.1(payload@3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5))':
     dependencies:
       payload: 3.61.1(bufferutil@4.0.9)(graphql@16.12.0)(typescript@5.7.3)(utf-8-validate@6.0.5)
 
