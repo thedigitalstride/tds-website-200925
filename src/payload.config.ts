@@ -69,6 +69,8 @@ export default buildConfig({
         Icon: '@/components/payload-ui/Icon',
       },
     },
+    // Custom CSS for admin panel
+    css: path.resolve(dirname, './styles/payloadStyles.css'),
     importMap: {
       baseDir: path.resolve(dirname),
     },
