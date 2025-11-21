@@ -44,7 +44,7 @@ if (!blobToken || blobToken.trim() === '') {
   console.warn(
     '⚠️  WARNING: BLOB_READ_WRITE_TOKEN is not set. Media uploads will fail.',
     '\n   Please add BLOB_READ_WRITE_TOKEN to your .env file.',
-    '\n   Blob Storage Base URL: https://ov6vgo85vq4jfktd.public.blob.vercel-storage.com'
+    '\n   Blob Storage Base URL: https://ov6vgo85vq4jfktd.public.blob.vercel-storage.com',
   )
 }
 
@@ -99,42 +99,37 @@ export default buildConfig({
   // This config helps us configure global or default features that the other editors can inherit
   editor: richText(),
   db: mongooseAdapter({
-    url: process.env.MONGODB_URI || process.env.DATABASE_URI || 'mongodb://localhost:27017/tds-website',
+    url:
+      process.env.MONGODB_URI ||
+      process.env.DATABASE_URI ||
+      'mongodb://localhost:27017/tds-website',
     // MongoDB connection options
     connectOptions: {
       // Recommended options for production
       maxPoolSize: 20, // Maximum number of sockets the MongoDB driver will keep open
-      minPoolSize: 2,  // Minimum number of sockets the MongoDB driver will keep open
+      minPoolSize: 2, // Minimum number of sockets the MongoDB driver will keep open
       serverSelectionTimeoutMS: 5000, // How long to keep trying to send operations to a server
       socketTimeoutMS: 45000, // How long a socket stays open when inactive
     },
   }),
-  collections: [Pages, Posts, Media, Categories, FAQs, Icons, Testimonials, Users, Accounts, AiLogs],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    FAQs,
+    Icons,
+    Testimonials,
+    Users,
+    Accounts,
+    AiLogs,
+  ],
   // CORS Configuration
-  // Uses wildcard function to support:
-  // - Production: prod.thedigitalstride.co.uk
-  // - Preview: preview.thedigitalstride.co.uk
-  // - All Vercel deployment URLs: *.vercel.app (for unique preview deployments)
-  // - Development: localhost:3000
-  cors: (req) => {
-    const origin = req.get('origin')
-    
-    const allowedOrigins = [
-      'https://prod.thedigitalstride.co.uk',
-      'https://preview.thedigitalstride.co.uk',
-      'https://tds-website-200925.vercel.app',
-      'https://tds-website-200925-git-preview.vercel.app',
-      getServerSideURL(),
-      'http://localhost:3000',
-    ]
-    
-    // Allow all *.vercel.app domains for preview deployments
-    if (origin?.endsWith('.vercel.app') || allowedOrigins.includes(origin || '')) {
-      return origin || '*'
-    }
-    
-    return false
-  },
+  // Set to '*' to allow all Vercel preview deployment URLs (*.vercel.app)
+  // This is required because preview deployments have unique URLs that can't be predicted
+  // Security note: Actual authentication is still enforced by Payload's auth system
+  // In production, NEXT_PUBLIC_SERVER_URL ensures the correct domain is used for redirects
+  cors: '*',
   globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
   blocks: [RichTextBlockConfig, InlineCardBlockConfig, MediaBlock, SpacerBlockConfig],
   plugins: [
