@@ -127,7 +127,7 @@ Built on Payload CMS 3.x with Next.js 15 App Router, it provides a flexible page
 ### Prerequisites
 
 - **Node.js** 18.20.2+ or 20.9.0+
-- **pnpm** 10.17.1+ (recommended) or npm/yarn
+- **pnpm** 10.17.1+ (required)
 - **MongoDB** (local via Docker or MongoDB Atlas)
 - **Docker Desktop** (for local MongoDB)
 - **Vercel Account** (for Blob Storage in production)
