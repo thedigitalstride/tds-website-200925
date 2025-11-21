@@ -111,21 +111,30 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, FAQs, Icons, Testimonials, Users, Accounts, AiLogs],
   // CORS Configuration
+  // Uses wildcard function to support:
   // - Production: prod.thedigitalstride.co.uk
-  // - Preview: preview.thedigitalstride.co.uk + preview branch Vercel URL
+  // - Preview: preview.thedigitalstride.co.uk
+  // - All Vercel deployment URLs: *.vercel.app (for unique preview deployments)
   // - Development: localhost:3000
-  // The getServerSideURL() automatically includes the correct URL for each environment
-  cors: [
-    // Primary production domain
-    'https://prod.thedigitalstride.co.uk',
-    // Preview domain
-    'https://preview.thedigitalstride.co.uk',
-    // Vercel URLs (production and preview deployments)
-    'https://tds-website-200925.vercel.app',
-    'https://tds-website-200925-git-preview.vercel.app',
-    // Dynamic URL from getServerSideURL() (automatically includes preview deployments)
-    getServerSideURL(),
-  ].filter(Boolean),
+  cors: (req) => {
+    const origin = req.get('origin')
+    
+    const allowedOrigins = [
+      'https://prod.thedigitalstride.co.uk',
+      'https://preview.thedigitalstride.co.uk',
+      'https://tds-website-200925.vercel.app',
+      'https://tds-website-200925-git-preview.vercel.app',
+      getServerSideURL(),
+      'http://localhost:3000',
+    ]
+    
+    // Allow all *.vercel.app domains for preview deployments
+    if (origin?.endsWith('.vercel.app') || allowedOrigins.includes(origin || '')) {
+      return origin || '*'
+    }
+    
+    return false
+  },
   globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
   blocks: [RichTextBlockConfig, InlineCardBlockConfig, MediaBlock, SpacerBlockConfig],
   plugins: [
