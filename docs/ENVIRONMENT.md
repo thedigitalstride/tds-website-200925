@@ -137,11 +137,22 @@ BLOB_READ_WRITE_TOKEN=vercel_blob_token
 
 **Used for**: File uploads and media management
 
+**Required for**: Both local development and production
+
+**Blob Storage Base URL**: `https://ov6vgo85vq4jfktd.public.blob.vercel-storage.com`
+
+**Important Notes**:
+- The same Vercel Blob Storage is used for both local development and production
+- This ensures consistency and allows local development to work with production media
+- For staging environments, simply replace `BLOB_READ_WRITE_TOKEN` in `.env` with a staging token
+- If the token is missing, media uploads will fail and a warning will be displayed in the console
+
 **How to get**:
 1. Deploy to Vercel
 2. Go to Storage tab
 3. Create Blob Store
 4. Copy the token (automatically added to environment)
+5. Add to your local `.env` file for development
 
 **Alternative Storage**: Can be replaced with S3, Azure, or other storage adapters
 
@@ -336,9 +347,12 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ### "Blob storage upload fails"
 
 **Check**:
-1. `BLOB_READ_WRITE_TOKEN` is set
+1. `BLOB_READ_WRITE_TOKEN` is set in your `.env` file
 2. Token has read/write permissions
 3. Vercel Blob Store is created in dashboard
+4. Token is not empty (check for whitespace or quotes)
+5. Blob Storage Base URL: `https://ov6vgo85vq4jfktd.public.blob.vercel-storage.com`
+6. Check console for warning messages about missing token
 
 ## Environment Variable Checklist
 
@@ -349,6 +363,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 - [ ] `PAYLOAD_SECRET` is at least 32 characters
 - [ ] `NEXT_PUBLIC_SERVER_URL=http://localhost:3000`
 - [ ] `PREVIEW_SECRET` is set
+- [ ] `BLOB_READ_WRITE_TOKEN` is set (required for media uploads)
 - [ ] MongoDB is running (`docker-compose up -d`)
 
 ### Production Deployment

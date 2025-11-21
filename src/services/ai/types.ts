@@ -117,8 +117,8 @@ export interface SeoDescriptionConfig {
 export interface ContentContext {
   title?: string
   subtitle?: string
-  contentBlocks?: any[] // eslint-disable-line @typescript-eslint/no-explicit-any -- Layout blocks for Pages
-  richText?: any // eslint-disable-line @typescript-eslint/no-explicit-any -- Lexical content for Posts
+  contentBlocks?: any[]  
+  richText?: any  
   categories?: string[]
   heroImage?: {
     alt?: string

@@ -30,7 +30,8 @@
     "fix:uui": "node ./scripts/fix-uui-structure.js",
     "uui:add": "npx untitledui@latest add $1 --path src/components/uui && pnpm fix:uui",
     "seed:posts": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/seed-posts.ts",
-    "preflight": "node scripts/preflight-check.js"
+    "preflight": "node scripts/preflight-check.js",
+    "mongodb:pull": "node scripts/migrate-mongodb-to-local.js"
   },
   "dependencies": {
     "@lexical/react": "^0.35.0",
@@ -118,6 +119,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "gray-matter": "^4.0.3",
     "jsdom": "26.1.0",
+    "mongodb": "^7.0.0",
     "playwright": "1.54.1",
     "playwright-core": "1.54.1",
     "prettier": "^3.4.2",

@@ -201,6 +201,8 @@ export const Media: CollectionConfig = {
         }
       },
     ],
-    afterChange: [generateAltTagAfterChange],
+    afterChange: [
+      generateAltTagAfterChange,
+    ],
   },
 }

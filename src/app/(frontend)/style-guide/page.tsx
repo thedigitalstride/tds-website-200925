@@ -1,1055 +1,1091 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import { useTheme } from 'next-themes'
 import { Button } from '@/components/uui/button'
-import { BadgeGroup } from '@/components/uui/base/badges/badge-groups'
 import { Badge } from '@/components/uui/base/badges/badges'
+import { BadgeGroup } from '@/components/uui/base/badges/badge-groups'
 import { Zap, ArrowRight, Download03, Plus } from '@untitledui/icons'
-import { FormElementsSection } from './FormElementsSection'
-import { BlocksSection } from './BlocksSection'
-import { AdvancedComponentsSection } from './AdvancedComponentsSection'
-import { RadioGroupsSection } from './RadioGroupsSection'
-import { PayloadPatternsSection } from './PayloadPatternsSection'
-import { StylingSystemSection } from './StylingSystemSection'
-import { RichTextSection } from './RichTextSection'
+
+type Tab = 'typography' | 'spacing' | 'colors' | 'components'
 
 export default function StyleGuidePage() {
-  const [isDark, setIsDark] = useState(false)
-  const [activeSection, setActiveSection] = useState('typography')
+  const { theme, setTheme } = useTheme()
+  const [activeTab, setActiveTab] = useState<Tab>('typography')
+  const [mounted, setMounted] = useState(false)
 
-  useEffect(() => {
-    // Check initial theme
-    setIsDark(document.documentElement.classList.contains('dark-mode'))
-
-    // Intersection Observer for active section tracking
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id)
-          }
-        })
-      },
-      { rootMargin: '-20% 0px -70% 0px' },
-    )
-
-    // Observe all sections
-    const sections = document.querySelectorAll('section[id]')
-    sections.forEach((section) => observer.observe(section))
-
-    return () => observer.disconnect()
+  React.useEffect(() => {
+    setMounted(true)
   }, [])
 
   const toggleTheme = () => {
-    const html = document.documentElement
-    if (html.classList.contains('dark-mode')) {
-      html.classList.remove('dark-mode')
-      setIsDark(false)
-    } else {
-      html.classList.add('dark-mode')
-      setIsDark(true)
-    }
+    setTheme(theme === 'light' ? 'dark' : 'light')
   }
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      const offset = 80 // Header offset
-      const elementPosition = element.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.pageYOffset - offset
+  const isDark = theme === 'dark'
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      })
-    }
-  }
-
-  const navItems = [
+  const tabs: { id: Tab; label: string }[] = [
     { id: 'typography', label: 'Typography' },
-    { id: 'richtext', label: 'Rich Text' },
-    { id: 'colors', label: 'Colors' },
-    { id: 'blocks', label: 'Blocks System' },
-    { id: 'buttons', label: 'Buttons' },
-    { id: 'advanced', label: 'Advanced Components' },
-    { id: 'forms', label: 'Form Elements' },
-    { id: 'radio-groups', label: 'Radio Groups' },
-    { id: 'badges', label: 'Badges' },
     { id: 'spacing', label: 'Spacing' },
-    { id: 'borders', label: 'Border Radius' },
-    { id: 'patterns', label: 'Payload Patterns' },
-    { id: 'styling', label: 'Styling System' },
-    { id: 'docs', label: 'Documentation' },
+    { id: 'colors', label: 'Colors' },
+    { id: 'components', label: 'Components' },
   ]
 
   return (
-    <div className="min-h-screen bg-primary">
-      {/* Sticky Theme Toggle Button */}
-      <button
-        onClick={toggleTheme}
-        className="fixed bottom-8 right-8 z-50 bg-brand-solid hover:bg-brand-solid_hover text-white p-4 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
-        aria-label="Toggle dark mode"
-      >
-        {isDark ? (
-          // Sun icon
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-            />
-          </svg>
-        ) : (
-          // Moon icon
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-            />
-          </svg>
-        )}
-      </button>
+    <div className="min-h-screen">
+      {/* Theme Toggle Button */}
+      {mounted && (
+        <button
+          onClick={toggleTheme}
+          className="fixed bottom-8 right-8 z-50 bg-brand-solid hover:bg-brand-solid_hover text-white p-4 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
+          aria-label="Toggle theme"
+        >
+          {isDark ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+              />
+            </svg>
+          )}
+        </button>
+      )}
+
       {/* Header */}
-      <div className="border-b border-secondary bg-primary">
+      <div className="border-b border-secondary">
         <div className="container max-w-container mx-auto px-8 py-12">
           <h1 className="text-display-lg font-semibold text-primary">Style Guide</h1>
           <p className="mt-3 text-lg text-tertiary max-w-3xl">
-            Complete visual reference for the Payload CMS block-based system using Tailwind v4 +
-            UntitledUI components. This guide shows typography, colors, blocks, components, and all
-            variants in action.
+            Quick reference for typography, spacing, colors, and components. All examples adapt
+            automatically to light and dark themes.
           </p>
         </div>
       </div>
 
-      {/* Content with Sidebar */}
-      <div className="container max-w-container mx-auto px-8 py-16">
-        <div className="flex gap-12">
-          {/* Sticky Navigation Sidebar */}
-          <aside className="hidden lg:block w-64 shrink-0">
-            <nav className="sticky top-24 space-y-1">
-              <p className="text-xs font-semibold text-tertiary uppercase tracking-wide mb-4">
-                On This Page
-              </p>
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`
-                    block w-full text-left px-3 py-2 text-sm rounded-md transition-colors
-                    ${
-                      activeSection === item.id
-                        ? 'bg-(--color-bg-brand-subtle) text-(--color-brand-600) font-medium'
-                        : 'text-secondary hover:text-primary hover:bg-secondary'
-                    }
-                  `}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </nav>
-          </aside>
-
-          {/* Main Content */}
-          <div className="flex-1 min-w-0 space-y-24">
-            {/* Typography Scale */}
-            <section id="typography">
-              <h2 className="text-display-md font-semibold text-primary mb-8">
-                Typography Scale (Rem-Based)
-              </h2>
-              <p className="text-md text-tertiary mb-6">
-                All typography uses rem units for accessibility and SEO. Single source of truth in
-                theme.css.
-              </p>
-              <div className="space-y-8">
-                <div className="space-y-2">
-                  <p className="text-display-2xl font-semibold text-primary">Display 2XL</p>
-                  <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                    text-display-2xl: 4.5rem (72px)
-                  </code>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-display-xl font-semibold text-primary">Display XL</p>
-                  <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                    text-display-xl: 3.75rem (60px)
-                  </code>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-display-lg font-semibold text-primary">Display LG (h1)</p>
-                  <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                    text-display-lg: 3rem (48px)
-                  </code>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-display-md font-semibold text-primary">Display MD (h2)</p>
-                  <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                    text-display-md: 2.25rem (36px)
-                  </code>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-display-sm font-semibold text-primary">Display SM (h3)</p>
-                  <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                    text-display-sm: 1.875rem (30px)
-                  </code>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-display-xs font-semibold text-primary">Display XS</p>
-                  <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                    text-display-xs: 1.5rem (24px) - Available but not assigned to heading
-                  </code>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-xl text-primary">Text XL (h4)</p>
-                  <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                    text-xl: 1.25rem (20px)
-                  </code>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-lg text-primary">Text LG (h5/h6, emphasized)</p>
-                  <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                    text-lg: 1.125rem (18px)
-                  </code>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-md text-primary">Text MD - Default body text</p>
-                  <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                    text-md: 1rem desktop / 1.0625rem mobile - DEFAULT
-                  </code>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm text-primary">Text SM - Small text</p>
-                  <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                    text-sm: 0.875rem (14px)
-                  </code>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-xs text-primary">Text XS - Extra small text</p>
-                  <code className="block text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                    text-xs: 0.75rem (12px)
-                  </code>
-                </div>
-              </div>
-            </section>
-
-            {/* Font Weights */}
-            <section>
-              <h2 className="text-display-md font-semibold text-primary mb-8">Font Weights</h2>
-              <div className="space-y-4">
-                <div>
-                  <p className="text-lg font-normal text-primary">
-                    Regular (400) - Default body text
-                  </p>
-                  <code className="text-sm text-brand-secondary">font-normal</code>
-                </div>
-                <div>
-                  <p className="text-lg font-medium text-primary">
-                    Medium (500) - Links and emphasis
-                  </p>
-                  <code className="text-sm text-brand-secondary">font-medium</code>
-                </div>
-                <div>
-                  <p className="text-lg font-semibold text-primary">
-                    Semibold (600) - Headings and buttons
-                  </p>
-                  <code className="text-sm text-brand-secondary">font-semibold</code>
-                </div>
-                <div>
-                  <p className="text-lg font-bold text-primary">Bold (700) - Strong emphasis</p>
-                  <code className="text-sm text-brand-secondary">font-bold</code>
-                </div>
-              </div>
-            </section>
-
-            {/* Rich Text Typography */}
-            <RichTextSection />
-
-            {/* Color System */}
-            <section id="colors">
-              <h2 className="text-display-md font-semibold text-primary mb-8">Color System</h2>
-              <div className="mb-8 p-6 bg-secondary rounded-lg border border-primary">
-                <h3 className="text-lg font-semibold text-primary mb-3">Simplified Color System</h3>
-                <div className="space-y-3 text-md text-secondary">
-                  <p>
-                    <span className="font-semibold text-primary">Brand = Primary:</span> Dark Blue
-                    (#031A43) - Main brand color for buttons, borders, key elements
-                  </p>
-                  <p>
-                    <span className="font-semibold text-primary">Accent:</span> Light Blue (#1689FF)
-                    - Secondary actions, CTAs, highlights
-                  </p>
-                  <p>
-                    <span className="font-semibold text-primary">Text Hierarchy:</span> Uses greys
-                    (NOT brand color) for readability
-                  </p>
-                  <ul className="ml-4 space-y-1 text-xs">
-                    <li>
-                      • <code className="text-brand-secondary">text-primary</code> = Dark grey
-                      (gray-900)
-                    </li>
-                    <li>
-                      • <code className="text-brand-secondary">text-secondary</code> = Medium grey
-                      (gray-700)
-                    </li>
-                    <li>
-                      • <code className="text-brand-secondary">text-tertiary</code> = Light grey
-                      (gray-600)
-                    </li>
-                    <li>
-                      • <code className="text-brand-secondary">text-brand-*</code> = When you need
-                      blue text
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Color Palettes */}
-              <div className="mb-12">
-                <h3 className="text-display-sm font-semibold text-primary mb-6">
-                  Brand Color Palette
-                </h3>
-                <p className="text-sm text-tertiary mb-4">
-                  Dark Blue (#031A43) - Primary brand color scale
-                </p>
-                <div className="grid grid-cols-11 gap-2 mb-3">
-                  {[
-                    { shade: '25', color: 'rgb(240 244 250)' },
-                    { shade: '50', color: 'rgb(225 233 245)' },
-                    { shade: '100', color: 'rgb(195 211 235)' },
-                    { shade: '200', color: 'rgb(135 169 215)' },
-                    { shade: '300', color: 'rgb(75 127 195)' },
-                    { shade: '400', color: 'rgb(39 77 131)' },
-                    { shade: '500', color: 'rgb(3 26 67)', main: true },
-                    { shade: '600', color: 'rgb(2 21 54)' },
-                    { shade: '700', color: 'rgb(2 18 45)' },
-                    { shade: '800', color: 'rgb(1 15 37)' },
-                    { shade: '900', color: 'rgb(1 10 25)', hover: true },
-                    { shade: '950', color: 'rgb(1 5 13)' },
-                  ].map((item) => (
-                    <div key={item.shade} className="space-y-1.5">
-                      <div
-                        className={`h-16 rounded-md shadow-sm ${item.main ? 'ring-2 ring-offset-2 ring-brand-solid' : ''}`}
-                        style={{ backgroundColor: item.color }}
-                      />
-                      <div className="text-center">
-                        <p className="text-xs font-medium text-primary">{item.shade}</p>
-                        {item.main && (
-                          <p className="text-[10px] font-semibold text-brand-secondary">Main</p>
-                        )}
-                        {item.hover && (
-                          <p className="text-[10px] font-semibold text-brand-secondary">Hover</p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <code className="block text-xs text-brand-secondary bg-secondary px-3 py-2 rounded-md">
-                  bg-brand-solid (Main #031A43) • bg-brand-subtle (Tint)
-                </code>
-              </div>
-
-              <div className="mb-12">
-                <h3 className="text-display-sm font-semibold text-primary mb-6">
-                  Accent Color Palette
-                </h3>
-                <p className="text-sm text-tertiary mb-4">
-                  Light Blue (#1689FF) - Secondary accent color scale
-                </p>
-                <div className="grid grid-cols-11 gap-2 mb-3">
-                  {[
-                    { shade: '25', color: 'rgb(240 247 255)' },
-                    { shade: '50', color: 'rgb(219 237 255)' },
-                    { shade: '100', color: 'rgb(178 216 255)' },
-                    { shade: '200', color: 'rgb(102 178 255)' },
-                    { shade: '300', color: 'rgb(26 139 255)' },
-                    { shade: '400', color: 'rgb(24 138 255)' },
-                    { shade: '500', color: 'rgb(22 137 255)', main: true },
-                    { shade: '600', color: 'rgb(0 101 204)', hover: true },
-                    { shade: '700', color: 'rgb(0 76 153)' },
-                    { shade: '800', color: 'rgb(0 50 102)' },
-                    { shade: '900', color: 'rgb(0 30 61)' },
-                    { shade: '950', color: 'rgb(0 18 36)' },
-                  ].map((item) => (
-                    <div key={item.shade} className="space-y-1.5">
-                      <div
-                        className={`h-16 rounded-md shadow-sm ${item.main ? 'ring-2 ring-offset-2 ring-accent-solid' : ''}`}
-                        style={{ backgroundColor: item.color }}
-                      />
-                      <div className="text-center">
-                        <p className="text-xs font-medium text-primary">{item.shade}</p>
-                        {item.main && (
-                          <p className="text-[10px] font-semibold text-accent-tertiary">Main</p>
-                        )}
-                        {item.hover && (
-                          <p className="text-[10px] font-semibold text-accent-tertiary">Hover</p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <code className="block text-xs text-brand-secondary bg-secondary px-3 py-2 rounded-md">
-                  bg-accent-solid (Main #1689FF) • bg-accent-subtle (Tint) • border-accent (Light
-                  blue)
-                </code>
-              </div>
-
-              {/* Semantic Color Examples */}
-              <div className="mb-12">
-                <h3 className="text-display-sm font-semibold text-primary mb-6">
-                  Semantic Color Usage
-                </h3>
-                <div className="grid md:grid-cols-2 gap-6">
-                  {/* Background colors */}
-                  <div className="space-y-3">
-                    <h4 className="text-md font-semibold text-secondary mb-3">Backgrounds</h4>
-                    <div className="space-y-2">
-                      <div className="p-4 bg-(--color-bg-primary) border border-primary rounded">
-                        <code className="text-sm">bg-primary</code>
-                        <p className="text-xs text-tertiary mt-1">
-                          Page background (white/dark blue)
-                        </p>
-                      </div>
-                      <div className="p-4 bg-secondary border border-primary rounded">
-                        <code className="text-sm">bg-secondary</code>
-                        <p className="text-xs text-tertiary mt-1">
-                          Cards, panels (grey-50/grey-900)
-                        </p>
-                      </div>
-                      <div className="p-4 bg-tertiary border border-primary rounded">
-                        <code className="text-sm">bg-tertiary</code>
-                        <p className="text-xs text-tertiary mt-1">
-                          Nested elements (grey-100/grey-800)
-                        </p>
-                      </div>
-                      <div className="p-4 bg-(--color-bg-brand-solid) text-white border border-primary rounded">
-                        <code className="text-sm text-white">bg-brand-solid</code>
-                        <p className="text-xs text-white/80 mt-1">
-                          Solid brand (dark blue/white inverted)
-                        </p>
-                      </div>
-                      <div className="p-4 bg-(--color-bg-accent-solid) text-white border border-primary rounded">
-                        <code className="text-sm text-white">bg-accent-solid</code>
-                        <p className="text-xs text-white/80 mt-1">Accent buttons (light blue)</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Text colors */}
-                  <div className="space-y-3">
-                    <h4 className="text-md font-semibold text-secondary mb-3">Text Colors</h4>
-                    <div className="space-y-2 p-4 bg-secondary rounded border border-primary">
-                      <p className="text-primary">
-                        <code className="text-sm">text-primary</code> - Dark grey headings
-                      </p>
-                      <p className="text-secondary">
-                        <code className="text-sm">text-secondary</code> - Medium grey body
-                      </p>
-                      <p className="text-tertiary">
-                        <code className="text-sm">text-tertiary</code> - Light grey captions
-                      </p>
-                      <p className="text-quaternary">
-                        <code className="text-sm">text-quaternary</code> - Very light metadata
-                      </p>
-                    </div>
-                    <div className="space-y-2 p-4 bg-secondary rounded border border-primary">
-                      <p className="text-(--color-brand-500)">
-                        <code className="text-sm">text-brand-500</code> - Brand blue
-                      </p>
-                      <p className="text-(--color-accent-500)">
-                        <code className="text-sm">text-accent-500</code> - Accent blue
-                      </p>
-                    </div>
-                    <div className="space-y-2 p-4 bg-secondary rounded border border-primary">
-                      <div className="border-l-4 border-primary pl-3">
-                        <code className="text-sm">border-primary</code> - Grey-300
-                      </div>
-                      <div className="border-l-4 border-accent pl-3">
-                        <code className="text-sm">border-accent</code> - Light blue
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Text Colors */}
-              <div className="mb-12">
-                <h3 className="text-display-sm font-semibold text-primary mb-6">
-                  Complete Text Color Scale
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-                    <div>
-                      <p className="text-primary font-medium">Primary Text</p>
-                      <code className="text-xs text-tertiary">text-primary - Main content</code>
-                    </div>
-                    <span className="text-primary text-2xl">Aa</span>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-                    <div>
-                      <p className="text-secondary font-medium">Secondary Text</p>
-                      <code className="text-xs text-tertiary">text-secondary - Body text</code>
-                    </div>
-                    <span className="text-secondary text-2xl">Aa</span>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-                    <div>
-                      <p className="text-tertiary font-medium">Tertiary Text</p>
-                      <code className="text-xs text-tertiary">text-tertiary - Captions</code>
-                    </div>
-                    <span className="text-tertiary text-2xl">Aa</span>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-                    <div>
-                      <p className="text-brand-secondary font-medium">Brand Text</p>
-                      <code className="text-xs text-tertiary">
-                        text-brand-secondary - Brand links
-                      </code>
-                    </div>
-                    <span className="text-brand-secondary text-2xl">Aa</span>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-                    <div>
-                      <p className="text-accent-tertiary font-medium">Accent Text</p>
-                      <code className="text-xs text-tertiary">
-                        text-accent-tertiary - Accent links & highlights
-                      </code>
-                    </div>
-                    <span className="text-accent-tertiary text-2xl">Aa</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Background Colors */}
-              <div className="mb-12">
-                <h3 className="text-display-sm font-semibold text-primary mb-6">
-                  Background Colors
-                </h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <h6 className="text-lg font-semibold text-primary mb-3">
-                      bg-primary{' '}
-                      <span className="text-sm text-tertiary font-normal">(white / gray-950)</span>
-                    </h6>
-                    <div className="h-20 bg-primary rounded-lg"></div>
-                  </div>
-                  <div>
-                    <h6 className="text-lg font-semibold text-primary mb-3">
-                      bg-secondary{' '}
-                      <span className="text-sm text-tertiary font-normal">
-                        (gray-50 / gray-900)
-                      </span>
-                    </h6>
-                    <div className="h-20 bg-secondary rounded-lg"></div>
-                  </div>
-                  <div>
-                    <h6 className="text-lg font-semibold text-primary mb-3">
-                      bg-tertiary{' '}
-                      <span className="text-sm text-tertiary font-normal">
-                        (gray-100 / gray-800)
-                      </span>
-                    </h6>
-                    <div className="h-20 bg-tertiary rounded-lg"></div>
-                  </div>
-                  <div>
-                    <h6 className="text-lg font-semibold text-primary mb-3">
-                      bg-brand-solid{' '}
-                      <span className="text-sm text-tertiary font-normal">(brand-500 #031A43)</span>
-                    </h6>
-                    <div className="h-20 bg-(--color-bg-brand-solid) rounded-lg"></div>
-                  </div>
-                  <div>
-                    <h6 className="text-lg font-semibold text-primary mb-3">
-                      bg-brand-subtle{' '}
-                      <span className="text-sm text-tertiary font-normal">(brand-50)</span>
-                    </h6>
-                    <div className="h-20 bg-(--color-bg-brand-subtle) rounded-lg"></div>
-                  </div>
-                  <div>
-                    <h6 className="text-lg font-semibold text-primary mb-3">
-                      bg-accent-solid{' '}
-                      <span className="text-sm text-tertiary font-normal">
-                        (accent-500 #1689FF)
-                      </span>
-                    </h6>
-                    <div className="h-20 bg-(--color-bg-accent-solid) rounded-lg"></div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Border Colors */}
-              <div>
-                <h3 className="text-display-sm font-semibold text-primary mb-6">Border Colors</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <h6 className="text-lg font-semibold text-primary mb-3">
-                      border-primary{' '}
-                      <span className="text-sm text-tertiary font-normal">(gray-300)</span>
-                    </h6>
-                    <div className="h-20 bg-primary rounded-lg border-2 border-primary"></div>
-                  </div>
-                  <div>
-                    <h6 className="text-lg font-semibold text-primary mb-3">
-                      border-secondary{' '}
-                      <span className="text-sm text-tertiary font-normal">(gray-200)</span>
-                    </h6>
-                    <div className="h-20 bg-primary rounded-lg border-2 border-secondary"></div>
-                  </div>
-                  <div>
-                    <h6 className="text-lg font-semibold text-primary mb-3">
-                      border-accent{' '}
-                      <span className="text-sm text-tertiary font-normal">
-                        (accent-500 #1689FF)
-                      </span>
-                    </h6>
-                    <div className="h-20 bg-primary rounded-lg border-2 border-accent"></div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Status Colors & States */}
-              <div className="mt-12">
-                <h3 className="text-display-sm font-semibold text-primary mb-6">
-                  Status Colors & States
-                </h3>
-
-                {/* Status Backgrounds */}
-                <div className="mb-8">
-                  <h4 className="text-xl font-semibold text-primary mb-4">Status Backgrounds</h4>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="p-6 bg-(--color-bg-error) border-2 border-(--color-border-error) rounded-lg">
-                      <p className="text-(--color-text-error-primary) font-semibold mb-1">
-                        Error Background
-                      </p>
-                      <code className="text-sm text-secondary">bg-error</code>
-                      <p className="text-xs text-tertiary mt-2">
-                        Use for error messages and alerts
-                      </p>
-                    </div>
-                    <div className="p-6 bg-(--color-bg-warning) border-2 border-(--color-border-primary) rounded-lg">
-                      <p className="text-(--color-text-warning-primary) font-semibold mb-1">
-                        Warning Background
-                      </p>
-                      <code className="text-sm text-secondary">bg-warning</code>
-                      <p className="text-xs text-tertiary mt-2">Use for warning messages</p>
-                    </div>
-                    <div className="p-6 bg-(--color-bg-success) border-2 border-(--color-border-primary) rounded-lg">
-                      <p className="text-(--color-text-success-primary) font-semibold mb-1">
-                        Success Background
-                      </p>
-                      <code className="text-sm text-secondary">bg-success</code>
-                      <p className="text-xs text-tertiary mt-2">
-                        Use for success messages and confirmations
-                      </p>
-                    </div>
-                    <div className="p-6 bg-(--color-bg-disabled) border-2 border-(--color-border-disabled) rounded-lg">
-                      <p className="text-(--color-text-disabled) font-semibold mb-1">
-                        Disabled Background
-                      </p>
-                      <code className="text-sm text-secondary">bg-disabled</code>
-                      <p className="text-xs text-tertiary mt-2">Use for disabled form elements</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Status Text Colors */}
-                <div className="mb-8">
-                  <h4 className="text-xl font-semibold text-primary mb-4">Status Text Colors</h4>
-                  <div className="space-y-3 p-6 bg-secondary rounded-lg border border-primary">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-(--color-text-error-primary) font-semibold">
-                          Error Text
-                        </p>
-                        <code className="text-xs text-tertiary">text-error-primary</code>
-                      </div>
-                      <span className="text-(--color-text-error-primary) text-2xl">Aa</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-(--color-text-warning-primary) font-semibold">
-                          Warning Text
-                        </p>
-                        <code className="text-xs text-tertiary">text-warning-primary</code>
-                      </div>
-                      <span className="text-(--color-text-warning-primary) text-2xl">Aa</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-(--color-text-success-primary) font-semibold">
-                          Success Text
-                        </p>
-                        <code className="text-xs text-tertiary">text-success-primary</code>
-                      </div>
-                      <span className="text-(--color-text-success-primary) text-2xl">Aa</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-(--color-text-disabled) font-semibold">Disabled Text</p>
-                        <code className="text-xs text-tertiary">text-disabled</code>
-                      </div>
-                      <span className="text-(--color-text-disabled) text-2xl">Aa</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Additional Background States */}
-                <div className="mb-8">
-                  <h4 className="text-xl font-semibold text-primary mb-4">
-                    Interactive Background States
-                  </h4>
-                  <div className="space-y-3">
-                    <div className="p-4 bg-(--color-bg-primary_hover) border border-primary rounded-lg">
-                      <code className="text-sm font-semibold text-primary">bg-primary_hover</code>
-                      <p className="text-xs text-tertiary mt-1">
-                        Hover state for primary backgrounds
-                      </p>
-                    </div>
-                    <div className="p-4 bg-(--color-bg-secondary_hover) border border-primary rounded-lg">
-                      <code className="text-sm font-semibold text-primary">bg-secondary_hover</code>
-                      <p className="text-xs text-tertiary mt-1">
-                        Hover state for secondary backgrounds
-                      </p>
-                    </div>
-                    <div className="p-4 bg-(--color-bg-active) border border-primary rounded-lg">
-                      <code className="text-sm font-semibold text-primary">bg-active</code>
-                      <p className="text-xs text-tertiary mt-1">Active/pressed state backgrounds</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Border Variants */}
-                <div>
-                  <h4 className="text-xl font-semibold text-primary mb-4">
-                    Additional Border Variants
-                  </h4>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="p-4 bg-secondary border-2 border-tertiary rounded-lg">
-                      <code className="text-sm font-semibold text-primary">border-tertiary</code>
-                      <p className="text-xs text-tertiary mt-1">
-                        Tertiary border variant (gray-300)
-                      </p>
-                    </div>
-                    <div className="p-4 bg-secondary border-2 border-(--color-border-disabled) rounded-lg">
-                      <code className="text-sm font-semibold text-primary">border-disabled</code>
-                      <p className="text-xs text-tertiary mt-1">Disabled element borders</p>
-                    </div>
-                    <div className="p-4 bg-secondary border-2 border-(--color-border-error_subtle) rounded-lg">
-                      <code className="text-sm font-semibold text-primary">
-                        border-error_subtle
-                      </code>
-                      <p className="text-xs text-tertiary mt-1">
-                        Subtle error borders (error-300 - lighter)
-                      </p>
-                    </div>
-                    <div className="p-4 bg-secondary border-2 border-(--color-border-error) rounded-lg">
-                      <code className="text-sm font-semibold text-primary">border-error</code>
-                      <p className="text-xs text-tertiary mt-1">
-                        Strong error borders (error-500 - darker)
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Buttons */}
-            <section id="buttons">
-              <h2 className="text-display-md font-semibold text-primary mb-8">Buttons</h2>
-
-              <div className="mb-12">
-                <h3 className="text-display-sm font-semibold text-primary mb-6">Button Sizes</h3>
-                <div className="flex flex-wrap items-center gap-4">
-                  <Button size="sm" color="primary">
-                    Small
-                  </Button>
-                  <Button size="md" color="primary">
-                    Medium
-                  </Button>
-                  <Button size="lg" color="primary">
-                    Large
-                  </Button>
-                  <Button size="xl" color="primary">
-                    Extra Large
-                  </Button>
-                </div>
-                <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                  {'<Button size="sm|md|lg|xl" color="primary">Label</Button>'}
-                </code>
-              </div>
-
-              <div className="mb-12">
-                <h3 className="text-display-sm font-semibold text-primary mb-6">Button Colors</h3>
-                <div className="flex flex-wrap gap-4">
-                  <Button color="primary">Primary (Brand)</Button>
-                  <Button color="accent">Accent</Button>
-                  <Button color="secondary">Secondary</Button>
-                  <Button color="tertiary">Tertiary</Button>
-                  <Button color="link">Link</Button>
-                </div>
-                <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                  {'<Button color="primary|accent|secondary|tertiary|link">Label</Button>'}
-                </code>
-                <p className="mt-3 text-sm text-tertiary">
-                  <span className="font-semibold">Primary:</span> Dark blue brand color for primary
-                  CTAs
-                  <br />
-                  <span className="font-semibold">Accent:</span> Light blue accent color for
-                  secondary actions and highlights
-                  <br />
-                  <span className="font-semibold">Link:</span> Brand-colored text link with
-                  underline on hover
-                </p>
-              </div>
-
-              <div className="mb-12">
-                <h3 className="text-display-sm font-semibold text-primary mb-6">
-                  Destructive Buttons
-                </h3>
-                <div className="flex flex-wrap gap-4">
-                  <Button color="primary-destructive">Delete</Button>
-                  <Button color="secondary-destructive">Remove</Button>
-                  <Button color="tertiary-destructive">Cancel</Button>
-                  <Button color="link-destructive">Delete Link</Button>
-                </div>
-                <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                  {
-                    '<Button color="primary-destructive|secondary-destructive|tertiary-destructive|link-destructive">Label</Button>'
+      {/* Tabs Navigation */}
+      <div className="border-b border-secondary sticky top-0 z-40">
+        <div className="container max-w-container mx-auto px-8">
+          <nav className="flex gap-1" role="tablist">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                role="tab"
+                aria-selected={activeTab === tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`
+                  px-6 py-4 text-md font-medium transition-colors border-b-2
+                  ${
+                    activeTab === tab.id
+                      ? 'border-brand-solid text-primary'
+                      : 'border-transparent text-tertiary hover:text-secondary'
                   }
-                </code>
-              </div>
-
-              <div className="mb-12">
-                <h3 className="text-display-sm font-semibold text-primary mb-6">
-                  Buttons with Icons
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex flex-wrap gap-4">
-                    <Button color="primary" size="md" iconLeading={Zap}>
-                      With Leading Icon
-                    </Button>
-                    <Button color="secondary" size="md" iconTrailing={ArrowRight}>
-                      With Trailing Icon
-                    </Button>
-                    <Button
-                      color="accent"
-                      size="md"
-                      iconLeading={Download03}
-                      iconTrailing={ArrowRight}
-                    >
-                      Both Icons
-                    </Button>
-                  </div>
-                  <div className="flex flex-wrap gap-4">
-                    <Button color="primary" size="sm" iconLeading={Plus}>
-                      Small with Icon
-                    </Button>
-                    <Button color="primary" size="lg" iconLeading={Plus}>
-                      Large with Icon
-                    </Button>
-                    <Button color="primary" size="xl" iconLeading={Plus}>
-                      XL with Icon
-                    </Button>
-                  </div>
-                </div>
-                <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                  {
-                    '<Button color="primary" iconLeading={Icon}>Label</Button>\n<Button color="primary" iconTrailing={Icon}>Label</Button>'
-                  }
-                </code>
-                <p className="mt-3 text-sm text-tertiary">
-                  Icons are imported from{' '}
-                  <code className="text-brand-secondary">@untitledui/icons</code> and passed as
-                  props. Browse all 1000+ icons at{' '}
-                  <a
-                    href="https://icons.untitledui.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-brand-secondary hover:underline"
-                  >
-                    icons.untitledui.com
-                  </a>
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-display-sm font-semibold text-primary mb-6">Button States</h3>
-                <div className="flex flex-wrap items-center gap-4">
-                  <Button color="primary">Default</Button>
-                  <Button color="primary" isDisabled>
-                    Disabled
-                  </Button>
-                </div>
-                <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                  {'<Button color="primary" isDisabled>Label</Button>'}
-                </code>
-              </div>
-            </section>
-
-            {/* Blocks System */}
-            <BlocksSection />
-
-            {/* Advanced Components */}
-            <AdvancedComponentsSection />
-
-            {/* Form Elements */}
-            <FormElementsSection />
-
-            {/* Radio Groups */}
-            <RadioGroupsSection />
-
-            {/* Badges */}
-            <section id="badges">
-              <h2 className="text-display-md font-semibold text-primary mb-8">Badges</h2>
-
-              <div className="mb-12">
-                <h3 className="text-display-sm font-semibold text-primary mb-6">Badge Sizes</h3>
-                <div className="space-y-4">
-                  <div className="flex flex-wrap gap-3">
-                    <Badge size="sm">Small Badge</Badge>
-                    <Badge size="md">Medium Badge</Badge>
-                    <Badge size="lg">Large Badge</Badge>
-                  </div>
-                </div>
-                <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                  {'<Badge size="sm|md|lg">Label</Badge>'}
-                </code>
-                <p className="mt-2 text-sm text-tertiary">
-                  Light mode: primary background with white text. Dark mode: primary background with
-                  primary text.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-display-sm font-semibold text-primary mb-6">Badge Groups</h3>
-                <div className="flex flex-wrap gap-3">
-                  <BadgeGroup color="brand" size="md" addonText="Category">
-                    Technology
-                  </BadgeGroup>
-                  <BadgeGroup color="gray" size="md" addonText="Status">
-                    Published
-                  </BadgeGroup>
-                  <BadgeGroup color="success" size="md" addonText="Count">
-                    42
-                  </BadgeGroup>
-                </div>
-                <code className="block mt-4 text-sm text-brand-secondary bg-secondary px-4 py-2 rounded-md">
-                  {'<BadgeGroup color="brand" size="md" addonText="Label">Content</BadgeGroup>'}
-                </code>
-              </div>
-            </section>
-
-            {/* Spacing */}
-            <section id="spacing">
-              <h2 className="text-display-md font-semibold text-primary mb-8">Spacing Scale</h2>
-              <p className="text-md text-secondary mb-6">Based on 4px base unit</p>
-              <div className="space-y-4">
-                {[
-                  { name: '1', value: '4px', class: 'w-1' },
-                  { name: '2', value: '8px', class: 'w-2' },
-                  { name: '3', value: '12px', class: 'w-3' },
-                  { name: '4', value: '16px', class: 'w-4' },
-                  { name: '6', value: '24px', class: 'w-6' },
-                  { name: '8', value: '32px', class: 'w-8' },
-                  { name: '12', value: '48px', class: 'w-12' },
-                  { name: '16', value: '64px', class: 'w-16' },
-                  { name: '24', value: '96px', class: 'w-24' },
-                  { name: '32', value: '128px', class: 'w-32' },
-                ].map((item) => (
-                  <div key={item.name} className="flex items-center gap-4">
-                    <div className={`${item.class} h-8 bg-brand-500 rounded`} />
-                    <span className="text-md text-secondary w-16">{item.value}</span>
-                    <code className="text-sm text-brand-secondary">
-                      p-{item.name} / m-{item.name} / gap-{item.name}
-                    </code>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Border Radius */}
-            <section id="borders">
-              <h2 className="text-display-md font-semibold text-primary mb-8">Border Radius</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {[
-                  { name: 'none', value: '0px', class: 'rounded-none' },
-                  { name: 'sm', value: '4px', class: 'rounded-sm' },
-                  { name: 'md', value: '6px', class: 'rounded-md' },
-                  { name: 'lg', value: '8px', class: 'rounded-lg' },
-                  { name: 'xl', value: '12px', class: 'rounded-xl' },
-                  { name: '2xl', value: '16px', class: 'rounded-2xl' },
-                  { name: 'full', value: '9999px', class: 'rounded-full' },
-                ].map((item) => (
-                  <div key={item.name} className="space-y-2">
-                    <div className={`h-16 bg-brand-500 ${item.class}`} />
-                    <p className="text-sm font-medium text-primary">{item.name}</p>
-                    <p className="text-xs text-tertiary">{item.value}</p>
-                    <code className="text-xs text-brand-secondary block">rounded-{item.name}</code>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Payload Patterns */}
-            <PayloadPatternsSection />
-
-            {/* Styling System */}
-            <StylingSystemSection />
-
-            {/* Documentation Links */}
-            <section id="docs" className="border-t border-secondary pt-12">
-              <h2 className="text-display-md font-semibold text-primary mb-8">Documentation</h2>
-              <div className="bg-secondary p-6 rounded-lg space-y-4">
-                <p className="text-md text-primary font-medium">For complete documentation:</p>
-                <ul className="space-y-2 text-md text-secondary">
-                  <li>
-                    📚{' '}
-                    <span className="text-brand-secondary font-medium">/docs/STYLE_GUIDE.md</span> -
-                    Complete style guide reference
-                  </li>
-                  <li>
-                    📋{' '}
-                    <span className="text-brand-secondary font-medium">
-                      /docs/STYLE_GUIDE_QUICK_REFERENCE.md
-                    </span>{' '}
-                    - Quick lookup cheat sheet
-                  </li>
-                  <li>
-                    🎨{' '}
-                    <span className="text-brand-secondary font-medium">/src/styles/README.md</span>{' '}
-                    - Styling system architecture
-                  </li>
-                  <li>
-                    🔧{' '}
-                    <span className="text-brand-secondary font-medium">
-                      /docs/UUI_COMPONENTS_REFERENCE.md
-                    </span>{' '}
-                    - Component docs
-                  </li>
-                </ul>
-                <div className="pt-4 border-t border-primary">
-                  <p className="text-sm text-tertiary">
-                    This is a living style guide showing actual rendered components from the
-                    UntitledUI design system.
-                  </p>
-                </div>
-              </div>
-            </section>
-          </div>
+                `}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </nav>
         </div>
       </div>
+
+      {/* Tab Content */}
+      <div className="container max-w-container mx-auto px-8 py-16">
+        <div className="max-w-5xl mx-auto">
+          {activeTab === 'typography' && <TypographyTab />}
+          {activeTab === 'spacing' && <SpacingTab />}
+          {activeTab === 'colors' && <ColorsTab />}
+          {activeTab === 'components' && <ComponentsTab />}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Typography Tab Component
+function TypographyTab() {
+  return (
+    <div className="space-y-16">
+      <section>
+        <h2 className="text-display-md font-semibold text-primary mb-8">Typography System</h2>
+        <div className="p-6 bg-secondary rounded-lg border border-primary mb-12">
+          <p className="text-md text-secondary">
+            <strong className="text-primary">Rem-based scale:</strong> All typography uses rem units
+            for accessibility and SEO. Fluid scaling ensures optimal readability across all devices.
+          </p>
+        </div>
+
+        {/* Display Scale */}
+        <div className="mb-16">
+          <h3 className="text-display-sm font-semibold text-primary mb-8">
+            Display Scale (Headings)
+          </h3>
+          <p className="text-md text-tertiary mb-8">
+            Font Family: <span className="font-semibold text-secondary">Poppins</span>
+          </p>
+
+          <div className="space-y-12">
+            {/* Display 2XL */}
+            <div className="space-y-4 p-8 bg-secondary rounded-lg border border-primary">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-secondary mb-3">Display 2XL</h4>
+                <p className="text-display-2xl font-semibold text-primary mb-6">
+                  Transform Your Business
+                </p>
+                <p className="text-display-2xl font-semibold text-primary mb-6">
+                  Building Tomorrow's Solutions Today
+                </p>
+                <p className="text-display-2xl font-semibold text-primary">
+                  Transform your business with innovative solutions that drive growth and create
+                  lasting value for your customers and stakeholders in today's competitive digital
+                  marketplace.
+                </p>
+              </div>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">CSS Variable:</span>{' '}
+                  <code className="text-brand-secondary">--text-display-2xl</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Font Size:</span> clamp(3rem, 4vw +
+                  1.5rem, 4.5rem) • 48px → 72px (fluid)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Line Height:</span> 5.4rem (86.4px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Letter Spacing:</span> -0.09rem
+                  (-1.44px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">text-display-2xl</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Usage:</span> Hero headings, large
+                  marketing headers
+                </p>
+              </div>
+            </div>
+
+            {/* Display XL */}
+            <div className="space-y-4 p-8 bg-secondary rounded-lg border border-primary">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-secondary mb-3">Display XL</h4>
+                <p className="text-display-xl font-semibold text-primary mb-6">
+                  Build Better Products
+                </p>
+                <p className="text-display-xl font-semibold text-primary mb-6">
+                  Innovation Through Collaboration
+                </p>
+                <p className="text-display-xl font-semibold text-primary">
+                  Build better products that solve real problems and delight users with thoughtful
+                  design and exceptional functionality that stands the test of time.
+                </p>
+              </div>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">CSS Variable:</span>{' '}
+                  <code className="text-brand-secondary">--text-display-xl</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Font Size:</span> clamp(2.5rem,
+                  3.5vw + 1rem, 3.75rem) • 40px → 60px (fluid)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Line Height:</span> 4.5rem (72px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Letter Spacing:</span> -0.075rem
+                  (-1.2px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">text-display-xl</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Usage:</span> Large section
+                  headers, landing page titles
+                </p>
+              </div>
+            </div>
+
+            {/* Display LG */}
+            <div className="space-y-4 p-8 bg-secondary rounded-lg border border-primary">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-secondary mb-3">Display LG (H1)</h4>
+                <p className="text-display-lg font-semibold text-primary mb-6">Accelerate Growth</p>
+                <p className="text-display-lg font-semibold text-primary mb-6">
+                  Strategic Partnerships Drive Success
+                </p>
+                <p className="text-display-lg font-semibold text-primary">
+                  Accelerate growth through strategic partnerships and data-driven decisions that
+                  unlock new opportunities and maximize your competitive advantage in the
+                  marketplace.
+                </p>
+              </div>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">CSS Variable:</span>{' '}
+                  <code className="text-brand-secondary">--text-display-lg</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Font Size:</span> clamp(2rem, 3vw +
+                  1rem, 3rem) • 32px → 48px (fluid)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Line Height:</span> 3.6rem (57.6px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Letter Spacing:</span> -0.06rem
+                  (-0.96px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">text-display-lg</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Semantic:</span> H1 (page titles)
+                </p>
+              </div>
+            </div>
+
+            {/* Display MD */}
+            <div className="space-y-4 p-8 bg-secondary rounded-lg border border-primary">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-secondary mb-3">Display MD (H2)</h4>
+                <p className="text-display-md font-semibold text-primary mb-6">Create Impact</p>
+                <p className="text-display-md font-semibold text-primary mb-6">
+                  Content That Resonates With Your Audience
+                </p>
+                <p className="text-display-md font-semibold text-primary">
+                  Create impact with powerful storytelling and compelling content that resonates
+                  with your audience and drives meaningful engagement across all channels.
+                </p>
+              </div>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">CSS Variable:</span>{' '}
+                  <code className="text-brand-secondary">--text-display-md</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Font Size:</span> clamp(1.75rem,
+                  2.5vw + 0.75rem, 2.25rem) • 28px → 36px (fluid)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Line Height:</span> 2.7rem (43.2px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Letter Spacing:</span> -0.045rem
+                  (-0.72px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">text-display-md</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Semantic:</span> H2 (section
+                  headings)
+                </p>
+              </div>
+            </div>
+
+            {/* Display SM */}
+            <div className="space-y-4 p-8 bg-secondary rounded-lg border border-primary">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-secondary mb-3">Display SM (H3)</h4>
+                <p className="text-display-sm font-semibold text-primary mb-6">Drive Innovation</p>
+                <p className="text-display-sm font-semibold text-primary mb-6">
+                  Embracing New Technologies and Methodologies
+                </p>
+                <p className="text-display-sm font-semibold text-primary">
+                  Drive innovation by embracing new technologies and methodologies that transform
+                  how we work and deliver value to customers in an ever-evolving digital landscape.
+                </p>
+              </div>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">CSS Variable:</span>{' '}
+                  <code className="text-brand-secondary">--text-display-sm</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Font Size:</span> clamp(1.5rem, 2vw
+                  + 0.75rem, 1.875rem) • 24px → 30px (fluid)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Line Height:</span> 2.25rem (36px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">text-display-sm</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Semantic:</span> H3 (subsection
+                  headings)
+                </p>
+              </div>
+            </div>
+
+            {/* Display XS */}
+            <div className="space-y-4 p-8 bg-secondary rounded-lg border border-primary">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-secondary mb-3">Display XS</h4>
+                <p className="text-display-xs font-semibold text-primary mb-6">
+                  Optimize Performance
+                </p>
+                <p className="text-display-xs font-semibold text-primary mb-6">
+                  Continuous Improvement and Strategic Optimization
+                </p>
+                <p className="text-display-xs font-semibold text-primary">
+                  Optimize performance through continuous improvement and strategic optimization
+                  that enhances efficiency and delivers measurable results for your organization.
+                </p>
+              </div>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">CSS Variable:</span>{' '}
+                  <code className="text-brand-secondary">--text-display-xs</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Font Size:</span> clamp(1.25rem,
+                  1.5vw + 0.75rem, 1.5rem) • 20px → 24px (fluid)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Line Height:</span> 1.8rem (28.8px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">text-display-xs</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Usage:</span> Small headings, card
+                  titles
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Body Text Scale */}
+        <div className="mb-16">
+          <h3 className="text-display-sm font-semibold text-primary mb-8">Body Text Scale</h3>
+          <p className="text-md text-tertiary mb-8">
+            Font Family: <span className="font-semibold text-secondary">Inter</span>
+          </p>
+
+          <div className="space-y-12">
+            {/* Text XL */}
+            <div className="space-y-4 p-8 bg-secondary rounded-lg border border-primary">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-secondary mb-3">Text XL (H4)</h4>
+                <p className="text-xl text-primary mb-6">Leading with Purpose</p>
+                <p className="text-xl text-primary">
+                  Leading with purpose means aligning your actions with your values and creating a
+                  vision that inspires others to join you on the journey toward meaningful change
+                  and lasting success. This size works well for emphasized body text and H4
+                  subheadings that need to stand out from regular paragraph content.
+                </p>
+              </div>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">CSS Variable:</span>{' '}
+                  <code className="text-brand-secondary">--text-xl</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Font Size:</span> 1.25rem (20px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Line Height:</span> 1.875rem (30px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">text-xl</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Semantic:</span> H4 (minor
+                  subheadings), emphasized body text
+                </p>
+              </div>
+            </div>
+
+            {/* Text LG */}
+            <div className="space-y-4 p-8 bg-secondary rounded-lg border border-primary">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-secondary mb-3">Text LG (H5/H6)</h4>
+                <p className="text-lg text-primary mb-6">Building Trust</p>
+                <p className="text-lg text-primary">
+                  Building trust requires consistent communication, transparent practices, and a
+                  commitment to delivering on promises that demonstrate your reliability and
+                  integrity to stakeholders. This size is perfect for lead paragraphs, introductory
+                  text, and H5/H6 headings that need slightly more emphasis than standard body text.
+                </p>
+              </div>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">CSS Variable:</span>{' '}
+                  <code className="text-brand-secondary">--text-lg</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Font Size:</span> 1.125rem (18px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Line Height:</span> 1.75rem (28px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">text-lg</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Semantic:</span> H5/H6, emphasized
+                  paragraphs, lead text
+                </p>
+              </div>
+            </div>
+
+            {/* Text MD */}
+            <div className="space-y-4 p-8 bg-secondary rounded-lg border border-primary">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-secondary mb-3">
+                  Text MD (Default Body)
+                </h4>
+                <p className="text-md text-primary mb-6">Default Body Text</p>
+                <p className="text-md text-primary">
+                  This is the default body text size used throughout the site for paragraphs,
+                  descriptions, and general content. It provides optimal readability on both mobile
+                  and desktop devices while maintaining a comfortable reading experience that
+                  doesn't strain the eyes or require excessive scrolling. This text size has been
+                  carefully chosen to work well across all screen sizes and ensures accessibility
+                  compliance.
+                </p>
+              </div>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">CSS Variable:</span>{' '}
+                  <code className="text-brand-secondary">--text-md</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Font Size:</span> 1.0625rem (17px)
+                  mobile / 1rem (16px) desktop
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Line Height:</span> 1.625rem (26px)
+                  mobile / 1.5rem (24px) desktop
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">text-md</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Usage:</span> Standard body text,
+                  paragraphs, descriptions
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Note:</span> Larger on mobile for
+                  improved readability
+                </p>
+              </div>
+            </div>
+
+            {/* Text SM */}
+            <div className="space-y-4 p-8 bg-secondary rounded-lg border border-primary">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-secondary mb-3">Text SM</h4>
+                <p className="text-sm text-primary mb-6">Supporting Details</p>
+                <p className="text-sm text-primary">
+                  Small text is ideal for captions, metadata, secondary information, and supporting
+                  details that provide context without overwhelming the main content. It maintains
+                  readability while taking up less visual space, making it perfect for image
+                  captions, form helper text, timestamps, and bylines. This size should be used
+                  sparingly for primary content to ensure accessibility.
+                </p>
+              </div>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">CSS Variable:</span>{' '}
+                  <code className="text-brand-secondary">--text-sm</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Font Size:</span> 0.875rem (14px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Line Height:</span> 1.25rem (20px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">text-sm</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Usage:</span> Captions, metadata,
+                  helper text, labels
+                </p>
+              </div>
+            </div>
+
+            {/* Text XS */}
+            <div className="space-y-4 p-8 bg-secondary rounded-lg border border-primary">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-secondary mb-3">Text XS</h4>
+                <p className="text-xs text-primary mb-6">Fine Print</p>
+                <p className="text-xs text-primary">
+                  Extra small text is reserved for fine print, legal disclaimers, timestamps, and
+                  other minimal information that needs to be present but shouldn't compete with
+                  primary content for attention. Use this size sparingly and ensure that critical
+                  information is not exclusively presented at this size, as it may be difficult to
+                  read for some users. Best suited for copyright notices, version numbers, and
+                  technical specifications.
+                </p>
+              </div>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">CSS Variable:</span>{' '}
+                  <code className="text-brand-secondary">--text-xs</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Font Size:</span> 0.75rem (12px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Line Height:</span> 1.125rem (18px)
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">text-xs</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Usage:</span> Fine print, legal
+                  text, timestamps, technical specs
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Font Weights */}
+        <div>
+          <h3 className="text-display-sm font-semibold text-primary mb-8">Font Weights</h3>
+          <div className="space-y-8">
+            <div className="p-8 bg-secondary rounded-lg border border-primary">
+              <h4 className="text-lg font-semibold text-secondary mb-4">
+                Regular (400) - Default Body
+              </h4>
+              <p className="text-lg font-normal text-primary mb-6">
+                Regular weight is the default for body text, providing comfortable reading for
+                extended content. It maintains excellent readability across long paragraphs and
+                multiple lines of text without feeling heavy or overwhelming to the reader. This
+                weight should be used for all standard paragraph content, descriptions, and articles
+                where sustained reading is expected.
+              </p>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">Weight:</span> 400
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">font-normal</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Usage:</span> Body text,
+                  paragraphs, descriptions
+                </p>
+              </div>
+            </div>
+
+            <div className="p-8 bg-secondary rounded-lg border border-primary">
+              <h4 className="text-lg font-semibold text-secondary mb-4">
+                Medium (500) - Links & Emphasis
+              </h4>
+              <p className="text-lg font-medium text-primary mb-6">
+                Medium weight adds subtle emphasis without being too bold. It's perfect for links,
+                important phrases, and content that needs to stand out slightly from regular text
+                while maintaining a professional appearance. This weight creates hierarchy within
+                body text and helps guide the reader's attention to key information without the
+                visual heaviness of bold text.
+              </p>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">Weight:</span> 500
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">font-medium</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Usage:</span> Links, emphasized
+                  text, important phrases
+                </p>
+              </div>
+            </div>
+
+            <div className="p-8 bg-secondary rounded-lg border border-primary">
+              <h4 className="text-lg font-semibold text-secondary mb-4">
+                Semibold (600) - Headings & Buttons
+              </h4>
+              <p className="text-lg font-semibold text-primary mb-6">
+                Semibold weight provides strong emphasis for headings, call-to-action text, and
+                button labels. It creates clear hierarchy and draws attention without being as heavy
+                as bold, making it ideal for interface elements and section headers. This is the
+                default weight for all display typography and should be used consistently for
+                headings from H1 through H6 to maintain visual consistency.
+              </p>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">Weight:</span> 600
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">font-semibold</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Usage:</span> Headings (H1-H6),
+                  buttons, strong emphasis
+                </p>
+              </div>
+            </div>
+
+            <div className="p-8 bg-secondary rounded-lg border border-primary">
+              <h4 className="text-lg font-semibold text-secondary mb-4">
+                Bold (700) - Strong Emphasis
+              </h4>
+              <p className="text-lg font-bold text-primary mb-6">
+                Bold weight creates maximum emphasis for critical information, important
+                announcements, and content that must be noticed immediately. Use sparingly to
+                maintain impact and avoid visual fatigue from too much heavy text. This weight is
+                best reserved for truly critical information that requires immediate attention or
+                for creating strong visual contrast in specific design contexts.
+              </p>
+              <div className="space-y-2 text-xs text-tertiary bg-tertiary p-4 rounded-md">
+                <p>
+                  <span className="font-semibold text-secondary">Weight:</span> 700
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Tailwind Class:</span>{' '}
+                  <code className="text-brand-secondary">font-bold</code>
+                </p>
+                <p>
+                  <span className="font-semibold text-secondary">Usage:</span> Critical information,
+                  strong emphasis (use sparingly)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+// Spacing Tab Component
+function SpacingTab() {
+  return (
+    <div className="space-y-12">
+      <section>
+        <h2 className="text-display-md font-semibold text-primary mb-8">Spacing System</h2>
+        <p className="text-md text-tertiary mb-8">
+          Based on 4px base unit. All spacing uses Tailwind's default scale for consistency.
+        </p>
+
+        <div className="space-y-6">
+          {[
+            { name: '0.5', value: '2px', rem: '0.125rem', class: 'w-0.5' },
+            { name: '1', value: '4px', rem: '0.25rem', class: 'w-1' },
+            { name: '2', value: '8px', rem: '0.5rem', class: 'w-2' },
+            { name: '3', value: '12px', rem: '0.75rem', class: 'w-3' },
+            { name: '4', value: '16px', rem: '1rem', class: 'w-4' },
+            { name: '6', value: '24px', rem: '1.5rem', class: 'w-6' },
+            { name: '8', value: '32px', rem: '2rem', class: 'w-8' },
+            { name: '12', value: '48px', rem: '3rem', class: 'w-12' },
+            { name: '16', value: '64px', rem: '4rem', class: 'w-16' },
+            { name: '24', value: '96px', rem: '6rem', class: 'w-24' },
+            { name: '32', value: '128px', rem: '8rem', class: 'w-32' },
+          ].map((item) => (
+            <div
+              key={item.name}
+              className="flex items-center gap-6 p-6 bg-secondary rounded-lg border border-primary"
+            >
+              <div className={`${item.class} h-12 bg-brand-solid rounded shrink-0`} />
+              <div className="flex-1 min-w-0">
+                <p className="text-md font-semibold text-primary">{item.value}</p>
+                <p className="text-sm text-tertiary">{item.rem}</p>
+              </div>
+              <div className="text-right">
+                <code className="text-sm text-brand-secondary block">p-{item.name}</code>
+                <code className="text-sm text-brand-secondary block">m-{item.name}</code>
+                <code className="text-sm text-brand-secondary block">gap-{item.name}</code>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 p-6 bg-secondary rounded-lg border border-primary">
+          <h3 className="text-lg font-semibold text-primary mb-4">Spacing in Context</h3>
+          <div className="space-y-6">
+            <div className="p-8 bg-tertiary rounded-lg">
+              <p className="text-md text-primary font-medium mb-4">Example Card with p-8</p>
+              <p className="text-md text-secondary">
+                This card uses p-8 (32px/2rem) padding for comfortable breathing room.
+              </p>
+            </div>
+            <div className="flex gap-4">
+              <div className="flex-1 p-4 bg-tertiary rounded-lg">
+                <p className="text-sm text-primary font-medium">gap-4 (16px)</p>
+              </div>
+              <div className="flex-1 p-4 bg-tertiary rounded-lg">
+                <p className="text-sm text-primary font-medium">between items</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+// Colors Tab Component
+function ColorsTab() {
+  return (
+    <div className="space-y-12">
+      <section>
+        <h2 className="text-display-md font-semibold text-primary mb-8">Color System</h2>
+        <div className="p-6 bg-secondary rounded-lg border border-primary mb-12">
+          <p className="text-md text-secondary">
+            <strong className="text-primary">Theme-Aware:</strong> All colors automatically adapt to
+            light and dark modes. Toggle the theme to see colors change.
+          </p>
+        </div>
+
+        {/* Brand Colors */}
+        <div className="mb-12">
+          <h3 className="text-display-sm font-semibold text-primary mb-6">
+            Brand Color (Dark Blue)
+          </h3>
+          <p className="text-sm text-tertiary mb-6">Main brand color: #031A43</p>
+          <div className="grid grid-cols-6 md:grid-cols-12 gap-2">
+            {[
+              { shade: '25', color: 'rgb(240 244 250)' },
+              { shade: '50', color: 'rgb(225 233 245)' },
+              { shade: '100', color: 'rgb(195 211 235)' },
+              { shade: '200', color: 'rgb(135 169 215)' },
+              { shade: '300', color: 'rgb(75 127 195)' },
+              { shade: '400', color: 'rgb(39 77 131)' },
+              { shade: '500', color: 'rgb(3 26 67)', main: true },
+              { shade: '600', color: 'rgb(2 21 54)' },
+              { shade: '700', color: 'rgb(2 18 45)' },
+              { shade: '800', color: 'rgb(1 15 37)' },
+              { shade: '900', color: 'rgb(1 10 25)', hover: true },
+              { shade: '950', color: 'rgb(1 5 13)' },
+            ].map((item) => (
+              <div key={item.shade} className="space-y-2">
+                <div
+                  className={`h-16 rounded-md shadow-sm ${item.main ? 'ring-2 ring-offset-2 ring-brand-solid' : ''}`}
+                  style={{ backgroundColor: item.color }}
+                />
+                <div className="text-center">
+                  <p className="text-xs font-medium text-primary">{item.shade}</p>
+                  {item.main && (
+                    <p className="text-[10px] font-semibold text-brand-secondary">Main</p>
+                  )}
+                  {item.hover && (
+                    <p className="text-[10px] font-semibold text-brand-secondary">Hover</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Accent Colors */}
+        <div className="mb-12">
+          <h3 className="text-display-sm font-semibold text-primary mb-6">
+            Accent Color (Light Blue)
+          </h3>
+          <p className="text-sm text-tertiary mb-6">Secondary accent: #1689FF</p>
+          <div className="grid grid-cols-6 md:grid-cols-12 gap-2">
+            {[
+              { shade: '25', color: 'rgb(240 247 255)' },
+              { shade: '50', color: 'rgb(219 237 255)' },
+              { shade: '100', color: 'rgb(178 216 255)' },
+              { shade: '200', color: 'rgb(102 178 255)' },
+              { shade: '300', color: 'rgb(26 139 255)' },
+              { shade: '400', color: 'rgb(24 138 255)' },
+              { shade: '500', color: 'rgb(22 137 255)', main: true },
+              { shade: '600', color: 'rgb(0 101 204)', hover: true },
+              { shade: '700', color: 'rgb(0 76 153)' },
+              { shade: '800', color: 'rgb(0 50 102)' },
+              { shade: '900', color: 'rgb(0 30 61)' },
+              { shade: '950', color: 'rgb(0 18 36)' },
+            ].map((item) => (
+              <div key={item.shade} className="space-y-2">
+                <div
+                  className={`h-16 rounded-md shadow-sm ${item.main ? 'ring-2 ring-offset-2 ring-accent-solid' : ''}`}
+                  style={{ backgroundColor: item.color }}
+                />
+                <div className="text-center">
+                  <p className="text-xs font-medium text-primary">{item.shade}</p>
+                  {item.main && (
+                    <p className="text-[10px] font-semibold text-accent-tertiary">Main</p>
+                  )}
+                  {item.hover && (
+                    <p className="text-[10px] font-semibold text-accent-tertiary">Hover</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Semantic Colors */}
+        <div className="mb-12">
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Semantic Colors</h3>
+
+          {/* Text Colors */}
+          <div className="mb-8">
+            <h4 className="text-lg font-semibold text-secondary mb-4">Text Colors</h4>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                <div>
+                  <p className="text-primary font-semibold">Primary Text</p>
+                  <code className="text-xs text-tertiary">
+                    text-primary - Main headings (dark blue in light, white in dark)
+                  </code>
+                </div>
+                <span className="text-primary text-2xl">Aa</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                <div>
+                  <p className="text-secondary font-semibold">Secondary Text</p>
+                  <code className="text-xs text-tertiary">
+                    text-secondary - Body text (gray-700 in light, gray-300 in dark)
+                  </code>
+                </div>
+                <span className="text-secondary text-2xl">Aa</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                <div>
+                  <p className="text-tertiary font-semibold">Tertiary Text</p>
+                  <code className="text-xs text-tertiary">
+                    text-tertiary - Captions (gray-600 in light, gray-200 in dark)
+                  </code>
+                </div>
+                <span className="text-tertiary text-2xl">Aa</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Background Colors */}
+          <div className="mb-8">
+            <h4 className="text-lg font-semibold text-secondary mb-4">Background Colors</h4>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="p-6 bg-primary border border-primary rounded-lg">
+                <code className="text-sm font-semibold text-primary">bg-primary</code>
+                <p className="text-xs text-tertiary mt-2">
+                  Page background (white in light, dark in dark mode)
+                </p>
+              </div>
+              <div className="p-6 bg-secondary border border-primary rounded-lg">
+                <code className="text-sm font-semibold text-primary">bg-secondary</code>
+                <p className="text-xs text-tertiary mt-2">
+                  Card backgrounds (gray-50 in light, gray-900 in dark)
+                </p>
+              </div>
+              <div className="p-6 bg-tertiary border border-primary rounded-lg">
+                <code className="text-sm font-semibold text-primary">bg-tertiary</code>
+                <p className="text-xs text-tertiary mt-2">
+                  Nested elements (gray-100 in light, gray-800 in dark)
+                </p>
+              </div>
+              <div className="p-6 bg-brand-solid text-white rounded-lg">
+                <code className="text-sm font-semibold text-white">bg-brand-solid</code>
+                <p className="text-xs text-white/80 mt-2">
+                  Brand buttons (dark blue #031A43 in light, white in dark)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Status Colors */}
+          <div>
+            <h4 className="text-lg font-semibold text-secondary mb-4">Status Colors</h4>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="p-6 bg-error border-2 border-error rounded-lg">
+                <p className="text-error-primary font-semibold">Error</p>
+                <code className="text-xs text-secondary">bg-error / text-error-primary</code>
+              </div>
+              <div className="p-6 bg-warning border-2 border-primary rounded-lg">
+                <p className="text-warning-primary font-semibold">Warning</p>
+                <code className="text-xs text-secondary">bg-warning / text-warning-primary</code>
+              </div>
+              <div className="p-6 bg-success border-2 border-primary rounded-lg">
+                <p className="text-success-primary font-semibold">Success</p>
+                <code className="text-xs text-secondary">bg-success / text-success-primary</code>
+              </div>
+              <div className="p-6 bg-disabled border-2 border-disabled rounded-lg">
+                <p className="text-disabled font-semibold">Disabled</p>
+                <code className="text-xs text-secondary">bg-disabled / text-disabled</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+// Components Tab Component
+function ComponentsTab() {
+  return (
+    <div className="space-y-12">
+      <section>
+        <h2 className="text-display-md font-semibold text-primary mb-8">Components</h2>
+
+        {/* Buttons */}
+        <div className="mb-16">
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Buttons</h3>
+
+          <div className="space-y-8">
+            {/* Button Sizes */}
+            <div>
+              <h4 className="text-lg font-semibold text-secondary mb-4">Sizes</h4>
+              <div className="flex flex-wrap items-center gap-4 p-6 bg-secondary rounded-lg">
+                <Button size="sm" color="primary">
+                  Small
+                </Button>
+                <Button size="md" color="primary">
+                  Medium
+                </Button>
+                <Button size="lg" color="primary">
+                  Large
+                </Button>
+                <Button size="xl" color="primary">
+                  Extra Large
+                </Button>
+              </div>
+              <code className="block mt-3 text-sm text-brand-secondary">
+                {'<Button size="sm|md|lg|xl" color="primary">Label</Button>'}
+              </code>
+            </div>
+
+            {/* Button Colors */}
+            <div>
+              <h4 className="text-lg font-semibold text-secondary mb-4">Colors</h4>
+              <div className="flex flex-wrap gap-4 p-6 bg-secondary rounded-lg">
+                <Button color="primary">Primary</Button>
+                <Button color="accent">Accent</Button>
+                <Button color="secondary">Secondary</Button>
+                <Button color="tertiary">Tertiary</Button>
+                <Button color="link">Link</Button>
+              </div>
+              <code className="block mt-3 text-sm text-brand-secondary">
+                {'<Button color="primary|accent|secondary|tertiary|link">Label</Button>'}
+              </code>
+            </div>
+
+            {/* Buttons with Icons */}
+            <div>
+              <h4 className="text-lg font-semibold text-secondary mb-4">With Icons</h4>
+              <div className="flex flex-wrap gap-4 p-6 bg-secondary rounded-lg">
+                <Button color="primary" iconLeading={Zap}>
+                  Leading Icon
+                </Button>
+                <Button color="accent" iconTrailing={ArrowRight}>
+                  Trailing Icon
+                </Button>
+                <Button color="secondary" iconLeading={Download03} iconTrailing={ArrowRight}>
+                  Both Icons
+                </Button>
+              </div>
+              <code className="block mt-3 text-sm text-brand-secondary">
+                {'<Button iconLeading={Icon} iconTrailing={Icon}>Label</Button>'}
+              </code>
+            </div>
+
+            {/* Destructive Buttons */}
+            <div>
+              <h4 className="text-lg font-semibold text-secondary mb-4">Destructive</h4>
+              <div className="flex flex-wrap gap-4 p-6 bg-secondary rounded-lg">
+                <Button color="primary-destructive">Delete</Button>
+                <Button color="secondary-destructive">Remove</Button>
+                <Button color="tertiary-destructive">Cancel</Button>
+                <Button color="link-destructive">Delete Link</Button>
+              </div>
+              <code className="block mt-3 text-sm text-brand-secondary">
+                {'<Button color="primary-destructive">Delete</Button>'}
+              </code>
+            </div>
+          </div>
+        </div>
+
+        {/* Badges */}
+        <div className="mb-16">
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Badges</h3>
+
+          <div className="space-y-8">
+            <div>
+              <h4 className="text-lg font-semibold text-secondary mb-4">Sizes</h4>
+              <div className="flex flex-wrap gap-3 p-6 bg-secondary rounded-lg">
+                <Badge size="sm">Small</Badge>
+                <Badge size="md">Medium</Badge>
+                <Badge size="lg">Large</Badge>
+              </div>
+              <code className="block mt-3 text-sm text-brand-secondary">
+                {'<Badge size="sm|md|lg">Label</Badge>'}
+              </code>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold text-secondary mb-4">Badge Groups</h4>
+              <div className="flex flex-wrap gap-3 p-6 bg-secondary rounded-lg">
+                <BadgeGroup color="brand" size="md" addonText="Category">
+                  Technology
+                </BadgeGroup>
+                <BadgeGroup color="gray" size="md" addonText="Status">
+                  Published
+                </BadgeGroup>
+                <BadgeGroup color="success" size="md" addonText="Count">
+                  42
+                </BadgeGroup>
+              </div>
+              <code className="block mt-3 text-sm text-brand-secondary">
+                {'<BadgeGroup color="brand" addonText="Label">Content</BadgeGroup>'}
+              </code>
+            </div>
+          </div>
+        </div>
+
+        {/* Form Elements Preview */}
+        <div>
+          <h3 className="text-display-sm font-semibold text-primary mb-6">Form Elements</h3>
+          <div className="p-6 bg-secondary rounded-lg border border-primary">
+            <p className="text-md text-secondary mb-4">
+              Form elements include inputs, textareas, checkboxes, radio buttons, and select menus.
+            </p>
+            <p className="text-sm text-tertiary">
+              For complete form element documentation, see{' '}
+              <code className="text-brand-secondary">/docs/UUI_COMPONENTS_REFERENCE.md</code>
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

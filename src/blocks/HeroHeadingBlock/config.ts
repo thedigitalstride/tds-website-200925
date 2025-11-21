@@ -16,7 +16,8 @@ export const HeroHeadingBlock: Block = {
         { label: 'Standard Contained', value: 'standardContained' },
       ],
       admin: {
-        description: 'Choose the hero layout style. Split Image displays content on left with optional image on right. Standard Contained is a clean, boxed layout without backgrounds.',
+        description:
+          'Choose the hero layout style. Split Image displays content on left with optional image on right. Standard Contained is a clean, boxed layout without backgrounds.',
       },
     },
     {
@@ -62,8 +63,37 @@ export const HeroHeadingBlock: Block = {
           label: 'Background Style',
           defaultValue: 'primary',
           description: 'Background style for the contained layout',
-          condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage' || siblingData?.heroLayout === 'standardContained',
+          condition: (_, siblingData) =>
+            siblingData?.heroLayout === 'splitImage' ||
+            siblingData?.heroLayout === 'standardContained',
         }),
+        {
+          name: 'headlineSize',
+          type: 'select',
+          defaultValue: 'standard',
+          options: [
+            { label: 'Standard (Display 2XL)', value: 'standard' },
+            { label: 'Large (Display 4XL)', value: 'large' },
+          ],
+          admin: {
+            description:
+              'Choose the headline size. Standard (32-72px) for most heroes, Large (40-96px) for maximum impact.',
+          },
+        },
+        {
+          name: 'subheadingSize',
+          type: 'select',
+          defaultValue: 'standard',
+          options: [
+            { label: 'Standard (Display XL)', value: 'standard' },
+            { label: 'Compact (Display LG)', value: 'compact' },
+            { label: 'Small (Display MD)', value: 'small' },
+          ],
+          admin: {
+            description:
+              'Choose the subheading size. Standard (32-60px) for emphasis, Compact (28-48px) for balance, Small (24-36px) for longer text.',
+          },
+        },
         {
           name: 'headlineColor',
           type: 'select',
@@ -74,7 +104,8 @@ export const HeroHeadingBlock: Block = {
             { label: 'Accent Blue', value: 'brand' },
           ],
           admin: {
-            description: 'Color scheme for the headline. Primary adapts to light/dark modes, White stays white in both modes, Accent Blue is always accent color.',
+            description:
+              'Color scheme for the headline. Primary adapts to light/dark modes, White stays white in both modes, Accent Blue is always accent color.',
           },
         },
         {
@@ -88,7 +119,8 @@ export const HeroHeadingBlock: Block = {
             { label: 'Accent Blue', value: 'brand' },
           ],
           admin: {
-            description: 'Color scheme for the subheading. Primary is dark in light mode/white in dark mode, Primary Reversed is white in light mode/dark in dark mode, White stays white in both modes, Accent Blue is always accent color.',
+            description:
+              'Color scheme for the subheading. Primary is dark in light mode/white in dark mode, Primary Reversed is white in light mode/dark in dark mode, White stays white in both modes, Accent Blue is always accent color.',
           },
         },
         {
@@ -101,7 +133,8 @@ export const HeroHeadingBlock: Block = {
           ],
           admin: {
             condition: (_, siblingData) => siblingData?.heroLayout !== 'splitImage',
-            description: 'Text alignment for headline and subtitle (not available for Split Image layout)',
+            description:
+              'Text alignment for headline and subtitle (not available for Split Image layout)',
           },
         },
         {
@@ -128,7 +161,8 @@ export const HeroHeadingBlock: Block = {
       required: false,
       admin: {
         condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage',
-        description: 'Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile). Alt text is automatically used from the media upload.',
+        description:
+          'Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile). Alt text is automatically used from the media upload.',
       },
     },
     {
@@ -137,7 +171,9 @@ export const HeroHeadingBlock: Block = {
       label: 'Call-to-Action Buttons',
       maxRows: 2,
       admin: {
-        condition: (_, siblingData) => siblingData?.heroLayout === 'splitImage' || siblingData?.heroLayout === 'standardContained',
+        condition: (_, siblingData) =>
+          siblingData?.heroLayout === 'splitImage' ||
+          siblingData?.heroLayout === 'standardContained',
         description: 'Add up to 2 CTA buttons (e.g., "Get Started", "Learn More")',
       },
       fields: [
@@ -156,8 +192,11 @@ export const HeroHeadingBlock: Block = {
       type: 'group',
       label: 'Custom Background',
       admin: {
-        condition: (_, siblingData) => siblingData?.heroLayout !== 'splitImage' && siblingData?.heroLayout !== 'standardContained',
-        description: 'Add custom background with image, gradient, or custom styling (only available for Standard layout)',
+        condition: (_, siblingData) =>
+          siblingData?.heroLayout !== 'splitImage' &&
+          siblingData?.heroLayout !== 'standardContained',
+        description:
+          'Add custom background with image, gradient, or custom styling (only available for Standard layout)',
       },
       fields: [
         {
@@ -180,7 +219,8 @@ export const HeroHeadingBlock: Block = {
           ],
           admin: {
             condition: (_, siblingData) => siblingData?.enabled === true,
-            description: 'Choose how tall the hero section should be. Full Height creates a full-screen hero that extends behind the header.',
+            description:
+              'Choose how tall the hero section should be. Full Height creates a full-screen hero that extends behind the header.',
           },
         },
         {
@@ -196,7 +236,8 @@ export const HeroHeadingBlock: Block = {
           ],
           admin: {
             condition: (_, siblingData) => siblingData?.enabled === true,
-            description: 'Background type - choose gradient for CSS gradients, image for uploads, or custom for animation containers',
+            description:
+              'Background type - choose gradient for CSS gradients, image for uploads, or custom for animation containers',
           },
         },
         {
@@ -210,7 +251,8 @@ export const HeroHeadingBlock: Block = {
             { label: 'Dark to Light', value: 'dark-light' },
           ],
           admin: {
-            condition: (_, siblingData) => siblingData?.enabled === true && siblingData?.type === 'gradient',
+            condition: (_, siblingData) =>
+              siblingData?.enabled === true && siblingData?.type === 'gradient',
             description: 'Pre-configured gradient styles using theme colors',
           },
         },
@@ -220,7 +262,8 @@ export const HeroHeadingBlock: Block = {
           label: 'Background Image',
           relationTo: 'media',
           admin: {
-            condition: (_, siblingData) => siblingData?.enabled === true && siblingData?.type === 'image',
+            condition: (_, siblingData) =>
+              siblingData?.enabled === true && siblingData?.type === 'image',
             description: 'Upload background image - will be optimized automatically',
           },
         },
@@ -232,7 +275,8 @@ export const HeroHeadingBlock: Block = {
           max: 100,
           defaultValue: 40,
           admin: {
-            condition: (_, siblingData) => siblingData?.enabled === true && siblingData?.type === 'image',
+            condition: (_, siblingData) =>
+              siblingData?.enabled === true && siblingData?.type === 'image',
             description: 'Overlay darkness (0-100) - helps ensure text readability over images',
           },
         },
@@ -241,7 +285,8 @@ export const HeroHeadingBlock: Block = {
           type: 'text',
           label: 'Custom Class Name',
           admin: {
-            condition: (_, siblingData) => siblingData?.enabled === true && siblingData?.type === 'custom',
+            condition: (_, siblingData) =>
+              siblingData?.enabled === true && siblingData?.type === 'custom',
             description: 'Custom CSS class for animation containers or React-based effects',
             placeholder: 'animated-gradient',
           },

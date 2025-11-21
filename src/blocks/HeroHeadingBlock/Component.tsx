@@ -12,6 +12,8 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
   const {
     headline,
     subtitle,
+    headlineSize,
+    subheadingSize,
     headlineColor,
     textAlignment,
     spacing,
@@ -28,26 +30,50 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
   const finalSpacing = spacing ?? 'normal'
   const finalHeadlineColor = headlineColor ?? 'primary'
   const finalSubheadingColor = subheadingColor ?? 'primary'
+  const finalHeadlineSize = headlineSize ?? 'standard'
+  const finalSubheadingSize = subheadingSize ?? 'standard'
+
+  // Get headline size variables based on selection
+  const headlineSizeVars =
+    finalHeadlineSize === 'large'
+      ? {
+          fontSize: 'var(--text-display-4xl)',
+          lineHeight: 'var(--text-display-4xl--line-height)',
+          letterSpacing: 'var(--text-display-4xl--letter-spacing)',
+        }
+      : {
+          fontSize: 'var(--text-display-2xl)',
+          lineHeight: 'var(--text-display-2xl--line-height)',
+          letterSpacing: 'var(--text-display-2xl--letter-spacing)',
+        }
+
+  // Get subheading size variables based on selection
+  const subheadingSizeVars =
+    finalSubheadingSize === 'small'
+      ? 'var(--text-display-md)'
+      : finalSubheadingSize === 'compact'
+        ? 'var(--text-display-lg)'
+        : 'var(--text-display-xl)'
 
   // New structure: bg.enabled and bg.heightVariant instead of fullHeight
   const bgEnabled = bg?.enabled === true
   const heightVariant = bg?.heightVariant || 'default'
   const isFullHeight = bgEnabled && heightVariant === 'fullHeight'
-  const backgroundType = bgEnabled ? (bg?.type || 'none') : 'none'
+  const backgroundType = bgEnabled ? bg?.type || 'none' : 'none'
 
   // Headline color options - all maintain same color in both modes
   const headlineColorClasses: Record<string, string> = {
-    primary: 'text-brand-500',   // Brand color (#031A43) in both modes
-    white: 'text-white',         // White in both modes
-    brand: 'text-accent-500',    // Accent blue in both modes
+    primary: 'text-brand-500', // Brand color (#031A43) in both modes
+    white: 'text-white', // White in both modes
+    brand: 'text-accent-500', // Accent blue in both modes
   }
 
   // Subheading color options - primary adapts to light/dark mode
   const subheadingColorClasses: Record<string, string> = {
-    primary: 'text-brand-500 dark:text-white',           // Dark in light mode, white in dark mode
+    primary: 'text-brand-500 dark:text-white', // Dark in light mode, white in dark mode
     'primary-reversed': 'text-white dark:text-brand-500', // White in light mode, dark in dark mode
-    white: 'text-white',                                 // White in both modes
-    brand: 'text-accent-500',                            // Accent blue in both modes
+    white: 'text-white', // White in both modes
+    brand: 'text-accent-500', // Accent blue in both modes
   }
 
   // Don't render if no headline content
@@ -73,10 +99,10 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
     return (
       <section className={containedSpacingClasses[finalSpacing]}>
         <div className="mx-auto max-w-container px-4 md:px-8">
-          <div className={cn(
-            'relative overflow-hidden rounded-xl',
-            heroBgClasses
-          )} style={{ border: 'none' }}>
+          <div
+            className={cn('relative overflow-hidden rounded-xl', heroBgClasses)}
+            style={{ border: 'none' }}
+          >
             {hasSplitImage ? (
               <>
                 {/* SVG with mask definition and image inside foreignObject */}
@@ -89,19 +115,12 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                   <defs>
                     <mask id="heroImageMask">
                       {/* White area on right - shows image (everything to the right of the diagonal) */}
-                      <path
-                        d="M1193.71 1897L2289 0H3486V1897H1193.71Z"
-                        fill="white"
-                      />
+                      <path d="M1193.71 1897L2289 0H3486V1897H1193.71Z" fill="white" />
                     </mask>
                   </defs>
 
                   {/* Foreign object with image, mask applied */}
-                  <foreignObject
-                    width="3486"
-                    height="1897"
-                    mask="url(#heroImageMask)"
-                  >
+                  <foreignObject width="3486" height="1897" mask="url(#heroImageMask)">
                     <div className="w-full h-full">
                       <OptimizedImage
                         resource={splitImage as Media}
@@ -117,67 +136,76 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                 </svg>
 
                 {/* SVG Gradient Overlay - blue diagonal blocks on top */}
-                <HeroSplitImageMask type="gradient" className="absolute inset-[-2px] z-10 hidden lg:block" />
+                <HeroSplitImageMask
+                  type="gradient"
+                  className="absolute inset-[-2px] z-10 hidden lg:block"
+                />
 
                 {/* Content Grid - sits ABOVE mask */}
                 <div className="relative z-20 lg:grid lg:grid-cols-[3fr_1fr] lg:items-start">
                   {/* Content Column - aligned to top for more button space */}
                   <div className="flex flex-col justify-start py-8 px-6 lg:py-24 lg:px-12">
-                  {/* Headline - further reduced max size for split layout */}
-                      <h1
+                    {/* Headline - Display 2XL or 4XL based on selection */}
+                    <h1
                       className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
                       style={{
-                        whiteSpace: 'pre-line',
+                        whiteSpace: 'pre-wrap',
                         fontFamily: 'var(--font-poppins, Poppins)',
-                        fontSize: 'clamp(2rem, 3.5vw + 0.5rem, 3.2rem)',
-                        lineHeight: '1.2',
+                        fontSize: headlineSizeVars.fontSize,
+                        lineHeight: headlineSizeVars.lineHeight,
+                        letterSpacing: headlineSizeVars.letterSpacing,
                         fontWeight: '700',
-                      }}>
+                      }}
+                    >
                       {headline}
                     </h1>
-                  {/* Mobile Image - appears between headline and subtitle */}
-                  {hasSplitImage && (
-                    <div className="relative -mx-6 my-8 h-64 lg:hidden">
-                      <OptimizedImage
-                        resource={splitImage as Media}
-                        alt={(splitImage as Media)?.alt || ''}
-                        fill
-                        priority
-                        className="object-cover"
-                        sizes="100vw"
-                      />
-                    </div>
-                  )}
+                    {/* Mobile Image - appears between headline and subtitle */}
+                    {hasSplitImage && (
+                      <div className="relative -mx-6 my-8 h-64 lg:hidden">
+                        <OptimizedImage
+                          resource={splitImage as Media}
+                          alt={(splitImage as Media)?.alt || ''}
+                          fill
+                          priority
+                          className="object-cover"
+                          sizes="100vw"
+                        />
+                      </div>
+                    )}
 
-                  {/* Subtitle */}
-                  {subtitle && (
+                    {/* Subtitle */}
+                    {subtitle && (
                       <h2
-                      className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
-                      style={{
-                        whiteSpace: 'pre-line',
-                        fontSize: 'var(--text-display-md)',
-                        lineHeight: '1.2',
-                      }}>
-                      {subtitle}
-                    </h2>
-                  )}
+                        className={cn(
+                          'mt-10 font-normal',
+                          subheadingColorClasses[finalSubheadingColor],
+                        )}
+                        style={{
+                          whiteSpace: 'pre-line',
+                          fontSize: 'var(--text-display-md)',
+                          lineHeight: '1.2',
+                        }}
+                      >
+                        {subtitle}
+                      </h2>
+                    )}
 
-                  {/* Buttons */}
-                  {buttons && buttons.length > 0 && (
-                    <div className="mt-8 flex flex-row flex-wrap justify-start gap-3 md:mt-12">
-                      {buttons.map((button, index) => {
-                        const { link } = button
-                        return (
-                          <UUIButton
-                            key={index}
-                            label={link?.label || `Button ${index + 1}`}
-                            link={link}
-                          />
-                        )
-                      })}
-                    </div>
-                  )}
-                </div>
+                    {/* Buttons */}
+                    {buttons && buttons.length > 0 && (
+                      <div className="mt-8 flex flex-row flex-wrap justify-start gap-3 md:mt-12">
+                        {buttons.map((button, index) => {
+                          const { link } = button
+                          return (
+                            <UUIButton
+                              key={index}
+                              label={link?.label || `Button ${index + 1}`}
+                              link={link}
+                            />
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
 
                   {/* Empty right column for spacing */}
                   <div className="hidden lg:block lg:min-h-96" />
@@ -187,28 +215,34 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
               // Full-width content (no image)
               <div className="py-16 px-6 lg:py-24 lg:px-12">
                 <div className="max-w-3xl">
-                  {/* Headline - further reduced max size for split layout */}
+                  {/* Headline - Display 2XL or 4XL based on selection */}
                   <h1
-                  className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
-                  style={{
-                    whiteSpace: 'pre-line',
-                    fontFamily: 'var(--font-poppins, Poppins)',
-                    fontSize: 'clamp(2rem, 3.5vw + 0.5rem, 3.2rem)',
-                    lineHeight: '1.2',
-                    fontWeight: '700',
-                  }}>
-                  {headline}
-                </h1>
+                    className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
+                    style={{
+                      whiteSpace: 'pre-wrap',
+                      fontFamily: 'var(--font-poppins, Poppins)',
+                      fontSize: headlineSizeVars.fontSize,
+                      lineHeight: headlineSizeVars.lineHeight,
+                      letterSpacing: headlineSizeVars.letterSpacing,
+                      fontWeight: '700',
+                    }}
+                  >
+                    {headline}
+                  </h1>
 
                   {/* Subtitle */}
                   {subtitle && (
-                      <h2
-                      className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                    <h2
+                      className={cn(
+                        'mt-10 font-normal',
+                        subheadingColorClasses[finalSubheadingColor],
+                      )}
                       style={{
                         whiteSpace: 'pre-line',
                         fontSize: 'var(--text-display-md)',
                         lineHeight: '1.2',
-                      }}>
+                      }}
+                    >
                       {subtitle}
                     </h2>
                   )}
@@ -246,33 +280,37 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
     return (
       <section className={containedSpacingClasses[finalSpacing]}>
         <div className="mx-auto max-w-container px-4 md:px-8">
-          <div className={cn(
-            'relative overflow-hidden rounded-xl',
-            heroBgClasses
-          )}>
-            {/* Contained content - 75% width on desktop, alignment based on textAlignment setting */}
+          <div className={cn('relative overflow-hidden rounded-xl', heroBgClasses)}>
+            {/* Contained content - 85% width on desktop, alignment based on textAlignment setting */}
             <div className="py-16 px-6 lg:py-24 lg:px-12">
-              <div className={cn(
-                'w-full lg:w-[75%]',
-                finalTextAlignment === 'center' ? 'mx-auto text-center' : 'text-left'
-              )}>
-                {/* Headline */}
+              <div
+                className={cn(
+                  'w-full lg:w-[85%]',
+                  finalTextAlignment === 'center' ? 'mx-auto text-center' : 'text-left',
+                )}
+              >
+                {/* Headline - Display 2XL or 4XL based on selection */}
                 <h1
                   className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
                   style={{
-                    whiteSpace: 'pre-line',
+                    whiteSpace: 'pre-wrap',
                     fontFamily: 'var(--font-poppins, Poppins)',
-                    fontSize: 'clamp(2rem, 3.5vw + 0.5rem, 3.2rem)',
-                    lineHeight: '1.2',
+                    fontSize: headlineSizeVars.fontSize,
+                    lineHeight: headlineSizeVars.lineHeight,
+                    letterSpacing: headlineSizeVars.letterSpacing,
                     fontWeight: '700',
-                  }}>
+                  }}
+                >
                   {headline}
                 </h1>
 
                 {/* Subtitle */}
                 {subtitle && (
                   <h2
-                    className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
+                    className={cn(
+                      'mt-10 font-normal',
+                      subheadingColorClasses[finalSubheadingColor],
+                    )}
                     style={{
                       whiteSpace: 'pre-line',
                       fontSize: 'var(--text-display-md)',
@@ -285,10 +323,12 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
 
                 {/* Buttons */}
                 {buttons && buttons.length > 0 && (
-                  <div className={cn(
-                    'mt-8 flex flex-row flex-wrap gap-3 md:mt-12',
-                    finalTextAlignment === 'center' ? 'justify-center' : 'justify-start'
-                  )}>
+                  <div
+                    className={cn(
+                      'mt-8 flex flex-row flex-wrap gap-3 md:mt-12',
+                      finalTextAlignment === 'center' ? 'justify-center' : 'justify-start',
+                    )}
+                  >
                     {buttons.map((button, index) => {
                       const { link } = button
                       return (
@@ -313,23 +353,31 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
   // MATHEMATICAL GUARANTEE: Top padding = Header height + Desired clearance
   // Mobile header: 72px (h-18), Desktop header: 80px (h-20)
   const spacingClasses: Record<string, string> = bgEnabled
-    ? (isFullHeight
-        ? {
-            // Full height: Header clearance + extra visual breathing room
-            // Mobile: calc(72px + 24px) = 96px, Desktop: calc(80px + 80px) = 160px
-            minimal: 'pt-[calc(var(--header-height-mobile)+24px)] pb-6 lg:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-8',
-            compact: 'pt-[calc(var(--header-height-mobile)+56px)] pb-12 lg:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-16',
-            normal: 'pt-[calc(var(--header-height-mobile)+56px)] pb-16 lg:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-24',
-            spacious: 'pt-[calc(var(--header-height-mobile)+88px)] pb-24 lg:pt-[calc(var(--header-height-desktop)+112px)] lg:pb-32',
-          }
-        : {
-            // Default height: Minimum clearance from header bottom
-            // Mobile: calc(72px + 24px) = 96px, Desktop: calc(80px + 32px) = 112px
-            minimal: 'pt-[calc(var(--header-height-mobile)+24px)] pb-6 md:pt-[calc(var(--header-height-desktop)+32px)] lg:pb-8',
-            compact: 'pt-[calc(var(--header-height-mobile)+24px)] pb-12 md:pt-[calc(var(--header-height-desktop)+32px)] lg:pb-16',
-            normal: 'pt-[calc(var(--header-height-mobile)+40px)] pb-16 md:pt-[calc(var(--header-height-desktop)+32px)] lg:pb-24',
-            spacious: 'pt-[calc(var(--header-height-mobile)+56px)] pb-24 md:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-32',
-          })
+    ? isFullHeight
+      ? {
+          // Full height: Header clearance + extra visual breathing room
+          // Mobile: calc(72px + 24px) = 96px, Desktop: calc(80px + 80px) = 160px
+          minimal:
+            'pt-[calc(var(--header-height-mobile)+24px)] pb-6 lg:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-8',
+          compact:
+            'pt-[calc(var(--header-height-mobile)+56px)] pb-12 lg:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-16',
+          normal:
+            'pt-[calc(var(--header-height-mobile)+56px)] pb-16 lg:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-24',
+          spacious:
+            'pt-[calc(var(--header-height-mobile)+88px)] pb-24 lg:pt-[calc(var(--header-height-desktop)+112px)] lg:pb-32',
+        }
+      : {
+          // Default height: Minimum clearance from header bottom
+          // Mobile: calc(72px + 24px) = 96px, Desktop: calc(80px + 32px) = 112px
+          minimal:
+            'pt-[calc(var(--header-height-mobile)+24px)] pb-6 md:pt-[calc(var(--header-height-desktop)+32px)] lg:pb-8',
+          compact:
+            'pt-[calc(var(--header-height-mobile)+24px)] pb-12 md:pt-[calc(var(--header-height-desktop)+32px)] lg:pb-16',
+          normal:
+            'pt-[calc(var(--header-height-mobile)+40px)] pb-16 md:pt-[calc(var(--header-height-desktop)+32px)] lg:pb-24',
+          spacious:
+            'pt-[calc(var(--header-height-mobile)+56px)] pb-24 md:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-32',
+        }
     : {
         // No background: standard vertical padding (no header overlap)
         minimal: 'py-6 lg:py-8',
@@ -364,18 +412,17 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
     >
       {/* Background Layer - rendered when custom background is enabled */}
       {bgEnabled && backgroundType !== 'none' && (
-        <div className={cn(
-          "absolute inset-0 -z-10",
-          // Always extend background to cover header area (top-[-72px] accounted for by -mt-18)
-          backgroundType === 'image' && "top-[-72px] md:top-[-80px]"
-        )}>
+        <div
+          className={cn(
+            'absolute inset-0 -z-10',
+            // Always extend background to cover header area (top-[-72px] accounted for by -mt-18)
+            backgroundType === 'image' && 'top-[-72px] md:top-[-80px]',
+          )}
+        >
           {/* Gradient Background */}
           {backgroundType === 'gradient' && (
             <div
-              className={cn(
-                'absolute inset-0',
-                gradientClasses[bg?.gradient || 'brand-radial']
-              )}
+              className={cn('absolute inset-0', gradientClasses[bg?.gradient || 'brand-radial'])}
             />
           )}
 
@@ -409,22 +456,22 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
       )}
 
       {/* Content Layer */}
-      <div className={cn(
-        "mx-auto max-w-container px-4 md:px-8 flex w-full items-center",
-        // Add top padding when background extends behind header (to compensate for negative margin)
-        bgEnabled && backgroundType === 'image' && "pt-18 md:pt-20"
-      )}>
+      <div
+        className={cn(
+          'mx-auto max-w-container px-4 md:px-8 flex w-full items-center',
+          // Add top padding when background extends behind header (to compensate for negative margin)
+          bgEnabled && backgroundType === 'image' && 'pt-18 md:pt-20',
+        )}
+      >
         <div className={cn('flex flex-col w-full', alignmentClasses[finalTextAlignment])}>
           <h1
-            className={cn(
-              'mt-4 font-semibold',
-              headlineColorClasses[finalHeadlineColor],
-            )}
+            className={cn('mt-4 font-semibold', headlineColorClasses[finalHeadlineColor])}
             style={{
-              whiteSpace: 'pre-line',
+              whiteSpace: 'pre-wrap',
               fontFamily: 'var(--font-poppins, Poppins)',
-              fontSize: 'clamp(2.1rem, 5vw + 1rem, 6.5rem)',
-              lineHeight: '1.2',
+              fontSize: headlineSizeVars.fontSize,
+              lineHeight: headlineSizeVars.lineHeight,
+              letterSpacing: headlineSizeVars.letterSpacing,
               fontWeight: '700',
             }}
           >
@@ -433,15 +480,15 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
           {subtitle && (
             <div
               className={cn(
-                'max-w-full lg:max-w-[75%]',
-                finalTextAlignment === 'center' && 'mx-auto'
+                'max-w-full lg:max-w-[85%]',
+                finalTextAlignment === 'center' && 'mx-auto',
               )}
             >
               <h2
                 className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
                 style={{
                   whiteSpace: 'pre-line',
-                  fontSize: 'var(--text-display-md)',
+                  fontSize: subheadingSizeVars,
                   lineHeight: '1.2',
                 }}
               >

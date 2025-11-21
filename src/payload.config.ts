@@ -33,6 +33,21 @@ import { SpacerBlockConfig } from './blocks/SpacerBlock'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Vercel Blob Storage configuration
+// Base URL: https://ov6vgo85vq4jfktd.public.blob.vercel-storage.com
+// Same storage used for both local development and production
+// For staging, simply replace BLOB_READ_WRITE_TOKEN in .env
+const blobToken = process.env.BLOB_READ_WRITE_TOKEN
+
+// Validate blob storage token
+if (!blobToken || blobToken.trim() === '') {
+  console.warn(
+    '⚠️  WARNING: BLOB_READ_WRITE_TOKEN is not set. Media uploads will fail.',
+    '\n   Please add BLOB_READ_WRITE_TOKEN to your .env file.',
+    '\n   Blob Storage Base URL: https://ov6vgo85vq4jfktd.public.blob.vercel-storage.com'
+  )
+}
+
 export default buildConfig({
   serverURL: getServerSideURL(),
   // Configure logger for production optimization
@@ -107,16 +122,22 @@ export default buildConfig({
   blocks: [RichTextBlockConfig, InlineCardBlockConfig, MediaBlock, SpacerBlockConfig],
   plugins: [
     ...plugins,
-    vercelBlobStorage({
-      collections: {
-        media: true,
-      },
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
-      // IMPORTANT: clientUploads disabled to enable Sharp image processing
-      // This means formatOptions (WebP conversion) and resizeOptions will work
-      // Trade-off: Server uploads limited to 4.5MB on Vercel (educate users to compress large images before upload)
-      clientUploads: false,
-    }),
+    // Only add Vercel Blob Storage plugin if token is provided
+    // This prevents errors when token is missing and provides better error messages
+    ...(blobToken && blobToken.trim() !== ''
+      ? [
+          vercelBlobStorage({
+            collections: {
+              media: true,
+            },
+            token: blobToken,
+            // IMPORTANT: clientUploads disabled to enable Sharp image processing
+            // This means formatOptions (WebP conversion) and resizeOptions will work
+            // Trade-off: Server uploads limited to 4.5MB on Vercel (educate users to compress large images before upload)
+            clientUploads: false,
+          }),
+        ]
+      : []),
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,

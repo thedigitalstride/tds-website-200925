@@ -21,7 +21,7 @@ const MAX_CONTENT_LENGTH = 10000
  * @returns Content context for AI generation
  */
 export async function analyzeContent(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   data: any,
   maxTokens: number = 2000,
 ): Promise<ContentContext> {
@@ -43,7 +43,7 @@ export async function analyzeContent(
 
   // Extract categories (Posts only)
   if (data.categories && Array.isArray(data.categories)) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     context.categories = data.categories.map((cat: any) => {
       if (typeof cat === 'string') return cat
       if (cat && typeof cat === 'object' && cat.title) return cat.title
@@ -64,7 +64,7 @@ export async function analyzeContent(
 
   // Extract table of contents (Posts only)
   if (data.tableOfContents && Array.isArray(data.tableOfContents)) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const toc = data.tableOfContents.map((item: any) => ({
       title: item.title || '',
       href: item.href || '',
@@ -100,7 +100,7 @@ export async function analyzeContent(
  * @param blocks - Array of layout blocks
  * @returns Extracted text content
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function extractLayoutBlocks(blocks: any[]): string {
   const extracted: string[] = []
 
@@ -187,7 +187,7 @@ function extractLayoutBlocks(blocks: any[]): string {
  * @param lexicalData - Lexical editor content
  * @returns Plain text content
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function extractLexicalContent(lexicalData: any): string {
   if (!lexicalData || !lexicalData.root) {
     return ''
@@ -195,7 +195,7 @@ function extractLexicalContent(lexicalData: any): string {
 
   const extracted: string[] = []
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   function traverse(node: any) {
     // Handle text nodes
     if (node.type === 'text' && node.text) {

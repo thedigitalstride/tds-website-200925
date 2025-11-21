@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { generateAltTag, generateAltTagWithFallback } from '@/services/ai'
 import { logger } from '@/utilities/logger'
 import { aiRateLimiter } from '@/utilities/rateLimiter'
+import { convertMediaUrlToBlob } from '@/utilities/convertMediaUrlToBlob'
 
 export async function POST(request: NextRequest) {
   try {
@@ -61,51 +62,11 @@ export async function POST(request: NextRequest) {
     logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     logger.log(`[API] 🎯 Manual ALT tag generation requested`)
     logger.log(`[API] 📁 Filename: ${filename}`)
-    logger.log(`[API] 🔗 Original URL: ${imageUrl.substring(0, 100)}...`)
-
-    // Convert relative URL to blob storage URL if needed
-    let fullImageUrl = imageUrl
-
-    if (imageUrl.startsWith('/api/media/file/')) {
-      // Payload proxy URL - convert to direct blob storage URL
-      // In production, Vercel Blob Storage URLs are public and accessible
-      // In local development, use BLOB_BASE_URL env variable
-      const blobBaseUrl =
-        process.env.BLOB_BASE_URL || 'https://ov6vgo85vq4jfktd.public.blob.vercel-storage.com'
-
-      const blobFilename = imageUrl.replace('/api/media/file/', '')
-      fullImageUrl = `${blobBaseUrl}/${blobFilename}`
-
-      logger.log(`[API] 🔄 Converted proxy URL to blob storage URL`)
-      logger.log(`[API]    From: ${imageUrl}`)
-      logger.log(`[API]    To:   ${fullImageUrl}`)
-      logger.log(
-        `[API]    Using: ${process.env.BLOB_BASE_URL ? 'env BLOB_BASE_URL' : 'default blob URL'}`,
-      )
-    } else if (imageUrl.startsWith('/')) {
-      // Other relative URL - this shouldn't happen but handle it
-      logger.error(`[API] ⚠️  Unexpected relative URL: ${imageUrl}`)
-      logger.error(
-        `[API] 💡 In production, Payload should return full blob URLs, not proxy URLs`,
-      )
-      return NextResponse.json(
-        { error: 'Unexpected relative URL format. Please use blob storage URL.' },
-        { status: 400 },
-      )
-    } else if (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
-      // Invalid URL format
-      logger.error(`[API] ❌ Invalid URL format: ${imageUrl}`)
-      return NextResponse.json(
-        { error: 'Invalid image URL format. URL must be absolute or a Payload proxy URL.' },
-        { status: 400 },
-      )
-    } else {
-      // Already an absolute URL (production case - full blob URL)
-      logger.log(`[API] ✅ Using absolute URL (production blob URL)`)
-    }
+    // Convert URL to blob storage URL for OpenAI/external services
+    // This handles localhost URLs, proxy routes, etc.
+    const fullImageUrl = convertMediaUrlToBlob(imageUrl)
 
     // Try AI generation first to get detailed error
-    logger.log(`[API] 🤖 Attempting AI generation...`)
     const result = await generateAltTag(fullImageUrl, payload)
 
     if (result.success && result.altText) {

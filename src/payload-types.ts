@@ -522,6 +522,14 @@ export interface HeroHeadingBlock {
    */
   heroBackground?: ('none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline') | null;
   /**
+   * Choose the headline size. Standard (32-72px) for most heroes, Large (40-96px) for maximum impact.
+   */
+  headlineSize?: ('standard' | 'large') | null;
+  /**
+   * Choose the subheading size. Standard (32-60px) for emphasis, Compact (28-48px) for balance, Small (24-36px) for longer text.
+   */
+  subheadingSize?: ('standard' | 'compact' | 'small') | null;
+  /**
    * Color scheme for the headline. Primary adapts to light/dark modes, White stays white in both modes, Accent Blue is always accent color.
    */
   headlineColor?: ('primary' | 'white' | 'brand') | null;
@@ -2462,6 +2470,8 @@ export interface HeroHeadingBlockSelect<T extends boolean = true> {
   headline?: T;
   subtitle?: T;
   heroBackground?: T;
+  headlineSize?: T;
+  subheadingSize?: T;
   headlineColor?: T;
   subheadingColor?: T;
   textAlignment?: T;

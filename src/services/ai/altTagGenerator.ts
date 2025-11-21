@@ -238,7 +238,7 @@ async function logAltTagGeneration(
     altText: string
     provider: string
     model: string
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     metadata?: any
   },
 ): Promise<void> {

@@ -42,7 +42,7 @@ const eslintConfig = [
     },
   },
   {
-    ignores: ['.next/'],
+    ignores: ['.next/', 'src/app/(frontend)/style-guide/'],
   },
 ]
 

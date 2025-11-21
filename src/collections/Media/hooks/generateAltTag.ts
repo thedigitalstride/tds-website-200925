@@ -6,6 +6,7 @@
 import type { CollectionAfterChangeHook } from 'payload'
 import { generateAltTagWithFallback } from '@/services/ai'
 import { logger } from '@/utilities/logger'
+import { convertMediaUrlToBlob } from '@/utilities/convertMediaUrlToBlob'
 
 /**
  * After change hook that generates ALT tags for images
@@ -74,8 +75,12 @@ export const generateAltTagAfterChange: CollectionAfterChangeHook = async ({
     logger.log('[AI ALT Tag Hook] 🤖 Provider:', aiSettings.provider || 'openai')
     logger.log('[AI ALT Tag Hook] 🎯 Model:', aiSettings.model || 'gpt-4o')
 
+    // Convert URL to blob storage URL for OpenAI/external services
+    // This handles localhost URLs, proxy routes, etc.
+    const blobUrl = convertMediaUrlToBlob(doc.url)
+
     // Generate ALT tag with fallback to filename
-    const generatedAlt = await generateAltTagWithFallback(doc.url, doc.filename, req.payload)
+    const generatedAlt = await generateAltTagWithFallback(blobUrl, doc.filename, req.payload)
 
     if (!generatedAlt || generatedAlt.trim() === '') {
       logger.error('[AI ALT Tag Hook] ❌ Generation failed and no fallback available')
