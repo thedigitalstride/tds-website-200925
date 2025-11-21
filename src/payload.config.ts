@@ -110,12 +110,20 @@ export default buildConfig({
     },
   }),
   collections: [Pages, Posts, Media, Categories, FAQs, Icons, Testimonials, Users, Accounts, AiLogs],
+  // CORS Configuration
+  // - Production: prod.thedigitalstride.co.uk
+  // - Preview: preview.thedigitalstride.co.uk + preview branch Vercel URL
+  // - Development: localhost:3000
+  // The getServerSideURL() automatically includes the correct URL for each environment
   cors: [
-    // Primary production domain (custom domain)
+    // Primary production domain
     'https://prod.thedigitalstride.co.uk',
-    // Vercel production URL (fallback)
+    // Preview domain
+    'https://preview.thedigitalstride.co.uk',
+    // Vercel URLs (production and preview deployments)
     'https://tds-website-200925.vercel.app',
-    // Dynamic URL from getServerSideURL() (for preview deployments and local dev)
+    'https://tds-website-200925-git-preview.vercel.app',
+    // Dynamic URL from getServerSideURL() (automatically includes preview deployments)
     getServerSideURL(),
   ].filter(Boolean),
   globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
