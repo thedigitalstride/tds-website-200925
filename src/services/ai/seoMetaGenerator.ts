@@ -362,7 +362,7 @@ export async function generateSeoDescription(
  * @returns Response with generated text
  */
 async function callAiForText(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   provider: any,
   config: ProviderConfig,
   prompt: string,
@@ -462,7 +462,7 @@ export async function logSeoGeneration(
     contentThemes?: string[]
     provider: string
     model: string
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     metadata?: any
   },
 ): Promise<void> {

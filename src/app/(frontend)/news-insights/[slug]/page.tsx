@@ -139,7 +139,7 @@ const queryPostBySlug = cache(async ({ slug, draft }: { slug: string; draft: boo
       },
       beforeContent: true,
       afterContent: true,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
     } as any,
   })
 

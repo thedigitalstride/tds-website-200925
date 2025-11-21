@@ -33,6 +33,21 @@ import { SpacerBlockConfig } from './blocks/SpacerBlock'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Vercel Blob Storage configuration
+// Base URL: https://ov6vgo85vq4jfktd.public.blob.vercel-storage.com
+// Same storage used for both local development and production
+// For staging, simply replace BLOB_READ_WRITE_TOKEN in .env
+const blobToken = process.env.BLOB_READ_WRITE_TOKEN
+
+// Validate blob storage token
+if (!blobToken || blobToken.trim() === '') {
+  console.warn(
+    '⚠️  WARNING: BLOB_READ_WRITE_TOKEN is not set. Media uploads will fail.',
+    '\n   Please add BLOB_READ_WRITE_TOKEN to your .env file.',
+    '\n   Blob Storage Base URL: https://ov6vgo85vq4jfktd.public.blob.vercel-storage.com',
+  )
+}
+
 export default buildConfig({
   serverURL: getServerSideURL(),
   // Configure logger for production optimization
@@ -84,39 +99,57 @@ export default buildConfig({
   // This config helps us configure global or default features that the other editors can inherit
   editor: richText(),
   db: mongooseAdapter({
-    url: process.env.MONGODB_URI || process.env.DATABASE_URI || 'mongodb://localhost:27017/tds-website',
+    url:
+      process.env.MONGODB_URI ||
+      process.env.DATABASE_URI ||
+      'mongodb://localhost:27017/tds-website',
     // MongoDB connection options
     connectOptions: {
       // Recommended options for production
       maxPoolSize: 20, // Maximum number of sockets the MongoDB driver will keep open
-      minPoolSize: 2,  // Minimum number of sockets the MongoDB driver will keep open
+      minPoolSize: 2, // Minimum number of sockets the MongoDB driver will keep open
       serverSelectionTimeoutMS: 5000, // How long to keep trying to send operations to a server
       socketTimeoutMS: 45000, // How long a socket stays open when inactive
     },
   }),
-  collections: [Pages, Posts, Media, Categories, FAQs, Icons, Testimonials, Users, Accounts, AiLogs],
-  cors: [
-    // Primary production domain (custom domain)
-    'https://prod.thedigitalstride.co.uk',
-    // Vercel production URL (fallback)
-    'https://tds-website-200925.vercel.app',
-    // Dynamic URL from getServerSideURL() (for preview deployments and local dev)
-    getServerSideURL(),
-  ].filter(Boolean),
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    FAQs,
+    Icons,
+    Testimonials,
+    Users,
+    Accounts,
+    AiLogs,
+  ],
+  // CORS Configuration
+  // Set to '*' to allow all Vercel preview deployment URLs (*.vercel.app)
+  // This is required because preview deployments have unique URLs that can't be predicted
+  // Security note: Actual authentication is still enforced by Payload's auth system
+  // In production, NEXT_PUBLIC_SERVER_URL ensures the correct domain is used for redirects
+  cors: '*',
   globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
   blocks: [RichTextBlockConfig, InlineCardBlockConfig, MediaBlock, SpacerBlockConfig],
   plugins: [
     ...plugins,
-    vercelBlobStorage({
-      collections: {
-        media: true,
-      },
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
-      // IMPORTANT: clientUploads disabled to enable Sharp image processing
-      // This means formatOptions (WebP conversion) and resizeOptions will work
-      // Trade-off: Server uploads limited to 4.5MB on Vercel (educate users to compress large images before upload)
-      clientUploads: false,
-    }),
+    // Only add Vercel Blob Storage plugin if token is provided
+    // This prevents errors when token is missing and provides better error messages
+    ...(blobToken && blobToken.trim() !== ''
+      ? [
+          vercelBlobStorage({
+            collections: {
+              media: true,
+            },
+            token: blobToken,
+            // IMPORTANT: clientUploads disabled to enable Sharp image processing
+            // This means formatOptions (WebP conversion) and resizeOptions will work
+            // Trade-off: Server uploads limited to 4.5MB on Vercel (educate users to compress large images before upload)
+            clientUploads: false,
+          }),
+        ]
+      : []),
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,

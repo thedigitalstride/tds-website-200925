@@ -20,7 +20,7 @@ if (command && command.includes(':safe')) {
   console.log('\n❌ ERROR: Incorrect usage of :safe suffix\n');
   console.log('You ran: pnpm payload migrate:create:safe');
   console.log('You should run: pnpm migrate:create:safe\n');
-  console.log('The :safe suffix is a separate npm script, not a payload command.\n');
+  console.log('The :safe suffix is a separate pnpm script, not a payload command.\n');
   process.exit(1);
 }
 

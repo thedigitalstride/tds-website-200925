@@ -23,26 +23,30 @@
     --text-xl--line-height: 1.875rem;    /* 30px */
 
     --text-display-xs: clamp(1.25rem, 1.5vw + 0.75rem, 1.5rem);    /* 20px → 24px (fluid) */
-    --text-display-xs--line-height: 1.8rem;      /* 24px * 1.2 = 28.8px */
+    --text-display-xs--line-height: 1.1;      /* Unitless - scales with font-size */
 
     --text-display-sm: clamp(1.5rem, 2vw + 0.75rem, 1.875rem);     /* 24px → 30px (fluid) */
-    --text-display-sm--line-height: 2.25rem;     /* 30px * 1.2 = 36px */
+    --text-display-sm--line-height: 1.1;     /* Unitless - scales with font-size */
 
     --text-display-md: clamp(1.75rem, 2.5vw + 0.75rem, 2.25rem);   /* 28px → 36px (fluid) */
-    --text-display-md--line-height: 2.7rem;      /* 36px * 1.2 = 43.2px */
+    --text-display-md--line-height: 1.1;      /* Unitless - scales with font-size */
     --text-display-md--letter-spacing: -0.045rem;  /* -0.72px */
 
     --text-display-lg: clamp(2rem, 3vw + 1rem, 3rem);              /* 32px → 48px (fluid) */
-    --text-display-lg--line-height: 3.6rem;      /* 48px * 1.2 = 57.6px */
+    --text-display-lg--line-height: 1.1;      /* Unitless - scales with font-size */
     --text-display-lg--letter-spacing: -0.06rem;   /* -0.96px */
 
     --text-display-xl: clamp(2.5rem, 3.5vw + 1rem, 3.75rem);       /* 40px → 60px (fluid) */
-    --text-display-xl--line-height: 4.5rem;      /* 60px * 1.2 = 72px (already correct!) */
+    --text-display-xl--line-height: 1.1;      /* Unitless - scales with font-size */
     --text-display-xl--letter-spacing: -0.075rem;  /* -1.2px */
 
     --text-display-2xl: clamp(3rem, 4vw + 1.5rem, 4.5rem);         /* 48px → 72px (fluid) */
-    --text-display-2xl--line-height: 5.4rem;     /* 72px * 1.2 = 86.4px */
+    --text-display-2xl--line-height: 1.1;     /* Unitless - scales with font-size */
     --text-display-2xl--letter-spacing: -0.09rem;  /* -1.44px */
+
+    --text-display-4xl: clamp(3.75rem, 5vw + 2rem, 6rem);          /* 60px → 96px (fluid) */
+    --text-display-4xl--line-height: 1.1;     /* Unitless - scales with font-size */
+    --text-display-4xl--letter-spacing: -0.12rem;  /* -1.92px */
 
     /* FLUID HERO HEADING - Scales smoothly from mobile to desktop */
     --text-hero-fluid: clamp(2.1rem, 5vw + 1rem, 6.5rem);
@@ -465,7 +469,7 @@
     /* BACKGROUND COLORS - Simplified */
 
     /* Page/Surface backgrounds */
-    --color-bg-primary: var(--color-brand-500);       /* Page background */
+    --color-bg-primary: var(--color-white);           /* Page background - white in light mode */
     --color-bg-secondary: var(--color-gray-50);       /* Card/panel backgrounds */
     --color-bg-tertiary: var(--color-gray-100);       /* Nested elements */
     --color-bg-quaternary: var(--color-gray-200);     /* Subtle backgrounds */
@@ -670,14 +674,14 @@
         /* BACKGROUND COLORS - Dark mode */
 
         /* Page/Surface backgrounds */
-        --color-bg-primary: var(--color-white);           /* Page background = white */
+        --color-bg-primary: var(--color-gray-950);        /* Page background - dark in dark mode */
         --color-bg-secondary: var(--color-gray-900);      /* Card/panel backgrounds = dark grey */
         --color-bg-tertiary: var(--color-gray-800);       /* Nested elements */
         --color-bg-quaternary: var(--color-gray-700);     /* Subtle backgrounds */
         
-        /* Brand backgrounds - invert for dark mode */
-        --color-bg-brand-solid: var(--color-white);       /* Solid brand buttons = white */
-        --color-bg-brand-solid_hover: var(--color-gray-50);
+        /* Brand backgrounds - dark mode */
+        --color-bg-brand-solid: var(--color-brand-500);  /* Solid brand buttons = dark blue */
+        --color-bg-brand-solid_hover: var(--color-brand-700);
         --color-bg-brand-subtle: var(--color-brand-900);  /* Subtle brand tint = darker blue */
         
         /* Interactive states */

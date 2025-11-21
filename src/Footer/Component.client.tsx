@@ -100,7 +100,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
 
         {/* Footer Bottom */}
         <div className="mt-12 flex flex-col-reverse justify-between gap-6 border-t-2 border-tertiary pt-8 md:mt-16 md:flex-row">
-          <p className="text-sm text-gray-solid">{copyrightText}</p>
+          <p className="text-sm text-text-tertiary">{copyrightText}</p>
 
           <div className="flex items-center gap-6">
             {/* Social Links */}

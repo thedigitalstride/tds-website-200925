@@ -127,8 +127,9 @@ Built on Payload CMS 3.x with Next.js 15 App Router, it provides a flexible page
 ### Prerequisites
 
 - **Node.js** 18.20.2+ or 20.9.0+
-- **pnpm** 10.17.1+ (recommended) or npm/yarn
-- **PostgreSQL** (local or cloud)
+- **pnpm** 10.17.1+ (required)
+- **MongoDB** (local via Docker or MongoDB Atlas)
+- **Docker Desktop** (for local MongoDB)
 - **Vercel Account** (for Blob Storage in production)
 
 ### Installation
@@ -146,11 +147,14 @@ Built on Payload CMS 3.x with Next.js 15 App Router, it provides a flexible page
 
 3. **Set up environment variables**
 
-   Create a `.env` file in the root directory:
+   Create a `.env` file in the root directory (or copy from `env.template`):
 
    ```env
    # Database (required)
-   POSTGRES_URL=postgresql://user:password@localhost:5432/tds_website
+   MONGODB_URI=mongodb://localhost:27017/tds-website
+
+   # MongoDB Migration (for Atlas sync)
+   MONGODB_ATLAS_URI=mongodb+srv://username:password@cluster.mongodb.net/
 
    # Payload (required)
    PAYLOAD_SECRET=your-secret-key-min-32-characters
@@ -167,16 +171,25 @@ Built on Payload CMS 3.x with Next.js 15 App Router, it provides a flexible page
    RESEND_API_KEY=your-resend-api-key
    ```
 
+   **Security Note:** Never commit `.env` to version control. Use `env.template` as a reference.
+
    See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for detailed configuration guide.
 
-4. **Set up local database (optional - using Docker)**
+4. **Set up local database (using Docker)**
    ```bash
    docker-compose up -d
    ```
 
-   This starts a PostgreSQL database at `localhost:5432`
+   This starts a MongoDB database at `localhost:27017`
 
-5. **Start development server**
+5. **Sync production data (optional)**
+   ```bash
+   pnpm mongodb:pull
+   ```
+
+   Syncs data from MongoDB Atlas to your local development database. Requires `MONGODB_ATLAS_URI` in `.env`.
+
+6. **Start development server**
    ```bash
    pnpm dev
    ```
@@ -195,13 +208,16 @@ Built on Payload CMS 3.x with Next.js 15 App Router, it provides a flexible page
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `POSTGRES_URL` | ✅ | PostgreSQL connection string |
+| `MONGODB_URI` | ✅ | MongoDB connection string |
+| `MONGODB_ATLAS_URI` | ⚠️ | Atlas connection for data sync |
 | `PAYLOAD_SECRET` | ✅ | JWT encryption key (min 32 chars) |
 | `NEXT_PUBLIC_SERVER_URL` | ✅ | Public-facing URL (no trailing slash) |
 | `BLOB_READ_WRITE_TOKEN` | ✅ | Vercel Blob Storage access token |
 | `PREVIEW_SECRET` | ⚠️ | Draft preview authentication |
 | `CRON_SECRET` | ⚠️ | Vercel cron job authentication |
 | `RESEND_API_KEY` | ❌ | Email sending via Resend |
+
+**Security Best Practice:** Store all sensitive credentials (especially `MONGODB_ATLAS_URI`) in `.env` file only. Never commit credentials to version control.
 
 See [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md) for complete setup instructions.
 

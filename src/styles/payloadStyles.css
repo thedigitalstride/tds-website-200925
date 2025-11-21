@@ -1,3 +1,47 @@
 /* Placeholder for potential Payload admin panel theming */
 /* This file can be used if you ever want to theme the admin panel */
 /* Currently empty to maintain complete separation between frontend and admin */
+
+/* ============================================================================
+   LOGIN FORM CUSTOMIZATION
+   ============================================================================
+   Hide email/password login fields to show only Google OAuth option
+   Comment out the rules below to restore email/password login
+   ========================================================================== */
+
+/* HIDE EMAIL/PASSWORD LOGIN - Comment out to restore */
+
+/* Target the form itself and its children more specifically */
+form[action="/api/users/login"] {
+  display: none !important;
+}
+
+/* Alternative selectors to ensure complete hiding */
+.login__form,
+form.login__form,
+form[method="POST"][action*="login"] {
+  display: none !important;
+}
+
+/* Hide the input wrapper */
+.login__form__inputWrap,
+div.field-type.text,
+div.field-type.password {
+  display: none !important;
+}
+
+/* Hide submit button by various selectors */
+button[type="submit"],
+.login__wrapper button[type="submit"],
+.form-submit button {
+  display: none !important;
+}
+
+/* Hide forgot password link */
+.forgot-password,
+a[href*="forgot-password"],
+a[href="/admin/forgot-password"] {
+  display: none !important;
+}
+
+/* END HIDE EMAIL/PASSWORD LOGIN */

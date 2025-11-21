@@ -58,7 +58,8 @@ const BeforeLogin: React.FC = () => {
         Sign in with Google
       </button>
 
-      {/* Divider */}
+      {/* Divider - Comment out when email/password is hidden */}
+      {/* 
       <div style={{
         position: 'relative',
         marginBottom: '16px',
@@ -82,6 +83,7 @@ const BeforeLogin: React.FC = () => {
           Or continue with email
         </span>
       </div>
+      */}
     </div>
   )
 }

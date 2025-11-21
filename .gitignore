@@ -32,3 +32,8 @@ src/styles/theme.css.backup
 **/Screenshot*
 
 .pnpm-store/
+
+# MongoDB backups
+mongodb-backup/
+
+docs/

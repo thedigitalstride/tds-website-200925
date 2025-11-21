@@ -271,7 +271,7 @@ async function checkTypeScript() {
   // Run TypeScript type check
   logInfo('Running TypeScript type check...');
   try {
-    const { code, stdout, stderr } = await runCommand('npx', ['tsc', '--noEmit']);
+    const { code, stdout, stderr } = await runCommand('pnpm', ['exec', 'tsc', '--noEmit']);
 
     if (code === 0) {
       logSuccess('TypeScript type check passed');
@@ -285,7 +285,7 @@ async function checkTypeScript() {
           logInfo(`  ${error}`);
         });
         if (output.split('\n').length > 10) {
-          logInfo(`  ... and more errors (run 'npx tsc --noEmit' for full output)`);
+          logInfo(`  ... and more errors (run 'pnpm exec tsc --noEmit' for full output)`);
         }
       }
     }

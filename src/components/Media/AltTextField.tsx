@@ -43,7 +43,6 @@ export const AltTextField: React.FC<AltTextFieldProps> = ({ field, path, readOnl
       'https://ov6vgo85vq4jfktd.public.blob.vercel-storage.com'
     const blobFilename = imageUrl.replace('/api/media/file/', '')
     imageUrl = `${blobBaseUrl}/${blobFilename}`
-    clientLogger.log('[AltTextField] Converted proxy URL to blob URL:', imageUrl)
   }
 
   const canGenerate = Boolean(imageUrl && filename && !isGenerating)

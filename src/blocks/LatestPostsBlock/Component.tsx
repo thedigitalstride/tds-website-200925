@@ -303,7 +303,7 @@ export const LatestPostsBlock: React.FC<
   }
 
   return (
-    <section className={cn('bg-primary', spacingClasses[spacing || 'normal'])} id={`block-${id}`}>
+    <section className={cn(spacingClasses[spacing || 'normal'])} id={`block-${id}`}>
       <div className="mx-auto max-w-container px-4 md:px-8">
         {/* Header with button */}
         {header?.showHeader && (
