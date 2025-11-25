@@ -12,12 +12,12 @@ import {
   LinkJSXConverter,
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
-import Image from 'next/image'
 import { TypographyJSXConverters } from 'payload-lexical-typography/converters'
 
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 import { QuoteBlock } from '@/blocks/Quote/Component'
 import { textConverter } from './textConverter'
+import { RichTextImage } from './RichTextImage'
 
 import type {
   BannerBlock as BannerBlockProps,
@@ -32,11 +32,17 @@ import { ButtonBlockComponent } from '@/blocks/ButtonBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { cn } from '@/utilities/ui'
 import { getPageUrl } from '@/utilities/pageHelpers'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | ButtonBlockProps | CodeBlockProps | QuoteBlockProps>
+  | SerializedBlockNode<
+      | CTABlockProps
+      | MediaBlockProps
+      | BannerBlockProps
+      | ButtonBlockProps
+      | CodeBlockProps
+      | QuoteBlockProps
+    >
   | SerializedUploadNode
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
@@ -72,35 +78,16 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
           return null
         }
 
-        const { alt, height, url, width, updatedAt } = uploadDoc
-
-        // Use getMediaUrl to add cache tag for Vercel Blob Storage
-        const src = getMediaUrl(url, updatedAt)
-
-        return (
-          <figure className="richtext-inline-image col-start-2 my-8">
-            <Image
-              alt={alt || ''}
-              height={height || 800}
-              src={src}
-              width={width || 1200}
-              className="w-full h-auto"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-            />
-            {uploadDoc.caption && typeof uploadDoc.caption === 'object' && 'root' in uploadDoc.caption && (
-              <figcaption className="mt-4 text-sm text-tertiary">
-                {/* Render rich text caption */}
-                <ConvertRichText data={uploadDoc.caption} />
-              </figcaption>
-            )}
-          </figure>
-        )
+        // Use RichTextImage component which includes lightbox support
+        return <RichTextImage uploadDoc={uploadDoc} enableLightbox={true} />
       }
       return null
     },
     blocks: {
       banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
-      buttonBlock: ({ node }) => <ButtonBlockComponent className="col-start-2 my-6" {...node.fields} />,
+      buttonBlock: ({ node }) => (
+        <ButtonBlockComponent className="col-start-2 my-6" {...node.fields} />
+      ),
       mediaBlock: ({ node }) => (
         <div className="not-prose col-start-1 col-span-3 my-0!">
           <MediaBlock
@@ -128,7 +115,13 @@ type Props = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 export default function RichText(props: Props) {
-  const { className, enableProse = true, enableGutter = true, disableTextAlign = true, ...rest } = props
+  const {
+    className,
+    enableProse = true,
+    enableGutter = true,
+    disableTextAlign = true,
+    ...rest
+  } = props
   return (
     <ConvertRichText
       converters={jsxConverters}

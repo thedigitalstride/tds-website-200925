@@ -3,6 +3,11 @@ import type { Block } from 'payload'
 export const MediaBlock: Block = {
   slug: 'mediaBlock',
   interfaceName: 'MediaBlock',
+  admin: {
+    components: {
+      Label: '@/blocks/MediaBlock/RowLabel#MediaBlockRowLabel',
+    },
+  },
   fields: [
     {
       name: 'media',
@@ -11,6 +16,15 @@ export const MediaBlock: Block = {
       required: true,
       admin: {
         description: 'Select or upload an image to display',
+      },
+    },
+    {
+      name: 'enableLightbox',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Enable Lightbox',
+      admin: {
+        description: 'Allow users to click the image to open in full-screen lightbox',
       },
     },
     {

@@ -46,7 +46,8 @@ const columnFields: Field[] = [
     type: 'checkbox',
     defaultValue: false,
     admin: {
-      description: 'Make this column sticky on tablet and desktop (remains visible while scrolling). Only works when columns are side-by-side. Mobile only: disabled. Not available for full-width columns.',
+      description:
+        'Make this column sticky on tablet and desktop (remains visible while scrolling). Only works when columns are side-by-side. Mobile only: disabled. Not available for full-width columns.',
       condition: (data, siblingData) => {
         return siblingData?.size !== 'full'
       },
@@ -57,7 +58,7 @@ const columnFields: Field[] = [
     type: 'blocks',
     label: 'Column Content',
     required: false,
-    blockReferences: ['richText', 'inlineCard', 'mediaBlock', 'spacer'] as any,
+    blockReferences: ['richText', 'inlineCard', 'mediaBlock', 'spacer', 'lightboxBlock'] as any,
     blocks: [], // Required to be empty when using blockReferences
     admin: {
       description: 'Add content blocks to this column (rich text, cards, images, spacers, etc.)',
@@ -92,7 +93,8 @@ export const Content: Block = {
         { label: 'Right', value: 'right' },
       ],
       admin: {
-        description: 'Horizontal alignment of columns. Only applies when total column width is less than full width (e.g., half + third = 10/12 columns can be centered). Full-width layouts (e.g., two half columns = 12/12) ignore this setting.',
+        description:
+          'Horizontal alignment of columns. Only applies when total column width is less than full width (e.g., half + third = 10/12 columns can be centered). Full-width layouts (e.g., two half columns = 12/12) ignore this setting.',
       },
     },
     {
@@ -100,6 +102,7 @@ export const Content: Block = {
       type: 'select',
       defaultValue: 'normal',
       options: [
+        { label: 'None', value: 'none' },
         { label: 'Compact', value: 'compact' },
         { label: 'Normal', value: 'normal' },
         { label: 'Spacious', value: 'spacious' },

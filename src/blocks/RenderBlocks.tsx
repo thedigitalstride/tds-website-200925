@@ -18,6 +18,7 @@ import { RichTextBlock } from '@/blocks/RichTextBlock/Component'
 import { InlineCardBlock } from '@/blocks/InlineCardBlock/Component'
 import { SpacerBlock } from '@/blocks/SpacerBlock/Component'
 import { TestimonialsBlock } from '@/blocks/TestimonialsBlock/Component'
+import { LightboxBlock } from '@/blocks/LightboxBlock/Component'
 
 const blockComponents = {
   accordion: AccordionBlock,
@@ -36,13 +37,13 @@ const blockComponents = {
   inlineCard: InlineCardBlock,
   spacer: SpacerBlock,
   testimonials: TestimonialsBlock,
+  lightboxBlock: LightboxBlock,
 }
 
 type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]
 type LayoutBlock = NonNullable<Page['layout']>[number]
 
 export const RenderBlocks: React.FC<{
-   
   blocks: (LayoutBlock | any)[]
   breadcrumbs?: BreadcrumbItem[] | null
   disableInnerContainer?: boolean
