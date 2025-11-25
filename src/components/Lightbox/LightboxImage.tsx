@@ -6,6 +6,7 @@ import { motion } from 'motion/react'
 import { cn } from '@/utilities/ui'
 import type { Media } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getOptimalPayloadImageUrl } from '@/utilities/getPayloadImageSize'
 import { PLACEHOLDER_BLUR } from '@/constants/imagePlaceholder'
 
 interface LightboxImageProps {
@@ -35,12 +36,50 @@ export const LightboxImage: React.FC<LightboxImageProps> = ({ image, isActive, c
   }, [])
 
   if (!image.media || typeof image.media !== 'object') {
-    return null
+    return (
+      <div className={cn('flex items-center justify-center', className)}>
+        <p className="text-tertiary">Invalid image data</p>
+      </div>
+    )
   }
 
+  // Validate that URL exists
   const { alt, height, url, width } = image.media
-  const src = getMediaUrl(url, image.media.updatedAt)
+  if (!url || typeof url !== 'string' || url.trim() === '') {
+    return (
+      <div className={cn('flex items-center justify-center', className)}>
+        <p className="text-tertiary">Image URL is missing</p>
+      </div>
+    )
+  }
+
+  const cacheTag = image.media.updatedAt
+  let src = getMediaUrl(url, cacheTag)
   const imageAlt = alt || image.caption || ''
+
+  // Check if this is a blob storage URL or proxy route
+  const isBlobStorage =
+    typeof src === 'string' &&
+    (src.includes('.blob.vercel-storage.com') || src.includes('/api/media/file/'))
+
+  // When using blob storage, manually select the optimal Payload-generated image size
+  // For lightbox (full-screen), use 'large' or 'xlarge' size for best quality
+  if (isBlobStorage && image.media.sizes) {
+    // Use '100vw' to get 'large' or 'xlarge' size for lightbox since it's full-screen display
+    const optimalUrl = getOptimalPayloadImageUrl(image.media, '100vw')
+    if (optimalUrl) {
+      src = getMediaUrl(optimalUrl, cacheTag)
+    }
+  }
+
+  // Final validation: ensure src is not empty after processing
+  if (!src || (typeof src === 'string' && src.trim() === '')) {
+    return (
+      <div className={cn('flex items-center justify-center', className)}>
+        <p className="text-tertiary">Unable to load image: URL is invalid</p>
+      </div>
+    )
+  }
 
   const maxWidth = Math.min(viewportSize.width - 64, width || 1920)
   const maxHeight = Math.min(viewportSize.height - 200, height || 1080)

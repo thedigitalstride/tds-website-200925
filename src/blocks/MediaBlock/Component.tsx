@@ -100,7 +100,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
             {typeof blockCaption === 'object' && 'text' in blockCaption ? (
               // New caption structure with optional link
               <div className="flex items-start gap-2">
-                <Link01 className="size-4 text-utility-gray-400 mt-0.5 flex-shrink-0" />
+                <Link01 className="size-4 text-utility-gray-400 mt-0.5 shrink-0" />
                 <span className="text-sm text-secondary">
                   {String(blockCaption.text || '')}
                   {(() => {
