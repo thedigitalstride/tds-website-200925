@@ -10,6 +10,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { generateMeta } from '@/utilities/generateMeta'
 import { LivePreviewLoader } from '@/components/LivePreviewLoader'
 import { generatePageFAQSchema } from '@/utilities/generatePageFAQSchema'
+import { generateBreadcrumbSchema } from '@/utilities/generateBreadcrumbSchema'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -69,10 +70,13 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { layout, breadcrumbs } = page
+  const { layout, breadcrumbs, title } = page
 
   // Generate FAQ schema for this page
   const faqSchema = await generatePageFAQSchema(layout)
+
+  // Generate breadcrumb schema for this page
+  const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbs, url, title)
 
   return (
     <>
@@ -81,6 +85,13 @@ export default async function Page({ params: paramsPromise }: Args) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
           key="faq-schema"
+        />
+      )}
+      {breadcrumbSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+          key="breadcrumb-schema"
         />
       )}
       <article>
