@@ -32,7 +32,6 @@ function onlyKeyboardFocus(callback: () => void) {
  *   onToggle={() => setIsOpen(!isOpen)}
  *   iconPosition="right"
  *   iconStyle="chevron"
- *   showCategories={true}
  *   animationSpeed={0.3}
  *   index={0}
  * />
@@ -55,11 +54,8 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
   onToggle,
   iconPosition = 'right',
   iconStyle = 'chevron',
-  showCategories = true,
   animationSpeed = 0.3,
   index,
-  cardBackground = 'primary',
-  dividerStyle = 'line',
   isFirst = false,
   isLast = false,
   totalItems = 1,
@@ -74,38 +70,21 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
   // Choose icon based on style
   const ToggleIcon = iconStyle === 'plus-minus' ? (isOpen ? X : Plus) : ChevronDown
 
-  // Background classes
-  const backgroundClasses = {
-    primary: 'bg-primary',
-    secondary: 'bg-secondary',
-    accent: 'bg-accent-subtle',
-  }
-
-  // Divider classes
-  const dividerClasses = {
-    line: cn(
-      'border-t-2 border-tertiary',
-      isLast && 'border-b'
-    ),
-    none: '',
-    card: cn(
-      'border-2 border-tertiary',
-      // Remove bottom border except on last item to avoid double borders when stacked
-      !isLast && 'border-b-0',
-      // Apply rounded corners based on position when in card mode
-      totalItems === 1 ? 'rounded-xl' : // Single item: all corners rounded
-      isFirst ? 'rounded-t-xl' :         // First item: top corners rounded
-      isLast ? 'rounded-b-xl' :          // Last item: bottom corners rounded
-      ''                                  // Middle items: no rounded corners (seamless connection)
-    ),
-  }
-
-  // Build card classes
+  // Build card classes - always use card style with borders, padding, and rounded corners
   const cardClasses = cn(
     'relative',
-    backgroundClasses[cardBackground],
-    dividerClasses[dividerStyle],
-    dividerStyle === 'card' && 'p-6',
+    'border-2 border-tertiary',
+    'p-6',
+    // Remove bottom border except on last item to avoid double borders when stacked
+    !isLast && 'border-b-0',
+    // Apply rounded corners based on position
+    totalItems === 1
+      ? 'rounded-xl' // Single item: all corners rounded
+      : isFirst
+        ? 'rounded-t-xl' // First item: top corners rounded
+        : isLast
+          ? 'rounded-b-xl' // Last item: bottom corners rounded
+          : '', // Middle items: no rounded corners (seamless connection)
   )
 
   return (
@@ -113,14 +92,11 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
       <motion.section
         initial={false}
         animate={isOpen ? 'open' : 'closed'}
-        className={cn(cardClasses, 'cursor-pointer transition-colors duration-300 hover:bg-secondary dark:hover:bg-black/10')}
+        className={cn(cardClasses, 'cursor-pointer transition-colors duration-300')}
         onClick={onToggle}
         aria-labelledby={`accordion-header-${id}`}
-        aria-describedby={
-          showCategories && faq.categories?.length ? `accordion-categories-${id}` : undefined
-        }
       >
-        <h3 className={cn('relative', dividerStyle !== 'card' && 'py-6')}>
+        <h3 className="relative">
           <motion.button
             id={`accordion-header-${id}`}
             aria-expanded={isOpen}
@@ -147,7 +123,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
                   open: { rotate: iconStyle === 'chevron' ? 0 : 0 },
                   closed: { rotate: iconStyle === 'chevron' ? -90 : 0 },
                 }}
-                className="flex-shrink-0 text-secondary"
+                className="shrink-0 text-primary dark:text-white"
                 aria-hidden="true"
               >
                 <ToggleIcon className="h-6 w-6" />
@@ -157,23 +133,9 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
             {/* Question Text */}
             <span className="flex-1">
               <span className="sr-only">{isOpen ? 'Collapse' : 'Expand'} question: </span>
-              <span className="text-lg font-semibold text-primary md:text-xl">
+              <span className="text-lg font-semibold text-primary dark:text-white md:text-xl">
                 {faq.question}
               </span>
-
-              {/* Categories (shown below question if enabled) */}
-              {showCategories && faq.categories && faq.categories.length > 0 && (
-                <div id={`accordion-categories-${id}`} className="mt-2 flex flex-wrap gap-2">
-                  {faq.categories.map((category) => (
-                    <span
-                      key={category.id}
-                      className="inline-flex items-center rounded-full bg-accent-subtle px-2.5 py-0.5 text-xs font-medium text-accent"
-                    >
-                      {category.title}
-                    </span>
-                  ))}
-                </div>
-              )}
             </span>
 
             {/* Icon - Right Position */}
@@ -183,7 +145,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
                   open: { rotate: iconStyle === 'chevron' ? 0 : 0 },
                   closed: { rotate: iconStyle === 'chevron' ? -90 : 0 },
                 }}
-                className="flex-shrink-0 text-secondary"
+                className="shrink-0 text-primary dark:text-white"
                 aria-hidden="true"
               >
                 <ToggleIcon className="h-6 w-6" />
@@ -237,42 +199,35 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
                 filter: 'blur(2px)',
               },
             }}
-            className={cn(
-              dividerStyle === 'card' && 'pt-4',
-              dividerStyle !== 'card' && 'pb-6',
-              iconPosition === 'left' && 'pl-10'
-            )}
+            className={cn('pt-4', iconPosition === 'left' && 'pl-10')}
           >
             {/* Rich Text Answer */}
             {faq.answer && typeof faq.answer === 'object' && 'root' in faq.answer && (
               <div className="lg:max-w-[80%]">
-                <RichText
-                  data={faq.answer}
-                  enableGutter={false}
-                  enableProse={true}
-                />
+                <RichText data={faq.answer} enableGutter={false} enableProse={true} />
               </div>
             )}
 
             {/* Related Content */}
             {faq.relatedContent && faq.relatedContent.length > 0 && (
               <div className="mt-6 border-t-2 border-tertiary pt-6">
-                <h4 className="text-sm font-semibold text-secondary">Related Articles</h4>
+                <h4 className="text-sm font-semibold text-primary dark:text-gray-300">
+                  Related Articles
+                </h4>
                 <ul className="mt-3 space-y-2">
                   {faq.relatedContent.map((item) => {
                     const content = item.value
-                    const slug = typeof content === 'object' && 'slug' in content ? content.slug : ''
-                    const title = typeof content === 'object' && 'title' in content ? content.title : ''
-                    const href =
-                      item.relationTo === 'posts'
-                        ? `/news-insights/${slug}`
-                        : `/${slug}`
+                    const slug =
+                      typeof content === 'object' && 'slug' in content ? content.slug : ''
+                    const title =
+                      typeof content === 'object' && 'title' in content ? content.title : ''
+                    const href = item.relationTo === 'posts' ? `/news-insights/${slug}` : `/${slug}`
 
                     return (
                       <li key={content.id}>
                         <Link
                           href={href}
-                          className="text-brand-secondary hover:text-brand-primary hover:underline"
+                          className="text-brand-secondary dark:text-brand-300 hover:text-brand-primary dark:hover:text-brand-200 hover:underline"
                         >
                           {title}
                         </Link>
@@ -286,14 +241,14 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
             {/* Downloadable Resources */}
             {faq.resources && faq.resources.length > 0 && (
               <div className="mt-6 border-t-2 border-tertiary pt-6">
-                <h4 className="text-sm font-semibold text-secondary">Downloads</h4>
+                <h4 className="text-sm font-semibold text-primary dark:text-gray-300">Downloads</h4>
                 <ul className="mt-3 space-y-3">
                   {faq.resources.map((resource) => (
                     <li
                       key={resource.id}
-                      className="flex items-start gap-3 rounded-lg border border-gray-solid p-4 transition-colors hover:border-brand-secondary hover:bg-secondary"
+                      className="flex items-start gap-3 rounded-lg border border-gray-solid p-4 transition-colors hover:border-brand-secondary"
                     >
-                      <div className="flex-shrink-0">
+                      <div className="shrink-0">
                         {resource.file.mimeType?.startsWith('image/') && resource.file.url ? (
                           <OptimizedImage
                             resource={resource.file}
@@ -314,12 +269,14 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
                         <a
                           href={resource.file.url || '#'}
                           download
-                          className="font-medium text-primary hover:text-brand-primary hover:underline"
+                          className="font-medium text-primary dark:text-white hover:text-brand-primary dark:hover:text-brand-300 hover:underline"
                         >
                           {resource.title}
                         </a>
                         {resource.description && (
-                          <p className="mt-1 text-sm text-secondary">{resource.description}</p>
+                          <p className="mt-1 text-sm text-primary dark:text-gray-300">
+                            {resource.description}
+                          </p>
                         )}
                       </div>
                     </li>

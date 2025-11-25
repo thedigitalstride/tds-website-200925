@@ -10,11 +10,8 @@ interface AccordionListProps {
   defaultState: DefaultState
   allowMultipleOpen: boolean
   enableSearch: boolean
-  showCategories: boolean
   iconPosition: 'left' | 'right' | 'none'
   iconStyle: 'chevron' | 'plus-minus'
-  cardBackground: 'primary' | 'secondary' | 'accent'
-  dividerStyle: 'line' | 'none' | 'card'
   animationSpeed: number
 }
 
@@ -33,11 +30,8 @@ export const AccordionList: React.FC<AccordionListProps> = ({
   defaultState,
   allowMultipleOpen,
   enableSearch,
-  showCategories,
   iconPosition,
   iconStyle,
-  cardBackground,
-  dividerStyle,
   animationSpeed,
 }) => {
   // State for open items (array of FAQ IDs)
@@ -216,11 +210,8 @@ export const AccordionList: React.FC<AccordionListProps> = ({
                 onToggle={() => toggleItem(faq.id)}
                 iconPosition={iconPosition}
                 iconStyle={iconStyle}
-                showCategories={showCategories}
                 animationSpeed={animationSpeed}
                 index={index}
-                cardBackground={cardBackground}
-                dividerStyle={dividerStyle}
                 isFirst={index === 0}
                 isLast={index === filteredFAQs.length - 1}
                 totalItems={filteredFAQs.length}
@@ -229,7 +220,7 @@ export const AccordionList: React.FC<AccordionListProps> = ({
           ))}
         </div>
       ) : (
-        <div className="rounded-lg border border-tertiary bg-secondary p-8 text-center">
+        <div className="rounded-lg border border-tertiary p-8 text-center">
           <p className="text-secondary">
             {searchQuery
               ? `No FAQs found matching "${searchQuery}"`

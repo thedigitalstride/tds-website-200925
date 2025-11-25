@@ -24,15 +24,7 @@ export const AccordionBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const {
-    id,
-    header,
-    contentSource,
-    opts,
-    selectedFAQs,
-    displayOptions,
-    layoutOptions,
-  } = props
+  const { id, header, contentSource, opts, selectedFAQs, displayOptions, layoutOptions } = props
 
   const spacing = layoutOptions?.spacing || 'normal'
 
@@ -152,7 +144,6 @@ export const AccordionBlock: React.FC<
   }
 
   // Extract display options
-  const showCategories = displayOptions?.showCategories !== false // Default true
   const defaultState = displayOptions?.defaultState || 'all-collapsed'
   const allowMultipleOpen = displayOptions?.allowMultipleOpen || false
   const enableSearch = displayOptions?.enableSearch || false
@@ -160,8 +151,6 @@ export const AccordionBlock: React.FC<
   const iconStyle = displayOptions?.iconStyle || 'chevron'
 
   // Extract layout options
-  const cardBackground = layoutOptions?.cardBackground || 'primary'
-  const dividerStyle = layoutOptions?.dividerStyle || 'line'
   const animationSpeedKey = layoutOptions?.animationSpeed || 'normal'
   const animationSpeed = ANIMATION_SPEEDS[animationSpeedKey as keyof typeof ANIMATION_SPEEDS]
 
@@ -181,7 +170,7 @@ export const AccordionBlock: React.FC<
   const headerAlignment = header?.headerAlignment || 'left'
 
   return (
-    <section className={cn('bg-primary', spacingClasses[spacing])} id={`block-${id}`}>
+    <section className={cn(spacingClasses[spacing])} id={`block-${id}`}>
       <div className="mx-auto max-w-container px-4 md:px-8">
         {/* Header */}
         {header?.showHeader && (
@@ -197,9 +186,7 @@ export const AccordionBlock: React.FC<
               </h2>
             )}
             {header.description && (
-              <p className="mt-4 text-lg text-secondary md:mt-5 md:text-xl">
-                {header.description}
-              </p>
+              <p className="mt-4 text-lg text-secondary md:mt-5 md:text-xl">{header.description}</p>
             )}
           </div>
         )}
@@ -211,11 +198,8 @@ export const AccordionBlock: React.FC<
             defaultState={defaultState}
             allowMultipleOpen={allowMultipleOpen}
             enableSearch={enableSearch}
-            showCategories={showCategories}
             iconPosition={iconPosition as 'left' | 'right' | 'none'}
             iconStyle={iconStyle as 'chevron' | 'plus-minus'}
-            cardBackground={cardBackground as 'primary' | 'secondary' | 'accent'}
-            dividerStyle={dividerStyle as 'line' | 'none' | 'card'}
             animationSpeed={animationSpeed}
           />
         </div>
