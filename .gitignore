@@ -35,5 +35,3 @@ src/styles/theme.css.backup
 
 # MongoDB backups
 mongodb-backup/
-
-docs/
