@@ -9,6 +9,7 @@ import React, { cache } from 'react'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { generateMeta } from '@/utilities/generateMeta'
 import { LivePreviewLoader } from '@/components/LivePreviewLoader'
+import { generatePageFAQSchema } from '@/utilities/generatePageFAQSchema'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -70,15 +71,27 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const { layout, breadcrumbs } = page
 
+  // Generate FAQ schema for this page
+  const faqSchema = await generatePageFAQSchema(layout)
+
   return (
-    <article>
-      {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url={url} />
+    <>
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          key="faq-schema"
+        />
+      )}
+      <article>
+        {/* Allows redirects for valid pages too */}
+        <PayloadRedirects disableNotFound url={url} />
 
-      {draft && <LivePreviewLoader />}
+        {draft && <LivePreviewLoader />}
 
-      <RenderBlocks blocks={layout || []} breadcrumbs={breadcrumbs} />
-    </article>
+        <RenderBlocks blocks={layout || []} breadcrumbs={breadcrumbs} />
+      </article>
+    </>
   )
 }
 

@@ -104,7 +104,7 @@ export const FAQs: CollectionConfig<'faqs'> = {
           ],
         },
         {
-          label: 'Organization',
+          label: 'Organisation',
           fields: [
             {
               name: 'categories',

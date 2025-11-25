@@ -42,7 +42,7 @@ export const AccordionSearch: React.FC<AccordionSearchProps> = ({
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           className={cn(
-            'block w-full rounded-lg border border-primary bg-primary py-3 pl-10 pr-10',
+            'block w-full rounded-lg border border-primary py-3 pl-10 pr-10',
             'text-md text-primary placeholder:text-placeholder',
             'focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary',
             'transition-colors duration-200',

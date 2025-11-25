@@ -46,7 +46,7 @@ const transformPostToArticle = (
     summary: post.subtitle || '',
     href: `/news-insights/${post.slug}`,
     categories,
-    thumbnailUrl: heroImage?.url || '/placeholder.jpg',
+    thumbnailUrl: heroImage?.url || '',
     thumbnailMedia: heroImage,
     publishedAt: formatDate(post.publishedAt),
     readingTime: calculateReadingTime(post.content),

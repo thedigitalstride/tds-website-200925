@@ -44,11 +44,8 @@ export interface AccordionItemProps {
   onToggle: () => void
   iconPosition: 'left' | 'right' | 'none'
   iconStyle: 'chevron' | 'plus-minus'
-  showCategories: boolean
   animationSpeed: number
   index: number
-  cardBackground?: 'primary' | 'secondary' | 'accent'
-  dividerStyle?: 'line' | 'none' | 'card'
   isFirst?: boolean
   isLast?: boolean
   totalItems?: number
@@ -82,13 +79,3 @@ export type DefaultState = 'all-collapsed' | 'first-open' | 'all-open'
  * Sort options for FAQs
  */
 export type FAQSortOption = 'order' | 'date' | 'question-asc' | 'question-desc'
-
-/**
- * Card background options
- */
-export type CardBackground = 'primary' | 'secondary' | 'accent'
-
-/**
- * Divider style options
- */
-export type DividerStyle = 'line' | 'none' | 'card'

@@ -165,15 +165,6 @@ export const AccordionBlock: Block = {
       },
       fields: [
         {
-          name: 'showCategories',
-          type: 'checkbox',
-          label: 'Show Categories',
-          defaultValue: true,
-          admin: {
-            description: 'Display category badges on each FAQ item',
-          },
-        },
-        {
           name: 'defaultState',
           type: 'select',
           label: 'Default State',
@@ -255,34 +246,6 @@ export const AccordionBlock: Block = {
           ],
           admin: {
             description: 'Vertical spacing around this section',
-          },
-        },
-        {
-          name: 'cardBackground',
-          type: 'select',
-          label: 'Card Background',
-          defaultValue: 'primary',
-          options: [
-            { label: 'Primary', value: 'primary' },
-            { label: 'Secondary', value: 'secondary' },
-            { label: 'Accent', value: 'accent' },
-          ],
-          admin: {
-            description: 'Background color for accordion items',
-          },
-        },
-        {
-          name: 'dividerStyle',
-          type: 'select',
-          label: 'Divider Style',
-          defaultValue: 'line',
-          options: [
-            { label: 'Line (Between Items)', value: 'line' },
-            { label: 'Card (Separate Cards)', value: 'card' },
-            { label: 'None', value: 'none' },
-          ],
-          admin: {
-            description: 'How to separate accordion items',
           },
         },
         {

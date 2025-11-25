@@ -11,7 +11,6 @@ export const Icons: CollectionConfig = {
     pagination: {
       defaultLimit: 50,
     },
-    group: 'Media',
   },
   access: {
     read: () => true,

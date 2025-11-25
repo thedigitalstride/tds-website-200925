@@ -45,7 +45,7 @@ const BlogCardComponent: React.FC<{
     <Link href={article.href} className="overflow-hidden rounded-xl" tabIndex={-1}>
       <OptimizedImage
         resource={article.thumbnailMedia}
-        src={!article.thumbnailMedia ? article.thumbnailUrl : undefined}
+        src={!article.thumbnailMedia && article.thumbnailUrl ? article.thumbnailUrl : undefined}
         alt={article.title}
         width={600}
         height={400}
