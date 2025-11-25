@@ -117,6 +117,7 @@ export const LightboxImage: React.FC<LightboxImageProps> = ({ image, isActive, c
           placeholder="blur"
           blurDataURL={PLACEHOLDER_BLUR}
           sizes="100vw"
+          unoptimized={isBlobStorage}
           onLoad={() => setIsLoaded(true)}
           onError={() => setHasError(true)}
         />
