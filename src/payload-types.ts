@@ -70,6 +70,7 @@ export interface Config {
     inlineCard: InlineCardBlock;
     mediaBlock: MediaBlock;
     spacer: SpacerBlock;
+    lightboxBlock: LightboxBlock;
   };
   collections: {
     pages: Page;
@@ -1086,6 +1087,10 @@ export interface MediaBlock {
    * Select or upload an image to display
    */
   media: string | Media;
+  /**
+   * Allow users to click the image to open in full-screen lightbox
+   */
+  enableLightbox?: boolean | null;
   caption?: {
     /**
      * Text caption for the image
@@ -1427,7 +1432,7 @@ export interface ContentBlock {
         /**
          * Add content blocks to this column (rich text, cards, images, spacers, etc.)
          */
-        layout?: (RichTextBlock | InlineCardBlock | MediaBlock | SpacerBlock)[] | null;
+        layout?: (RichTextBlock | InlineCardBlock | MediaBlock | SpacerBlock | LightboxBlock)[] | null;
         id?: string | null;
       }[]
     | null;
@@ -1459,6 +1464,42 @@ export interface SpacerBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'spacer';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LightboxBlock".
+ */
+export interface LightboxBlock {
+  images: {
+    /**
+     * Name for this image (editable in row label)
+     */
+    name?: string | null;
+    /**
+     * Select or upload an image
+     */
+    media: string | Media;
+    /**
+     * Optional caption text for this image
+     */
+    caption?: string | null;
+    id?: string | null;
+  }[];
+  /**
+   * Number of columns for the thumbnail grid display
+   */
+  thumbnailColumns?: ('1' | '2' | '3' | '4') | null;
+  /**
+   * Spacing between thumbnail images
+   */
+  thumbnailSpacing?: ('compact' | 'normal' | 'large') | null;
+  /**
+   * Allow users to click images to open in full-screen lightbox
+   */
+  enableLightbox?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'lightboxBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1518,10 +1559,6 @@ export interface AccordionBlock {
    */
   displayOptions?: {
     /**
-     * Display category badges on each FAQ item
-     */
-    showCategories?: boolean | null;
-    /**
      * Initial state when the page loads
      */
     defaultState?: ('all-collapsed' | 'first-open' | 'all-open') | null;
@@ -1550,14 +1587,6 @@ export interface AccordionBlock {
      * Vertical spacing around this section
      */
     spacing?: ('compact' | 'normal' | 'spacious') | null;
-    /**
-     * Background color for accordion items
-     */
-    cardBackground?: ('primary' | 'secondary' | 'accent') | null;
-    /**
-     * How to separate accordion items
-     */
-    dividerStyle?: ('line' | 'card' | 'none') | null;
     /**
      * Speed of expand/collapse animations
      */
@@ -2666,6 +2695,7 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
  */
 export interface MediaBlockSelect<T extends boolean = true> {
   media?: T;
+  enableLightbox?: T;
   caption?:
     | T
     | {
@@ -2707,7 +2737,6 @@ export interface AccordionBlockSelect<T extends boolean = true> {
   displayOptions?:
     | T
     | {
-        showCategories?: T;
         defaultState?: T;
         allowMultipleOpen?: T;
         enableSearch?: T;
@@ -2718,8 +2747,6 @@ export interface AccordionBlockSelect<T extends boolean = true> {
     | T
     | {
         spacing?: T;
-        cardBackground?: T;
-        dividerStyle?: T;
         animationSpeed?: T;
       };
   id?: T;

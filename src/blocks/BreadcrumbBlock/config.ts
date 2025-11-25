@@ -9,6 +9,7 @@ export const BreadcrumbBlock: Block = {
       type: 'select',
       defaultValue: 'compact',
       options: [
+        { label: 'None', value: 'none' },
         { label: 'Compact', value: 'compact' },
         { label: 'Normal', value: 'normal' },
         { label: 'Spacious', value: 'spacious' },

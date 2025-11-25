@@ -25,6 +25,7 @@ export const ContentBlock: React.FC<ExtendedContentBlockProps> = (props) => {
   }
 
   const spacingClasses: Record<string, string> = {
+    none: '',
     compact: 'py-12 lg:py-16',
     normal: 'py-16 lg:py-24',
     spacious: 'py-24 lg:py-32',

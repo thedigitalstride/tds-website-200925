@@ -32,6 +32,7 @@ const transition: Transition = {
 
 // Spacing styles
 const spacingStyles = {
+  none: '',
   compact: 'py-12 md:py-16',
   normal: 'py-16 md:py-24',
   spacious: 'py-24 md:py-32',

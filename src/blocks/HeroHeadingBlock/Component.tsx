@@ -357,6 +357,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
       ? {
           // Full height: Header clearance + extra visual breathing room
           // Mobile: calc(72px + 24px) = 96px, Desktop: calc(80px + 80px) = 160px
+          none: '',
           minimal:
             'pt-[calc(var(--header-height-mobile)+24px)] pb-6 lg:pt-[calc(var(--header-height-desktop)+80px)] lg:pb-8',
           compact:
@@ -369,6 +370,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
       : {
           // Default height: Minimum clearance from header bottom
           // Mobile: calc(72px + 24px) = 96px, Desktop: calc(80px + 32px) = 112px
+          none: '',
           minimal:
             'pt-[calc(var(--header-height-mobile)+24px)] pb-6 md:pt-[calc(var(--header-height-desktop)+32px)] lg:pb-8',
           compact:
@@ -380,6 +382,7 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
         }
     : {
         // No background: standard vertical padding (no header overlap)
+        none: '',
         minimal: 'py-6 lg:py-8',
         compact: 'py-12 lg:py-16',
         normal: 'py-16 lg:py-24',

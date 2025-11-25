@@ -29,6 +29,7 @@ import { RichTextBlockConfig } from './blocks/RichTextBlock'
 import { InlineCardBlockConfig } from './blocks/InlineCardBlock'
 import { MediaBlock } from './blocks/MediaBlock/config'
 import { SpacerBlockConfig } from './blocks/SpacerBlock'
+import { LightboxBlock } from './blocks/LightboxBlock/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -131,7 +132,7 @@ export default buildConfig({
   // In production, NEXT_PUBLIC_SERVER_URL ensures the correct domain is used for redirects
   cors: '*',
   globals: [Header, Footer, NotFound, PostsSettings, AiSettings],
-  blocks: [RichTextBlockConfig, InlineCardBlockConfig, MediaBlock, SpacerBlockConfig],
+  blocks: [RichTextBlockConfig, InlineCardBlockConfig, MediaBlock, SpacerBlockConfig, LightboxBlock],
   plugins: [
     ...plugins,
     // Only add Vercel Blob Storage plugin if token is provided

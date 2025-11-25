@@ -59,6 +59,7 @@ export const TestimonialsBlock: Block = {
           defaultValue: 'normal',
           label: 'Section Spacing',
           options: [
+            { label: 'None', value: 'none' },
             { label: 'Compact', value: 'compact' },
             { label: 'Normal', value: 'normal' },
             { label: 'Spacious', value: 'spacious' },

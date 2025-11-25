@@ -142,6 +142,7 @@ export const HeroHeadingBlock: Block = {
           type: 'select',
           defaultValue: 'normal',
           options: [
+            { label: 'None', value: 'none' },
             { label: 'Spacious', value: 'spacious' },
             { label: 'Normal', value: 'normal' },
             { label: 'Compact', value: 'compact' },
