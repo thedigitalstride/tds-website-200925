@@ -15,31 +15,13 @@ export const InlineCardBlock: Block = {
       },
     }),
     {
-      name: 'eyebrow',
-      type: 'text',
-      label: 'Card Eyebrow',
-      admin: {
-        description: 'Small text above card title (e.g., "New", "Featured", "Step 01")',
-        placeholder: 'Featured',
-      },
-    },
-    {
-      name: 'title',
-      type: 'text',
-      required: false,
-      label: 'Card Title',
-      admin: {
-        description: 'Main heading for this card (e.g., "Fast Delivery", "Expert Support")',
-      },
-    },
-    {
-      name: 'description',
+      name: 'content',
       type: 'richText',
       required: false,
-      label: 'Card Description',
+      label: 'Card Content',
       editor: richText(),
       admin: {
-        description: 'Rich description with headings, formatting, lists, and links',
+        description: 'Rich content with headings (H3 for titles), formatting, lists, and links',
       },
     },
     {

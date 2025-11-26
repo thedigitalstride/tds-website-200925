@@ -16,6 +16,7 @@ import { StaggeredGrid, StaggeredGridItem } from '@/components/StaggeredGrid'
 import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
 import { getGridImageSizes } from '@/utilities/getImageSizes'
+import { SectionHeader } from '@/components/SectionHeader'
 
 /**
  * Transform Payload Post to base article (without display properties)
@@ -309,27 +310,16 @@ export const LatestPostsBlock: React.FC<
         {/* Header with button */}
         {header?.showHeader && (
           <div className="flex flex-col items-start justify-between lg:flex-row lg:items-end">
-            <div className="max-w-3xl">
-              {header.eyebrow && (
-                <p className="text-sm font-semibold text-brand-secondary md:text-md">
-                  {header.eyebrow}
-                </p>
-              )}
-              {header.heading && (
-                <h2 className="mt-3 text-display-sm font-semibold text-primary md:text-display-md">
-                  {header.heading}
-                </h2>
-              )}
-              {header.description && (
-                <p className="mt-4 text-lg text-secondary md:mt-5 md:text-xl">
-                  {header.description}
-                </p>
-              )}
-            </div>
+            <SectionHeader
+              eyebrow={header.eyebrow || undefined}
+              heading={header.heading || undefined}
+              description={header.description || undefined}
+              alignment="left"
+            />
 
             {/* Desktop button */}
             {buttonConfig?.showButton && buttonConfig.link && (
-              <div className="hidden gap-3 lg:flex">
+              <div className="hidden gap-3 lg:flex lg:shrink-0">
                 <UUIButton
                   label={buttonConfig.link.label || 'View all posts'}
                   link={buttonConfig.link}

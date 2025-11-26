@@ -200,17 +200,9 @@ export interface InlineCardBlock {
    */
   icon?: (string | null) | Icon;
   /**
-   * Small text above card title (e.g., "New", "Featured", "Step 01")
+   * Rich content with headings (H3 for titles), formatting, lists, and links
    */
-  eyebrow?: string | null;
-  /**
-   * Main heading for this card (e.g., "Fast Delivery", "Expert Support")
-   */
-  title?: string | null;
-  /**
-   * Rich description with headings, formatting, lists, and links
-   */
-  description?: {
+  content?: {
     root: {
       type: string;
       children: {
@@ -1309,17 +1301,9 @@ export interface CardGridBlock {
      */
     icon?: (string | null) | Icon;
     /**
-     * Small text above card title (e.g., "New", "Featured", "Step 01")
+     * Rich content with headings (H3 for titles), formatting, lists, and links
      */
-    eyebrow?: string | null;
-    /**
-     * Main heading for this card (e.g., "Fast Delivery", "Expert Support")
-     */
-    title?: string | null;
-    /**
-     * Rich description with headings, formatting, lists, and links
-     */
-    description?: {
+    content?: {
       root: {
         type: string;
         children: {
@@ -2608,9 +2592,7 @@ export interface CardGridBlockSelect<T extends boolean = true> {
     | T
     | {
         icon?: T;
-        eyebrow?: T;
-        title?: T;
-        description?: T;
+        content?: T;
         enableLink?: T;
         link?:
           | T

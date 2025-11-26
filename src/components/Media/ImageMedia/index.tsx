@@ -42,16 +42,24 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   let alt = altFromProps
   let src: StaticImageData | string = srcFromProps || ''
 
+  let isSvg = false
+
   if (!src && resource && typeof resource === 'object') {
-    const { alt: altFromResource, height: fullHeight, url, width: fullWidth } = resource
+    const { alt: altFromResource, height: fullHeight, url, width: fullWidth, mimeType } = resource
 
     width = fullWidth!
     height = fullHeight!
     alt = altFromResource || ''
 
+    // Detect SVG images - they can't be optimized by Next.js
+    isSvg = mimeType === 'image/svg+xml' || url?.endsWith('.svg') || false
+
     const cacheTag = resource.updatedAt
 
     src = getMediaUrl(url, cacheTag)
+  } else if (src) {
+    // Check if external src is SVG
+    isSvg = src.toString().endsWith('.svg')
   }
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
@@ -66,14 +74,15 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   // Use Next.js Image optimization for all images (including blob storage)
   // Next.js will dynamically generate the exact sizes needed via /_next/image
   // Payload's pre-generated sizes (300w, 400w, 600w, 750w, 900w, etc.) are kept as fallback
+  // SVG images are served unoptimized since Next.js can't process them
   const imageElement = (
     <NextImage
       alt={alt || ''}
       className={cn(imgClassName)}
       fill={fill}
       height={!fill ? height : undefined}
-      placeholder="blur"
-      blurDataURL={PLACEHOLDER_BLUR}
+      placeholder={isSvg ? 'empty' : 'blur'}
+      blurDataURL={isSvg ? undefined : PLACEHOLDER_BLUR}
       priority={priority}
       quality={85}
       loading={loading}
@@ -81,6 +90,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
       src={src}
       width={!fill ? width : undefined}
       onLoad={() => setIsLoaded(true)}
+      unoptimized={isSvg}
     />
   )
 

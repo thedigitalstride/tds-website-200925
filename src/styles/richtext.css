@@ -148,42 +148,87 @@
 
 /* Heading sizes - unified with UUI scale from theme.css */
 /* Using !important to override Tailwind Typography defaults */
+/* Responsive scaling: mobile → desktop (matches SectionHeader component) */
+
+/* H1: 36px (display-md) → 48px (display-lg) */
 .prose h1 {
-  font-size: var(--text-display-lg) !important;              /* 3rem = 48px */
-  line-height: var(--text-display-lg--line-height) !important;  /* 3.75rem = 60px */
-  letter-spacing: var(--text-display-lg--letter-spacing) !important;  /* -0.06rem */
+  font-size: var(--text-display-md) !important;
+  line-height: var(--text-display-md--line-height) !important;
+  letter-spacing: var(--text-display-md--letter-spacing) !important;
+}
+@media (min-width: 768px) {
+  .prose h1 {
+    font-size: var(--text-display-lg) !important;
+    line-height: var(--text-display-lg--line-height) !important;
+    letter-spacing: var(--text-display-lg--letter-spacing) !important;
+  }
 }
 
+/* H2: 30px (display-sm) → 36px (display-md) */
 .prose h2 {
-  font-size: var(--text-display-md) !important;              /* 2.25rem = 36px */
-  line-height: var(--text-display-md--line-height) !important;  /* 2.75rem = 44px */
-  letter-spacing: var(--text-display-md--letter-spacing) !important;  /* -0.045rem */
+  font-size: var(--text-display-sm) !important;
+  line-height: var(--text-display-sm--line-height) !important;
+}
+@media (min-width: 768px) {
+  .prose h2 {
+    font-size: var(--text-display-md) !important;
+    line-height: var(--text-display-md--line-height) !important;
+    letter-spacing: var(--text-display-md--letter-spacing) !important;
+  }
 }
 
+/* H3: 24px (display-xs) → 30px (display-sm) - matches SectionHeader */
 .prose h3 {
-  font-size: var(--text-display-sm) !important;              /* 1.875rem = 30px */
-  line-height: var(--text-display-sm--line-height) !important;  /* 2.375rem = 38px */
+  font-size: var(--text-display-xs) !important;
+  line-height: var(--text-display-xs--line-height) !important;
+}
+@media (min-width: 768px) {
+  .prose h3 {
+    font-size: var(--text-display-sm) !important;
+    line-height: var(--text-display-sm--line-height) !important;
+  }
 }
 
+/* H4: 18px (text-lg) → 24px (display-xs) */
 .prose h4 {
-  font-size: var(--text-display-xs) !important;                     /* 1.5rem = 24px */
-  line-height: var(--text-display-xs--line-height) !important;      /* 2rem = 32px */
+  font-size: var(--text-lg) !important;
+  line-height: var(--text-lg--line-height) !important;
+}
+@media (min-width: 768px) {
+  .prose h4 {
+    font-size: var(--text-display-xs) !important;
+    line-height: var(--text-display-xs--line-height) !important;
+  }
 }
 
+/* H5: 18px (text-lg) → 20px (text-xl) */
 .prose h5 {
-  font-size: var(--text-xl) !important;                     /* 1.25rem = 20px */
-  line-height: var(--text-xl--line-height) !important;      /* 1.875rem = 30px */
+  font-size: var(--text-lg) !important;
+  line-height: var(--text-lg--line-height) !important;
+}
+@media (min-width: 768px) {
+  .prose h5 {
+    font-size: var(--text-xl) !important;
+    line-height: var(--text-xl--line-height) !important;
+  }
 }
 
+/* H6: 18px (text-lg) → 20px (text-xl) - same scale as H5, with accent color */
 .prose h6 {
-  font-size: var(--text-xl) !important;                     /* 1.25rem = 20px - same as H5 */
-  line-height: var(--text-xl--line-height) !important;      /* 1.875rem = 30px - same as H5 */
-  color: var(--color-accent-500) !important;                /* Accent blue #1689FF */
+  font-size: var(--text-lg) !important;
+  line-height: var(--text-lg--line-height) !important;
+  color: var(--color-accent-500) !important;
+}
+@media (min-width: 768px) {
+  .prose h6 {
+    font-size: var(--text-xl) !important;
+    line-height: var(--text-xl--line-height) !important;
+  }
 }
 
 /* H6 dark mode - use lighter accent for better contrast */
 .dark-mode .prose h6 {
-  color: var(--color-accent-400) !important;                /* Lighter accent blue for dark mode */
+  color: var(--color-accent-400) !important;
 }
 
 /* First heading - reduce top margin */
