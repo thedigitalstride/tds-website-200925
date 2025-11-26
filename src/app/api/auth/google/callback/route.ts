@@ -242,7 +242,8 @@ export async function GET(request: NextRequest) {
     // Get the user document
     const user = await payload.findByID({
       collection: 'users',
-      id: userId
+      id: userId,
+      depth: 0,
     })
 
     console.log('[OAuth Debug] Attempting Payload login:', {

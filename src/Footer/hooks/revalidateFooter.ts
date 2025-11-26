@@ -9,7 +9,13 @@ export const revalidateFooter: GlobalAfterChangeHook = ({ doc, req: { payload, c
     try {
       revalidateTag('global_footer')
     } catch (error) {
-      payload.logger.error(`Failed to revalidate footer: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      // Handle Next.js 15 revalidation context issue in development
+      if (process.env.NODE_ENV === 'development') {
+        payload.logger.warn(`Revalidation skipped in development: ${error instanceof Error ? error.message : String(error)}`)
+      } else {
+        // Re-throw in production as this should work
+        throw error
+      }
     }
   }
 

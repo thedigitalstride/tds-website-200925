@@ -205,4 +205,5 @@ export const Media: CollectionConfig = {
       generateAltTagAfterChange,
     ],
   },
+  timestamps: true,
 }

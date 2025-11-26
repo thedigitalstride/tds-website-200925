@@ -8,7 +8,7 @@ export const TestimonialsBlock: Block = {
     {
       name: 'selectedTestimonials',
       type: 'relationship',
-      relationTo: 'testimonials' as any, // Type will be available when payload-types is regenerated
+      relationTo: 'testimonials',
       hasMany: true,
       required: true,
       minRows: 1,

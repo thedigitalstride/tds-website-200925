@@ -34,6 +34,7 @@ export const Icons: CollectionConfig = {
       label: 'Icon Name',
       required: true,
       unique: true,
+      index: true,
       admin: {
         description: 'Unique identifier for the icon (e.g., "home", "settings")',
         placeholder: 'home',

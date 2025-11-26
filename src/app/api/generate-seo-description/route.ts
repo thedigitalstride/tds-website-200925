@@ -66,6 +66,7 @@ export async function POST(request: NextRequest) {
     const document = await payload.findByID({
       collection: collectionSlug as 'pages' | 'posts',
       id: documentId,
+      depth: 0,
     })
 
     if (!document) {

@@ -169,4 +169,5 @@ export const FAQs: CollectionConfig<'faqs'> = {
     },
     maxPerDoc: 50,
   },
+  timestamps: true,
 }

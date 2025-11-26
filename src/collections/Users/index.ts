@@ -154,6 +154,7 @@ export const Users: CollectionConfig = {
             where: {
               user: { equals: doc.id },
             },
+            req,
           })
         } catch (_error) {
           // Silently fail if accounts collection doesn't exist yet

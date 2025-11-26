@@ -545,7 +545,7 @@ export interface HeroHeadingBlock {
   /**
    * Vertical spacing around the hero section
    */
-  spacing?: ('spacious' | 'normal' | 'compact' | 'minimal') | null;
+  spacing?: ('none' | 'spacious' | 'normal' | 'compact' | 'minimal') | null;
   /**
    * Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile). Alt text is automatically used from the media upload.
    */
@@ -864,7 +864,7 @@ export interface BreadcrumbBlock {
   /**
    * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'breadcrumb';
@@ -975,7 +975,7 @@ export interface LatestPostsBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'latestPosts';
@@ -1073,7 +1073,7 @@ export interface CallToActionBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
@@ -1401,7 +1401,7 @@ export interface CardGridBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   /**
    * Spacing between cards in the grid. Default automatically adjusts for centered-icon and elevated-box layouts.
    */
@@ -1443,7 +1443,7 @@ export interface ContentBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   /**
    * Spacing between grid columns
    */
@@ -1586,7 +1586,7 @@ export interface AccordionBlock {
     /**
      * Vertical spacing around this section
      */
-    spacing?: ('compact' | 'normal' | 'spacious') | null;
+    spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
     /**
      * Speed of expand/collapse animations
      */
@@ -1710,7 +1710,7 @@ export interface ArchiveBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'archive';
@@ -1941,7 +1941,7 @@ export interface TestimonialsBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonials';

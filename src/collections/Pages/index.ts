@@ -265,4 +265,5 @@ export const Pages: CollectionConfig<'pages'> = {
     },
     maxPerDoc: 50,
   },
+  timestamps: true,
 }
