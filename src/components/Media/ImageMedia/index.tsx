@@ -11,7 +11,7 @@ import type { Props as MediaProps } from '../types'
 
 import { cssVariables } from '@/cssVariables'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
-import { getOptimalPayloadImageUrl } from '@/utilities/getPayloadImageSize'
+import { generatePayloadSrcSet, getDefaultSrcFromPayload } from '@/utilities/getPayloadSrcSet'
 import { PLACEHOLDER_BLUR } from '@/constants/imagePlaceholder'
 
 // Motion configuration for fade-in effect - smoother transition
@@ -63,12 +63,16 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     src.includes('/api/media/file/')
   )
 
-  // When using blob storage with unoptimized images, manually select the optimal
-  // Payload-generated image size to serve smaller images for thumbnails and cards
+  // Generate srcset from Payload's pre-generated sizes for blob storage images
+  // This enables responsive image loading based on viewport and device pixel ratio
+  // Smart filtering: Pass sizes attribute to cap srcset to only include sizes needed for context
+  let srcSet: string | undefined
   if (isBlobStorage && resource && typeof resource === 'object' && resource.sizes) {
-    const optimalUrl = getOptimalPayloadImageUrl(resource, sizeFromProps)
-    if (optimalUrl) {
-      src = getMediaUrl(optimalUrl, resource.updatedAt)
+    srcSet = generatePayloadSrcSet(resource, sizeFromProps)
+    // Use an appropriate default size for the src attribute (fallback)
+    const defaultUrl = getDefaultSrcFromPayload(resource, sizeFromProps)
+    if (defaultUrl) {
+      src = getMediaUrl(defaultUrl, resource.updatedAt)
     }
   }
 
@@ -78,6 +82,50 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     : Object.entries(breakpoints)
         .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
         .join(', ')
+
+  // For blob storage with srcset, use native img element since Next.js Image
+  // doesn't support custom srcset when unoptimized={true}
+  // This allows browsers to select optimal image size from Payload's pre-generated sizes
+  if (isBlobStorage && srcSet) {
+    const nativeImageElement = (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        alt={alt || ''}
+        className={cn(
+          imgClassName,
+          fill && 'absolute inset-0 h-full w-full object-cover',
+        )}
+        height={!fill ? height : undefined}
+        loading={loading || 'lazy'}
+        sizes={sizes}
+        src={typeof src === 'string' ? src : ''}
+        srcSet={srcSet}
+        width={!fill ? width : undefined}
+        onLoad={() => setIsLoaded(true)}
+        decoding="async"
+        fetchPriority={priority ? 'high' : 'auto'}
+      />
+    )
+
+    // Priority images: Skip animation for PageSpeed optimization
+    if (priority) {
+      return <picture className={cn(pictureClassName)}>{nativeImageElement}</picture>
+    }
+
+    // Lazy-loaded images: Apply smooth fade-in
+    return (
+      <picture className={cn(pictureClassName)}>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isLoaded ? 1 : 0 }}
+          transition={motionConfig}
+          style={{ display: 'contents' }}
+        >
+          {nativeImageElement}
+        </motion.span>
+      </picture>
+    )
+  }
 
   const imageElement = (
     <NextImage

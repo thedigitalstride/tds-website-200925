@@ -14,6 +14,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import RenderBlocks from '@/blocks/RenderBlocks'
 import { generateBreadcrumbSchema } from '@/utilities/generateBreadcrumbSchema'
+import { generateArticleSchema } from '@/utilities/generateArticleSchema'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -74,6 +75,9 @@ export default async function Post({ params: paramsPromise }: Args) {
   // Generate breadcrumb schema for this post
   const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbs, url, post.title)
 
+  // Generate article schema for this post (BlogPosting structured data)
+  const articleSchema = generateArticleSchema(post, slug)
+
   return (
     <>
       {breadcrumbSchema && (
@@ -81,6 +85,13 @@ export default async function Post({ params: paramsPromise }: Args) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
           key="breadcrumb-schema"
+        />
+      )}
+      {articleSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+          key="article-schema"
         />
       )}
       {/* Allows redirects for valid pages too */}

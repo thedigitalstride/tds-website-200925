@@ -49,6 +49,11 @@ export const Media: CollectionConfig = {
     focalPoint: true,
     // Restrict to image files only
     mimeTypes: ['image/*'],
+    // Image sizes with tiered quality optimization:
+    // - Smaller sizes (thumbnail, card-mobile, small) use lower quality (70-78%)
+    //   since quality loss is imperceptible at these sizes
+    // - Larger sizes (large, xlarge) keep 85% for hero/full-width display
+    // NOTE: Quality changes only affect NEW uploads
     imageSizes: [
       {
         name: 'thumbnail',
@@ -58,7 +63,7 @@ export const Media: CollectionConfig = {
         formatOptions: {
           format: 'webp',
           options: {
-            quality: 85,
+            quality: 70, // Reduced from 85 - imperceptible at this size
             effort: 4,
           },
         },
@@ -74,7 +79,7 @@ export const Media: CollectionConfig = {
         position: 'centre',
         formatOptions: {
           format: 'webp',
-          options: { quality: 85, effort: 4 },
+          options: { quality: 75, effort: 4 }, // Reduced from 85
         },
         admin: {
           disableGroupBy: true,
@@ -88,7 +93,7 @@ export const Media: CollectionConfig = {
         position: 'centre',
         formatOptions: {
           format: 'webp',
-          options: { quality: 85, effort: 4 },
+          options: { quality: 75, effort: 4 }, // Reduced from 85 - imperceptible on mobile
         },
         admin: {
           disableGroupBy: true,
@@ -102,7 +107,7 @@ export const Media: CollectionConfig = {
         position: 'centre',
         formatOptions: {
           format: 'webp',
-          options: { quality: 85, effort: 4 },
+          options: { quality: 78, effort: 4 }, // Reduced from 85
         },
         admin: {
           disableGroupBy: true,
@@ -116,7 +121,7 @@ export const Media: CollectionConfig = {
         position: 'centre',
         formatOptions: {
           format: 'webp',
-          options: { quality: 85, effort: 4 },
+          options: { quality: 80, effort: 4 }, // Reduced from 85
         },
         admin: {
           disableGroupBy: true,

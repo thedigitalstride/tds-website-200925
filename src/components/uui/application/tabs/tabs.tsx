@@ -39,7 +39,7 @@ const getTabStyles = ({ isFocusVisible, isSelected, isHovered }: AriaTabRenderPr
         isSelected && "bg-primary_alt text-secondary shadow-xs ring-1 ring-primary ring-inset",
     ),
     underline: cx(
-        "rounded-none border-b-2 border-transparent outline-focus-ring",
+        "rounded-none border-b-4 border-transparent outline-focus-ring",
         (isSelected || isHovered) && "border-fg-brand-primary_alt text-brand-secondary",
         isFocusVisible && "outline-2 -outline-offset-2",
     ),
@@ -128,7 +128,7 @@ export const TabList = <T extends Orientation>({
                         // Only horizontal tabs with underline type have bottom border
                         orientation === "horizontal" &&
                             type === "underline" &&
-                            "relative before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-border-secondary",
+                            "relative before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-white",
 
                         typeof className === "function" ? className(state) : className,
                     )
