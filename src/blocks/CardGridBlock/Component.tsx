@@ -6,6 +6,7 @@ import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
 import type { BackgroundVariant } from '@/utilities/backgroundVariants'
 import { InlineCard } from '@/components/cards/InlineCard'
+import { Home03 } from '@untitledui/icons'
 
 interface ExtendedCardGridBlockProps extends Omit<CardGridBlockProps, 'cardBackground' | 'iconColor' | 'gridSpacing'> {
   cardBackground?: 'none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline' | 'line'
@@ -92,9 +93,9 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
             </span>
           )}
           {header.heading && (
-            <h2 className="mt-3 text-display-sm font-semibold text-primary md:text-display-md">
+            <h3 className="mt-3 font-semibold text-primary">
               {header.heading}
-            </h2>
+            </h3>
           )}
           {header.description && (
             <p className="mt-4 text-lg text-tertiary md:mt-5 md:text-xl">{header.description}</p>

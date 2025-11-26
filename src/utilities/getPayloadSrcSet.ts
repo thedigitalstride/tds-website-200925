@@ -8,6 +8,7 @@ const PAYLOAD_IMAGE_SIZES = {
   thumbnail: 300,
   'card-mobile': 400,
   small: 600,
+  card: 750,
   medium: 900,
   large: 1400,
   xlarge: 1920,

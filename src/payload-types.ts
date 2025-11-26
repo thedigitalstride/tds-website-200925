@@ -708,6 +708,14 @@ export interface Media {
       filesize?: number | null;
       filename?: string | null;
     };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
     medium?: {
       url?: string | null;
       width?: number | null;
@@ -2973,6 +2981,16 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
         small?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
           | T
           | {
               url?: T;

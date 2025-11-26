@@ -132,7 +132,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           )}
           <h3
             key="title"
-            className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
+            className={cn('font-semibold', eyebrow && 'mt-2', textClasses.heading)}
           >
             {title}
           </h3>
@@ -204,7 +204,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           )}
           <h3
             key="title"
-            className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
+            className={cn('font-semibold', eyebrow && 'mt-2', textClasses.heading)}
           >
             {title}
           </h3>
@@ -277,7 +277,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           <h3
             key="title"
             className={cn(
-              'mt-1.5 text-display-sm font-semibold md:mt-2.5',
+              'mt-1.5 font-semibold md:mt-2.5',
               eyebrow && 'mt-2',
               textClasses.heading,
             )}
@@ -343,7 +343,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           )}
           <h3
             key="title"
-            className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
+            className={cn('font-semibold', eyebrow && 'mt-2', textClasses.heading)}
           >
             {title}
           </h3>
@@ -415,7 +415,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
           )}
           <h3
             key="title"
-            className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
+            className={cn('font-semibold', eyebrow && 'mt-2', textClasses.heading)}
           >
             {title}
           </h3>
@@ -469,7 +469,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
         )}
         <h3
           key="title"
-          className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
+          className={cn('font-semibold', eyebrow && 'mt-2', textClasses.heading)}
         >
           {title}
         </h3>
@@ -521,7 +521,7 @@ export const InlineCard: React.FC<InlineCardProps> = ({
         )}
         <h3
           key="title"
-          className={cn('text-display-sm font-semibold', eyebrow && 'mt-2', textClasses.heading)}
+          className={cn('font-semibold', eyebrow && 'mt-2', textClasses.heading)}
         >
           {title}
         </h3>

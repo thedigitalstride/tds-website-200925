@@ -20,6 +20,7 @@ export const Logo = (props: Props) => {
       alt="Payload Logo"
       width={193}
       height={34}
+      sizes="150px"
       loading={loading}
       priority={priority === 'high'}
       className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}

@@ -115,6 +115,21 @@ export const Media: CollectionConfig = {
         },
       },
       {
+        name: 'card',
+        width: 750,
+        // Fills the gap between 600w and 900w for blog card images at 2x DPR
+        // Blog cards display at ~352px, needing ~704px for 2x DPR - 750w is ideal
+        position: 'centre',
+        formatOptions: {
+          format: 'webp',
+          options: { quality: 80, effort: 4 },
+        },
+        admin: {
+          disableGroupBy: true,
+          disableListFilter: true,
+        },
+      },
+      {
         name: 'medium',
         width: 900,
         // Preserve aspect ratio
