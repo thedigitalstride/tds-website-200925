@@ -93,7 +93,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
             </span>
           )}
           {header.heading && (
-            <h3 className="mt-3 font-semibold text-primary">
+            <h3 className="text-display-sm mt-3 font-semibold text-primary">
               {header.heading}
             </h3>
           )}
