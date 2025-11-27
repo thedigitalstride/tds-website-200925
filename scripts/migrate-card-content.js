@@ -17,16 +17,26 @@ import { config } from 'dotenv'
 // Load environment variables
 config()
 
+// Use MONGODB_ATLAS_URI for production, otherwise local
+const useProduction = process.argv.includes('--production')
 const LOCAL_URI = process.env.MONGODB_LOCAL_URI || 'mongodb://localhost:27017'
-const DB_NAME = process.env.MONGODB_LOCAL_DB || 'tds-website'
+const ATLAS_URI = process.env.MONGODB_ATLAS_URI
+const DB_NAME = useProduction ? 'test' : (process.env.MONGODB_LOCAL_DB || 'tds-website')
+const MONGODB_URI = useProduction ? ATLAS_URI : LOCAL_URI
+
+if (useProduction && !ATLAS_URI) {
+  console.error('❌ MONGODB_ATLAS_URI environment variable required for production migration')
+  process.exit(1)
+}
 
 async function migrateCardContent() {
   console.log('\n🔄 Card Content Migration Script')
   console.log('================================')
+  console.log(`Mode: ${useProduction ? 'PRODUCTION' : 'Local'}`)
   console.log(`Database: ${DB_NAME}`)
-  console.log(`URI: ${LOCAL_URI}\n`)
+  console.log(`URI: ${useProduction ? 'MongoDB Atlas' : MONGODB_URI}\n`)
 
-  const client = new MongoClient(LOCAL_URI)
+  const client = new MongoClient(MONGODB_URI)
 
   try {
     await client.connect()
