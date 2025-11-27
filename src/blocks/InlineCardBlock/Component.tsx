@@ -7,9 +7,7 @@ import type { BackgroundVariant } from '@/utilities/backgroundVariants'
 
 export const InlineCardBlock: React.FC<InlineCardBlockProps> = ({
   icon,
-  eyebrow,
-  title,
-  description,
+  content,
   enableLink,
   link,
   cardStyle,
@@ -55,9 +53,7 @@ export const InlineCardBlock: React.FC<InlineCardBlockProps> = ({
   return (
     <InlineCard
       svgCode={hasIcon ? iconData?.svgCode : undefined}
-      eyebrow={eyebrow || undefined}
-      title={title || ''}
-      subtitle={description || undefined}
+      content={content || undefined}
       footer={footer}
       cardStyle={cardLayout}
       cardBackground={cardStyleValue}

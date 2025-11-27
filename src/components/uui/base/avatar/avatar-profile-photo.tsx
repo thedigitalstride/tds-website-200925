@@ -68,6 +68,7 @@ export const AvatarProfilePhoto = ({
                     alt={alt || "Profile photo"}
                     width={imageSize}
                     height={imageSize}
+                    sizes={`${imageSize}px`}
                     className={cx(
                         "size-full rounded-full object-cover",
                         contrastBorder && "outline-1 -outline-offset-1 outline-avatar-contrast-border",

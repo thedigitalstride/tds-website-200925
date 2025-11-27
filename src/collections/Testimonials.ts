@@ -63,5 +63,6 @@ export const Testimonials: CollectionConfig = {
     singular: 'Testimonial',
     plural: 'Testimonials',
   },
+  timestamps: true,
 }
 

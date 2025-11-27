@@ -25,7 +25,7 @@ export const Badge = (props: BadgeProps) => {
     <span
       className={cx(
         'size-max flex items-center whitespace-nowrap rounded-md shadow-xs',
-        'bg-transparent ring-2 ring-outline ring-inset text-brand-500 dark:text-white',
+        'bg-transparent ring-1 ring-outline ring-inset text-brand-500 dark:text-white',
         sizes[size],
         className,
       )}

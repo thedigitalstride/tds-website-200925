@@ -4,6 +4,10 @@ import { richText } from '@/fields/richText'
 
 export const Banner: Block = {
   slug: 'banner',
+  labels: {
+    singular: 'Banner',
+    plural: 'Banners',
+  },
   fields: [
     {
       name: 'style',

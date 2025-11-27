@@ -341,6 +341,7 @@ const TestimonialContent = React.forwardRef<
                 resource={logo as MediaType}
                 alt={`${company || person || ''} logo`}
                 className="max-h-8 w-auto object-contain"
+                sizes="120px"
               />
             </div>
           )}

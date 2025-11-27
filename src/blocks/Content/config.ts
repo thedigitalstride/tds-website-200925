@@ -1,7 +1,4 @@
 import type { Block, Field } from 'payload'
-import type { RowLabelComponent } from 'payload'
-
-import { ColumnRowLabel } from './ColumnRowLabel'
 
 const columnFields: Field[] = [
   {
@@ -76,7 +73,7 @@ export const Content: Block = {
       admin: {
         initCollapsed: true,
         components: {
-          RowLabel: ColumnRowLabel as unknown as RowLabelComponent,
+          RowLabel: '@/blocks/Content/ColumnRowLabel#ColumnRowLabel',
         },
         description: 'Add and arrange columns by dragging to reorder',
       },

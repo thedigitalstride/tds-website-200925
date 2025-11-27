@@ -13,3 +13,5 @@ export interface LightboxProps {
   onClose: () => void
   className?: string
 }
+
+

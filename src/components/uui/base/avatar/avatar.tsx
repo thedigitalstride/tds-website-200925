@@ -87,6 +87,7 @@ export const Avatar = ({
                     alt={alt || "Avatar"}
                     width={imageSize}
                     height={imageSize}
+                    sizes={`${imageSize}px`}
                     className="size-full rounded-full object-cover"
                     priority={false}
                 />

@@ -6,6 +6,7 @@ import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
 import type { BackgroundVariant } from '@/utilities/backgroundVariants'
 import { InlineCard } from '@/components/cards/InlineCard'
+import { SectionHeader } from '@/components/SectionHeader'
 
 interface ExtendedCardGridBlockProps extends Omit<CardGridBlockProps, 'cardBackground' | 'iconColor' | 'gridSpacing'> {
   cardBackground?: 'none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline' | 'line'
@@ -73,33 +74,18 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
 
   // Header alignment
   const headerAlignment = header?.headerAlignment || 'left'
-  const isHeaderCentered = headerAlignment === 'center'
 
   // Content to render (shared between container and no-container versions)
   const content = (
     <>
       {/* Optional Header Section */}
       {header?.showHeader && (
-        <div
-          className={cn(
-            'flex w-full max-w-3xl flex-col',
-            isHeaderCentered && 'mx-auto text-center',
-          )}
-        >
-          {header.eyebrow && (
-            <span className="text-sm font-semibold text-brand-secondary md:text-md">
-              {header.eyebrow}
-            </span>
-          )}
-          {header.heading && (
-            <h2 className="mt-3 text-display-sm font-semibold text-primary md:text-display-md">
-              {header.heading}
-            </h2>
-          )}
-          {header.description && (
-            <p className="mt-4 text-lg text-tertiary md:mt-5 md:text-xl">{header.description}</p>
-          )}
-        </div>
+        <SectionHeader
+          eyebrow={header.eyebrow || undefined}
+          heading={header.heading || undefined}
+          description={header.description || undefined}
+          alignment={headerAlignment}
+        />
       )}
 
       {/* Cards Grid */}
@@ -140,9 +126,7 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
               <li key={index} className="flex w-full">
                 <InlineCard
                   svgCode={hasIcon ? iconData?.svgCode : undefined}
-                  eyebrow={card.eyebrow || undefined}
-                  title={card.title || ''}
-                  subtitle={card.description || undefined}
+                  content={card.content || undefined}
                   footer={footer}
                   cardStyle={cardLayout}
                   cardBackground={cardStyleValue}

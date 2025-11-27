@@ -45,9 +45,9 @@ export const SelectItem = ({ label, id, value, avatarUrl, supportingText, isDisa
                 <div
                     className={cx(
                         "flex cursor-pointer items-center gap-2 rounded-md outline-hidden select-none",
-                        state.isSelected && "bg-active",
+                        state.isSelected && "bg-gray-50",
                         state.isDisabled && "cursor-not-allowed",
-                        state.isFocused && "bg-primary_hover",
+                        state.isFocused && "bg-gray-50",
                         state.isFocusVisible && "ring-2 ring-focus-ring ring-inset",
 
                         // Icon styles
@@ -68,7 +68,7 @@ export const SelectItem = ({ label, id, value, avatarUrl, supportingText, isDisa
                     <div className="flex w-full min-w-0 flex-1 flex-wrap gap-x-2">
                         <AriaText
                             slot="label"
-                            className={cx("truncate text-md font-medium whitespace-nowrap text-primary", state.isDisabled && "text-disabled")}
+                            className={cx("truncate text-md font-medium whitespace-nowrap text-gray-900", state.isDisabled && "text-disabled")}
                         >
                             {label || (typeof children === "function" ? children(state) : children)}
                         </AriaText>

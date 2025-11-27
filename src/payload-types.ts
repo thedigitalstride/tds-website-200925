@@ -200,17 +200,9 @@ export interface InlineCardBlock {
    */
   icon?: (string | null) | Icon;
   /**
-   * Small text above card title (e.g., "New", "Featured", "Step 01")
+   * Rich content with headings (H3 for titles), formatting, lists, and links
    */
-  eyebrow?: string | null;
-  /**
-   * Main heading for this card (e.g., "Fast Delivery", "Expert Support")
-   */
-  title?: string | null;
-  /**
-   * Rich description with headings, formatting, lists, and links
-   */
-  description?: {
+  content?: {
     root: {
       type: string;
       children: {
@@ -545,7 +537,7 @@ export interface HeroHeadingBlock {
   /**
    * Vertical spacing around the hero section
    */
-  spacing?: ('spacious' | 'normal' | 'compact' | 'minimal') | null;
+  spacing?: ('none' | 'spacious' | 'normal' | 'compact' | 'minimal') | null;
   /**
    * Optional image for split layout. Appears on right side (desktop) with 30° diagonal edge, or below headline (mobile). Alt text is automatically used from the media upload.
    */
@@ -701,6 +693,14 @@ export interface Media {
       filename?: string | null;
     };
     small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -864,7 +864,7 @@ export interface BreadcrumbBlock {
   /**
    * Vertical spacing around the breadcrumb section. Breadcrumbs typically use compact spacing.
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'breadcrumb';
@@ -975,7 +975,7 @@ export interface LatestPostsBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'latestPosts';
@@ -1073,7 +1073,7 @@ export interface CallToActionBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
@@ -1301,17 +1301,9 @@ export interface CardGridBlock {
      */
     icon?: (string | null) | Icon;
     /**
-     * Small text above card title (e.g., "New", "Featured", "Step 01")
+     * Rich content with headings (H3 for titles), formatting, lists, and links
      */
-    eyebrow?: string | null;
-    /**
-     * Main heading for this card (e.g., "Fast Delivery", "Expert Support")
-     */
-    title?: string | null;
-    /**
-     * Rich description with headings, formatting, lists, and links
-     */
-    description?: {
+    content?: {
       root: {
         type: string;
         children: {
@@ -1401,7 +1393,7 @@ export interface CardGridBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   /**
    * Spacing between cards in the grid. Default automatically adjusts for centered-icon and elevated-box layouts.
    */
@@ -1443,7 +1435,7 @@ export interface ContentBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   /**
    * Spacing between grid columns
    */
@@ -1586,7 +1578,7 @@ export interface AccordionBlock {
     /**
      * Vertical spacing around this section
      */
-    spacing?: ('compact' | 'normal' | 'spacious') | null;
+    spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
     /**
      * Speed of expand/collapse animations
      */
@@ -1710,7 +1702,7 @@ export interface ArchiveBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'archive';
@@ -1941,7 +1933,7 @@ export interface TestimonialsBlock {
   /**
    * Vertical spacing around this section
    */
-  spacing?: ('compact' | 'normal' | 'spacious') | null;
+  spacing?: ('none' | 'compact' | 'normal' | 'spacious') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonials';
@@ -2600,9 +2592,7 @@ export interface CardGridBlockSelect<T extends boolean = true> {
     | T
     | {
         icon?: T;
-        eyebrow?: T;
-        title?: T;
-        description?: T;
+        content?: T;
         enableLink?: T;
         link?:
           | T
@@ -2973,6 +2963,16 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
         small?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
           | T
           | {
               url?: T;

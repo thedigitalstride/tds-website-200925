@@ -26,6 +26,7 @@ export const AvatarCompanyIcon = ({ size, src, alt }: AvatarCompanyIconProps) =>
             alt={alt || "Company icon"}
             width={sizeConfig.pixels}
             height={sizeConfig.pixels}
+            sizes={`${sizeConfig.pixels}px`}
             className={cx("bg-primary-25 absolute -right-0.5 -bottom-0.5 rounded-full object-cover ring-[1.5px] ring-bg-primary", sizeConfig.className)}
             priority={false}
         />

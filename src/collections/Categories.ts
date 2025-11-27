@@ -23,4 +23,5 @@ export const Categories: CollectionConfig = {
     },
     ...slugField(),
   ],
+  timestamps: true,
 }

@@ -24,6 +24,7 @@ export const ImageCardHorizontal = (props: ImageCardProps) => {
           className="h-50 w-full shrink-0 rounded-md bg-secondary object-cover sm:h-22 sm:w-36"
           width={200}
           height={200}
+          sizes="(max-width: 640px) 100vw, 144px"
           priority={false}
         />
       ) : (
@@ -56,6 +57,7 @@ export const ImageCardVertical = (props: ImageCardProps) => {
           className="h-50 w-full shrink-0 rounded-md bg-secondary object-cover sm:h-34 sm:max-w-60"
           width={240}
           height={200}
+          sizes="(max-width: 640px) 100vw, 240px"
           priority={false}
         />
       ) : (
@@ -95,6 +97,7 @@ export const VideoCardHorizontal = (props: VideoCardProps) => {
           alt={props.title}
           className="size-full object-cover"
           fill={true}
+          sizes="(max-width: 640px) 240px, 176px"
           priority={false}
         />
 
@@ -139,6 +142,7 @@ export const VideoCardVertical = (props: VideoCardProps) => {
         className="h-34 w-60 shrink-0 rounded-md object-cover"
         width={240}
         height={136}
+        sizes="240px"
         priority={false}
       />
 
@@ -175,6 +179,7 @@ export const FeatureCardHorizontal = (props: FeatureCardProps) => {
         className="h-50 shrink-0 rounded-md object-cover sm:h-26 sm:w-44"
         width={176}
         height={200}
+        sizes="(max-width: 640px) 100vw, 176px"
         priority={false}
       />
 
@@ -203,6 +208,7 @@ export const FeatureCardVertical = (props: FeatureCardProps) => {
         className="h-50 shrink-0 rounded-md object-cover sm:h-40"
         width={200}
         height={200}
+        sizes="(max-width: 640px) 100vw, 200px"
         priority={false}
       />
 

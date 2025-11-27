@@ -5,6 +5,7 @@ import { getPayload } from 'payload'
 import { AccordionList } from './AccordionList'
 import { cn } from '@/utilities/ui'
 import { ANIMATION_SPEEDS, type PopulatedFAQ } from './types'
+import { SectionHeader } from '@/components/SectionHeader'
 
 /**
  * Accordion Block Component
@@ -162,12 +163,6 @@ export const AccordionBlock: React.FC<
     spacious: 'py-24 lg:py-32',
   }
 
-  // Header alignment classes
-  const headerAlignmentClasses = {
-    left: 'text-left',
-    center: 'text-center mx-auto',
-  }
-
   const headerAlignment = header?.headerAlignment || 'left'
 
   return (
@@ -175,21 +170,12 @@ export const AccordionBlock: React.FC<
       <div className="mx-auto max-w-container px-4 md:px-8">
         {/* Header */}
         {header?.showHeader && (
-          <div className={cn('max-w-3xl', headerAlignmentClasses[headerAlignment])}>
-            {header.eyebrow && (
-              <p className="text-sm font-semibold text-brand-secondary md:text-md">
-                {header.eyebrow}
-              </p>
-            )}
-            {header.heading && (
-              <h2 className="mt-3 text-display-sm font-semibold text-primary md:text-display-md">
-                {header.heading}
-              </h2>
-            )}
-            {header.description && (
-              <p className="mt-4 text-lg text-secondary md:mt-5 md:text-xl">{header.description}</p>
-            )}
-          </div>
+          <SectionHeader
+            eyebrow={header.eyebrow || undefined}
+            heading={header.heading || undefined}
+            description={header.description || undefined}
+            alignment={headerAlignment}
+          />
         )}
 
         {/* Accordion List (Client Component) */}

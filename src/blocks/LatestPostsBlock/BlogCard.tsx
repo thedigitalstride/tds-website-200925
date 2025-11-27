@@ -40,7 +40,7 @@ const BlogCardComponent: React.FC<{
   imageClassName?: string
   priority?: boolean
   sizes?: string
-}> = ({ article, imageClassName, priority = false, sizes }) => (
+}> = ({ article, imageClassName, priority = false, sizes = '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw' }) => (
   <article className="flex flex-col gap-4">
     <Link href={article.href} className="overflow-hidden rounded-xl" tabIndex={-1}>
       <OptimizedImage

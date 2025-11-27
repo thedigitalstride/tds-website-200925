@@ -193,18 +193,18 @@ export const link: LinkType = ({
   ]
 
   if (!disableLabel) {
-    linkTypes.map((linkType) => ({
+    const linkTypesWithWidth = linkTypes.map((linkType) => ({
       ...linkType,
       admin: {
         ...linkType.admin,
         width: '50%',
       },
-    }))
+    })) as Field[]
 
     linkResult.fields.push({
       type: 'row',
       fields: [
-        ...linkTypes,
+        ...linkTypesWithWidth,
         {
           name: 'label',
           type: 'text',

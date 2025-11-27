@@ -31,6 +31,7 @@ export const ContentSplitImage03 = () => {
                     alt="Girl working on a laptop"
                     width={1200}
                     height={640}
+                    sizes="(max-width: 768px) 100vw, 50vw"
                 />
             </div>
 
@@ -90,7 +91,7 @@ export const ContentSplitImage03 = () => {
                                 ].map((item) => (
                                     <li key={item.name}>
                                         <div className="flex items-center gap-3">
-                                            <OptimizedImage src={item.avatarUrl} width={48} height={48} className="size-12 rounded-full object-cover" alt={item.name} />
+                                            <OptimizedImage src={item.avatarUrl} width={48} height={48} sizes="48px" className="size-12 rounded-full object-cover" alt={item.name} />
                                             <div>
                                                 <p className="text-md font-semibold text-primary">{item.name}</p>
                                                 <p className="text-md text-tertiary">{item.role}</p>
@@ -146,7 +147,7 @@ export const ContentSplitImage03 = () => {
                                 molestie aliquet sodales id est ac volutpat.
                             </p>
                             <figure>
-                                <OptimizedImage alt="Man and laptop" className="h-60 md:h-120" src="https://www.untitledui.com/marketing/man-and-laptop-3.webp" width={800} height={480} />
+                                <OptimizedImage alt="Man and laptop" className="h-60 md:h-120" src="https://www.untitledui.com/marketing/man-and-laptop-3.webp" width={800} height={480} sizes="(max-width: 1024px) 100vw, 720px" />
                                 <figcaption>
                                     <Link01 className="size-4 text-utility-gray-400" />
                                     <span>
@@ -178,6 +179,7 @@ export const ContentSplitImage03 = () => {
                                         src="https://www.untitledui.com/images/avatars/olivia-rhye?fm=webp&q=80"
                                         width={40}
                                         height={40}
+                                        sizes="40px"
                                         className="size-10 rounded-full object-cover"
                                     />
                                     <p className="mt-3 text-md font-semibold text-primary">Olivia Rhye</p>
@@ -222,7 +224,7 @@ export const ContentSplitImage03 = () => {
                                 <li>Suspendisse maecenas ac donec scelerisque diam sed est duis purus.</li>
                             </ol>
                             <figure>
-                                <OptimizedImage alt="Photographer girl" className="h-110 md:h-240" src="https://www.untitledui.com/marketing/photographer-girl-2.webp" width={800} height={960} />
+                                <OptimizedImage alt="Photographer girl" className="h-110 md:h-240" src="https://www.untitledui.com/marketing/photographer-girl-2.webp" width={800} height={960} sizes="(max-width: 1024px) 100vw, 720px" />
                                 <figcaption>
                                     <Link01 className="size-4 text-utility-gray-400" />
                                     <span>
@@ -287,7 +289,7 @@ export const ContentSplitImage03 = () => {
                                     ].map((item) => (
                                         <li key={item.name}>
                                             <div className="flex items-center gap-3">
-                                                <OptimizedImage src={item.avatarUrl} width={48} height={48} className="size-12 rounded-full object-cover" alt={item.name} />
+                                                <OptimizedImage src={item.avatarUrl} width={48} height={48} sizes="48px" className="size-12 rounded-full object-cover" alt={item.name} />
                                                 <div>
                                                     <p className="text-md font-semibold text-primary">{item.name}</p>
                                                     <p className="text-md text-tertiary">{item.role}</p>

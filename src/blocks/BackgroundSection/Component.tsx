@@ -5,6 +5,7 @@ import { OptimizedImage } from '@/components/OptimizedImage'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import type { Media } from '@/payload-types'
 import { BackgroundSectionClient } from './BackgroundSectionClient'
+import { SectionHeader } from '@/components/SectionHeader'
 
 export const BackgroundSectionBlock: React.FC<BackgroundSectionProps> = ({
   header,
@@ -107,22 +108,18 @@ export const BackgroundSectionBlock: React.FC<BackgroundSectionProps> = ({
     backgroundType || 'none'
   )
 
-  // Header alignment classes
-  const headerAlignmentClasses: Record<string, string> = {
-    left: 'text-left',
-    center: 'text-center mx-auto',
+  // Determine SectionHeader colorMode based on background and content color
+  const getSectionHeaderColorMode = (): 'default' | 'light' | 'dark' => {
+    // If header has explicit textColor, use that
+    if (header?.textColor === 'light') return 'light'
+    if (header?.textColor === 'dark') return 'dark'
+
+    // Otherwise derive from contentColorClass
+    if (contentColorClass === 'text-white') return 'light'
+    return 'default'
   }
 
-  // Get header text color
-  const getHeaderColorClasses = (mode: string) => {
-    if (mode === 'light') return 'text-white'
-    if (mode === 'dark') return 'text-primary'
-    return contentColorClass // Use same as content
-  }
-
-  const headerColorClass = header?.textColor
-    ? getHeaderColorClasses(header.textColor)
-    : contentColorClass
+  const sectionHeaderColorMode = getSectionHeaderColorMode()
 
   // Determine background classes
   let backgroundClasses = ''
@@ -184,30 +181,15 @@ export const BackgroundSectionBlock: React.FC<BackgroundSectionProps> = ({
       >
         {/* Section Header */}
         {header?.showHeader && (
-          <div
-            className={cn(
-              'mb-12 lg:mb-16',
-              headerAlignmentClasses[header.headerAlignment || 'center'],
-              header.headerAlignment === 'center' && 'max-w-3xl',
-              headerColorClass
-            )}
-          >
-            {header.eyebrow && (
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wide opacity-80">
-                {header.eyebrow}
-              </p>
-            )}
-            {header.heading && (
-              <h2 className="mb-4 text-display-md font-semibold lg:text-display-lg">
-                {header.heading}
-              </h2>
-            )}
-            {header.description && (
-              <p className="text-lg opacity-90 lg:text-xl">
-                {header.description}
-              </p>
-            )}
-          </div>
+          <SectionHeader
+            eyebrow={header.eyebrow || undefined}
+            heading={header.heading || undefined}
+            description={header.description || undefined}
+            alignment={header.headerAlignment || 'center'}
+            colorMode={sectionHeaderColorMode}
+            headingLevel="h2"
+            className="mb-12 lg:mb-16"
+          />
         )}
 
         {/* Nested Content Blocks */}

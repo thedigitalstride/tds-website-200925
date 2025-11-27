@@ -52,6 +52,11 @@ const nextConfig = {
         hostname: '*.public.blob.vercel-storage.com',
         protocol: 'https',
       },
+      // Custom domain (TDS preview/production)
+      {
+        hostname: '*.thedigitalstride.co.uk',
+        protocol: 'https',
+      },
     ],
   },
   reactStrictMode: true,
