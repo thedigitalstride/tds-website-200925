@@ -5,11 +5,5 @@
       "path": "/api/payload-jobs/run",
       "schedule": "0 0 * * *"
     }
-  ],
-  "protectionBypass": [
-    {
-      "scope": "preview",
-      "paths": ["/api/media/*"]
-    }
   ]
 }
