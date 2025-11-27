@@ -102,7 +102,16 @@ export const Icons: CollectionConfig = {
       required: true,
       admin: {
         language: 'xml',
-        description: 'Optimized SVG code (will be processed to use currentColor)',
+        description: 'Optimized SVG code (will be processed to use currentColor unless "Retain Original Colors" is checked)',
+      },
+    },
+    {
+      name: 'retainColors',
+      type: 'checkbox',
+      label: 'Retain Original Colors',
+      defaultValue: false,
+      admin: {
+        description: 'Keep original SVG colors instead of converting to currentColor (useful for brand logos or multi-colored icons)',
       },
     },
     {
