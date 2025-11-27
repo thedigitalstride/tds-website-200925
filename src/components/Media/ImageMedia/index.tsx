@@ -8,11 +8,8 @@ import React from 'react'
 
 import type { Props as MediaProps } from '../types'
 
-import { cssVariables } from '@/cssVariables'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { PLACEHOLDER_BLUR } from '@/constants/imagePlaceholder'
-
-const { breakpoints } = cssVariables
 
 export const ImageMedia: React.FC<MediaProps> = (props) => {
   const {
@@ -47,11 +44,9 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
-  const sizes = sizeFromProps
-    ? sizeFromProps
-    : Object.entries(breakpoints)
-        .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
-        .join(', ')
+  // The sizes attribute requires CSS length units (px, vw, em, rem) - NOT 'w' units
+  // 'w' descriptors are only valid in srcset, not sizes
+  const sizes = sizeFromProps || '100vw'
 
   return (
     <picture className={cn(pictureClassName)}>
@@ -63,7 +58,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         placeholder="blur"
         blurDataURL={PLACEHOLDER_BLUR}
         priority={priority}
-        quality={90}
+        quality={80}
         loading={loading}
         sizes={sizes}
         src={src}
