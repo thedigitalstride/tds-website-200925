@@ -71,10 +71,11 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
         .join(', ')
 
-  // Use Next.js Image optimization for all images (including blob storage)
-  // Next.js will dynamically generate the exact sizes needed via /_next/image
-  // Payload's pre-generated sizes (300w, 400w, 600w, 750w, 900w, etc.) are kept as fallback
-  // SVG images are served unoptimized since Next.js can't process them
+  // Skip Next.js Image optimization - Payload already provides:
+  // - WebP conversion via Sharp (85% quality)
+  // - 8 responsive sizes (300w, 400w, 600w, 750w, 900w, 1400w, 1920w)
+  // - Proper Cache-Control headers
+  // Using unoptimized={true} avoids double-optimization and SSO issues on preview deployments
   const imageElement = (
     <NextImage
       alt={alt || ''}
@@ -84,13 +85,12 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
       placeholder={isSvg ? 'empty' : 'blur'}
       blurDataURL={isSvg ? undefined : PLACEHOLDER_BLUR}
       priority={priority}
-      quality={85}
       loading={loading}
       sizes={sizes}
       src={src}
       width={!fill ? width : undefined}
       onLoad={() => setIsLoaded(true)}
-      unoptimized={isSvg}
+      unoptimized={true}
     />
   )
 
