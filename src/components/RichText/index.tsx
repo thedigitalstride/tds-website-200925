@@ -1,3 +1,4 @@
+import { ImageGridBlock } from '@/blocks/ImageGridBlock/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import {
   DefaultNodeTypes,
@@ -23,6 +24,7 @@ import type {
   BannerBlock as BannerBlockProps,
   ButtonBlock as ButtonBlockProps,
   CallToActionBlock as CTABlockProps,
+  ImageGridBlock as ImageGridBlockProps,
   MediaBlock as MediaBlockProps,
   QuoteBlock as QuoteBlockProps,
   Page,
@@ -37,6 +39,7 @@ type NodeTypes =
   | DefaultNodeTypes
   | SerializedBlockNode<
       | CTABlockProps
+      | ImageGridBlockProps
       | MediaBlockProps
       | BannerBlockProps
       | ButtonBlockProps
@@ -87,6 +90,13 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
       banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
       buttonBlock: ({ node }) => (
         <ButtonBlockComponent className="col-start-2 my-6" {...node.fields} />
+      ),
+      imageGridBlock: ({ node }) => (
+        <div className="not-prose col-start-1 col-span-3 my-6">
+          <div className="mx-auto max-w-[48rem]">
+            <ImageGridBlock {...node.fields} />
+          </div>
+        </div>
       ),
       mediaBlock: ({ node }) => (
         <div className="not-prose col-start-1 col-span-3 my-0!">

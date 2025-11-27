@@ -10,8 +10,8 @@ export const processSVGHook: CollectionBeforeChangeHook = async ({ data, operati
     }
 
     try {
-      // Process the SVG
-      const processed = await processSVG(data.svgCode)
+      // Process the SVG (pass retainColors flag to preserve original colors if checked)
+      const processed = await processSVG(data.svgCode, data.retainColors ?? false)
 
       // Store original if it's a new icon
       if (operation === 'create' && !data.originalSvg) {

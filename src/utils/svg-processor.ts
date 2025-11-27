@@ -16,16 +16,19 @@ export function convertToCurrentColor(svgString: string): string {
 /**
  * Process an SVG string for use as an icon
  * - Basic SVG processing and optimization
- * - Converts colors to currentColor
+ * - Converts colors to currentColor (unless retainColors is true)
  * - Extracts metadata
  */
-export async function processSVG(svgString: string): Promise<ProcessedSVG> {
+export async function processSVG(
+  svgString: string,
+  retainColors: boolean = false,
+): Promise<ProcessedSVG> {
   try {
     // Store original for backup
     const original = svgString.trim()
 
-    // Basic processing - convert colors to currentColor
-    let optimized = convertToCurrentColor(original)
+    // Only convert colors to currentColor if retainColors is false
+    let optimized = retainColors ? original : convertToCurrentColor(original)
 
     // Clean up common unnecessary attributes
     optimized = optimized

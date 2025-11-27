@@ -23,6 +23,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 import { TextSizeFeature } from '@/features/textSize/feature.server'
 import { ButtonBlock } from '@/blocks/ButtonBlock/config'
+import { ImageGridBlock } from '@/blocks/ImageGridBlock/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
 
 /**
@@ -76,7 +77,7 @@ export const richText = (options?: {
 
       // Custom blocks
       BlocksFeature({
-        blocks: [MediaBlock, ButtonBlock, ...(options?.additionalBlocks || [])],
+        blocks: [MediaBlock, ButtonBlock, ImageGridBlock, ...(options?.additionalBlocks || [])],
       }),
     ]
   },

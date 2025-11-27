@@ -23,6 +23,8 @@ export const Media: CollectionConfig = {
     height: true,
     sizes: true,
     updatedAt: true,
+    focalX: true,
+    focalY: true,
   },
   fields: [
     {
