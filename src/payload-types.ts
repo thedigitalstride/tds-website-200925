@@ -321,9 +321,13 @@ export interface Icon {
       )
     | null;
   /**
-   * Optimized SVG code (will be processed to use currentColor)
+   * Optimized SVG code (will be processed to use currentColor unless "Retain Original Colors" is checked)
    */
   svgCode: string;
+  /**
+   * Keep original SVG colors instead of converting to currentColor (useful for brand logos or multi-colored icons)
+   */
+  retainColors?: boolean | null;
   /**
    * Original SVG before optimization (backup)
    */
@@ -3079,6 +3083,7 @@ export interface IconsSelect<T extends boolean = true> {
   label?: T;
   category?: T;
   svgCode?: T;
+  retainColors?: T;
   originalSvg?: T;
   keywords?:
     | T
@@ -4487,6 +4492,39 @@ export interface ButtonBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'buttonBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageGridBlock".
+ */
+export interface ImageGridBlock {
+  images: {
+    /**
+     * Name for identification in admin
+     */
+    name?: string | null;
+    media: string | Media;
+    id?: string | null;
+  }[];
+  /**
+   * Force images to this ratio, or use natural dimensions
+   */
+  aspectRatio?: ('auto' | '1/1' | '3/2' | '16/9' | '2/3') | null;
+  /**
+   * Number of columns (responsive on smaller screens)
+   */
+  columns?: ('1' | '2' | '3' | '4') | null;
+  /**
+   * Gap between images
+   */
+  spacing?: ('compact' | 'normal' | 'large') | null;
+  /**
+   * Allow clicking images to view full-size
+   */
+  enableLightbox?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageGridBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
