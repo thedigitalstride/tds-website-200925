@@ -69,8 +69,9 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   const isFullWidth = cardCount === 1 || columnsValue === '1'
   const gridClasses = isFullWidth ? 'grid-cols-1' : cn('grid-cols-1', columnClasses[columnsValue])
 
-  // Smart grid height: Only use equal heights for multi-column layouts
-  const gridHeightClass = isFullWidth ? '' : 'auto-rows-fr'
+  // Grid height: Let CSS Grid's default stretch behavior equalize heights within each row
+  // (Removed auto-rows-fr which forced ALL rows to same height)
+  const gridHeightClass = ''
 
   // Header alignment
   const headerAlignment = header?.headerAlignment || 'left'
