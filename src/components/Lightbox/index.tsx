@@ -121,7 +121,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
               'absolute top-4 right-4 z-10',
               'flex items-center justify-center',
               'size-10 rounded-full',
-              'bg-black/50 hover:bg-black/70',
+              'bg-accent-500 hover:bg-accent-600',
               'text-white transition-colors',
               'cursor-pointer',
               'focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black',
@@ -177,11 +177,14 @@ export const Lightbox: React.FC<LightboxProps> = ({
           {/* Image container */}
           <div
             className="relative w-full h-full flex items-center justify-center p-4"
+            onClick={onClose}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            <LightboxImage image={currentImage} isActive={true} className="max-w-full max-h-full" />
+            <div onClick={(e) => e.stopPropagation()}>
+              <LightboxImage image={currentImage} isActive={true} className="max-w-full max-h-full" />
+            </div>
           </div>
         </motion.div>
       )}
