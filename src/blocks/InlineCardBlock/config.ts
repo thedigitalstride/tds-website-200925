@@ -156,6 +156,15 @@ export const InlineCardBlock: Block = {
             description: 'Shape of the icon container',
           },
         },
+        {
+          name: 'enableAnimation',
+          type: 'checkbox',
+          defaultValue: true,
+          label: 'Enable Entrance Animation',
+          admin: {
+            description: 'Card animates in with a fade and slide effect when scrolled into view',
+          },
+        },
       ],
     },
   ],

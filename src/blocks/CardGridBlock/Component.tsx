@@ -1,12 +1,36 @@
 'use client'
 
-import React from 'react'
+import React, { useRef } from 'react'
+import { motion, useInView, useReducedMotion } from 'motion/react'
 import type { CardGridBlock as CardGridBlockProps } from '@/payload-types'
 import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
 import type { BackgroundVariant } from '@/utilities/backgroundVariants'
 import { InlineCard } from '@/components/cards/InlineCard'
 import { SectionHeader } from '@/components/SectionHeader'
+
+// Staggered animation variants
+const containerVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2, // 200ms gap between cards
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 32 }, // 2rem = 32px (slide up from below)
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
+    },
+  },
+}
 
 interface ExtendedCardGridBlockProps extends Omit<CardGridBlockProps, 'cardBackground' | 'iconColor' | 'gridSpacing'> {
   cardBackground?: 'none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline' | 'line'
@@ -26,7 +50,16 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
   spacing,
   gridSpacing,
   disableInnerContainer,
+  enableAnimation = true,
 }) => {
+  // Animation hooks
+  const containerRef = useRef<HTMLUListElement>(null)
+  const isInView = useInView(containerRef, { once: true, margin: '-50px' })
+  const prefersReducedMotion = useReducedMotion()
+
+  // Determine if animation should be active
+  const shouldAnimate = enableAnimation && !prefersReducedMotion
+
   // Extract values from collapsible fields (stored at root level)
   const spacingValue = spacing || 'normal'
   const cardLayout = cardStyle || 'card'
@@ -91,7 +124,13 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
 
       {/* Cards Grid */}
       <div className={cn(header?.showHeader && 'mt-12 md:mt-16')}>
-        <ul className={cn('grid w-full', gridHeightClass, finalGridGap, gridClasses)}>
+        <motion.ul
+          ref={containerRef}
+          className={cn('grid w-full', gridHeightClass, finalGridGap, gridClasses)}
+          variants={shouldAnimate ? containerVariants : undefined}
+          initial={shouldAnimate ? 'hidden' : 'visible'}
+          animate={isInView ? 'visible' : 'hidden'}
+        >
           {cards?.map((card, index) => {
             const iconData = typeof card.icon === 'object' ? card.icon : null
             const hasIcon = !!iconData?.svgCode
@@ -124,7 +163,11 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
               ) : undefined
 
             return (
-              <li key={index} className="flex w-full">
+              <motion.li
+                key={index}
+                className="flex w-full"
+                variants={shouldAnimate ? itemVariants : undefined}
+              >
                 <InlineCard
                   svgCode={hasIcon ? iconData?.svgCode : undefined}
                   content={card.content || undefined}
@@ -134,10 +177,10 @@ export const CardGridBlock: React.FC<ExtendedCardGridBlockProps> = ({
                   iconColor={iconColorValue}
                   iconTheme={iconShape}
                 />
-              </li>
+              </motion.li>
             )
           })}
-        </ul>
+        </motion.ul>
       </div>
     </>
   )

@@ -1,9 +1,25 @@
-import React from 'react'
+'use client'
+
+import React, { useRef } from 'react'
+import { motion, useInView, useReducedMotion } from 'motion/react'
 import type { InlineCardBlock as InlineCardBlockProps } from '@/payload-types'
 import { InlineCard } from '@/components/cards/InlineCard'
 import { UUIButton } from '@/components/payload-ui'
 import { cn } from '@/utilities/ui'
 import type { BackgroundVariant } from '@/utilities/backgroundVariants'
+
+// Animation variants (single card - no stagger needed)
+const itemVariants = {
+  hidden: { opacity: 0, y: 32 }, // 2rem = 32px (slide up from below)
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
+    },
+  },
+}
 
 export const InlineCardBlock: React.FC<InlineCardBlockProps> = ({
   icon,
@@ -14,7 +30,16 @@ export const InlineCardBlock: React.FC<InlineCardBlockProps> = ({
   cardBackground,
   iconColor,
   iconTheme,
+  enableAnimation = true,
 }) => {
+  // Animation hooks
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { once: true, margin: '-50px' })
+  const prefersReducedMotion = useReducedMotion()
+
+  // Determine if animation should be active
+  const shouldAnimate = enableAnimation && !prefersReducedMotion
+
   const iconData = typeof icon === 'object' ? icon : null
   const hasIcon = !!iconData?.svgCode
 
@@ -51,15 +76,22 @@ export const InlineCardBlock: React.FC<InlineCardBlockProps> = ({
     ) : undefined
 
   return (
-    <InlineCard
-      svgCode={hasIcon ? iconData?.svgCode : undefined}
-      content={content || undefined}
-      footer={footer}
-      cardStyle={cardLayout}
-      cardBackground={cardStyleValue}
-      iconColor={iconColorValue}
-      iconTheme={iconShape}
-    />
+    <motion.div
+      ref={containerRef}
+      variants={shouldAnimate ? itemVariants : undefined}
+      initial={shouldAnimate ? 'hidden' : 'visible'}
+      animate={isInView ? 'visible' : 'hidden'}
+    >
+      <InlineCard
+        svgCode={hasIcon ? iconData?.svgCode : undefined}
+        content={content || undefined}
+        footer={footer}
+        cardStyle={cardLayout}
+        cardBackground={cardStyleValue}
+        iconColor={iconColorValue}
+        iconTheme={iconShape}
+      />
+    </motion.div>
   )
 }
 

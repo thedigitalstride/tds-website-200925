@@ -283,6 +283,10 @@ export interface InlineCardBlock {
    * Shape of the icon container
    */
   iconTheme?: ('rounded-square' | 'round') | null;
+  /**
+   * Card animates in with a fade and slide effect when scrolled into view
+   */
+  enableAnimation?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'inlineCard';
@@ -1402,6 +1406,10 @@ export interface CardGridBlock {
    * Spacing between cards in the grid. Default automatically adjusts for centered-icon and elevated-box layouts.
    */
   gridSpacing?: ('default' | 'compact' | 'normal' | 'large' | 'xl') | null;
+  /**
+   * Cards animate in with a staggered fade and slide effect when scrolled into view
+   */
+  enableAnimation?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'cardGrid';
@@ -2626,6 +2634,7 @@ export interface CardGridBlockSelect<T extends boolean = true> {
   iconTheme?: T;
   spacing?: T;
   gridSpacing?: T;
+  enableAnimation?: T;
   id?: T;
   blockName?: T;
 }
