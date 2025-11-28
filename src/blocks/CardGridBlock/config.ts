@@ -276,6 +276,15 @@ export const CardGridBlock: Block = {
             description: 'Spacing between cards in the grid. Default automatically adjusts for centered-icon and elevated-box layouts.',
           },
         },
+        {
+          name: 'enableAnimation',
+          type: 'checkbox',
+          defaultValue: true,
+          label: 'Enable Entrance Animation',
+          admin: {
+            description: 'Cards animate in with a staggered fade and slide effect when scrolled into view',
+          },
+        },
       ],
     },
   ],
