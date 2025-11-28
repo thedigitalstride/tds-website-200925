@@ -58,6 +58,16 @@ export const HeroHeadingBlock: Block = {
         description: 'Configure how the hero section is displayed',
       },
       fields: [
+        {
+          name: 'enableAnimation',
+          type: 'checkbox',
+          label: 'Enable Entrance Animation',
+          defaultValue: true,
+          admin: {
+            description:
+              'Enable fade-in animation with staggered timing for headline, subtitle, and buttons',
+          },
+        },
         createHeroBackgroundVariantField({
           name: 'heroBackground',
           label: 'Background Style',

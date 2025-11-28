@@ -39,6 +39,23 @@ export const MediaBlock: React.FC<Props> = (props) => {
   // Use the new caption structure or fallback to media caption
   const blockCaption = caption || (media && typeof media === 'object' ? media.caption : null)
 
+  // Helper to check if caption has actual content
+  const hasCaptionContent = (cap: typeof blockCaption): boolean => {
+    if (!cap) return false
+    if (typeof cap === 'object' && 'text' in cap) {
+      const hasText = Boolean(cap.text && String(cap.text).trim())
+      const hasLink =
+        cap.link &&
+        typeof cap.link === 'object' &&
+        'url' in cap.link &&
+        'text' in cap.link &&
+        Boolean(cap.link.url) &&
+        Boolean(cap.link.text)
+      return hasText || Boolean(hasLink)
+    }
+    return false
+  }
+
   // Prepare lightbox image if lightbox is enabled
   const lightboxImage =
     enableLightbox && media && typeof media === 'object'
@@ -87,7 +104,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
         ) : (
           imageElement
         )}
-        {blockCaption && (
+        {hasCaptionContent(blockCaption) && (
           <figcaption
             className={cn(
               'mt-6',
@@ -97,7 +114,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
               captionClassName,
             )}
           >
-            {typeof blockCaption === 'object' && 'text' in blockCaption ? (
+            {blockCaption && typeof blockCaption === 'object' && 'text' in blockCaption ? (
               // New caption structure with optional link
               <div className="flex items-start gap-2">
                 <Link01 className="size-4 text-utility-gray-400 mt-0.5 shrink-0" />

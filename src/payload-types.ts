@@ -519,6 +519,10 @@ export interface HeroHeadingBlock {
    */
   subtitle?: string | null;
   /**
+   * Enable fade-in animation with staggered timing for headline, subtitle, and buttons
+   */
+  enableAnimation?: boolean | null;
+  /**
    * Background style for the contained layout
    */
   heroBackground?: ('none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline') | null;
@@ -2506,6 +2510,7 @@ export interface HeroHeadingBlockSelect<T extends boolean = true> {
   heroLayout?: T;
   headline?: T;
   subtitle?: T;
+  enableAnimation?: T;
   heroBackground?: T;
   headlineSize?: T;
   subheadingSize?: T;
