@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
+import { motion, useInView, useReducedMotion } from 'motion/react'
 import { cn } from '@/utilities/ui'
 import type { ImageGridBlock as ImageGridBlockProps, Media } from '@/payload-types'
 import { Lightbox } from '@/components/Lightbox'
@@ -48,6 +49,29 @@ const getFocalPointStyle = (media: Media): React.CSSProperties => {
   return { objectPosition: `${focalX}% ${focalY}%` }
 }
 
+// Staggered animation variants
+const containerVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2, // 200ms gap between images
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 32 }, // 2rem = 32px (slide up from below)
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number], // Standard easing used in codebase
+    },
+  },
+}
+
 export const ImageGridBlock: React.FC<ImageGridBlockProps> = ({
   images,
   aspectRatio = 'auto',
@@ -57,6 +81,11 @@ export const ImageGridBlock: React.FC<ImageGridBlockProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [initialIndex, setInitialIndex] = useState(0)
+
+  // Animation hooks
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { once: true, margin: '-50px' })
+  const prefersReducedMotion = useReducedMotion()
 
   // Filter valid images
   const validImages = (images || [])
@@ -91,7 +120,13 @@ export const ImageGridBlock: React.FC<ImageGridBlockProps> = ({
 
   return (
     <div className="my-6">
-      <div className={gridClasses}>
+      <motion.div
+        ref={containerRef}
+        className={gridClasses}
+        variants={prefersReducedMotion ? undefined : containerVariants}
+        initial={prefersReducedMotion ? 'visible' : 'hidden'}
+        animate={isInView ? 'visible' : 'hidden'}
+      >
         {validImages.map((item, index) => {
           const { media } = item
           const imageAlt = media.alt || item.name || `Image ${index + 1}`
@@ -116,7 +151,7 @@ export const ImageGridBlock: React.FC<ImageGridBlockProps> = ({
                 resource={media}
                 alt={imageAlt}
                 fill
-                className="object-cover [object-position:var(--focal-position,center)]"
+                className="object-cover object-(--focal-position,center)"
                 sizes={sizesAttr}
               />
             </div>
@@ -132,24 +167,29 @@ export const ImageGridBlock: React.FC<ImageGridBlockProps> = ({
           // Wrap in button if lightbox enabled
           if (enableLightbox) {
             return (
-              <button
-                key={item.id}
-                onClick={() => handleImageClick(index)}
-                className={cn(
-                  'w-full text-left cursor-pointer transition-opacity hover:opacity-90',
-                  'focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-lg',
-                )}
-                aria-label={`View ${imageAlt} in lightbox`}
-              >
-                {imageContent}
-              </button>
+              <motion.div key={item.id} variants={prefersReducedMotion ? undefined : itemVariants}>
+                <button
+                  onClick={() => handleImageClick(index)}
+                  className={cn(
+                    'w-full text-left cursor-pointer transition-opacity hover:opacity-90',
+                    'focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-lg',
+                  )}
+                  aria-label={`View ${imageAlt} in lightbox`}
+                >
+                  {imageContent}
+                </button>
+              </motion.div>
             )
           }
 
           // No lightbox - render image directly with key
-          return <div key={item.id}>{imageContent}</div>
+          return (
+            <motion.div key={item.id} variants={prefersReducedMotion ? undefined : itemVariants}>
+              {imageContent}
+            </motion.div>
+          )
         })}
-      </div>
+      </motion.div>
 
       {enableLightbox && (
         <Lightbox
