@@ -1,5 +1,6 @@
 'use client'
 import React from 'react'
+import { motion, useReducedMotion, type Variants } from 'motion/react'
 import type { HeroHeadingBlock as HeroHeadingBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import { OptimizedImage } from '@/components/OptimizedImage'
@@ -7,6 +8,29 @@ import type { Media } from '@/payload-types'
 import { UUIButton } from '@/components/payload-ui/UUIButton'
 import { HeroSplitImageMask } from '@/components/HeroSplitImageMask'
 import { getBackgroundClasses, type BackgroundVariant } from '@/utilities/backgroundVariants'
+
+// Animation variants for staggered entrance animation
+const containerVariants: Variants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+}
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
+    },
+  },
+}
 
 export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
   const {
@@ -24,6 +48,11 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
     buttons,
   } = props
   const subheadingColor = props.subheadingColor
+  const enableAnimation = props.enableAnimation ?? true
+
+  // Animation state - respects user's reduced motion preference
+  const prefersReducedMotion = useReducedMotion()
+  const shouldAnimate = enableAnimation && !prefersReducedMotion
 
   // Use defaults for any undefined values
   const finalTextAlignment = textAlignment ?? 'left'
@@ -144,9 +173,14 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                 {/* Content Grid - sits ABOVE mask */}
                 <div className="relative z-20 lg:grid lg:grid-cols-[3fr_1fr] lg:items-start">
                   {/* Content Column - aligned to top for more button space */}
-                  <div className="flex flex-col justify-start py-8 px-6 lg:py-24 lg:px-12">
+                  <motion.div
+                    className="flex flex-col justify-start py-8 px-6 lg:py-24 lg:px-12"
+                    variants={containerVariants}
+                    initial={shouldAnimate ? 'hidden' : 'visible'}
+                    animate="visible"
+                  >
                     {/* Headline - Display 2XL or 4XL based on selection */}
-                    <h1
+                    <motion.h1
                       className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
                       style={{
                         whiteSpace: 'pre-wrap',
@@ -156,12 +190,13 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                         letterSpacing: headlineSizeVars.letterSpacing,
                         fontWeight: '700',
                       }}
+                      variants={itemVariants}
                     >
                       {headline}
-                    </h1>
+                    </motion.h1>
                     {/* Mobile Image - appears between headline and subtitle */}
                     {hasSplitImage && (
-                      <div className="relative -mx-6 my-8 h-64 lg:hidden">
+                      <motion.div className="relative -mx-6 my-8 h-64 lg:hidden" variants={itemVariants}>
                         <OptimizedImage
                           resource={splitImage as Media}
                           alt={(splitImage as Media)?.alt || ''}
@@ -170,12 +205,12 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                           className="object-cover"
                           sizes="100vw"
                         />
-                      </div>
+                      </motion.div>
                     )}
 
                     {/* Subtitle */}
                     {subtitle && (
-                      <h2
+                      <motion.h2
                         className={cn(
                           'mt-10 font-normal',
                           subheadingColorClasses[finalSubheadingColor],
@@ -185,14 +220,18 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                           fontSize: 'var(--text-display-md)',
                           lineHeight: '1.2',
                         }}
+                        variants={itemVariants}
                       >
                         {subtitle}
-                      </h2>
+                      </motion.h2>
                     )}
 
                     {/* Buttons */}
                     {buttons && buttons.length > 0 && (
-                      <div className="mt-8 flex flex-row flex-wrap justify-start gap-3 md:mt-12">
+                      <motion.div
+                        className="mt-8 flex flex-row flex-wrap justify-start gap-3 md:mt-12"
+                        variants={itemVariants}
+                      >
                         {buttons.map((button, index) => {
                           const { link } = button
                           return (
@@ -203,9 +242,9 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                             />
                           )
                         })}
-                      </div>
+                      </motion.div>
                     )}
-                  </div>
+                  </motion.div>
 
                   {/* Empty right column for spacing */}
                   <div className="hidden lg:block lg:min-h-96" />
@@ -214,9 +253,14 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
             ) : (
               // Full-width content (no image)
               <div className="py-16 px-6 lg:py-24 lg:px-12">
-                <div className="max-w-3xl">
+                <motion.div
+                  className="max-w-3xl"
+                  variants={containerVariants}
+                  initial={shouldAnimate ? 'hidden' : 'visible'}
+                  animate="visible"
+                >
                   {/* Headline - Display 2XL or 4XL based on selection */}
-                  <h1
+                  <motion.h1
                     className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
                     style={{
                       whiteSpace: 'pre-wrap',
@@ -226,13 +270,14 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                       letterSpacing: headlineSizeVars.letterSpacing,
                       fontWeight: '700',
                     }}
+                    variants={itemVariants}
                   >
                     {headline}
-                  </h1>
+                  </motion.h1>
 
                   {/* Subtitle */}
                   {subtitle && (
-                    <h2
+                    <motion.h2
                       className={cn(
                         'mt-10 font-normal',
                         subheadingColorClasses[finalSubheadingColor],
@@ -242,14 +287,18 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                         fontSize: 'var(--text-display-md)',
                         lineHeight: '1.2',
                       }}
+                      variants={itemVariants}
                     >
                       {subtitle}
-                    </h2>
+                    </motion.h2>
                   )}
 
                   {/* Buttons */}
                   {buttons && buttons.length > 0 && (
-                    <div className="mt-8 flex flex-row flex-wrap justify-start gap-3 md:mt-12">
+                    <motion.div
+                      className="mt-8 flex flex-row flex-wrap justify-start gap-3 md:mt-12"
+                      variants={itemVariants}
+                    >
                       {buttons.map((button, index) => {
                         const { link } = button
                         return (
@@ -260,9 +309,9 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                           />
                         )
                       })}
-                    </div>
+                    </motion.div>
                   )}
-                </div>
+                </motion.div>
               </div>
             )}
           </div>
@@ -283,14 +332,17 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
           <div className={cn('relative overflow-hidden rounded-xl', heroBgClasses)}>
             {/* Contained content - 85% width on desktop, alignment based on textAlignment setting */}
             <div className="py-16 px-6 lg:py-24 lg:px-12">
-              <div
+              <motion.div
                 className={cn(
                   'w-full lg:w-[85%]',
                   finalTextAlignment === 'center' ? 'mx-auto text-center' : 'text-left',
                 )}
+                variants={containerVariants}
+                initial={shouldAnimate ? 'hidden' : 'visible'}
+                animate="visible"
               >
                 {/* Headline - Display 2XL or 4XL based on selection */}
-                <h1
+                <motion.h1
                   className={cn('font-semibold', headlineColorClasses[finalHeadlineColor])}
                   style={{
                     whiteSpace: 'pre-wrap',
@@ -300,13 +352,14 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                     letterSpacing: headlineSizeVars.letterSpacing,
                     fontWeight: '700',
                   }}
+                  variants={itemVariants}
                 >
                   {headline}
-                </h1>
+                </motion.h1>
 
                 {/* Subtitle */}
                 {subtitle && (
-                  <h2
+                  <motion.h2
                     className={cn(
                       'mt-10 font-normal',
                       subheadingColorClasses[finalSubheadingColor],
@@ -316,18 +369,20 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                       fontSize: 'var(--text-display-md)',
                       lineHeight: '1.2',
                     }}
+                    variants={itemVariants}
                   >
                     {subtitle}
-                  </h2>
+                  </motion.h2>
                 )}
 
                 {/* Buttons */}
                 {buttons && buttons.length > 0 && (
-                  <div
+                  <motion.div
                     className={cn(
                       'mt-8 flex flex-row flex-wrap gap-3 md:mt-12',
                       finalTextAlignment === 'center' ? 'justify-center' : 'justify-start',
                     )}
+                    variants={itemVariants}
                   >
                     {buttons.map((button, index) => {
                       const { link } = button
@@ -339,9 +394,9 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
                         />
                       )
                     })}
-                  </div>
+                  </motion.div>
                 )}
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -466,8 +521,13 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
           bgEnabled && backgroundType === 'image' && 'pt-18 md:pt-20',
         )}
       >
-        <div className={cn('flex flex-col w-full', alignmentClasses[finalTextAlignment])}>
-          <h1
+        <motion.div
+          className={cn('flex flex-col w-full', alignmentClasses[finalTextAlignment])}
+          variants={containerVariants}
+          initial={shouldAnimate ? 'hidden' : 'visible'}
+          animate="visible"
+        >
+          <motion.h1
             className={cn('mt-4 font-semibold', headlineColorClasses[finalHeadlineColor])}
             style={{
               whiteSpace: 'pre-wrap',
@@ -477,15 +537,17 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
               letterSpacing: headlineSizeVars.letterSpacing,
               fontWeight: '700',
             }}
+            variants={itemVariants}
           >
             {headline}
-          </h1>
+          </motion.h1>
           {subtitle && (
-            <div
+            <motion.div
               className={cn(
                 'max-w-full lg:max-w-[85%]',
                 finalTextAlignment === 'center' && 'mx-auto',
               )}
+              variants={itemVariants}
             >
               <h2
                 className={cn('mt-10 font-normal', subheadingColorClasses[finalSubheadingColor])}
@@ -497,9 +559,9 @@ export const HeroHeadingBlock: React.FC<HeroHeadingBlockProps> = (props) => {
               >
                 {subtitle}
               </h2>
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
