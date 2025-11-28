@@ -84,6 +84,15 @@ export const LightboxBlock: Block = {
         description: 'Allow users to click images to open in full-screen lightbox',
       },
     },
+    {
+      name: 'enableAnimation',
+      type: 'checkbox',
+      defaultValue: true,
+      label: 'Enable Entrance Animation',
+      admin: {
+        description: 'Images animate in with a staggered fade and slide effect when scrolled into view',
+      },
+    },
   ],
   labels: {
     singular: 'Lightbox Gallery',

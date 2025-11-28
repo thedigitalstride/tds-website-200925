@@ -1,10 +1,34 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
+import { motion, useInView, useReducedMotion } from 'motion/react'
 import { cn } from '@/utilities/ui'
 import type { LightboxBlock as LightboxBlockProps } from '@/payload-types'
 import { Lightbox } from '@/components/Lightbox'
 import { OptimizedImage } from '@/components/OptimizedImage'
+
+// Staggered animation variants
+const containerVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2, // 200ms gap between images
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 32 }, // 2rem = 32px (slide up from below)
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
+    },
+  },
+}
 
 interface ExtendedLightboxBlockProps extends LightboxBlockProps {
   disableInnerContainer?: boolean
@@ -16,11 +40,20 @@ export const LightboxBlock: React.FC<ExtendedLightboxBlockProps> = ({
   thumbnailColumns = '3',
   thumbnailSpacing = 'normal',
   enableLightbox = true,
+  enableAnimation = true,
   disableInnerContainer,
   disableSpacing,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [initialIndex, setInitialIndex] = useState(0)
+
+  // Animation hooks
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { once: true, margin: '-50px' })
+  const prefersReducedMotion = useReducedMotion()
+
+  // Determine if animation should be active
+  const shouldAnimate = enableAnimation && !prefersReducedMotion
 
   if (!images || images.length === 0) {
     return null
@@ -68,7 +101,13 @@ export const LightboxBlock: React.FC<ExtendedLightboxBlockProps> = ({
   )
 
   const content = (
-    <div className={gridClasses}>
+    <motion.div
+      ref={containerRef}
+      className={gridClasses}
+      variants={shouldAnimate ? containerVariants : undefined}
+      initial={shouldAnimate ? 'hidden' : 'visible'}
+      animate={isInView ? 'visible' : 'hidden'}
+    >
       {lightboxImages.map((item, index) => {
         const media = item.media
         if (!media || typeof media !== 'object') return null
@@ -89,7 +128,11 @@ export const LightboxBlock: React.FC<ExtendedLightboxBlockProps> = ({
         )
 
         return (
-          <div key={item.id} className="relative group">
+          <motion.div
+            key={item.id}
+            className="relative group"
+            variants={shouldAnimate ? itemVariants : undefined}
+          >
             {enableLightbox ? (
               <button
                 onClick={() => handleImageClick(index)}
@@ -104,10 +147,10 @@ export const LightboxBlock: React.FC<ExtendedLightboxBlockProps> = ({
             {item.caption && (
               <figcaption className="mt-2 text-sm text-tertiary">{item.caption}</figcaption>
             )}
-          </div>
+          </motion.div>
         )
       })}
-    </div>
+    </motion.div>
   )
 
   if (disableInnerContainer) {
@@ -127,8 +170,8 @@ export const LightboxBlock: React.FC<ExtendedLightboxBlockProps> = ({
   }
 
   return (
-    <section className={cn(!disableSpacing && 'py-16 lg:py-24')}>
-      <div className="mx-auto max-w-container px-4 md:px-8">{content}</div>
+    <section>
+      <div className="mx-auto max-w-container">{content}</div>
       {enableLightbox && (
         <Lightbox
           images={lightboxImages}

@@ -1501,6 +1501,10 @@ export interface LightboxBlock {
    * Allow users to click images to open in full-screen lightbox
    */
   enableLightbox?: boolean | null;
+  /**
+   * Images animate in with a staggered fade and slide effect when scrolled into view
+   */
+  enableAnimation?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'lightboxBlock';
