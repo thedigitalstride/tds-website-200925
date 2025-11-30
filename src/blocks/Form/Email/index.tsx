@@ -15,7 +15,13 @@ export const Email: React.FC<
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
   const hasError = !!errors[name]
-  const { ref, onChange, onBlur, name: fieldName } = register(name, { pattern: /^\S[^\s@]*@\S+$/, required })
+  const { ref, onChange, onBlur, name: fieldName } = register(name, {
+    required: required ? 'This field is required' : false,
+    pattern: {
+      value: /^\S[^\s@]*@\S+$/,
+      message: 'Please enter a valid email address',
+    },
+  })
 
   return (
     <Width width={width}>
@@ -35,6 +41,7 @@ export const Email: React.FC<
           onChange({ target: { value, name: fieldName }, type: 'change' })
         }}
         onBlur={onBlur}
+        autoComplete="email"
       />
       {hasError && <Error name={name} />}
     </Width>

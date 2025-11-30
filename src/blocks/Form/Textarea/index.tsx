@@ -15,7 +15,9 @@ export const Textarea: React.FC<
   }
 > = ({ name, defaultValue, errors, label, register, required, rows = 3, width }) => {
   const hasError = !!errors[name]
-  const { ref, onChange, onBlur, name: fieldName } = register(name, { required: required })
+  const { ref, onChange, onBlur, name: fieldName } = register(name, {
+    required: required ? 'This field is required' : false,
+  })
 
   return (
     <Width width={width}>

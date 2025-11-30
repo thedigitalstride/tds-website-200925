@@ -24,11 +24,11 @@ export const Label = ({ isRequired, tooltip, tooltipDescription, className, ...p
             // <Input label="Visible only on mobile" className="lg:label:hidden" />
             data-label="true"
             {...props}
-            className={cx("flex cursor-default items-center gap-0.5 text-sm font-medium text-secondary", className)}
+            className={cx("flex cursor-default items-center gap-0.5 text-sm font-medium text-gray-700 dark:text-white", className)}
         >
             {props.children}
 
-            <span className={cx("hidden text-brand-tertiary", isRequired && "block", typeof isRequired === "undefined" && "group-required:block")}>*</span>
+            <span className={cx("hidden text-[rgb(217_45_32)]", isRequired && "block", typeof isRequired === "undefined" && "group-required:block")}>*</span>
 
             {tooltip && (
                 <Tooltip title={tooltip} description={tooltipDescription} placement="top">
@@ -37,7 +37,7 @@ export const Label = ({ isRequired, tooltip, tooltipDescription, className, ...p
                         // but we don't that. We want the tooltip be enabled even if the parent
                         // field is disabled.
                         isDisabled={false}
-                        className="cursor-pointer text-fg-quaternary transition duration-200 hover:text-fg-quaternary_hover focus:text-fg-quaternary_hover"
+                        className="cursor-pointer text-gray-400 transition duration-200 hover:text-gray-500 focus:text-gray-500"
                     >
                         <HelpCircle className="size-4" />
                     </TooltipTrigger>

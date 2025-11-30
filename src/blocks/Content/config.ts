@@ -55,7 +55,7 @@ const columnFields: Field[] = [
     type: 'blocks',
     label: 'Column Content',
     required: false,
-    blockReferences: ['richText', 'inlineCard', 'mediaBlock', 'spacer', 'lightboxBlock'] as any,
+    blockReferences: ['richText', 'inlineCard', 'mediaBlock', 'spacer', 'lightboxBlock', 'formBlock'] as any,
     blocks: [], // Required to be empty when using blockReferences
     admin: {
       description: 'Add content blocks to this column (rich text, cards, images, spacers, etc.)',

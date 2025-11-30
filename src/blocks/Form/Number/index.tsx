@@ -14,7 +14,9 @@ export const Number: React.FC<
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
   const hasError = !!errors[name]
-  const { ref, onChange, onBlur, name: fieldName } = register(name, { required })
+  const { ref, onChange, onBlur, name: fieldName } = register(name, {
+    required: required ? 'This field is required' : false,
+  })
 
   return (
     <Width width={width}>

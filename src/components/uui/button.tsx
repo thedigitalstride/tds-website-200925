@@ -238,12 +238,31 @@ export const Button = ({
       ...(disabled ? { 'data-rac': true, 'data-disabled': true } : {}),
     }
   } else {
+    const buttonType = (otherProps as any).type || 'button'
+    const existingOnPress = (otherProps as any).onPress
     props = {
       ...otherProps,
 
-      type: otherProps.type || 'button',
+      type: buttonType,
       isPending: loading,
       isDisabled: disabled,
+      onPress: (e: any) => {
+        // Call existing onPress if it exists
+        if (existingOnPress) {
+          existingOnPress(e)
+        }
+        // For submit buttons, manually trigger form submission
+        if (buttonType === 'submit') {
+          const form = (otherProps as any).form 
+            ? document.getElementById((otherProps as any).form) as HTMLFormElement
+            : (e.target as HTMLElement).closest('form')
+          if (form) {
+            // Create and dispatch a submit event that React can catch
+            const submitEvent = new Event('submit', { bubbles: true, cancelable: true })
+            form.dispatchEvent(submitEvent)
+          }
+        }
+      },
     }
   }
 

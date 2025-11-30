@@ -43,6 +43,7 @@ interface SelectValueProps {
     size: "sm" | "md";
     isFocused: boolean;
     isDisabled: boolean;
+    isInvalid: boolean;
     placeholder?: string;
     ref?: Ref<HTMLButtonElement>;
     placeholderIcon?: FC | ReactNode;
@@ -53,14 +54,17 @@ export const sizes = {
     md: { root: "py-2.5 px-3.5", shortcut: "pr-3" },
 };
 
-const SelectValue = ({ isOpen, isFocused, isDisabled, size, placeholder, placeholderIcon, ref }: SelectValueProps) => {
+const SelectValue = ({ isOpen, isFocused, isDisabled, isInvalid, size, placeholder, placeholderIcon, ref }: SelectValueProps) => {
     return (
         <AriaButton
             ref={ref}
             className={cx(
-                "relative flex w-full cursor-pointer items-center rounded-lg bg-white shadow-xs ring-1 ring-gray-300 outline-hidden transition duration-100 ease-linear ring-inset",
-                (isFocused || isOpen) && "ring-2 ring-brand",
-                isDisabled && "cursor-not-allowed bg-disabled_subtle text-disabled",
+                "relative flex w-full cursor-pointer items-center rounded-lg bg-white shadow-xs ring-2 ring-gray-300 dark:ring-white outline-hidden transition duration-100 ease-linear ring-inset",
+                // Focus/open state (only when not invalid)
+                (isFocused || isOpen) && !isInvalid && "ring-accent dark:ring-accent",
+                isDisabled && "cursor-not-allowed bg-gray-300 text-disabled ring-gray-700 dark:ring-gray-700",
+                // Invalid state (always show error ring, even when focused/open)
+                isInvalid && "bg-error-100 ring-error-500 dark:ring-error-500",
             )}
         >
             <AriaSelectValue<SelectItemType>
@@ -87,16 +91,16 @@ const SelectValue = ({ isOpen, isFocused, isDisabled, size, placeholder, placeho
 
                             {state.selectedItem ? (
                                 <section className="flex w-full gap-2 truncate">
-                                    <p className="truncate text-md font-medium text-gray-900">{state.selectedItem?.label}</p>
-                                    {state.selectedItem?.supportingText && <p className="text-md text-tertiary">{state.selectedItem?.supportingText}</p>}
+                                    <p className="truncate text-md font-medium text-gray-900 dark:text-gray-900">{state.selectedItem?.label}</p>
+                                    {state.selectedItem?.supportingText && <p className="text-md text-gray-500 dark:text-gray-500">{state.selectedItem?.supportingText}</p>}
                                 </section>
                             ) : (
-                                <p className={cx("text-md text-placeholder", isDisabled && "text-disabled")}>{placeholder}</p>
+                                <p className={cx("text-md text-gray-500 dark:text-gray-500", isDisabled && "text-disabled")}>{placeholder}</p>
                             )}
 
                             <ChevronDown
                                 aria-hidden="true"
-                                className={cx("ml-auto shrink-0 text-fg-quaternary", size === "sm" ? "size-4 stroke-[2.5px]" : "size-5")}
+                                className={cx("ml-auto shrink-0 text-gray-500 dark:text-gray-500", size === "sm" ? "size-4 stroke-[2.5px]" : "size-5")}
                             />
                         </>
                     );

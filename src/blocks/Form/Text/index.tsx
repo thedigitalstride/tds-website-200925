@@ -14,7 +14,9 @@ export const Text: React.FC<
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
   const hasError = !!errors[name]
-  const { ref, onChange, onBlur, name: fieldName } = register(name, { required })
+  const { ref, onChange, onBlur, name: fieldName } = register(name, {
+    required: required ? 'This field is required' : false,
+  })
 
   return (
     <Width width={width}>
@@ -33,6 +35,7 @@ export const Text: React.FC<
           onChange({ target: { value, name: fieldName }, type: 'change' })
         }}
         onBlur={onBlur}
+        autoComplete="name"
       />
       {hasError && <Error name={name} />}
     </Width>
