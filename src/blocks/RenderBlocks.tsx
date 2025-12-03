@@ -1,6 +1,10 @@
 import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
+import type { getTextColorClasses } from '@/utilities/backgroundVariants'
+
+// Type for text color context passed from styled columns
+export type TextColorContext = ReturnType<typeof getTextColorClasses> | null
 
 import { AccordionBlock } from '@/blocks/AccordionBlock/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
@@ -19,6 +23,7 @@ import { InlineCardBlock } from '@/blocks/InlineCardBlock/Component'
 import { SpacerBlock } from '@/blocks/SpacerBlock/Component'
 import { TestimonialsBlock } from '@/blocks/TestimonialsBlock/Component'
 import { LightboxBlock } from '@/blocks/LightboxBlock/Component'
+import { GoogleMapBlock } from '@/blocks/GoogleMapBlock/Component'
 
 const blockComponents = {
   accordion: AccordionBlock,
@@ -38,6 +43,7 @@ const blockComponents = {
   spacer: SpacerBlock,
   testimonials: TestimonialsBlock,
   lightboxBlock: LightboxBlock,
+  googleMap: GoogleMapBlock,
 }
 
 type BreadcrumbItem = NonNullable<Page['breadcrumbs']>[number]
@@ -47,8 +53,9 @@ export const RenderBlocks: React.FC<{
   blocks: (LayoutBlock | any)[]
   breadcrumbs?: BreadcrumbItem[] | null
   disableInnerContainer?: boolean
+  textColorContext?: TextColorContext
 }> = (props) => {
-  const { blocks, breadcrumbs, disableInnerContainer } = props
+  const { blocks, breadcrumbs, disableInnerContainer, textColorContext } = props
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
@@ -64,10 +71,11 @@ export const RenderBlocks: React.FC<{
             if (Block) {
               return (
                 <Block
-                  key={index}
+                  key={(block as any).id || `${blockType}-${index}`}
                   {...block}
                   breadcrumbs={breadcrumbs}
                   {...(disableInnerContainer && { disableInnerContainer })}
+                  {...(textColorContext && { textColorContext })}
                 />
               )
             }

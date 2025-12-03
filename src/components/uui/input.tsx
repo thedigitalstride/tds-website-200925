@@ -257,7 +257,7 @@ export const Input = ({
 }: InputProps) => {
   return (
     <TextField aria-label={!label ? placeholder : undefined} {...props} className={className}>
-      {({ isRequired, isInvalid }) => (
+      {({ isRequired, isInvalid, isDisabled }) => (
         <>
           {label && (
             <Label isRequired={hideRequiredIndicator ? !hideRequiredIndicator : isRequired}>
@@ -279,6 +279,8 @@ export const Input = ({
               wrapperClassName,
               tooltipClassName,
               tooltip,
+              isInvalid,
+              isDisabled,
             }}
           />
 

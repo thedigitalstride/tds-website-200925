@@ -26,12 +26,12 @@ export const Select: React.FC<
     <Width width={width}>
       <Controller
         control={control}
-        defaultValue={defaultValue || null}
+        defaultValue={defaultValue ?? null}
         name={name}
         render={({ field: { onChange, value } }) => {
           // Use null (not undefined) for "no selection" to keep component consistently controlled
           // In React Aria: undefined = uncontrolled, null = controlled with no selection
-          const selectedKey = value && value !== '' ? value : null
+          const selectedKey = value != null && value !== '' ? value : null
           return (
             <SelectComponent
               label={label}

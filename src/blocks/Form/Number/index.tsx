@@ -31,8 +31,17 @@ export const Number: React.FC<
         size="md"
         placeholder={label || 'Enter number'}
         ref={ref}
-        onChange={(value) => {
-          onChange({ target: { value, name: fieldName }, type: 'change' })
+        onChange={(valueOrEvent: string | React.ChangeEvent<HTMLInputElement>) => {
+          // React Aria may pass either a string or an event object
+          // Extract the actual value in both cases
+          const actualValue = typeof valueOrEvent === 'string' 
+            ? valueOrEvent 
+            : (valueOrEvent?.target?.value ?? valueOrEvent?.currentTarget?.value ?? '')
+          
+          // react-hook-form register expects an event with target.value
+          onChange({
+            target: { value: actualValue, name: fieldName },
+          } as React.ChangeEvent<HTMLInputElement>)
         }}
         onBlur={onBlur}
       />

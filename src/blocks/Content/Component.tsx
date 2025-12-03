@@ -3,9 +3,30 @@ import React from 'react'
 
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+import {
+  getBackgroundClasses,
+  getTextColorClasses,
+  type BackgroundVariant,
+} from '@/utilities/backgroundVariants'
 
 interface ExtendedContentBlockProps extends Omit<ContentBlockProps, 'cardSpacing'> {
   cardSpacing?: 'default' | 'compact' | 'normal' | 'large' | 'xl'
+}
+
+// Column styling class mappings
+const paddingClasses: Record<string, string> = {
+  none: '',
+  sm: 'p-4',
+  md: 'p-6',
+  lg: 'p-8',
+}
+
+const roundedClasses: Record<string, string> = {
+  none: '',
+  sm: 'rounded-sm',
+  md: 'rounded-md',
+  lg: 'rounded-lg',
+  xl: 'rounded-xl',
 }
 
 export const ContentBlock: React.FC<ExtendedContentBlockProps> = (props) => {
@@ -119,13 +140,35 @@ export const ContentBlock: React.FC<ExtendedContentBlockProps> = (props) => {
             {columns &&
               columns.length > 0 &&
               columns.map((col, index) => {
-                const { layout, size, verticalAlign, sticky } = col
-                
+                const {
+                  layout,
+                  size,
+                  verticalAlign,
+                  sticky,
+                  columnBackground,
+                  columnPadding,
+                  columnRounded,
+                  columnShadow,
+                } = col
+
+                // Apply defaults (null values from CMS should use defaults)
+                const bgVariant = columnBackground ?? 'none'
+                const padding = columnPadding ?? 'none'
+                const rounded = columnRounded ?? 'xl'
+                const shadow = columnShadow ?? false
+
                 // Apply column start only to first column when aligning
                 const isFirstColumn = index === 0
-                const alignClasses = isFirstColumn
-                  ? cn(tabletClass, desktopClass)
+                const alignClasses = isFirstColumn ? cn(tabletClass, desktopClass) : ''
+
+                // Compute column styling classes
+                const hasBackground = bgVariant !== 'none'
+                const bgClasses = hasBackground
+                  ? getBackgroundClasses(bgVariant as BackgroundVariant)
                   : ''
+                const textColorContext = hasBackground
+                  ? getTextColorClasses(bgVariant as BackgroundVariant)
+                  : null
 
                 return (
                   <div
@@ -137,10 +180,17 @@ export const ContentBlock: React.FC<ExtendedContentBlockProps> = (props) => {
                       alignClasses,
                       // Sticky positioning (tablet and desktop, not mobile)
                       sticky && 'md:sticky md:top-24 md:self-start',
+                      // Column styling classes
+                      hasBackground && bgClasses,
+                      hasBackground && paddingClasses[padding],
+                      hasBackground && bgVariant !== 'line' && roundedClasses[rounded],
+                      hasBackground && shadow && 'shadow-md',
                     )}
                     key={index}
                   >
-                    {layout && layout.length > 0 && <RenderBlocks blocks={layout} />}
+                    {layout && layout.length > 0 && (
+                      <RenderBlocks blocks={layout} textColorContext={textColorContext} disableInnerContainer />
+                    )}
                   </div>
                 )
               })}

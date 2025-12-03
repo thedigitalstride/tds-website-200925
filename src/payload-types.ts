@@ -72,6 +72,7 @@ export interface Config {
     spacer: SpacerBlock;
     lightboxBlock: LightboxBlock;
     formBlock: FormBlock;
+    googleMap: GoogleMapBlock;
   };
   collections: {
     pages: Page;
@@ -448,6 +449,7 @@ export interface Page {
         | LatestPostsBlock
         | TestimonialsBlock
         | AccordionBlock
+        | GoogleMapBlock
       )[]
     | null;
   /**
@@ -1441,7 +1443,27 @@ export interface ContentBlock {
         /**
          * Add content blocks to this column (rich text, cards, images, spacers, etc.)
          */
-        layout?: (RichTextBlock | InlineCardBlock | MediaBlock | SpacerBlock | LightboxBlock | FormBlock)[] | null;
+        layout?:
+          | (RichTextBlock | InlineCardBlock | MediaBlock | SpacerBlock | LightboxBlock | FormBlock | GoogleMapBlock)[]
+          | null;
+        /**
+         * Background style - affects nested text colors automatically
+         */
+        columnBackground?:
+          | ('none' | 'primary' | 'primary-reversed' | 'secondary' | 'tertiary' | 'accent' | 'outline' | 'line')
+          | null;
+        /**
+         * Internal padding when background is applied
+         */
+        columnPadding?: ('none' | 'sm' | 'md' | 'lg') | null;
+        /**
+         * Border radius (not available for line variant)
+         */
+        columnRounded?: ('none' | 'sm' | 'md' | 'lg' | 'xl') | null;
+        /**
+         * Add subtle shadow to column
+         */
+        columnShadow?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1697,6 +1719,39 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GoogleMapBlock".
+ */
+export interface GoogleMapBlock {
+  /**
+   * Latitude coordinate (e.g., 52.2925). To find coordinates: right-click on Google Maps → "What's here?"
+   */
+  latitude: number;
+  /**
+   * Longitude coordinate (e.g., -1.5376). To find coordinates: right-click on Google Maps → "What's here?"
+   */
+  longitude: number;
+  /**
+   * Map zoom level (1 = world view, 20 = building level). Default: 15
+   */
+  zoom?: number | null;
+  /**
+   * Optional tooltip text shown when hovering over the marker
+   */
+  markerTitle?: string | null;
+  /**
+   * Aspect ratio or custom height for the map container
+   */
+  aspectRatio?: ('16:9' | '4:3' | 'square' | 'custom') | null;
+  /**
+   * Custom height in pixels (200-1000px)
+   */
+  customHeight?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'googleMap';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2456,6 +2511,7 @@ export interface PagesSelect<T extends boolean = true> {
         latestPosts?: T | LatestPostsBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
         accordion?: T | AccordionBlockSelect<T>;
+        googleMap?: T | GoogleMapBlockSelect<T>;
       };
   seoKeywords?: T;
   seoGuidance?: T;
@@ -2644,6 +2700,10 @@ export interface ContentBlockSelect<T extends boolean = true> {
         verticalAlign?: T;
         sticky?: T;
         layout?: T | {};
+        columnBackground?: T;
+        columnPadding?: T;
+        columnRounded?: T;
+        columnShadow?: T;
         id?: T;
       };
   contentAlignment?: T;
@@ -2844,6 +2904,20 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
   rotationDelay?: T;
   cardBackground?: T;
   spacing?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GoogleMapBlock_select".
+ */
+export interface GoogleMapBlockSelect<T extends boolean = true> {
+  latitude?: T;
+  longitude?: T;
+  zoom?: T;
+  markerTitle?: T;
+  aspectRatio?: T;
+  customHeight?: T;
   id?: T;
   blockName?: T;
 }

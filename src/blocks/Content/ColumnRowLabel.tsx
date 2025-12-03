@@ -14,6 +14,7 @@ export const ColumnRowLabel: React.FC<RowLabelProps> = () => {
   const size = data.data.size || 'oneThird'
   const layout = data.data.layout
   const sticky = data.data.sticky
+  const columnBackground = data.data.columnBackground
 
   // Format size label
   const sizeLabels: Record<string, string> = {
@@ -54,6 +55,11 @@ export const ColumnRowLabel: React.FC<RowLabelProps> = () => {
       {sticky && (
         <span style={{ marginLeft: '8px', opacity: 0.8, fontWeight: 500 }}>
           [Sticky]
+        </span>
+      )}
+      {columnBackground && columnBackground !== 'none' && (
+        <span style={{ marginLeft: '8px', opacity: 0.8, fontWeight: 500 }}>
+          [Styled]
         </span>
       )}
       {preview && (
