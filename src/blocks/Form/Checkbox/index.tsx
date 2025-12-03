@@ -15,7 +15,9 @@ export const Checkbox: React.FC<
     register: UseFormRegister<FieldValues>
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
-  const props = register(name, { required: required })
+  const props = register(name, {
+    required: required ? 'This field is required' : false,
+  })
   const { setValue } = useFormContext()
   const hasError = !!errors[name]
 
@@ -25,7 +27,7 @@ export const Checkbox: React.FC<
         label={
           <>
             {label}
-            {required && <span className="text-brand-tertiary ml-1">*</span>}
+            {required && <span className="text-[rgb(217_45_32)] ml-1">*</span>}
           </>
         }
         defaultSelected={defaultValue}

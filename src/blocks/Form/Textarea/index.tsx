@@ -15,7 +15,9 @@ export const Textarea: React.FC<
   }
 > = ({ name, defaultValue, errors, label, register, required, rows = 3, width }) => {
   const hasError = !!errors[name]
-  const { ref, onChange, onBlur, name: fieldName } = register(name, { required: required })
+  const { ref, onChange, onBlur, name: fieldName } = register(name, {
+    required: required ? 'This field is required' : false,
+  })
 
   return (
     <Width width={width}>
@@ -29,8 +31,17 @@ export const Textarea: React.FC<
         isInvalid={hasError}
         placeholder={label || 'Enter text'}
         textAreaRef={ref}
-        onChange={(value) => {
-          onChange({ target: { value, name: fieldName }, type: 'change' })
+        onChange={(valueOrEvent: string | React.ChangeEvent<HTMLTextAreaElement>) => {
+          // React Aria may pass either a string or an event object
+          // Extract the actual value in both cases
+          const actualValue = typeof valueOrEvent === 'string' 
+            ? valueOrEvent 
+            : (valueOrEvent?.target?.value ?? valueOrEvent?.currentTarget?.value ?? '')
+          
+          // react-hook-form register expects an event with target.value
+          onChange({
+            target: { value: actualValue, name: fieldName },
+          } as React.ChangeEvent<HTMLTextAreaElement>)
         }}
         onBlur={onBlur}
       />

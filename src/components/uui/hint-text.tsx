@@ -18,11 +18,11 @@ export const HintText = ({ isInvalid, className, ...props }: HintTextProps) => {
             {...props}
             slot={isInvalid ? "errorMessage" : "description"}
             className={cx(
-                "text-sm text-tertiary",
+                "text-sm text-gray-600",
 
-                // Invalid state
-                isInvalid && "text-error-primary",
-                "group-invalid:text-error-primary",
+                // Invalid state - use explicit RGB to match light mode appearance in both modes
+                isInvalid && "text-[rgb(217_45_32)]",
+                "group-invalid:text-[rgb(217_45_32)]",
 
                 className,
             )}

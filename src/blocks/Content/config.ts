@@ -1,4 +1,5 @@
 import type { Block, Field } from 'payload'
+import { createBackgroundVariantField } from '@/utilities/backgroundVariants'
 
 const columnFields: Field[] = [
   {
@@ -55,11 +56,72 @@ const columnFields: Field[] = [
     type: 'blocks',
     label: 'Column Content',
     required: false,
-    blockReferences: ['richText', 'inlineCard', 'mediaBlock', 'spacer', 'lightboxBlock'] as any,
+    blockReferences: ['richText', 'inlineCard', 'mediaBlock', 'spacer', 'lightboxBlock', 'formBlock', 'googleMap'] as any,
     blocks: [], // Required to be empty when using blockReferences
     admin: {
       description: 'Add content blocks to this column (rich text, cards, images, spacers, etc.)',
     },
+  },
+  // Column Styling - collapsible group for visual customization
+  {
+    type: 'collapsible',
+    label: 'Column Styling',
+    admin: {
+      initCollapsed: true,
+      description: 'Optional visual styling for this column (background, padding, corners, shadow)',
+    },
+    fields: [
+      createBackgroundVariantField({
+        name: 'columnBackground',
+        label: 'Background',
+        defaultValue: 'none',
+        description: 'Background style - affects nested text colors automatically',
+      }),
+      {
+        name: 'columnPadding',
+        type: 'select',
+        label: 'Padding',
+        defaultValue: 'none',
+        options: [
+          { label: 'None', value: 'none' },
+          { label: 'Small (1rem)', value: 'sm' },
+          { label: 'Medium (1.5rem)', value: 'md' },
+          { label: 'Large (2rem)', value: 'lg' },
+        ],
+        admin: {
+          condition: (data, siblingData) => siblingData?.columnBackground !== 'none',
+          description: 'Internal padding when background is applied',
+        },
+      },
+      {
+        name: 'columnRounded',
+        type: 'select',
+        label: 'Corner Radius',
+        defaultValue: 'xl',
+        options: [
+          { label: 'None', value: 'none' },
+          { label: 'Small', value: 'sm' },
+          { label: 'Medium', value: 'md' },
+          { label: 'Large', value: 'lg' },
+          { label: 'XL', value: 'xl' },
+        ],
+        admin: {
+          condition: (data, siblingData) =>
+            siblingData?.columnBackground !== 'none' && siblingData?.columnBackground !== 'line',
+          description: 'Border radius (not available for line variant)',
+        },
+      },
+      {
+        name: 'columnShadow',
+        type: 'checkbox',
+        label: 'Add Shadow',
+        defaultValue: false,
+        admin: {
+          condition: (data, siblingData) => siblingData?.columnBackground !== 'none',
+          description: 'Add subtle shadow to column',
+        },
+      },
+    ],
   },
 ]
 

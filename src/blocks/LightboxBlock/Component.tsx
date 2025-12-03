@@ -32,7 +32,6 @@ const itemVariants = {
 
 interface ExtendedLightboxBlockProps extends LightboxBlockProps {
   disableInnerContainer?: boolean
-  disableSpacing?: boolean
 }
 
 export const LightboxBlock: React.FC<ExtendedLightboxBlockProps> = ({
@@ -42,7 +41,6 @@ export const LightboxBlock: React.FC<ExtendedLightboxBlockProps> = ({
   enableLightbox = true,
   enableAnimation = true,
   disableInnerContainer,
-  disableSpacing,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [initialIndex, setInitialIndex] = useState(0)

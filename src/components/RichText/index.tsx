@@ -1,5 +1,6 @@
 import { ImageGridBlock } from '@/blocks/ImageGridBlock/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { GoogleMapBlock } from '@/blocks/GoogleMapBlock/Component'
 import {
   DefaultNodeTypes,
   SerializedBlockNode,
@@ -27,6 +28,7 @@ import type {
   ImageGridBlock as ImageGridBlockProps,
   MediaBlock as MediaBlockProps,
   QuoteBlock as QuoteBlockProps,
+  GoogleMapBlock as GoogleMapBlockProps,
   Page,
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
@@ -45,6 +47,7 @@ type NodeTypes =
       | ButtonBlockProps
       | CodeBlockProps
       | QuoteBlockProps
+      | GoogleMapBlockProps
     >
   | SerializedUploadNode
 
@@ -113,6 +116,11 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
       code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
       cta: ({ node }) => <CallToActionBlock {...node.fields} />,
       quote: ({ node }) => <QuoteBlock className="col-start-2 mb-8" {...node.fields} />,
+      googleMap: ({ node }) => (
+        <div className="not-prose col-start-1 col-span-3 my-6">
+          <GoogleMapBlock {...node.fields} disableInnerContainer={true} />
+        </div>
+      ),
     },
   }
 }

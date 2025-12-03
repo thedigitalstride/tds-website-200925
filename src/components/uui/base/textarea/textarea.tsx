@@ -29,15 +29,16 @@ export const TextAreaBase = ({ className, ...props }: TextAreaBaseProps) => {
             }
             className={(state) =>
                 cx(
-                    "w-full scroll-py-3 rounded-lg bg-primary px-3.5 py-3 text-md text-primary shadow-xs ring-1 ring-primary transition duration-100 ease-linear ring-inset placeholder:text-placeholder autofill:rounded-lg autofill:text-primary focus:outline-hidden",
+                    "w-full scroll-py-3 rounded-lg bg-white px-3.5 py-3 text-md text-gray-900 dark:text-gray-900 shadow-xs ring-2 ring-gray-300 dark:ring-white transition duration-100 ease-linear ring-inset placeholder:text-gray-500 dark:placeholder:text-gray-500 autofill:rounded-lg autofill:text-gray-900 focus:outline-hidden",
 
                     // Resize handle
                     "[&::-webkit-resizer]:bg-(image:--resize-handle-bg) [&::-webkit-resizer]:bg-contain dark:[&::-webkit-resizer]:bg-(image:--resize-handle-bg-dark)",
 
-                    state.isFocused && !state.isDisabled && "ring-2 ring-brand",
-                    state.isDisabled && "cursor-not-allowed bg-disabled_subtle text-disabled ring-disabled",
-                    state.isInvalid && "ring-error_subtle",
-                    state.isInvalid && state.isFocused && "ring-2 ring-error",
+                    // Focus state (only when not invalid)
+                    state.isFocused && !state.isDisabled && !state.isInvalid && "ring-accent dark:ring-accent",
+                    state.isDisabled && "cursor-not-allowed bg-gray-300 text-disabled ring-gray-700 dark:ring-gray-700",
+                    // Invalid state (always show error ring, even when focused)
+                    state.isInvalid && "bg-error-100 ring-error-500 dark:ring-error-500",
 
                     typeof className === "function" ? className(state) : className,
                 )

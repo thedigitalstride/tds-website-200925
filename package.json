@@ -34,6 +34,7 @@
     "mongodb:pull": "node scripts/migrate-mongodb-to-local.js"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^2.0.2",
     "@lexical/react": "^0.35.0",
     "@lexical/rich-text": "^0.35.0",
     "@lexical/selection": "^0.35.0",

@@ -100,6 +100,28 @@
     --tw-ring-color: var(--color-border-disabled_subtle);
 }
 
+/* Ring utilities for focus states */
+@utility ring-accent {
+    --tw-ring-color: var(--color-accent-solid);
+}
+
+@utility ring-accent-solid {
+    --tw-ring-color: var(--color-accent-solid);
+}
+
+@utility ring-brand {
+    --tw-ring-color: var(--color-brand-500);
+}
+
+@utility ring-error-500 {
+    --tw-ring-color: var(--color-error-500);
+}
+
+/* Outline utilities for checkbox focus */
+@utility outline-accent {
+    outline-color: var(--color-accent-solid);
+}
+
 /* Foreground utilities (for icons) */
 @utility text-fg-quaternary {
     color: var(--color-fg-quaternary);
@@ -262,7 +284,7 @@ input[type="number"] {
 
 /* Hide the default clear button (X) from search inputs. */
 input[type="search"]::-webkit-search-cancel-button {
-    -webkit-appearance: none;
+  -webkit-appearance: none;
 }
 
 /* UUI Post Layout Prose Styles */

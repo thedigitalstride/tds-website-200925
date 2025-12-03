@@ -567,7 +567,7 @@
 }
 
 .dark-mode .prose.prose-compact h6 {
-  color: var(--color-accent-400) !important;
+  color: var(--color-accent-500) !important;
 }
 
 /* Remove extra margins for compact prose */

@@ -4,6 +4,15 @@ const twMerge = extendTailwindMerge({
     extend: {
         classGroups: {
             'font-size': ["display-xs", "display-sm", "display-md", "display-lg", "display-xl", "display-2xl"],
+            'ring-color': [
+                'ring-error-500',
+                'ring-accent',
+                'ring-accent-solid',
+                'ring-brand',
+                'ring-tertiary',
+                'ring-disabled_subtle',
+                'ring-outline',
+            ],
         },
     },
 });
