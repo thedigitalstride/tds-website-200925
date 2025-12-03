@@ -21,7 +21,8 @@ const buildDefaultValues = (formFields: FormFieldBlock[] | undefined): FieldValu
   formFields?.forEach((field) => {
     if ('name' in field && field.name) {
       const existingDefault = 'defaultValue' in field ? field.defaultValue : undefined
-      const blockType = 'blockType' in field ? field.blockType : undefined
+      // Cast to string to handle extended field types not in FormFieldBlock union
+      const blockType = ('blockType' in field ? field.blockType : undefined) as string | undefined
 
       // Handle different field types with appropriate default values
       switch (blockType) {
