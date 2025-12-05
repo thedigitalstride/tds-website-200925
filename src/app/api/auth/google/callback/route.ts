@@ -61,7 +61,6 @@ export async function GET(request: NextRequest) {
     // Validate email domain (server-side validation for defense in depth)
     const allowedDomain = 'thedigitalstride.co.uk'
     if (!googleUser.email.endsWith(`@${allowedDomain}`)) {
-      console.error('[OAuth Debug] Unauthorized domain:', googleUser.email)
       return NextResponse.redirect(
         new URL(`/admin/login?error=unauthorized_domain`, request.url)
       )
@@ -91,15 +90,9 @@ export async function GET(request: NextRequest) {
 
       // Retrieve the stored OAuth password
       userPassword = existingAccount.oauth_password as string
-      console.log('[OAuth Debug] Existing account found:', {
-        userId,
-        hasPassword: !!userPassword,
-        passwordLength: userPassword?.length || 0
-      })
 
       // If no password is stored (from previous failed attempts), regenerate it
       if (!userPassword) {
-        console.log('[OAuth Debug] Regenerating password for existing account')
         userPassword = crypto.randomBytes(32).toString('hex')
 
         // Update user password
@@ -181,11 +174,6 @@ export async function GET(request: NextRequest) {
       } else {
         // Create new user WITH random password for OAuth users
         userPassword = crypto.randomBytes(32).toString('hex')
-        console.log('[OAuth Debug] Creating new user:', {
-          email: googleUser.email,
-          passwordLength: userPassword.length,
-          passwordSample: userPassword.substring(0, 8) + '...'
-        })
 
         const newUser = await payload.create({
           collection: 'users',
@@ -203,10 +191,6 @@ export async function GET(request: NextRequest) {
         })
 
         userId = newUser.id
-        console.log('[OAuth Debug] New user created:', {
-          userId,
-          email: newUser.email
-        })
 
         // Create account record with the plain password for future logins
         await payload.create({
@@ -233,7 +217,6 @@ export async function GET(request: NextRequest) {
 
     // If we don't have a password, it's an error state
     if (!userPassword) {
-      console.error('[OAuth Debug] ERROR: No OAuth password found for user')
       return NextResponse.redirect(
         new URL('/admin/login?error=oauth_failed', request.url)
       )
@@ -246,12 +229,6 @@ export async function GET(request: NextRequest) {
       depth: 0,
     })
 
-    console.log('[OAuth Debug] Attempting Payload login:', {
-      email: user.email,
-      hasPassword: !!userPassword,
-      passwordLength: userPassword.length
-    })
-
     // Use Payload's login to create proper session
     const loginResult = await payload.login({
       collection: 'users',
@@ -261,16 +238,8 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    console.log('[OAuth Debug] Login successful:', {
-      hasToken: !!loginResult.token,
-      tokenLength: loginResult.token?.length || 0,
-      exp: loginResult.exp,
-      userId: loginResult.user?.id
-    })
-
     // Verify token exists
     if (!loginResult.token) {
-      console.error('[OAuth Debug] ERROR: No token returned from Payload login')
       return NextResponse.redirect(
         new URL('/admin/login?error=login_failed', request.url)
       )
@@ -284,13 +253,6 @@ export async function GET(request: NextRequest) {
     const isProduction = process.env.NODE_ENV === 'production'
     const maxAge = loginResult.exp ? (loginResult.exp - Math.floor(Date.now() / 1000)) : 7200
 
-    console.log('[OAuth Debug] Setting cookie:', {
-      cookieName: `${cookiePrefix}-token`,
-      maxAge,
-      isProduction,
-      path: '/',
-    })
-
     response.cookies.set(`${cookiePrefix}-token`, loginResult.token, {
       httpOnly: true,
       secure: isProduction,
@@ -302,7 +264,6 @@ export async function GET(request: NextRequest) {
     // Clear the OAuth state cookie (no longer needed)
     response.cookies.delete('oauth_state')
 
-    console.log('[OAuth Debug] ✅ OAuth login complete for:', user.email)
     return response
 
   } catch (error) {

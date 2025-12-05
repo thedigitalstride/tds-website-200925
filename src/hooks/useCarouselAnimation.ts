@@ -51,7 +51,6 @@ export function useCarouselAnimation({
   const [direction, setDirection] = useState<'left' | 'right'>('right')
   const [isPaused, setIsPaused] = useState(false)
   const [lastInteractionTime, setLastInteractionTime] = useState<number | null>(null)
-  const [autoRotateDirection, setAutoRotateDirection] = useState<'forward' | 'backward'>('forward')
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -68,31 +67,12 @@ export function useCarouselAnimation({
     setLastInteractionTime(Date.now())
   }, [])
 
-  // Navigate to next item (ping-pong pattern for auto-rotation)
+  // Navigate to next item (simple infinite loop)
   const goToNext = useCallback(() => {
-    if (autoRotateDirection === 'forward') {
-      if (currentIndex === totalItems - 1) {
-        // Already at end, reverse direction
-        setAutoRotateDirection('backward')
-        setDirection('left')
-        setCurrentIndex(totalItems - 2) // Move back one
-      } else {
-        setDirection('right')
-        setCurrentIndex(currentIndex + 1)
-      }
-    } else {
-      // backward direction
-      if (currentIndex === 0) {
-        // Already at start, reverse direction
-        setAutoRotateDirection('forward')
-        setDirection('right')
-        setCurrentIndex(1) // Move forward one
-      } else {
-        setDirection('left')
-        setCurrentIndex(currentIndex - 1)
-      }
-    }
-  }, [currentIndex, totalItems, autoRotateDirection])
+    // Always use 'right' direction for forward progression (including wrap-around)
+    setDirection('right')
+    setCurrentIndex((prev) => (prev + 1) % totalItems)
+  }, [totalItems])
 
   // Navigate to previous item (left-to-right)
   const goToPrevious = useCallback(() => {
