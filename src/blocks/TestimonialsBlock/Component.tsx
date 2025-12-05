@@ -93,7 +93,6 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps> = ({
   spacing = 'normal',
 }) => {
   const [maxHeight, setMaxHeight] = useState<number>(0)
-  const [transitionDirection, setTransitionDirection] = useState<'left' | 'right'>('right')
   const _containerRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
 
@@ -168,12 +167,6 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps> = ({
     typeof window !== 'undefined'
       ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
       : false
-
-  // Sync transitionDirection with direction changes
-  // This ensures both exiting and incoming elements use the same direction
-  useEffect(() => {
-    setTransitionDirection(direction)
-  }, [direction])
 
   // Keyboard navigation
   useEffect(() => {
@@ -256,10 +249,10 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps> = ({
             {showAnimation ? (
               <AnimatePresence initial={false} mode="popLayout">
                 <AnimatedTestimonial
-                  key={`${currentIndex}-${transitionDirection}`}
+                  key={currentIndex}
                   testimonial={currentTestimonial}
                   cardBackground={cardBackground}
-                  direction={transitionDirection}
+                  direction={direction}
                   transition={transition}
                   onDragEnd={onDragEnd}
                   showAnimation={showAnimation}
