@@ -38,7 +38,7 @@ export function getBackgroundClasses(variant: BackgroundVariant): string {
     case 'accent':
       return 'bg-accent' // Accent blue background with white text
     case 'outline':
-      return 'bg-transparent ring-2 ring-outline ring-inset' // Transparent with gray outline
+      return 'bg-transparent ring-2 ring-outline-secondary ring-inset' // Transparent with gray outline
     case 'line':
       return 'border-t-2 border-tertiary' // Top border only
     default:

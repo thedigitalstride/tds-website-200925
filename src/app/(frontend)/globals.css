@@ -32,8 +32,11 @@
 }
 
 /* Ring utilities for outline variant */
-@utility ring-outline {
-    --tw-ring-color: #D6D6D6;
+@utility ring-outline-secondary {
+    --tw-ring-color: rgb(243, 243, 243);
+    &:where(.dark-mode, .dark-mode *) {
+        --tw-ring-color: rgb(17, 40, 82);
+    }
 }
 
 /* Background utilities - components control their own text colors */
